@@ -4,7 +4,7 @@ Fuente: [spec](../spec.md), [API](api.md). Describe comportamiento requerido par
 
 | Flujo | Entradas y resultados |
 |---|---|
-| Acceso/alta | Google mediante Credential Manager; usuario nuevo elige nombre válido y disponible. Cancelación vuelve al acceso sin crear perfil. Una identidad existente recupera personaje único. |
+| Acceso/alta | Google mediante Credential Manager; usuario nuevo elige nombre válido y disponible. Cancelación vuelve al acceso sin crear perfil. Una identidad existente recupera personaje único y datos ya guardados, incluso desde otro dispositivo; no importa pendientes del dispositivo anterior. |
 | Principal | Skin actual, nivel general sin barra de XP general independiente, seis niveles/XP de atributos y acceso a carga. El progreso confirmado viene del servidor. |
 | Carga | Actividad guardada, fecha admitida y horas/minutos o realización de comida. Conservar borrador ante validación o fallo conocido; sin nueva carga offline. Doble toque comparte el envío; una nueva carga intencional es otro envío. |
 | Actividades propias | Nombre, categoría libre, principal y secundario opcional compatible; sin CON. Guardar y reutilizar, sin administración adicional fuera de spec. |
@@ -18,7 +18,7 @@ Fuente: [spec](../spec.md), [API](api.md). Describe comportamiento requerido par
 - `Stale`: datos anteriores de la misma cuenta con aviso de desactualización y opción de reintento. No presentar como actual un saldo de otra fecha o una proyección de un recibo antiguo.
 - `Pending`: envío con resultado desconocido; no anunciar éxito/fallo definitivo ni XP confirmada. Mostrar seguimiento y permitir recuperar/reintentar el mismo envío, con sesión de su cuenta original.
 - `Rejected`: motivo seguro de rechazo; borrador conservado donde corresponda. Corregir inicia un comando nuevo sujeto a validaciones, sin modificar identidad del anterior.
-- Al cerrar app se recuperan pendientes desde Room; al reconectar con sesión válida se consulta su resultado. Al cambiar cuenta se limpian UI, navegación y datos en memoria anteriores. Ningún dato ni pendiente de A es visible para B.
+- Al cerrar app se recuperan pendientes desde Room en la instalación que los conserva; al reconectar con sesión válida se consulta su resultado. Al cambiar cuenta se limpian UI, navegación y datos en memoria anteriores. Ningún dato ni pendiente de A es visible para B.
 - Sesión vencida suspende recuperación; Firebase puede refrescar sesión. Si no se obtiene una válida, solicitar autenticación. Cancelación no reasigna pendientes. Acceso denegado no se reintenta automáticamente.
 - Conflicto de registro muestra su estado actual o eliminación. Una intención renovada usa la versión actual solo si aún corresponde, sin sobrescribir silenciosamente otro cambio.
 

@@ -65,7 +65,7 @@ Errores de transporte, 401, 403 y fallos transitorios no son recibos funcionales
 | `GET /v1/history?period=day\|week\|month&date=YYYY-MM-DD` | Período que contiene fecha: día calendario, lunes–domingo o mes calendario, UTC−3. Registros vigentes de todos los ciclos ordenados por fecha, creación e ID. Devuelve `periodStart`, `periodEndExclusive`, `revision`, `items`, `complete: true`. El servidor pagina internamente bajo revisión estable; no muestra un período incompleto como completo. `items: []` solo por consulta exitosa realmente vacía. |
 | `GET /v1/operations/{operationId}` | Recibo propio definitivo si existe. Si no, HTTP 200 con `outcome: UNKNOWN`; no prueba de rechazo ni de ausencia de envío en vuelo. Se puede reenviar el mismo sobre. No revela recibos de otros UID. |
 
-No hay endpoint de historial público, asignación manual de XP, cambio de reglas o borrado de cuenta. Consultas y recuperación desde otro dispositivo solo con sesión válida de la cuenta y UUID original; no habilitan acceso por UUID sin autenticar.
+No hay endpoint de historial público, asignación manual de XP, cambio de reglas o borrado de cuenta. Otro dispositivo con sesión válida de la misma cuenta consulta los datos ya guardados mediante las rutas de perfil, actividades, progreso e historial, sin necesitar UUID de operaciones. La recuperación de una operación corresponde a la instalación que conserva su sobre pendiente; no hay descubrimiento, importación ni sincronización de pendientes entre dispositivos. Consultar un recibo siempre requiere autenticación y autorización por UID; conocer su UUID no concede acceso.
 
 ## Errores y conflictos
 

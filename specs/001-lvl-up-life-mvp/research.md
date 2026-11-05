@@ -52,6 +52,14 @@ Fuentes: [transacciones](https://firebase.google.com/docs/firestore/manage-data/
 
 **Alternativas**: generar nuevo UUID en cada reintento duplica efectos; deduplicar por contenido impide dos cargas legítimas idénticas.
 
+### Alcance de recuperación aclarado — 2026-11-05
+
+**Decisión**: conforme a RF-49, RF-55 y AC-117, solo la instalación que conserva el pendiente consulta o reintenta su sobre original con la cuenta original. Iniciar sesión en otro dispositivo permite consultar datos ya guardados, sin recuperar ni importar pendientes del dispositivo anterior.
+
+**Motivo**: la identidad de cuenta permite acceder a datos remotos confirmados; el seguimiento de un envío desconocido depende del sobre local conservado. UUID, recibos y autorización por UID siguen evitando duplicados; revisión, versiones y ciclo siguen protegiendo operaciones concurrentes entre dispositivos.
+
+**Alternativas**: sincronizar pendientes o descubrirlos desde otro dispositivo añade una capacidad expresamente excluida. El recibo remoto sigue disponible para reintentos del cliente original; no se necesita una nueva tecnología ni cambiar las herramientas ya seleccionadas.
+
 ## 5. Persistencia local limitada y estados de interfaz
 
 **Decisión**: Room guarda pendientes y borradores por UID en almacenamiento privado, excluido de backup y transferencia de dispositivo. No es una cola para crear actividades nuevas sin conexión. Cliente guarda el sobre antes de enviarlo y solo remueve el pendiente tras conocer resultado definitivo. Al iniciar/resumir o reconectar con el mismo UID consulta y, si procede, reenvía el sobre original. No se necesita un servicio permanente ni notificaciones. Sin sesión válida se suspenden los envíos; al cambiar cuenta se limpian estados en memoria y navegación y se filtra Room por UID. Datos anteriores de consulta se conservan solo en memoria de la sesión activa.

@@ -6,7 +6,7 @@
 
 ## Summary
 
-Construir el MVP Android de registro de actividades y progresión RPG, con Google Auth, historial privado, clases, skins y reinicio conservando datos. Android presenta resultados de una API Kotlin autoritativa; un motor Kotlin puro implementa las reglas una sola vez. Firestore confirma conjuntamente cambios, progreso y recibos idempotentes. Room conserva pendientes por cuenta tras cerrar la app. Sin actividades nuevas offline, funciones sociales ni recomendaciones.
+Construir el MVP Android de registro de actividades y progresión RPG, con Google Auth, historial privado, clases, skins y reinicio conservando datos. Android presenta resultados de una API Kotlin autoritativa; un motor Kotlin puro implementa las reglas una sola vez. Firestore confirma conjuntamente cambios, progreso y recibos idempotentes. Room conserva pendientes por cuenta tras cerrar la app; solo la instalación que los conserva recupera su seguimiento. Otro dispositivo consulta los datos ya guardados tras iniciar sesión con la misma cuenta de Google. Sin actividades nuevas offline, funciones sociales ni recomendaciones.
 
 ## Technical Context
 
@@ -41,7 +41,7 @@ Evaluación previa a investigación: los ocho principios son aplicables; ninguna
 | V Simplicidad | Conforme | Tres módulos justificados por límites Android/JVM, un servicio, sin event bus ni microservicios. |
 | VI Persistencia | Conforme | Revisión por cuenta y commit atómico de registro/proyección/recibo; reintento recupera resultado. |
 | VII Validación y errores | Conforme | Esquemas estrictos, reloj autoritativo, estados definidos y pruebas negativas planificadas. |
-| VIII Especificaciones | Conforme | Trazabilidad abajo; sin cambios de reglas, spec ni alcance; tareas se generan en otra fase. |
+| VIII Especificaciones | Conforme | Trazabilidad abajo; diseño alineado con la aclaración de RF-49/RF-55 y AC-117, sin traslado de pendientes entre dispositivos; tareas se generan en otra fase. |
 
 Este control evalúa el diseño, no el software. Las 36 casillas de `checklists/integridad.md` permanecen sin modificar por instrucción del usuario; no se usa su estado como evidencia de una revisión aprobada. Antes de implementar, resolver su evaluación conforme al flujo de implementación. No hay violaciones constitucionales justificadas ni enmiendas en este plan.
 
@@ -98,8 +98,8 @@ Ver [research.md](research.md): stack, confianza, snapshot estable/revisión, tr
 2. Android guarda un sobre pendiente antes de su primer envío; doble toque reutiliza identidad. Solo envía con conexión y sesión de su propietario.
 3. El servicio busca recibo; si existe devuelve resultado original. Si no, obtiene snapshot estable por revisión y reconstruye el candidato con el motor puro.
 4. Una transacción corta comprueba recibo, revisión, versión y tiempo vigente; guarda cambio/proyección/recibo o rechazo funcional definitivo. Si la revisión o fecha usada cambió, vuelve a leer y reconstruir.
-5. Android distingue confirmado, rechazado y desconocido. Recuperación consulta recibos; no interpreta ausencia como rechazo. La proyección de un recibo antiguo no reemplaza progreso actual.
-6. Progreso se reconstruye también al consultar, incluyendo días cerrados; historial se filtra por UTC−3 y abarca ciclos conservados.
+5. Android distingue confirmado, rechazado y desconocido. La instalación que conserva el pendiente consulta recibos con sesión válida de la cuenta original; no interpreta ausencia como rechazo. La proyección de un recibo antiguo no reemplaza progreso actual.
+6. Progreso se reconstruye también al consultar, incluyendo días cerrados; historial se filtra por UTC−3 y abarca ciclos conservados. Un segundo dispositivo obtiene perfil, progreso, actividades propias e historial mediante consultas autenticadas, sin importar pendientes ni necesitar sus UUID.
 
 Detalles de invariantes, validación y transiciones: [data-model.md](data-model.md). Contratos HTTP: [contracts/api.md](contracts/api.md). Pantallas y estados: [contracts/ui.md](contracts/ui.md).
 
@@ -112,7 +112,7 @@ Detalles de invariantes, validación y transiciones: [data-model.md](data-model.
 | Motor crítico | RF-17–40, 44 | Tests rojos de XP, niveles, topes, inactividad, clases y etapas antes del motor; AC numéricos de spec como fixtures. |
 | Historial y correcciones | RF-13–16, 46–48 | Orden estable, versiones, límites temporales y consultas por período; AC-19–24, 85–86, 93, 96–109, 110–111. |
 | Reinicio | RF-41–43, 50 | Nuevo ciclo atómico y datos preservados; AC-63–66, 87–88, 99, 102, 114–115. |
-| Recuperación y sesión | RF-49, 51–57 | Recibos, Room por UID y fallos inyectados; AC-112–113, 116–131. |
+| Recuperación y sesión | RF-49, 51–57 | Recibos, Room por UID y recuperación desde la instalación que conserva el pendiente; acceso a datos guardados desde otro dispositivo sin trasladar pendientes; fallos inyectados; AC-112–113, 116–131. |
 | Calidad transversal | RNF-01–13, SC-001–013 | Suites de seguridad, consistencia, accesibilidad y ensayos orientativos del PRD. |
 
 Orden: bootstrap y arnés de pruebas; dominio mediante TDD; servidor y persistencia con integración; Android por historias priorizadas; recuperación/concurrencia y calidad transversal. Las pruebas críticas deben preceder cada implementación, no constituir una fase final separada.
@@ -120,6 +120,12 @@ Orden: bootstrap y arnés de pruebas; dominio mediante TDD; servidor y persisten
 ### Validación y riesgos
 
 [quickstart.md](quickstart.md) describe comandos previstos y resultados esperados, sin afirmar que existan hoy. Antes de entregar código: pruebas unitarias, integración autoritativa, límites de tiempo, aislamiento, reintentos y app ensamblada. Integración Google real requiere proyecto, OAuth y dispositivo configurados; emuladores no acreditan ese intercambio. Evaluar recursos para todas las clases/etapas y usabilidad de tres interacciones antes de cerrar UI. Desplegar, activar facturación o crear recursos remotos no forma parte de esta ejecución.
+
+### Revisión del diseño tras aclaración — 2026-11-05
+
+RF-49, RF-55 y AC-117 delimitan la recuperación al cliente que conserva el sobre pendiente. Se reutiliza la investigación existente: UUID y recibos siguen siendo necesarios para respuestas perdidas y reintentos locales; Room conserva el seguimiento tras cerrar el proceso. No se introduce sincronización de pendientes, descubrimiento de operaciones desde otro dispositivo ni endpoint para importarlas. Las versiones y herramientas del diseño previo no cambian en esta revisión.
+
+La evaluación constitucional previa y posterior mantiene los ocho principios conformes a nivel de diseño: siguen vigentes aislamiento por UID, determinismo, atomicidad, topes y conflictos entre dispositivos. No hay nuevas incógnitas funcionales ni excepciones. La matriz concreta de dispositivos para SC-009 corresponde a validación técnica durante implementación.
 
 ## Complexity Tracking
 
