@@ -16,6 +16,8 @@ Las prioridades ordenan la entrega; no eliminan requisitos del MVP.
 
 ### Session 2026-11-05
 
+- Q: ¿Se deben recuperar operaciones pendientes desde otro dispositivo? → A: No. La app que conserva el pendiente comprueba o reintenta la misma operación con conexión y sesión válida de la cuenta original, sin duplicar efectos. En otro dispositivo, iniciar sesión con la misma cuenta de Google permite consultar los datos ya guardados, sin trasladar ni recuperar pendientes del dispositivo anterior. Se mantienen las protecciones de concurrencia entre dispositivos.
+
 - Q: ¿Qué debe pasar si dos dispositivos intentan modificar el mismo registro y uno ya guardó un cambio que el otro todavía no vio? → A: Rechazar la operación desactualizada, actualizar los datos y permitir que el usuario vuelva a intentarlo si todavía corresponde.
 - Q: ¿Qué debe mostrar la app si se pierde la conexión después de enviar un registro y no puede saber todavía si se guardó? → A: Mostrar confirmación pendiente, comprobar el resultado al reconectar y permitir reintentar la misma operación sin duplicarla.
 
@@ -48,7 +50,7 @@ recuperación del mismo personaje y rechazo de accesos cruzados, sin cargar acti
 
 1. **Given** una identidad nueva y un nombre disponible, **When** termina el alta,
    **Then** obtiene un único personaje Novato de nivel 1 y seis atributos en nivel 1 y 0 XP.
-2. **Given** una identidad registrada, **When** vuelve a ingresar, **Then** recupera su cuenta.
+2. **Given** una identidad registrada, **When** vuelve a ingresar con la misma cuenta de Google, incluso desde otro dispositivo, **Then** recupera su cuenta y puede consultar sus datos ya guardados, sin requerir la recuperación de pendientes de otro dispositivo.
 3. **Given** dos cuentas distintas, **When** una intenta acceder a datos de la otra,
    **Then** se rechaza tanto la lectura como la modificación.
 
@@ -266,7 +268,7 @@ material conservado designan las reglas reproducidas aquí y el documento fuente
 
 - RF-48: El sistema debe rechazar una edición o eliminación basada en un estado desactualizado del registro, mostrar el estado vigente y permitir un nuevo intento únicamente si el registro existe y cumple las validaciones aplicables.
 
-- RF-49: El sistema debe mostrar confirmación pendiente cuando desconoce el resultado de una creación, edición, eliminación de registro o reinicio enviado, comprobarlo al recuperar conexión y sesión válida de la cuenta original y permitir reintentar esa misma operación sin duplicar registros, XP, modificaciones ni ciclos.
+- RF-49: El sistema debe mostrar confirmación pendiente cuando desconoce el resultado de una creación, edición, eliminación de registro o reinicio enviado, comprobarlo desde la app que conserva el pendiente al recuperar conexión y sesión válida de la cuenta original y permitir reintentar esa misma operación sin duplicar registros, XP, modificaciones ni ciclos.
 
 - RF-50: El sistema debe vincular cada intento de creación de registro al ciclo desde el que se envió y rechazarlo si ese ciclo ya fue cerrado por un reinicio antes de confirmar el registro, sin trasladarlo automáticamente al ciclo nuevo.
 
@@ -274,7 +276,7 @@ material conservado designan las reglas reproducidas aquí y el documento fuente
 - RF-52: El sistema debe solicitar autenticación al vencer la sesión y suspender la recuperación de pendientes hasta contar con sesión válida de su cuenta original; al finalizar una sesión o cambiar de cuenta debe impedir que la otra identidad vea datos de la cuenta anterior, incluidos datos previamente consultados y operaciones pendientes, o que reciba sus operaciones.
 - RF-53: El sistema debe informar los fallos de consulta de progreso o historial y permitir reintentar, distinguiéndolos de un resultado vacío confirmado; si conserva datos anteriores de la misma cuenta debe identificarlos como desactualizados, y si no dispone de ellos debe indicar que no pudieron obtenerse.
 - RF-54: El sistema debe evaluar la fecha permitida y la ventana de edición o eliminación con el reloj del servidor cuando valida una operación aún no aplicada para aplicarla, rechazándola sin cambios si entonces incumple los límites; comprobar o reintentar una operación ya confirmada debe recuperar su resultado original sin volver a aplicarla ni reevaluar su validez temporal como una operación nueva.
-- RF-55: El sistema debe tratar las cargas intencionales enviadas por separado como operaciones distintas aunque coincidan actividad, duración y fecha, sujetas a las validaciones y topes existentes; los dobles toques y reintentos de un mismo envío deben conservar su identidad de operación, cuenta y ciclo sin duplicar efectos, también entre dispositivos.
+- RF-55: El sistema debe tratar las cargas intencionales enviadas por separado como operaciones distintas aunque coincidan actividad, duración y fecha, sujetas a las validaciones y topes existentes; los dobles toques y reintentos de un mismo envío deben conservar su identidad de operación, cuenta y ciclo sin duplicar efectos desde la app que conserva el pendiente. Esto no exige trasladar ni recuperar pendientes desde otro dispositivo ni elimina las validaciones ante operaciones concurrentes entre dispositivos.
 - RF-56: El sistema debe informar de forma comprensible el motivo de una entrada inválida, un fallo conocido de envío o servicio o un rechazo, conservar los datos ingresados y permitir reintentar cuando corresponda; si no puede determinar si la operación fue aplicada debe seguir RF-49 en lugar de presentarla como fallida o confirmada.
 - RF-57: El sistema debe volver a la pantalla de acceso cuando se cancela la autenticación, sin crear un perfil nuevo ni modificar datos existentes; ante acceso denegado debe informar el problema sin revelar datos ajenos ni reintentar automáticamente, conservando los pendientes vinculados a su cuenta original.
 
@@ -556,7 +558,7 @@ Todas las clases pueden consultarse desde el comienzo. Lo que se desbloquea seg�
 - AC-115 (RF-50): Dado un registro enviado desde un ciclo que otro dispositivo acaba de reiniciar, cuando el reinicio se confirma antes que el registro, entonces se rechaza el registro sin guardarlo ni otorgar XP, se muestra el ciclo nuevo y no se traslada automáticamente la operación a él.
 
 - AC-116 (RF-49): Dada una edición, eliminación o reinicio enviado cuya respuesta se pierde, cuando se desconoce su resultado, entonces queda pendiente sin anunciar éxito ni fallo definitivo; con conexión y sesión válida se consulta el resultado y se informa confirmación o rechazo.
-- AC-117 (RF-49, RF-55): Dada una edición, eliminación o reinicio ya confirmado cuya respuesta se perdió, cuando se comprueba o reintenta la misma operación, incluso desde otro dispositivo, entonces se recupera su resultado original sin repetir modificaciones, recrear registros, duplicar XP ni crear un ciclo adicional.
+- AC-117 (RF-49, RF-55): Dada una edición, eliminación o reinicio ya confirmado cuya respuesta se perdió, cuando la app que conserva el pendiente comprueba o reintenta la misma operación con conexión y sesión válida de la cuenta original, entonces se recupera su resultado original sin repetir modificaciones, recrear registros, duplicar XP ni crear un ciclo adicional.
 - AC-118 (RF-51): Dada una operación pendiente de creación, edición, eliminación o reinicio, cuando se cierra y reabre la app, entonces se recupera su seguimiento con la cuenta original y, al disponer de conexión y sesión válida de esa cuenta, se comprueba su resultado sin generar otra operación.
 - AC-119 (RF-52): Dada una operación pendiente de la cuenta A, cuando vence su sesión, entonces se solicita autenticación y se suspende la recuperación; al volver a ingresar con A se recupera el seguimiento y se consulta el resultado con conexión disponible.
 - AC-120 (RF-52): Dados datos consultados y pendientes de A, cuando finaliza su sesión o se ingresa con B, entonces esos datos no quedan visibles fuera de la sesión válida de A, B no recibe sus operaciones y los pendientes siguen vinculados a A.
@@ -661,6 +663,7 @@ esta especificación no decide su implementación.
 - Planificación de tareas futuras, agenda y calendario.
 - Aplicación para iOS o versión web.
 - Funcionamiento completo sin conexión a Internet.
+- Traslado o recuperación de operaciones pendientes desde otro dispositivo; esto no excluye consultar los datos ya guardados al iniciar sesión con la misma cuenta de Google.
 - Más de un personaje por cuenta.
 - Visualización pública de los atributos, las actividades o el historial de otros usuarios.
 - Verificación de actividades mediante fotografías, GPS u otras pruebas.

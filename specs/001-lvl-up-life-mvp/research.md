@@ -12,6 +12,12 @@ Fecha: 2026-11-05. Fuente funcional: [spec.md](spec.md), RF-01–57 y AC-01–13
 
 Fuentes: [release Kotlin](https://kotlinlang.org/docs/whatsnew2420.html), [matriz KGP](https://kotlinlang.org/docs/gradle-configure-project.html), [Compose compiler](https://kotlinlang.org/docs/compose-compiler-migration-guide.html), [arquitectura Android](https://developer.android.com/topic/architecture/recommendations), [Cloud Run JVM](https://docs.cloud.google.com/run/docs/quickstarts/build-and-deploy/deploy-java-service).
 
+### Compatibilidad fijada
+
+Baseline: AGP 9.3.1, Gradle 9.5.0, JDK/JVM 17, Kotlin/KGP y Compose compiler plugin 2.4.20; compileSdk/targetSdk 37 y minSdk 29. AGP 9 incorpora Kotlin: declarar `org.jetbrains.kotlin:kotlin-gradle-plugin:2.4.20` como dependencia classpath del build raíz para seleccionar esa versión y no aplicar `org.jetbrains.kotlin.android`. Los módulos JVM usan `org.jetbrains.kotlin.jvm` 2.4.20. Room usará su procesador mediante KSP compatible con esa versión al fijar el catálogo de dependencias; el build inicial debe comprobar la versión efectiva de KGP y los procesadores antes de avanzar.
+
+La matriz KGP incluye AGP hasta 9.3.1 y Gradle hasta 9.7.0 para Kotlin 2.4.20; AGP 9.3 requiere Gradle 9.5.0 y JDK 17. Esta selección conserva la versión obligatoria del proyecto; no actualiza a Kotlin 2.4.21. Fuentes: [compatibilidad AGP 9.3](https://developer.android.com/build/releases/agp-9-3-0-release-notes), [selección de un KGP superior en AGP integrado](https://developer.android.com/build/releases/agp-9-0-0-release-notes), además de matriz KGP y guía Compose citadas arriba.
+
 ## 2. Autenticación y límites de confianza
 
 **Decisión**: Credential Manager obtiene identidad Google y Firebase Authentication produce el ID token Firebase. Cada llamada HTTPS lleva ese token, validado por Admin SDK; el UID verificado determina todas las rutas de datos. Sin UID del cliente como autoridad. Firestore deniega todo acceso directo de clientes; solo el servicio accede con identidad de servicio e IAM mínimo. Los SDK de servidor no dependen de Security Rules: la autorización en servicio es obligatoria.
@@ -29,6 +35,8 @@ Fuentes: [Google en Firebase Android](https://firebase.google.com/docs/auth/andr
 **Motivo**: el documento raíz evita aceptar un cálculo obsoleto incluso si aparecieron registros durante una lectura paginada. La transacción tiene pocas escrituras y no crece con el historial. El recálculo sigue usando todos los registros vigentes del ciclo como pide RF-44; no se añaden snapshots históricos ni reglas incrementales prematuras. Una consulta de progreso reconstruye y confirma una proyección con la misma barrera de revisión; no vuelve a descontar sobre el saldo anterior.
 
 **Tiempo**: tomar `validationNow` del servidor dentro del intento de validación final, después de las lecturas transaccionales y antes de escribir. Evaluar ventana exclusiva de 300 s, fecha admitida y ciclo vigente. Si el día de negocio difiere del usado al reconstruir, abortar ese intento y reconstruir con el nuevo día. En cada reejecución transaccional se vuelve a obtener tiempo y comprobar precondiciones; las funciones de dominio reciben instantes explícitos. Un recibo existente se devuelve antes de reevaluar fechas, versión o ciclo. `createdAt` autoritativo del registro es el del intento aceptado, no el reloj del teléfono.
+
+El candidato usa un instante de creación autoritativo provisional durante el cálculo externo. Si el instante final aceptado cambia su posición en el orden fecha/creación/ID, se recalcula el candidato con el snapshot estable antes de las escrituras; no se publica una proyección calculada con otro orden. Es un cálculo puro en memoria dentro del intento final, sin lecturas adicionales después de escribir. La hora de validación se obtiene después de las lecturas y se usa para RF-54; no se pretende conocer anticipadamente el timestamp de commit de Firestore.
 
 **Alternativas**: triggers de Firestore posteriores al guardado permiten progreso parcial; transacciones extensas que reescriben todos los registros crecen innecesariamente. No se confía en locks en memoria de una instancia Cloud Run.
 
