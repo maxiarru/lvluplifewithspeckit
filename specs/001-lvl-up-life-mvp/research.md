@@ -74,7 +74,7 @@ Fuente: [Room](https://developer.android.com/training/data-storage/room).
 
 **Decisión**: TDD en dominio con reloj explícito y fixtures compartidos; integración con emuladores Auth/Firestore y servicio local; pruebas Compose de sesión, errores, recuperación y accesibilidad. Pruebas de fallo inyectado antes y después del commit distinguen rechazo de respuesta perdida. No se presenta una revisión documental como resultado de esos ensayos.
 
-**Motivo**: principios IV, VI y VII. Las muestras amplias y estudios del PRD son orientativos; no eximen pruebas de autorización, invariantes, límites temporales y reintentos. Las skins de 26 clases por tres etapas son recursos necesarios; placeholders de desarrollo no acreditan entrega visual completa.
+**Motivo**: principios IV, VI y VII. Las muestras amplias y estudios del PRD son orientativos; no eximen pruebas de autorización, invariantes, límites temporales y reintentos. Las 76 skins (Novato I y tres etapas de cada una de las otras 25 clases) son recursos necesarios; placeholders de desarrollo no acreditan entrega visual completa.
 
 **Alternativas**: pruebas añadidas al final no cumplen Test-First; usar servicios de producción en pruebas del dominio impide determinismo.
 

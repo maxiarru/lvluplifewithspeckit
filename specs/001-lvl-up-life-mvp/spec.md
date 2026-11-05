@@ -16,6 +16,8 @@ Las prioridades ordenan la entrega; no eliminan requisitos del MVP.
 
 ### Session 2026-11-05
 
+- Q: ¿Novato tiene evoluciones visuales? → A: No. Novato solo tiene Etapa I y una imagen. Las otras 25 clases conservan tres etapas, para un total de 76 imágenes; no se muestran Novato II ni III, tampoco como bloqueadas. Se conserva la condición de Novato cuando los seis atributos están en nivel 1.
+
 - Q: ¿Se deben recuperar operaciones pendientes desde otro dispositivo? → A: No. La app que conserva el pendiente comprueba o reintenta la misma operación con conexión y sesión válida de la cuenta original, sin duplicar efectos. En otro dispositivo, iniciar sesión con la misma cuenta de Google permite consultar los datos ya guardados, sin trasladar ni recuperar pendientes del dispositivo anterior. Se mantienen las protecciones de concurrencia entre dispositivos.
 
 - Q: ¿Qué debe pasar si dos dispositivos intentan modificar el mismo registro y uno ya guardó un cambio que el otro todavía no vio? → A: Rechazar la operación desactualizada, actualizar los datos y permitir que el usuario vuelva a intentarlo si todavía corresponde.
@@ -139,9 +141,9 @@ el catálogo y verificar clase, apariencia y estados de desbloqueo sin nuevos re
 **Acceptance Scenarios**:
 
 1. **Given** un personaje recién creado, **When** abro el catálogo,
-   **Then** puedo consultar todas las clases y sus tres etapas.
+   **Then** puedo consultar las 26 clases: Novato solo con Etapa I y las otras 25 con tres etapas (76 imágenes).
 2. **Given** nivel general 15, **When** consulto el catálogo,
-   **Then** las etapas I y II están desbloqueadas y III permanece bloqueada.
+   **Then** las etapas I y II de las 25 clases distintas de Novato están desbloqueadas y III permanece bloqueada; Novato solo muestra Etapa I desbloqueada, sin II ni III.
 
 **Trazabilidad**: RF-36–RF-40; AC-51–AC-62, AC-91–AC-92.
 
@@ -252,10 +254,10 @@ material conservado designan las reglas reproducidas aquí y el documento fuente
 - RF-34: El sistema debe impedir que una penalización por inactividad genere XP negativa, limitando el saldo mínimo a 0 XP.
 - RF-35: El sistema debe considerar interrumpida la inactividad de un atributo en una fecha del ciclo actual si recibió al menos 1 XP efectiva de actividades de esa fecha; los registros posteriores con 0 XP no anulan esa condición.
 - RF-36: El sistema debe asignar automáticamente la clase del personaje según la cantidad y combinación de atributos equilibrados, considerando equilibrado todo atributo cuyo nivel sea al menos el 80 % del atributo de mayor nivel, y utilizando la Tabla de Clases definida en este PRD. La condición de Novato tiene prioridad: si los seis atributos permanecen en nivel 1, se asigna Novato.
-- RF-37: El sistema debe mostrar la skin correspondiente a la clase actual y a la etapa visual determinada por el nivel general del personaje: Etapa I entre los niveles 1 y 14, Etapa II entre los niveles 15 y 34 y Etapa III entre los niveles 35 y 50.
+- RF-37: El sistema debe mostrar la skin correspondiente a la clase actual y a la etapa visual determinada por el nivel general del personaje: Etapa I entre los niveles 1 y 14, Etapa II entre los niveles 15 y 34 y Etapa III entre los niveles 35 y 50. Novato es la excepción: tiene únicamente Etapa I.
 - RF-38: El sistema debe actualizar la skin cuando cambie la clase o la etapa visual correspondiente al nivel general del personaje, utilizando la combinación de clase actual y etapa vigente.
-- RF-39: El sistema debe ofrecer desde el comienzo un apartado que muestre el catálogo completo de clases definido en este PRD y las tres etapas visuales de cada clase.
-- RF-40: El sistema debe indicar como desbloqueadas las etapas visuales alcanzadas según el nivel general del personaje y como bloqueadas las etapas superiores.
+- RF-39: El sistema debe ofrecer desde el comienzo un apartado que muestre el catálogo completo de clases definido en este PRD con Etapa I de Novato y las tres etapas visuales de cada una de las otras 25 clases (76 imágenes en total).
+- RF-40: El sistema debe indicar como desbloqueadas las etapas visuales alcanzadas según el nivel general del personaje y como bloqueadas las etapas superiores de las 25 clases distintas de Novato. Novato solo tiene Etapa I, desbloqueada desde el comienzo; no se deben mostrar etapas II o III.
 - RF-41: El sistema debe exigir una confirmación explícita antes de reiniciar la progresión del personaje.
 - RF-42: El sistema debe iniciar un nuevo ciclo de progresión desde cero cuando el usuario confirme el reinicio, con nivel general 1, seis atributos en nivel 1 con 0 XP, clase Novato y skin de Etapa I.
 - RF-43: El sistema debe conservar la cuenta, el nombre de usuario, las actividades personalizadas y el historial después de reiniciar la progresión del personaje.
@@ -422,7 +424,7 @@ El orden de los dos atributos no cambia la clase asignada.
 
 #### Etapas visuales y catálogo
 
-Cada clase, incluido Novato, tiene tres skins identificadas por su clase y etapa. La skin activa depende de la clase actual y del nivel general actual.
+Novato tiene únicamente Etapa I y una sola skin; no existen Novato II ni Novato III. Las otras 25 clases tienen tres skins identificadas por su clase y etapa, para un total de 76 imágenes (1 + 25 × 3). La skin activa depende de la clase actual y del nivel general actual. La tabla siguiente se aplica a las 25 clases distintas de Novato.
 
 | Etapa | Nivel general para usar la skin | Desbloqueo en el catálogo |
 |---|---|---|
@@ -430,7 +432,7 @@ Cada clase, incluido Novato, tiene tres skins identificadas por su clase y etapa
 | Etapa II | 15–34 | Desde nivel 15 |
 | Etapa III | 35–50 | Desde nivel 35 |
 
-Todas las clases pueden consultarse desde el comienzo. Lo que se desbloquea según el nivel general son las etapas visuales: en nivel 8 solo Etapa I; en nivel 20, Etapas I y II; y en nivel 40, las tres etapas.
+Todas las clases pueden consultarse desde el comienzo. Novato muestra solo Etapa I, siempre desbloqueada en el catálogo; no muestra etapas II o III, ni siquiera bloqueadas. Para las otras 25 clases, lo que se desbloquea según el nivel general son las etapas visuales: en nivel 8 solo Etapa I; en nivel 20, Etapas I y II; y en nivel 40, las tres etapas.
 
 ### Acceptance Criteria — catálogo completo del PRD
 
@@ -491,11 +493,11 @@ Todas las clases pueden consultarse desde el comienzo. Lo que se desbloquea seg�
 - AC-55 (RF-36): Dado un personaje en el que exactamente cuatro atributos tienen un nivel igual o superior al 80 % del atributo de mayor nivel, cuando el sistema calcula la clase, entonces asigna Maestro del Equilibrio.
 - AC-56 (RF-36): Dado un personaje en el que exactamente cinco atributos tienen un nivel igual o superior al 80 % del atributo de mayor nivel, cuando el sistema calcula la clase, entonces asigna Héroe Ascendente.
 - AC-57 (RF-36): Dado un personaje en el que los seis atributos tienen un nivel igual o superior al 80 % del atributo de mayor nivel y el personaje ya no es Novato, cuando el sistema calcula la clase, entonces asigna Héroe Integral.
-- AC-58 (RF-37): Dado un personaje con una clase asignada y un nivel general entre 1 y 50, cuando se muestra su apariencia, entonces la skin pertenece a su clase actual y corresponde a Etapa I para niveles 1–14, Etapa II para niveles 15–34 o Etapa III para niveles 35–50.
+- AC-58 (RF-37): Dado un personaje con una clase distinta de Novato y un nivel general entre 1 y 50, cuando se muestra su apariencia, entonces la skin pertenece a su clase actual y corresponde a Etapa I para niveles 1–14, Etapa II para niveles 15–34 o Etapa III para niveles 35–50. Si la clase es Novato, se muestra únicamente su skin de Etapa I.
 - AC-59 (RF-38): Dado un personaje cuya combinación de atributos provoca un cambio de clase sin cambio de nivel general, cuando el sistema recalcula su clase, entonces muestra la skin de la nueva clase y conserva la etapa visual correspondiente a su nivel general.
 - AC-60 (RF-38): Dado un personaje cuyo nivel general cambia por una subida o corrección, cuando el sistema actualiza su apariencia, entonces la skin de su clase actual corresponde a la etapa definida para el nivel general resultante.
-- AC-61 (RF-39): Dado el catálogo de clases definido en este PRD, cuando el usuario abre el apartado de clases, entonces visualiza todas las clases, sus atributos o condiciones de equilibrio y las tres etapas visuales de cada una.
-- AC-62 (RF-40): Dado un personaje con nivel general entre 1 y 50, cuando consulta el catálogo, entonces Etapa I aparece desbloqueada desde nivel 1, Etapa II desde nivel 15 y Etapa III desde nivel 35, y las etapas cuyo umbral aún no alcanzó aparecen bloqueadas.
+- AC-61 (RF-39): Dado el catálogo de clases definido en este PRD, cuando el usuario abre el apartado de clases, entonces visualiza todas las clases, sus atributos o condiciones de equilibrio con únicamente Etapa I de Novato y las tres etapas visuales de cada una de las otras 25 clases: 26 clases y 76 imágenes, sin entradas ni recursos para Novato II o III.
+- AC-62 (RF-40): Dado un personaje con nivel general entre 1 y 50, cuando consulta el catálogo, entonces Etapa I aparece desbloqueada desde nivel 1, Etapa II desde nivel 15 y Etapa III desde nivel 35, y las etapas cuyo umbral aún no alcanzó aparecen bloqueadas para las 25 clases distintas de Novato; Novato solo muestra Etapa I desbloqueada, sin etapas II o III.
 - AC-63 (RF-41): Dado que el usuario solicita reiniciar el personaje, cuando todavía no confirmó explícitamente la operación, entonces el sistema no modifica la progresión.
 - AC-64 (RF-41): Dado que el usuario solicita reiniciar el personaje, cuando cancela la confirmación, entonces el sistema no realiza cambios.
 - AC-65 (RF-42): Dado que el usuario confirma el reinicio, cuando finaliza el proceso, entonces el nivel general y los seis atributos vuelven a 1, la XP y el contador de subidas generales quedan en 0, la clase es Novato, la skin es Etapa I y el nuevo ciclo no conserva consumos diarios, comidas puntuables, minutos de sueño pendientes ni inactividad del ciclo anterior.
@@ -527,7 +529,7 @@ Todas las clases pueden consultarse desde el comienzo. Lo que se desbloquea seg�
 - AC-89 (RF-20): Dado STR por debajo de nivel 50 con 47 XP otorgados hoy en el ciclo actual y al menos diez minutos disponibles en esa fecha, cuando se confirman simultáneamente dos registros distintos y válidos de cinco minutos de STR para hoy, sin otras operaciones concurrentes, entonces ambos se guardan y su aporte conjunto es exactamente 1 XP, sin superar 48 XP diarias.
 - AC-90 (RF-04): Dadas dos cuentas sin nombre asignado y el nombre Martin disponible sin distinguir mayúsculas de minúsculas, cuando intentan confirmar simultáneamente Martin y martin sin otras asignaciones concurrentes de ese nombre, entonces exactamente una obtiene el nombre y la otra recibe un rechazo.
 - AC-91 (RF-36): Dados STR en nivel 10, DEX en nivel 8 y los demás en nivel 1, cuando se calcula la clase, entonces resulta Maestro de Armas; con DEX en nivel 7 y los demás valores iguales, resulta Guerrero.
-- AC-92 (RF-37, RF-40): Dada una clase actual, cuando se evalúan niveles generales 14, 15, 34 y 35, entonces las skins activas son respectivamente I, II, II y III; las etapas desbloqueadas son respectivamente I, I y II, I y II, y las tres.
+- AC-92 (RF-37, RF-40): Dada una clase actual distinta de Novato, cuando se evalúan niveles generales 14, 15, 34 y 35, entonces las skins activas son respectivamente I, II, II y III; las etapas desbloqueadas son respectivamente I, I y II, I y II, y las tres.
 - AC-93 (RF-44): Dados dos registros del mismo ciclo con igual fecha de actividad y fecha y hora de creación, cuando se reconstruye la progresión repetidas veces, entonces se procesan en orden ordinal ascendente de identificador y producen el mismo resultado en cada reconstrucción.
 
 - AC-94 (RF-04): Dados nombres vacíos, con espacios, con tildes o con caracteres distintos de letras ASCII, números y guion bajo, cuando se intenta asignar cada uno, entonces se rechaza sin asignarlo.
@@ -646,7 +648,7 @@ esta especificación no decide su implementación.
 - Las pruebas independientes usan cuentas y registros preparados cuando necesitan datos
   previos; no exigen implementar las demás historias para demostrar el comportamiento.
 - Dependencias: autenticación de Google; servicio de persistencia de cuentas, actividades
-  y progreso; catálogo aprobado; recursos visuales de todas las clases y sus tres etapas;
+  y progreso; catálogo aprobado; 76 recursos visuales: Novato I y tres etapas de cada una de las otras 25 clases;
   datos temporales y simulaciones de rutinas para validar progresión.
 - Las decisiones de arquitectura y herramientas quedan en el plan conforme a la constitución.
 - Riesgos del PRD: fricción de carga manual, registros ficticios, curva de progreso,

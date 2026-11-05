@@ -9,7 +9,7 @@ Fuente: [spec](../spec.md), [API](api.md). Describe comportamiento requerido par
 | Carga | Actividad guardada, fecha admitida y horas/minutos o realización de comida. Conservar borrador ante validación o fallo conocido; sin nueva carga offline. Doble toque comparte el envío; una nueva carga intencional es otro envío. |
 | Actividades propias | Nombre, categoría libre, principal y secundario opcional compatible; sin CON. Guardar y reutilizar, sin administración adicional fuera de spec. |
 | Historial | Día, semana lunes–domingo o mes; conservar registros de ciclos anteriores. Editar/eliminar solo con las restricciones autoritativas; el indicador local de ventana es orientativo y no concede permiso. |
-| Clases | Catálogo de las 26 clases y tres etapas visible desde comienzo; bloqueo según nivel general 1/15/35. Recursos visuales coherentes con tabla de spec. |
+| Clases | Catálogo de las 26 clases visible desde comienzo: Novato solo muestra Etapa I desbloqueada, sin entradas II/III; las otras 25 clases muestran tres etapas, con bloqueo según nivel general 1/15/35. Total: 76 imágenes. Recursos visuales coherentes con tabla de spec. |
 | Reinicio | Explicar que reinicia progresión y conserva cuenta, nombre, actividades propias e historial. Confirmación explícita o cancelación sin cambios. Confirmación pendiente no implica otro reinicio al reintentar. |
 
 ## Estados y sesión

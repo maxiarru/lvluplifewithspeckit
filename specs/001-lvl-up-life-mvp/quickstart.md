@@ -71,7 +71,7 @@ Abrir Lvl Up Life en el dispositivo. Para probar Google real se necesita proyect
 | Dos cargas iguales | Nuevo envío intencional genera registro distinto; doble toque del mismo envío no duplica. | AC-126–127 |
 | Consultas y errores | Fallo de consulta no se muestra vacío; datos previos se marcan desactualizados. Rechazo conserva entrada; acceso denegado no reintenta automáticamente. | AC-121–122, 128–131 |
 | Aislamiento | Identidades A/B intentan leer/escribir recursos ajenos y Firestore directo: siempre rechazo sin datos ni cambios ajenos. | AC-67–68, SC-007 |
-| Clases y UI | Datos preparados prueban Novato, pares, equilibrio y niveles 14/15/34/35; todas las clases/etapas visibles, estados y contraste definidos. | AC-51–62, 91–92, SC-011 |
+| Clases y UI | Datos preparados prueban Novato, pares, equilibrio y niveles 14/15/34/35; 26 clases y 76 imágenes: Novato solo con Etapa I desbloqueada y sin II/III; las otras 25 con tres etapas, estados y contraste definidos. | AC-51–62, 91–92, SC-011 |
 
 Contratos detallados: [API](contracts/api.md), [UI](contracts/ui.md), [modelo](data-model.md). No duplicar suites completas en este documento.
 

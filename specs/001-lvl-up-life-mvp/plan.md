@@ -26,7 +26,7 @@ Construir el MVP Android de registro de actividades y progresión RPG, con Googl
 
 **Constraints**: seis atributos, XP automática, topes por fecha/ciclo, UTC−3 fijo, edición/eliminación <300 s al validar en servidor, atomicidad/idempotencia, cero acceso cruzado, TLS ≥1.2. Protección ante sesión cambiada y respuesta perdida. Sin implementación de notificaciones excluidas del MVP.
 
-**Scale/Scope**: un personaje por UID; seis historias, 11 actividades básicas, 26 clases con tres etapas. Ensayos orientativos 0/1.000/10.000 registros en hasta 365 fechas y varios ciclos. Sin volumen de usuarios objetivo ni límite nuevo de registros. Recálculo completo y serialización por cuenta pueden limitar latencia; medir antes de optimizar.
+**Scale/Scope**: un personaje por UID; seis historias, 11 actividades básicas, 26 clases: Novato con una etapa y las otras 25 con tres (76 imágenes). Ensayos orientativos 0/1.000/10.000 registros en hasta 365 fechas y varios ciclos. Sin volumen de usuarios objetivo ni límite nuevo de registros. Recálculo completo y serialización por cuenta pueden limitar latencia; medir antes de optimizar.
 
 ## Constitution Check
 

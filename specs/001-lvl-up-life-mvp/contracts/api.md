@@ -59,7 +59,7 @@ Errores de transporte, 401, 403 y fallos transitorios no son recibos funcionales
 | Ruta | Respuesta y semántica |
 |---|---|
 | `GET /v1/me` | Estado de alta y perfil propio; `profileRequired: true` si identidad válida aún no completó alta. Sin crear perfil por autenticar o cancelar el ingreso. |
-| `GET /v1/catalog` | 11 actividades, tabla completa de clases y tres etapas con IDs de recursos. Catálogo solo de lectura. |
+| `GET /v1/catalog` | 11 actividades, tabla completa de 26 clases: Novato solo con Etapa I y las otras 25 con etapas I/II/III, con 76 IDs de recursos únicos. No hay entradas para Novato II o III. Catálogo solo de lectura. |
 | `GET /v1/custom-activities` | Definiciones propias, orden estable por creación e ID; respuesta completa o error, no resultado parcial presentado como completo. |
 | `GET /v1/progress` | Replay vigente del ciclo, seis atributos, nivel general/contador, clase, etapa y desbloqueos; `revision`, `computedAt`, `businessDate`. Incluye penalizaciones de fechas cerradas sin exigir nuevos registros. |
 | `GET /v1/history?period=day\|week\|month&date=YYYY-MM-DD` | Período que contiene fecha: día calendario, lunes–domingo o mes calendario, UTC−3. Registros vigentes de todos los ciclos ordenados por fecha, creación e ID. Devuelve `periodStart`, `periodEndExclusive`, `revision`, `items`, `complete: true`. El servidor pagina internamente bajo revisión estable; no muestra un período incompleto como completo. `items: []` solo por consulta exitosa realmente vacía. |
