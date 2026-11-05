@@ -25,7 +25,7 @@ Objetivo: crear los tres módulos y un arnés ejecutable. Completar antes de Pha
 
 Objetivo: infraestructura común verificable, sin fórmulas de progresión anticipadas. Bloquea todas las historias. Evaluar integridad antes de implementar, sin modificar sus marcas automáticamente.
 
-- [ ] T006 Revisar las 36 entradas de `specs/001-lvl-up-life-mvp/checklists/integridad.md` y registrar evidencia o bloqueos en `specs/001-lvl-up-life-mvp/validation.md`; no usar casillas pendientes como aprobación ni modificar sus marcas sin autorización.
+- [x] T006 Revisar las 36 entradas de `specs/001-lvl-up-life-mvp/checklists/integridad.md` y registrar evidencia o bloqueos en `specs/001-lvl-up-life-mvp/validation.md`; no usar casillas pendientes como aprobación ni modificar sus marcas sin autorización. Completada anticipadamente el 2026-11-05 por solicitud explícita del usuario: 36/36 ítems aprobados con justificación en validation.md; sin acreditar código ni pruebas ejecutadas.
 
 - [ ] T007 [P] Escribir y ejecutar pruebas de autenticación, esquema estricto, ausencia de secretos, UID ajeno y errores HTTP de `contracts/api.md` en `server/src/test/kotlin/lvluplife/api/TrustBoundaryTest.kt`; comprobar fallo antes de los adaptadores.
 

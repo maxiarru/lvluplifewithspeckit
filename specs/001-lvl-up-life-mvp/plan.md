@@ -43,7 +43,7 @@ Evaluación previa a investigación: los ocho principios son aplicables; ninguna
 | VII Validación y errores | Conforme | Esquemas estrictos, reloj autoritativo, estados definidos y pruebas negativas planificadas. |
 | VIII Especificaciones | Conforme | Trazabilidad abajo; diseño alineado con la aclaración de RF-49/RF-55 y AC-117, sin traslado de pendientes entre dispositivos; tareas disponibles en `tasks.md` y ajustadas con dependencias explícitas. |
 
-Este control evalúa el diseño, no el software. Las 36 casillas de `checklists/integridad.md` permanecen sin modificar por instrucción del usuario; no se usa su estado como evidencia de una revisión aprobada. Antes de implementar, resolver su evaluación conforme al flujo de implementación. No hay violaciones constitucionales justificadas ni enmiendas en este plan.
+Este control evalúa el diseño, no el software. Las 36 casillas de `checklists/integridad.md` fueron evaluadas y aprobadas el 2026-11-05 por solicitud explícita del usuario; evidencia y justificación por ítem en [validation.md](validation.md). Esta aprobación documental no acredita implementación ni pruebas ejecutadas. No hay violaciones constitucionales justificadas ni enmiendas en este plan.
 
 ## Project Structure
 
