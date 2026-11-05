@@ -12,6 +12,26 @@
 Conserva los identificadores RF, RNF y AC de origen para mantener trazabilidad.
 Las prioridades ordenan la entrega; no eliminan requisitos del MVP.
 
+## Clarifications
+
+### Session 2026-11-05
+
+- Q: ¿Qué debe pasar si dos dispositivos intentan modificar el mismo registro y uno ya guardó un cambio que el otro todavía no vio? → A: Rechazar la operación desactualizada, actualizar los datos y permitir que el usuario vuelva a intentarlo si todavía corresponde.
+- Q: ¿Qué debe mostrar la app si se pierde la conexión después de enviar un registro y no puede saber todavía si se guardó? → A: Mostrar confirmación pendiente, comprobar el resultado al reconectar y permitir reintentar la misma operación sin duplicarla.
+
+- Q: ¿Qué debe pasar si confirmás un reinicio en un dispositivo mientras otro intenta guardar una actividad en el ciclo anterior? → A: Si el registro se guarda primero, queda en el ciclo anterior. Si el reinicio se completa primero, se rechaza el registro y se muestra el ciclo nuevo.
+
+### Decisiones de revisión del checklist — 2026-11-05
+
+- Q: ¿Cómo se recuperan ediciones, eliminaciones y reinicios con resultado desconocido? → A: Quedan pendientes; al reconectar se consulta el resultado y cualquier reintento conserva la misma operación, sin repetir efectos ni crear otro ciclo.
+- Q: ¿Qué ocurre si se cierra la app con una operación pendiente? → A: Al reabrir se recupera el pendiente, ligado a su cuenta original, y se consulta su resultado con conexión y sesión válida.
+- Q: ¿Qué ocurre si vence la sesión o se ingresa con otra cuenta? → A: Se solicita autenticación y se suspende la recuperación hasta ingresar con la cuenta original; otra cuenta no puede ver sus datos ni recibir sus operaciones.
+- Q: ¿Qué se muestra cuando falla una consulta de progreso o historial? → A: Error y opción de reintentar; los datos anteriores de esa cuenta pueden mantenerse señalados como desactualizados. Sin datos anteriores se indica que no pudieron obtenerse, nunca un historial vacío por el fallo.
+- Q: ¿Cuándo se evalúan los límites temporales de una operación aún no aplicada? → A: Cuando el servidor la valida para aplicarla; si venció el plazo, se rechaza. Un reintento de una operación confirmada recupera su resultado original.
+- Q: ¿Dos cargas con datos idénticos son duplicados? → A: Dos cargas intencionales por separado son registros distintos sujetos a los topes; un doble toque o reintento del mismo envío conserva una operación y no duplica registros ni XP.
+- Q: ¿Qué ocurre ante un fallo conocido de envío o servicio? → A: Se informa el motivo, se conserva lo ingresado y se permite reintentar cuando corresponda. Si pudo haberse aplicado, queda pendiente hasta comprobar su resultado.
+- Q: ¿Qué ocurre al cancelar la autenticación o recibir acceso denegado? → A: Cancelar vuelve al acceso sin crear perfiles ni modificar datos. La denegación informa el problema sin revelar datos ajenos ni reintentar automáticamente; los pendientes conservan su cuenta original.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Acceder a una cuenta y personaje propios (Priority: P1)
@@ -147,6 +167,28 @@ confirmar un reinicio; verificar datos conservados y contadores independientes d
 
 ### Edge Cases
 
+- Registro y reinicio concurrentes se resuelven por orden de confirmación: un registro
+  confirmado primero pertenece al ciclo anterior; si se confirmó primero el reinicio,
+  se rechaza el intento dirigido al ciclo cerrado y se muestra el ciclo nuevo. Un reintento
+  de una operación ya confirmada conserva su resultado y pertenencia originales; no se
+  convierte en una nueva actividad del ciclo actual.
+
+
+- Si se pierde la conexión después de enviar un registro y no se conoce su resultado,
+  se muestra confirmación pendiente, sin anunciar éxito ni fallo definitivo. Al recuperar
+  conexión se comprueba el resultado de la misma operación; cualquier reintento conserva
+  su identidad y no crea otra actividad ni duplica XP. La XP pendiente no se muestra
+  como progreso confirmado. Este manejo no habilita registrar nuevas actividades sin conexión.
+
+
+- Si una edición o eliminación parte de un estado del registro que ya cambió, se rechaza
+  sin alterar los datos ni la progresión y se muestra el estado vigente, incluida la
+  eliminación si corresponde. El usuario puede reintentar sobre ese estado solo si el
+  registro existe y siguen cumpliéndose ciclo, ventana temporal y demás validaciones.
+  Dos operaciones que parten del mismo estado no pueden confirmarse ambas: la primera
+  aplicada deja desactualizada la restante.
+
+
 - Nombres de usuario vacíos, de 1, 15 o 16 caracteres, caracteres no ASCII y asignaciones
   simultáneas que solo difieren en mayúsculas (AC-04, AC-70, AC-72, AC-90, AC-94–AC-95).
 - Duraciones cero, negativas, fraccionarias, minutos mayores a 59 y saldo diario de
@@ -169,7 +211,7 @@ confirmar un reinicio; verificar datos conservados y contadores independientes d
 
 ### Functional Requirements
 
-Los RF mantienen numeración y redacción del PRD. Las referencias a «este PRD» en el
+Los RF-01–RF-47 mantienen numeración y redacción del PRD; RF-48 en adelante incorporan las aclaraciones aceptadas. Las referencias a «este PRD» en el
 material conservado designan las reglas reproducidas aquí y el documento fuente.
 
 - RF-01: El sistema debe permitir registrarse mediante una cuenta de Google, sin administrar una contraseña propia de LUL.
@@ -221,6 +263,20 @@ material conservado designan las reglas reproducidas aquí y el documento fuente
 - RF-46: El sistema debe rechazar modificaciones de registros pertenecientes a ciclos anteriores, tanto su edición como su eliminación, aunque hayan transcurrido menos de cinco minutos desde su creación.
 
 - RF-47: El sistema debe rechazar registros o ediciones por duración que incumplan las Reglas de duración y fechas, incluido el máximo acumulado de 1.440 minutos por fecha y ciclo.
+
+- RF-48: El sistema debe rechazar una edición o eliminación basada en un estado desactualizado del registro, mostrar el estado vigente y permitir un nuevo intento únicamente si el registro existe y cumple las validaciones aplicables.
+
+- RF-49: El sistema debe mostrar confirmación pendiente cuando desconoce el resultado de una creación, edición, eliminación de registro o reinicio enviado, comprobarlo al recuperar conexión y sesión válida de la cuenta original y permitir reintentar esa misma operación sin duplicar registros, XP, modificaciones ni ciclos.
+
+- RF-50: El sistema debe vincular cada intento de creación de registro al ciclo desde el que se envió y rechazarlo si ese ciclo ya fue cerrado por un reinicio antes de confirmar el registro, sin trasladarlo automáticamente al ciclo nuevo.
+
+- RF-51: El sistema debe conservar el seguimiento de operaciones pendientes al cerrar la aplicación y recuperarlo al reabrirla, vinculado a la cuenta original, para consultar su resultado cuando haya conexión y sesión válida de esa cuenta.
+- RF-52: El sistema debe solicitar autenticación al vencer la sesión y suspender la recuperación de pendientes hasta contar con sesión válida de su cuenta original; al finalizar una sesión o cambiar de cuenta debe impedir que la otra identidad vea datos de la cuenta anterior, incluidos datos previamente consultados y operaciones pendientes, o que reciba sus operaciones.
+- RF-53: El sistema debe informar los fallos de consulta de progreso o historial y permitir reintentar, distinguiéndolos de un resultado vacío confirmado; si conserva datos anteriores de la misma cuenta debe identificarlos como desactualizados, y si no dispone de ellos debe indicar que no pudieron obtenerse.
+- RF-54: El sistema debe evaluar la fecha permitida y la ventana de edición o eliminación con el reloj del servidor cuando valida una operación aún no aplicada para aplicarla, rechazándola sin cambios si entonces incumple los límites; comprobar o reintentar una operación ya confirmada debe recuperar su resultado original sin volver a aplicarla ni reevaluar su validez temporal como una operación nueva.
+- RF-55: El sistema debe tratar las cargas intencionales enviadas por separado como operaciones distintas aunque coincidan actividad, duración y fecha, sujetas a las validaciones y topes existentes; los dobles toques y reintentos de un mismo envío deben conservar su identidad de operación, cuenta y ciclo sin duplicar efectos, también entre dispositivos.
+- RF-56: El sistema debe informar de forma comprensible el motivo de una entrada inválida, un fallo conocido de envío o servicio o un rechazo, conservar los datos ingresados y permitir reintentar cuando corresponda; si no puede determinar si la operación fue aplicada debe seguir RF-49 en lugar de presentarla como fallida o confirmada.
+- RF-57: El sistema debe volver a la pantalla de acceso cuando se cancela la autenticación, sin crear un perfil nuevo ni modificar datos existentes; ante acceso denegado debe informar el problema sin revelar datos ajenos ni reintentar automáticamente, conservando los pendientes vinculados a su cuenta original.
 
 #### Catálogo inicial de actividades básicas
 
@@ -490,9 +546,36 @@ Todas las clases pueden consultarse desde el comienzo. Lo que se desbloquea seg�
 - AC-108 (RF-14): Dados un registro de comida y otro por duración del ciclo actual, ambos creados hace menos de cinco minutos, cuando se intenta convertir comida en una actividad por duración o el registro por duración en comida, entonces se rechaza cada cambio y se conservan registros, saldo temporal y progresión.
 - AC-109 (RF-14, RF-44): Dado un registro de comida del ciclo actual creado hace menos de cinco minutos, cuando se cambia su fecha por otra permitida, entonces se guarda la nueva fecha sin solicitar duración y se recalcula el aporte de CON según las comidas de cada fecha.
 
+- AC-110 (RF-48): Dados dos dispositivos que parten del mismo estado de un registro editable, cuando uno guarda una edición y el otro intenta editar o eliminar basándose en el estado anterior, entonces la segunda operación se rechaza sin alterar registro ni progresión, y se muestra el estado vigente para un nuevo intento sujeto a las validaciones aplicables.
+- AC-111 (RF-48): Dados dos dispositivos que parten del mismo estado de un registro eliminable, cuando uno lo elimina y el otro intenta editarlo o eliminarlo, entonces la segunda operación se rechaza, se informa que el registro ya no existe y no se recrea ni se altera la progresión.
+
+- AC-112 (RF-49): Dado un registro enviado cuyo resultado no se recibió por pérdida de conexión, cuando la app desconoce si fue guardado, entonces muestra confirmación pendiente y no presenta su XP como confirmada; al reconectar comprueba el resultado de la misma operación y muestra su confirmación o rechazo según corresponda.
+- AC-113 (RF-49, RNF-06): Dada una operación pendiente que ya fue guardada pero cuya respuesta se perdió, cuando se comprueba o reintenta al recuperar conexión, entonces se reconoce el registro existente sin crear otro ni duplicar XP.
+
+- AC-114 (RF-50): Dado un registro enviado desde el ciclo actual mientras se confirma un reinicio, cuando el registro se confirma antes del reinicio, entonces permanece en el historial del ciclo anterior y no aporta XP al ciclo nuevo.
+- AC-115 (RF-50): Dado un registro enviado desde un ciclo que otro dispositivo acaba de reiniciar, cuando el reinicio se confirma antes que el registro, entonces se rechaza el registro sin guardarlo ni otorgar XP, se muestra el ciclo nuevo y no se traslada automáticamente la operación a él.
+
+- AC-116 (RF-49): Dada una edición, eliminación o reinicio enviado cuya respuesta se pierde, cuando se desconoce su resultado, entonces queda pendiente sin anunciar éxito ni fallo definitivo; con conexión y sesión válida se consulta el resultado y se informa confirmación o rechazo.
+- AC-117 (RF-49, RF-55): Dada una edición, eliminación o reinicio ya confirmado cuya respuesta se perdió, cuando se comprueba o reintenta la misma operación, incluso desde otro dispositivo, entonces se recupera su resultado original sin repetir modificaciones, recrear registros, duplicar XP ni crear un ciclo adicional.
+- AC-118 (RF-51): Dada una operación pendiente de creación, edición, eliminación o reinicio, cuando se cierra y reabre la app, entonces se recupera su seguimiento con la cuenta original y, al disponer de conexión y sesión válida de esa cuenta, se comprueba su resultado sin generar otra operación.
+- AC-119 (RF-52): Dada una operación pendiente de la cuenta A, cuando vence su sesión, entonces se solicita autenticación y se suspende la recuperación; al volver a ingresar con A se recupera el seguimiento y se consulta el resultado con conexión disponible.
+- AC-120 (RF-52): Dados datos consultados y pendientes de A, cuando finaliza su sesión o se ingresa con B, entonces esos datos no quedan visibles fuera de la sesión válida de A, B no recibe sus operaciones y los pendientes siguen vinculados a A.
+- AC-121 (RF-53): Dados datos previos de progreso o historial de la cuenta actual, cuando falla su actualización, entonces se informa el error y se ofrece reintentar; si se mantienen los datos previos se señalan como desactualizados, sin presentar el fallo como un resultado vacío.
+- AC-122 (RF-53): Dada una consulta sin datos previos disponibles, cuando falla, entonces se indica que no pudieron obtenerse y se ofrece reintentar; un historial vacío solo se presenta como tal tras una consulta exitosa sin registros del período.
+- AC-123 (RF-54): Dada una edición o eliminación enviada antes de los 300 segundos desde la creación, cuando el servidor la valida para aplicarla a los 300 segundos o después y todavía no fue aplicada, entonces se rechaza sin modificar registro ni progresión.
+- AC-124 (RF-54): Dada una creación o edición enviada antes de medianoche para la fecha que entonces era anteayer, cuando el servidor la valida después de medianoche en UTC−3 y esa fecha ya queda fuera de hoy, ayer y anteayer, entonces se rechaza sin cambios; no se sustituye automáticamente la fecha solicitada.
+- AC-125 (RF-54): Dada una operación confirmada dentro de sus límites temporales cuya respuesta se perdió, cuando se consulta o reintenta después de vencer esos límites, entonces se recupera su resultado confirmado sin rechazarla por el tiempo posterior ni repetir su efecto.
+- AC-126 (RF-55): Dados dos envíos intencionales separados con la misma actividad, duración y fecha, cuando ambos cumplen las validaciones y existe saldo suficiente, entonces se conservan como dos registros distintos y cada uno aporta la XP que corresponda según los topes; la coincidencia de datos no causa rechazo por duplicación.
+- AC-127 (RF-55): Dado un mismo envío de creación, cuando recibe dobles toques o reintentos, entonces conserva una sola identidad de operación y produce como máximo un registro y una aplicación de XP.
+- AC-128 (RF-56): Dada una entrada inválida, un envío que se sabe no realizado o una operación explícitamente rechazada, cuando se informa el resultado, entonces se muestra un motivo comprensible y se conservan los datos ingresados, con opción de reintentar cuando corresponda y sujeto a las validaciones vigentes.
+- AC-129 (RF-49, RF-56): Dado un fallo del servicio de identidad, persistencia o tiempo autoritativo, cuando impide completar o validar una operación, entonces no se informa éxito sin confirmación; si se sabe no aplicada se informa el motivo y se conserva lo ingresado, y si pudo haberse aplicado se mantiene pendiente hasta comprobar el resultado con las dependencias y la sesión original disponibles.
+- AC-130 (RF-57): Dada una autenticación en curso, cuando el usuario la cancela, entonces vuelve a la pantalla de acceso sin crear un perfil nuevo ni modificar datos existentes, y cualquier pendiente previo conserva su vínculo con la cuenta original.
+- AC-131 (RF-52, RF-57): Dado un intento sin autorización, cuando se deniega el acceso, entonces se informa el problema sin revelar datos ajenos ni reintentar automáticamente, no se modifican los datos protegidos y los pendientes existentes no se reasignan a otra cuenta.
+
 ### Key Entities *(include if feature involves data)*
 
 - **Cuenta**: identidad Google y nombre único; propietaria de personaje, actividades e historial.
+- **Operación pendiente**: identidad estable del envío, cuenta original, tipo de cambio y ciclo aplicable; conserva su seguimiento tras cerrar la app y distingue resultado desconocido de confirmación o rechazo, sin convertirse en otra operación al reintentar.
 - **Personaje**: nivel general, contador de subidas, clase y etapa visual del ciclo actual.
 - **Atributo**: STR, DEX, CON, INT, WIT o MEN; nivel, XP dentro del nivel y estado de inactividad.
 - **Ciclo de progresión**: inicio por creación o reinicio; separa registros y consumos de cada etapa.
