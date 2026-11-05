@@ -3,7 +3,7 @@
 **Input**: [plan](plan.md), [spec](spec.md), [research](research.md), [modelo](data-model.md), [API](contracts/api.md), [UI](contracts/ui.md), [quickstart](quickstart.md) y constitución v1.0.0.
 **Organización**: seis historias; las prioridades ordenan entrega, no reducen el MVP.
 **Pruebas**: obligatorias por constitución IV, VI y VII y por el spec. Cada tarea de prueba crítica debe ejecutarse y fallar por comportamiento ausente antes de implementar su regla; registrar rojo/verde en `specs/001-lvl-up-life-mvp/validation.md`. No basta con escribir pruebas antes y ejecutarlas después.
-**Formato**: IDs secuenciales; [P] indica trabajo en archivos distintos que comparte los prerrequisitos indicados. Rutas relativas a la raíz; paquetes Kotlin de dominio y servidor bajo `lvluplife`. No implementar funcionalidades excluidas, desplegar ni crear recursos remotos.
+**Formato**: IDs únicos y estables; el orden de ejecución es el listado por fase, no el orden numérico (T085–T087 se incorporan en Foundational); [P] indica trabajo en archivos distintos que comparte los prerrequisitos indicados. Rutas relativas a la raíz; paquetes Kotlin de dominio y servidor bajo `lvluplife`. No implementar funcionalidades excluidas, desplegar ni crear recursos remotos.
 
 
 ## Phase 1: Setup
@@ -46,6 +46,12 @@ Objetivo: infraestructura común verificable, sin fórmulas de progresión antic
 - [ ] T016 Implementar sesión y estados UI comunes en `app/src/main/kotlin/lvluplife/application/SessionController.kt` y `app/src/main/kotlin/lvluplife/ui/LoadState.kt`: Loading/Confirmed/Stale/Empty/Error/Pending; limpiar memoria/navegación en logout, suspender pendientes con sesión inválida y reanudar solo con UID original. Antes de implementar, escribir/ejecutar `app/src/test/kotlin/lvluplife/application/SessionControllerTest.kt` y `app/src/androidTest/kotlin/lvluplife/ui/SessionNavigationTest.kt`; finalizar verdes: logout borra memoria y back stack, B no ve caché/pendientes A, sesión vencida suspende, B no envía A, volver A reanuda sin cambiar UUID y conserva estados Stale/Error/Empty correctos.
 
 
+- [ ] T085 Escribir y ejecutar pruebas de infraestructura común en `server/src/integrationTest/kotlin/lvluplife/persistence/OperationInfrastructureTest.kt`: recibos por UID/UUID, hash canónico, mismo UUID/contenido recupera resultado, contenido diferente se rechaza, rechazo funcional inmutable y fallo transitorio sin recibo definitivo. Cubrir commit atómico de escritura sintética/recibo/revisión, raíz inicialmente ausente, precondiciones concurrentes y fallo antes/después de commit; sin depender de Account, Cycle ni replay. Observar fallo antes de T086–T087.
+
+- [ ] T086 Implementar recibos/hash/idempotencia en `server/src/main/kotlin/lvluplife/persistence/OperationStore.kt`: recibo inmutable confirmado o rechazado funcional definitivo, clave por UID/UUID y sin TTL en MVP. Hacer verdes los casos de recibos de T085; no fijar resultado ante fallo transitorio. Esta infraestructura queda disponible antes del alta US1.
+
+- [ ] T087 Implementar la base transaccional en `server/src/main/kotlin/lvluplife/persistence/RevisionTransaction.kt`: leer recibo/raíz/precondiciones antes de escribir y confirmar atómicamente el cambio, recibo y revisión; admitir creación inicial de raíz y conflictos concurrentes sin depender de modelos de US1 ni del motor US2. Hacer verdes los casos atómicos de T085. US1 añade reserva de nombre/cuenta/ciclo y US2 extiende la base con snapshot/replay y validaciones de registros.
+
 ## Phase 3: US1 — Cuenta y personaje propios (P1)
 
 Objetivo: acceso Google, alta única y privacidad. Prueba independiente: cuentas nuevas/existentes, Martin/martin concurrentes, cancelación, denegación y acceso desde segundo dispositivo sin cargar actividades. RF-01–05, 52, 57; AC-01–05, 67–68, 70, 72, 90, 94–95, 119–120, 130–131.
@@ -56,7 +62,7 @@ Objetivo: acceso Google, alta única y privacidad. Prueba independiente: cuentas
 
 - [ ] T019 [US1] Crear cuenta y ciclo inicial en `domain/src/main/kotlin/lvluplife/model/Account.kt` y `Cycle.kt`: «UID Firebase único», «nombre `[A-Za-z0-9_]{1,15}`, clave ASCII lowercase», «Uno actual; comienza por alta o reinicio»; personaje Novato y seis atributos nivel 1/0 XP; closedAt opcional y rulesVersion según modelo.
 
-- [ ] T020 [US1] Implementar alta, reserva única y proyección inicial atómicas en `server/src/main/kotlin/lvluplife/application/CompleteProfile.kt` y `server/src/main/kotlin/lvluplife/persistence/AccountStore.kt`: conservar escritura visible del nombre, un personaje por UID; recibo inmutable, hash y revisión según modelo.
+- [ ] T020 [US1] Implementar alta, reserva única y proyección inicial atómicas en `server/src/main/kotlin/lvluplife/application/CompleteProfile.kt` y `server/src/main/kotlin/lvluplife/persistence/AccountStore.kt`: conservar escritura visible del nombre, un personaje por UID; reutilizar OperationStore y la base RevisionTransaction de T086–T087 para recibo inmutable, hash y revisión según modelo; añadir las precondiciones y la reserva de nombre del alta, sin duplicar infraestructura.
 
 - [ ] T021 [US1] Implementar GET /me y COMPLETE_PROFILE en `server/src/main/kotlin/lvluplife/api/AccountRoutes.kt`; cuenta existente recupera perfil, sin duplicar alta; hacer verdes contratos y carrera por nombre.
 
@@ -77,7 +83,7 @@ Objetivo: catálogo, carga, motor canónico y recuperación de creaciones. Prueb
 
 - [ ] T027 [P] [US2] Escribir y ejecutar pruebas de replay/orden estable y validación temporal en `domain/src/test/kotlin/lvluplife/progression/ReplayTest.kt`: AC-16–18, 85, 93, 96, 98, 102, 104–105, 124; incluir fecha abierta/cerrada, UTC−3 y ciclo explícito.
 
-- [ ] T028 [P] [US2] Escribir y ejecutar contratos /catalog, /progress, CREATE_RECORD y /operations/{operationId} en `server/src/integrationTest/kotlin/lvluplife/record/CreateRecordContractTest.kt`: XP del cliente rechazada, payload/ciclo/fecha/duración, respuesta perdida, concurrencia y recibo antiguo.
+- [ ] T028 [P] [US2] Escribir y ejecutar contratos /catalog, /progress, CREATE_RECORD y /operations/{operationId} en `server/src/integrationTest/kotlin/lvluplife/record/CreateRecordContractTest.kt`: XP del cliente rechazada, payload/ciclo/fecha/duración, respuesta perdida, concurrencia y recibo antiguo. Para /catalog comprobar las 11 actividades, los datos de las 26 clases y sus etapas válidas (76 combinaciones), sin exigir archivos de imagen ni referencias visuales resolubles antes de US5.
 
 - [ ] T029 [US2] Crear catálogo y registros en `domain/src/main/kotlin/lvluplife/model/ActivityCatalog.kt` y `ActivityRecord.kt`: 11 actividades exactas; «Identidad y creación no cambian al editar», durationMinutes requerido para duración y ausente para comida, definition resuelta por servidor, version y deletedAt opcional; verificar fixtures de catálogo y modalidades.
 - [ ] T030 [US2] Crear proyección en `domain/src/main/kotlin/lvluplife/model/Progression.kt`: «Derivada, jamás editable por cliente», seis atributos con nivel/XP/inactividad, revisión/fecha/ciclo, clase/etapa y contador general; comprobar construcción e invariantes en `domain/src/test/kotlin/lvluplife/model/ProgressionModelTest.kt`.
@@ -92,11 +98,11 @@ Objetivo: catálogo, carga, motor canónico y recuperación de creaciones. Prueb
 - [ ] T035 [US2] Implementar `domain/src/main/kotlin/lvluplife/progression/RecordValidation.kt`: «horas y minutos enteros no negativos, minutos 0–59 y total >0», «Suma de duración vigente por fecha/ciclo ≤1.440, también concurrente. Comidas no consumen minutos»; solo hoy/ayer/anteayer con tiempo explícito. Hacer verdes casos de validación de ReplayTest previamente rojos.
 - [ ] T036 [US2] Implementar `domain/src/main/kotlin/lvluplife/progression/ReplayEngine.kt`: «replay por fecha, creación e ID ordinal», tiempo/ciclo explícitos, actividades antes de penalizar fechas cerradas; hacer verdes ReplayTest y regresión completa del dominio tras validar registros.
 
-- [ ] T037 [US2] Implementar recibos/hash/idempotencia en `server/src/main/kotlin/lvluplife/persistence/OperationStore.kt`: «Inmutable; confirmado o rechazado funcional definitivo», «Idempotencia por cuenta y UUID. Sin TTL en MVP»; hash canónico, UUID con contenido distinto rechazado y fallo transitorio sin rechazo definitivo. Cerrar con casos de recibos de CreateRecordContractTest verdes.
-- [ ] T038 [US2] Implementar `server/src/main/kotlin/lvluplife/persistence/RevisionTransaction.kt`: snapshot raíz/registros/raíz, replay externo y commit corto que revisa recibo/revisión/ciclo/tiempo; toda mutación incrementa revisión, revalidar medianoche y orden createdAt final. Cerrar con concurrencia, revisión cambiada y cruce de medianoche de CreateRecordContractTest verdes.
+- [ ] T037 [US2] Integrar OperationStore de T086 con los comandos de registros: asociar ciclo y resultado de progresión, recuperar recibo antes de reevaluar tiempos y reutilizar hash/idempotencia sin una segunda implementación. Cerrar con casos de recibos de CreateRecordContractTest verdes y regresión de OperationInfrastructureTest.
+- [ ] T038 [US2] Extender la base de T087 en `server/src/main/kotlin/lvluplife/persistence/RevisionTransaction.kt` para registros: snapshot raíz/registros/raíz, replay externo y commit corto que revisa recibo/revisión/ciclo/tiempo; toda mutación incrementa revisión, revalidar medianoche y orden createdAt final. Cerrar con concurrencia, revisión cambiada y cruce de medianoche de CreateRecordContractTest verdes.
 
 - [ ] T039 [US2] Implementar creación en `server/src/main/kotlin/lvluplife/application/CreateRecord.kt` y `server/src/main/kotlin/lvluplife/api/RecordRoutes.kt`: registro/proyección/raíz/recibo atómicos, definición autoritativa, ciclo/tiempo vigentes y fallo transitorio sin rechazo definitivo; hacer verdes contratos CREATE_RECORD.
-- [ ] T040 [US2] Implementar consultas en `server/src/main/kotlin/lvluplife/application/ReadProgress.kt`, `server/src/main/kotlin/lvluplife/api/ProgressRoutes.kt` y `OperationRoutes.kt`: replay también sin registros nuevos, recibo propio autenticado, ausencia UNKNOWN y proyección antigua no reemplaza vigente; hacer verdes contratos /progress y /operations.
+- [ ] T040 [US2] Implementar consultas en `server/src/main/kotlin/lvluplife/application/ReadProgress.kt`, `server/src/main/kotlin/lvluplife/api/ProgressRoutes.kt` y `OperationRoutes.kt`, e implementar `server/src/main/kotlin/lvluplife/api/CatalogRoutes.kt`: /catalog devuelve las 11 actividades y los datos de las 26 clases con sus etapas válidas, sin exigir imágenes antes de US5; replay también sin registros nuevos, recibo propio autenticado, ausencia UNKNOWN y proyección antigua no reemplaza vigente; hacer verdes contratos /catalog (datos), /progress y /operations. Las referencias visuales resolubles se completan y validan en T064–T070.
 
 - [ ] T041 [P] [US2] Escribir y ejecutar pruebas de doble toque, pendientes tras cierre y borrador conservado en `app/src/androidTest/kotlin/lvluplife/ui/RecordFlowTest.kt`: RF-49, 51–56 y AC-112–113, 118–129; 401/403, UNKNOWN y recibo antiguo no reemplaza estado vigente.
 
@@ -115,7 +121,7 @@ Objetivo: crear y reutilizar definiciones propias. Prueba independiente: cuenta 
 
 - [ ] T047 [P] [US3] Escribir y ejecutar prueba de crear/recuperar/reutilizar y conservación de entradas en `app/src/androidTest/kotlin/lvluplife/ui/CustomActivityFlowTest.kt`.
 
-- [ ] T048 [US3] Crear `domain/src/main/kotlin/lvluplife/model/CustomActivity.kt` y validaciones: «Nombre trim 1–50, categoría no vacía, principal y secundario diferentes de STR/DEX/INT/WIT/MEN; sin CON», secondary opcional; aplicar matriz de compatibilidad exacta del spec. Hacer verdes pruebas dominio.
+- [ ] T048 [US3] Crear `domain/src/main/kotlin/lvluplife/model/CustomActivity.kt` y validaciones: «Nombre trim 1–50, categoría no vacía, principal y secundario pertenecientes a STR/DEX/INT/WIT/MEN y diferentes entre sí; sin CON», secondary opcional; aplicar matriz de compatibilidad exacta del spec. Hacer verdes pruebas dominio.
 
 - [ ] T049 [US3] Implementar persistencia por UID, revisión y recibo mediante infraestructura US2 en `server/src/main/kotlin/lvluplife/persistence/CustomActivityStore.kt` y `server/src/main/kotlin/lvluplife/application/CreateCustomActivity.kt`; conservar createdAt y solo crear/reutilizar, sin CRUD adicional.
 
@@ -161,7 +167,7 @@ Objetivo: explorar todas las clases y etapas, con apariencia actual coherente. P
 - [ ] T066 [US5] Preparar lote visual 1: Novato, Guerrero, Explorador, Guardián, Sabio, Monje, Místico, Maestro de Armas, Paladín, Guerrero Arcano, Luchador Monje, Guerrero Místico, Ágil Guardián. Entregar únicamente Etapa I de Novato y etapas I/II/III de las otras 12 clases del lote (37 recursos) en `app/src/main/res/drawable/`, mapeo en `app/src/main/kotlin/lvluplife/ui/ClassAppearance.kt` y origen/licencias en `app/src/main/assets/visual-assets.md`. Incluir inventario clase/etapa/archivo/ID/licencia y hoja de contacto; aceptar solo 37 referencias resolubles sin faltantes, placeholders ni recortes, etapas distinguibles y estilo coherente al tamaño de Home/catálogo. Revisar visualmente hoja y pantallas; lote 2 completa inventario de 76 sin duplicados.
 - [ ] T067 [US5] Preparar lote visual 2: Artífice, Ninja, Explorador de Sueños, Guardián de la Sabiduría, Monje Guardián, Druida, Ilusionista, Oráculo, Monje Espiritual, Aventurero Versátil, Maestro del Equilibrio, Héroe Ascendente, Héroe Integral. Entregar etapas I/II/III de cada clase (39 recursos) en `app/src/main/res/drawable/`, mapeo en `app/src/main/kotlin/lvluplife/ui/ClassAppearance.kt` y origen/licencias en `app/src/main/assets/visual-assets.md`. Incluir inventario clase/etapa/archivo/ID/licencia y hoja de contacto; aceptar solo 39 referencias resolubles sin faltantes, placeholders ni recortes, etapas distinguibles y estilo coherente al tamaño de Home/catálogo. Revisar visualmente hoja y pantallas; lote 2 completa inventario de 76 sin duplicados.
 
-- [ ] T068 [US5] Completar respuesta de catálogo visual en `server/src/main/kotlin/lvluplife/api/CatalogRoutes.kt`: 26 clases, Novato solo con Etapa I y las otras 25 con tres etapas; 76 IDs coherentes con recursos y sin entradas Novato II/III; hacer verde ClassCatalogContractTest, sin calcular fórmulas duplicadas.
+- [ ] T068 [US5] Completar respuesta de catálogo visual en `server/src/main/kotlin/lvluplife/api/CatalogRoutes.kt`: extender la ruta de datos creada en T040 sin duplicarla; 26 clases, Novato solo con Etapa I y las otras 25 con tres etapas; completar las referencias visuales con 76 IDs coherentes con recursos y sin entradas Novato II/III; hacer verde ClassCatalogContractTest, sin calcular fórmulas duplicadas.
 - [ ] T069 [US5] Implementar Compose en `app/src/main/kotlin/lvluplife/ui/ClassCatalogScreen.kt`: todas las clases desde inicio, Novato solo con Etapa I desbloqueada y sin entradas II/III, desbloqueos 1/15/35 para las otras 25 clases, sin selector de objetivo; hacer verde ClassCatalogFlowTest en 14/15/34/35.
 
 - [ ] T070 [US5] Integrar apariencia final del personaje en `app/src/main/kotlin/lvluplife/ui/HomeScreen.kt`; ejecutar pruebas catálogo/UI y registrar completitud de recursos y contraste en `specs/001-lvl-up-life-mvp/validation.md`.
@@ -214,7 +220,9 @@ Setup → Foundational → US1 → US2 ┬→ US3
 US1 + US2 + US3 + US4 + US5 + US6 → Polish
 ```
 
-US1 introduce cuenta/ciclo y US2 el motor y protocolo transaccional reutilizados. US3–US6 pueden probarse con cuentas, registros y actividades sintéticas: sus pruebas no dependen de ejecutar las pantallas de otras historias. US4 puede probar ciclos anteriores con fixtures antes de implementar US6. US6 puede probar preservación con actividades preparadas antes de US3. Los cambios en rutas compartidas se integran secuencialmente. Los dos lotes visuales se ejecutan en orden porque comparten mapeo e inventario; la respuesta de catálogo precede su pantalla. Validación de registros precede replay; recibos preceden protocolo transaccional; comandos preceden rutas y sus pantallas.
+Foundational entrega recibos/hash/idempotencia y la base de commit atómico con revisión (T085–T087), sin modelos de cuenta ni replay. US1 introduce cuenta/ciclo y reutiliza esa base. US2 añade el motor y extiende el protocolo para registros/replay; T037 integra recibos ya existentes y T038 extiende transacciones, sin duplicar infraestructura. US3–US6 pueden probarse con cuentas, registros y actividades sintéticas: sus pruebas no dependen de ejecutar las pantallas de otras historias. US4 puede probar ciclos anteriores con fixtures antes de implementar US6. US6 puede probar preservación con actividades preparadas antes de US3. Los cambios en rutas compartidas se integran secuencialmente. Los dos lotes visuales se ejecutan en orden porque comparten mapeo e inventario; la respuesta de catálogo precede su pantalla. Validación de registros precede replay; recibos preceden protocolo transaccional; comandos preceden rutas y sus pantallas.
+
+T085–T087 se ejecutan en Foundational antes de T017–T024 aunque sus IDs sean mayores: se conservan los IDs existentes para mantener trazabilidad. T028 prueba los datos del catálogo y T040 implementa su ruta antes del cierre US2. T064–T070 completan y validan referencias/imágenes en US5; las suites de US2 no exigen estos archivos.
 
 Dentro de cada fase, seguir el orden listado salvo los grupos [P]: las pruebas [P] al inicio comparten solo fases anteriores. Una implementación nunca se ejecuta en paralelo con su prueba roja pendiente. US2 tiene una segunda tarea de prueba Android después de la infraestructura de carga del servidor; debe fallar antes de implementar sus pantallas. Todas las tareas de cierre dependen de implementación y pruebas de su historia.
 
@@ -255,7 +263,7 @@ Los AC numéricos se toman íntegros del spec, no se reescriben fórmulas en est
 
 ## Correspondencia de tareas revisadas
 
-IDs anteriores corresponden a la versión de 69 tareas; usar únicamente los IDs nuevos para ejecución. Las 42 tareas restantes conservan alcance.
+IDs anteriores corresponden a la versión de 69 tareas; usar únicamente los IDs nuevos para ejecución. La tabla conserva la correspondencia histórica; T037–T038 ahora integran/extienden infraestructura adelantada a Foundational. Se añaden T085–T087 sin renumerar los IDs existentes.
 
 | ID anterior | IDs nuevos | Ajuste |
 |---|---|---|

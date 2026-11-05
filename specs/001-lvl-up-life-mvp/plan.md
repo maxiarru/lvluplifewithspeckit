@@ -41,7 +41,7 @@ Evaluación previa a investigación: los ocho principios son aplicables; ninguna
 | V Simplicidad | Conforme | Tres módulos justificados por límites Android/JVM, un servicio, sin event bus ni microservicios. |
 | VI Persistencia | Conforme | Revisión por cuenta y commit atómico de registro/proyección/recibo; reintento recupera resultado. |
 | VII Validación y errores | Conforme | Esquemas estrictos, reloj autoritativo, estados definidos y pruebas negativas planificadas. |
-| VIII Especificaciones | Conforme | Trazabilidad abajo; diseño alineado con la aclaración de RF-49/RF-55 y AC-117, sin traslado de pendientes entre dispositivos; tareas se generan en otra fase. |
+| VIII Especificaciones | Conforme | Trazabilidad abajo; diseño alineado con la aclaración de RF-49/RF-55 y AC-117, sin traslado de pendientes entre dispositivos; tareas disponibles en `tasks.md` y ajustadas con dependencias explícitas. |
 
 Este control evalúa el diseño, no el software. Las 36 casillas de `checklists/integridad.md` permanecen sin modificar por instrucción del usuario; no se usa su estado como evidencia de una revisión aprobada. Antes de implementar, resolver su evaluación conforme al flujo de implementación. No hay violaciones constitucionales justificadas ni enmiendas en este plan.
 
@@ -52,6 +52,7 @@ Este control evalúa el diseño, no el software. Las 36 casillas de `checklists/
 ```text
 specs/001-lvl-up-life-mvp/
 ├── spec.md
+├── tasks.md
 ├── plan.md
 ├── research.md
 ├── data-model.md
@@ -62,7 +63,7 @@ specs/001-lvl-up-life-mvp/
 └── checklists/
 ```
 
-`tasks.md` se generará con `$speckit-tasks`; esta fase no lo crea.
+`tasks.md` ya está generado. Sus IDs son estables; seguir el orden de las fases, incluidas T085–T087 en Foundational antes de US1.
 
 ### Source Code (repository root, estructura propuesta)
 
@@ -115,7 +116,9 @@ Detalles de invariantes, validación y transiciones: [data-model.md](data-model.
 | Recuperación y sesión | RF-49, 51–57 | Recibos, Room por UID y recuperación desde la instalación que conserva el pendiente; acceso a datos guardados desde otro dispositivo sin trasladar pendientes; fallos inyectados; AC-112–113, 116–131. |
 | Calidad transversal | RNF-01–13, SC-001–013 | Suites de seguridad, consistencia, accesibilidad y ensayos orientativos del PRD. |
 
-Orden: bootstrap y arnés de pruebas; dominio mediante TDD; servidor y persistencia con integración; Android por historias priorizadas; recuperación/concurrencia y calidad transversal. Las pruebas críticas deben preceder cada implementación, no constituir una fase final separada.
+Orden: bootstrap y arnés de pruebas; infraestructura común de recibos/hash/idempotencia y commit atómico con revisión (T085–T087) antes de US1; alta reutilizando esa base; dominio mediante TDD y extensión transaccional con replay en US2; Android por historias priorizadas; recuperación/concurrencia y calidad transversal.
+
+El catálogo se entrega por incrementos: US2 implementa `/catalog` con las 11 actividades y los datos de las 26 clases y sus etapas válidas. Sus pruebas no requieren archivos de imagen. US5 completa las referencias visuales y valida las 76 imágenes; los recursos temporales de desarrollo no acreditan entrega visual final. Las pruebas críticas deben preceder cada implementación, no constituir una fase final separada.
 
 ### Validación y riesgos
 

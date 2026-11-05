@@ -3,8 +3,8 @@
 **Purpose**: Revisar claridad, completitud, consistencia y cobertura de los requisitos de progresión, persistencia, seguridad y manejo de errores.
 **Created**: 2026-11-05
 **Feature**: [Especificación del MVP](../spec.md)
-**Profundidad y destinatario**: Estándar, para el autor y revisor de requisitos antes de elaborar el plan.
-**Contexto**: Spec con las tres aclaraciones aceptadas y constitución vigente. Todavía no existen plan.md ni tasks.md.
+**Profundidad y destinatario**: Estándar, para el autor y revisor de requisitos antes de implementar, con plan y tareas disponibles.
+**Contexto**: Especificación con las aclaraciones aceptadas y constitución vigente; plan.md y tasks.md disponibles. La revisión sigue pendiente; este contexto no constituye aprobación de los ítems.
 
 **Note**: Checklist personalizado generado mediante `$speckit-checklist`.
 **Review Ownership**: La evaluación pertenece al revisor. Marcar `[x]` solo cuando determine que el criterio de calidad de requisitos está satisfecho.
