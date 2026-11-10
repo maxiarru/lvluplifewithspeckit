@@ -16,7 +16,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["notAnnotation"] = "lvluplife.data.ProcessStage"
     }
-    buildFeatures { compose = true }
+    buildFeatures { compose = true; buildConfig = true }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -29,8 +29,11 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.activity.compose)
     implementation(libs.room.runtime)
+    implementation(libs.okhttp)
+    implementation(libs.jackson.databind)
     ksp(libs.room.compiler)
     testImplementation(libs.junit)
+    testImplementation(libs.mockwebserver)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.junit)
 }
