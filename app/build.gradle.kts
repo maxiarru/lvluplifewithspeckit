@@ -31,11 +31,14 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.okhttp)
     implementation(libs.jackson.databind)
+    implementation(libs.coroutines.core)
     ksp(libs.room.compiler)
     testImplementation(libs.junit)
     testImplementation(libs.mockwebserver)
     androidTestImplementation(libs.androidx.test.runner)
     androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(platform(libs.compose.bom))
+    androidTestImplementation(libs.compose.ui.test)
 }
 
 tasks.withType<Test>().configureEach {

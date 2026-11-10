@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 
 class MainActivity : ComponentActivity() {
+    val sessionController = lvluplife.application.SessionController()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme { Text("Lvl Up Life") }
+            MaterialTheme { lvluplife.ui.SessionHost(sessionController) }
         }
     }
 }

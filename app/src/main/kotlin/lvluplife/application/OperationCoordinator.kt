@@ -22,7 +22,7 @@ class OperationCoordinator(
     private val online: () -> Boolean,
     private val clock: Clock = Clock.systemUTC(),
     private val newId: () -> String = { UUID.randomUUID().toString() },
-) {
+) : SessionOperations {
     private val preparationLock = Any()
     private val networkLock = Any()
     private val memoryLock = Any()
@@ -85,7 +85,7 @@ class OperationCoordinator(
         else resolve(row, resendAbsent = true, generation = epoch.get())
     }
 
-    fun recover(): List<OperationSnapshot> = synchronized(networkLock) {
+    override fun recover(): List<OperationSnapshot> = synchronized(networkLock) {
         val uid = currentUid() ?: return@synchronized emptyList()
         val pending = local { store.pendingFor(uid) }
         if (uid in authSuspended || pending.any { it.safeError == ApiFailureCode.AUTH_REQUIRED.name }) {
@@ -111,8 +111,14 @@ class OperationCoordinator(
         results
     }
 
+    /** Reports suspension without sending HTTP or clearing durable evidence. */
+    override fun requiresAuthentication(uid: String): Boolean {
+        if (currentUid() != uid) return true
+        return uid in authSuspended || local { store.pendingFor(uid) }.any { it.safeError == ApiFailureCode.AUTH_REQUIRED.name }
+    }
+
     /** Called only after the original account has obtained a fresh valid session. No HTTP is sent here. */
-    fun resumeAuthenticated(uid: String) {
+    override fun resumeAuthenticated(uid: String) {
         requireOwner(uid, allowSuspended = true)
         local { store.pendingFor(uid) }.filter { it.safeError == ApiFailureCode.AUTH_REQUIRED.name }.forEach {
             local { store.updateState(uid, it.operationId, it.state, null) }
@@ -121,7 +127,7 @@ class OperationCoordinator(
     }
 
     /** Nonblocking on logout, including while a request is in flight. Does not delete durable pending data. */
-    fun clearSessionMemory() = synchronized(memoryLock) {
+    override fun clearSessionMemory() = synchronized(memoryLock) {
         epoch.incrementAndGet()
         intents.clear()
         completed.clear()
