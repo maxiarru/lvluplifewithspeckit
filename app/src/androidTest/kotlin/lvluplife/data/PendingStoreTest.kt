@@ -45,6 +45,24 @@ class PendingStoreTest {
         assertTrue(store.pendingFor("another-account").isEmpty())
     }
 
+    @Test fun safeSuspensionCodeSurvivesReopeningAndCannotBeReplacedWithSecrets() {
+        val name = "test-${UUID.randomUUID()}.db"
+        try {
+            PendingDatabase.open(context, name).use {
+                it.prepare(operation())
+                it.updateState(A, OPERATION, PendingState.UNKNOWN, "AUTH_REQUIRED")
+            }
+            PendingDatabase.open(context, name).use {
+                assertEquals(operation().copy(state = PendingState.UNKNOWN, safeError = "AUTH_REQUIRED"), it.pendingFor(A).single())
+                assertThrows(IllegalArgumentException::class.java) {
+                    it.updateState(A, OPERATION, PendingState.RESOLVING, "Bearer synthetic-secret")
+                }
+                assertEquals("AUTH_REQUIRED", it.pendingFor(A).single().safeError)
+                assertEquals(PendingState.UNKNOWN, it.pendingFor(A).single().state)
+            }
+        } finally { context.deleteDatabase(name) }
+    }
+
     @Test fun absentReceiptKeepsUnknownAndCannotRemovePending() = withStore { store ->
         store.prepare(operation(state = PendingState.UNKNOWN))
         store.resolveAbsent(A, OPERATION)

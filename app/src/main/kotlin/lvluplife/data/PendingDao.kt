@@ -17,8 +17,8 @@ abstract class PendingDao {
     @Query("SELECT * FROM pending_operations WHERE uid = :uid ORDER BY createdAtEpochMillis, operationId")
     abstract fun pendingFor(uid: String): List<PendingOperation>
 
-    @Query("UPDATE pending_operations SET state = :state WHERE uid = :uid AND operationId = :operationId")
-    protected abstract fun writeState(uid: String, operationId: String, state: PendingState)
+    @Query("UPDATE pending_operations SET state = :state, safeError = :safeError WHERE uid = :uid AND operationId = :operationId")
+    protected abstract fun writeState(uid: String, operationId: String, state: PendingState, safeError: String?)
 
     @Query("DELETE FROM pending_operations WHERE uid = :uid AND operationId = :operationId AND state IN ('CONFIRMED', 'REJECTED')")
     protected abstract fun deleteDefinitive(uid: String, operationId: String): Int
@@ -39,17 +39,17 @@ abstract class PendingDao {
     }
 
     @Transaction
-    open fun updateState(uid: String, operationId: String, state: PendingState) {
+    open fun updateState(uid: String, operationId: String, state: PendingState, safeError: String? = null) {
         val original = checkNotNull(find(uid, operationId)) { "Pending operation not found" }
         check(!original.state.isDefinitive || state == original.state) { "Definitive outcome is immutable" }
-        writeState(uid, operationId, state)
+        writeState(uid, operationId, state, safeError)
     }
 
     @Transaction
     open fun resolveAbsent(uid: String, operationId: String) {
         val original = find(uid, operationId) ?: return
         if (original.state in setOf(PendingState.SENDING, PendingState.UNKNOWN, PendingState.RESOLVING)) {
-            writeState(uid, operationId, PendingState.UNKNOWN)
+            writeState(uid, operationId, PendingState.UNKNOWN, original.safeError)
         }
     }
 

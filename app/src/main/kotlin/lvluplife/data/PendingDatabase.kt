@@ -32,7 +32,7 @@ data class Draft(val uid: String, val content: String)
 interface PendingStore : Closeable {
     fun prepare(operation: PendingOperation)
     fun pendingFor(uid: String): List<PendingOperation>
-    fun updateState(uid: String, operationId: String, state: PendingState)
+    fun updateState(uid: String, operationId: String, state: PendingState, safeError: String? = null)
     fun resolveAbsent(uid: String, operationId: String)
     fun removeDefinitive(uid: String, operationId: String)
     fun saveDraft(draft: Draft)
@@ -72,7 +72,10 @@ private class RoomPendingStore(private val database: PendingRoomDatabase) : Pend
         PendingContent.validateUid(uid)
         return dao.pendingFor(uid)
     }
-    override fun updateState(uid: String, operationId: String, state: PendingState) = dao.updateState(uid, operationId, state)
+    override fun updateState(uid: String, operationId: String, state: PendingState, safeError: String?) {
+        PendingContent.validateError(safeError)
+        dao.updateState(uid, operationId, state, safeError)
+    }
     override fun resolveAbsent(uid: String, operationId: String) = dao.resolveAbsent(uid, operationId)
     override fun removeDefinitive(uid: String, operationId: String) = dao.removeDefinitive(uid, operationId)
     override fun saveDraft(draft: Draft) {
@@ -97,6 +100,10 @@ private object PendingContent {
 
     fun validateUid(uid: String) {
         require(uid.isNotBlank() && uid.length <= 128 && '/' !in uid && uid.none(Char::isISOControl)) { "Invalid pending owner" }
+    }
+
+    fun validateError(error: String?) {
+        require(error == null || error in errorCodes) { "Invalid pending diagnostic code" }
     }
 
     fun validate(operation: PendingOperation) {
