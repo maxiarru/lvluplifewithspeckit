@@ -71,6 +71,56 @@ class PendingStoreTest {
         }
         assertEquals(listOf(original), store.pendingFor(A))
     }
+
+    @Test fun credentialsAndUnsafeErrorsAreRejectedBeforeWriting() = withStore { store ->
+        for (envelope in listOf("""{"authorization":"Bearer synthetic-secret"}""",
+            """{"payload":{"refresh_token":"synthetic-secret"}}""")) {
+            assertThrows(IllegalArgumentException::class.java) { store.prepare(operation().copy(envelope = envelope)) }
+            assertTrue(store.pendingFor(A).isEmpty())
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            store.prepare(operation().copy(safeError = "Bearer synthetic-secret"))
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            store.saveDraft(Draft(A, """{"idToken":"synthetic-secret"}"""))
+        }
+        assertNull(store.draftFor(A))
+    }
+
+    @Test fun definitiveStateCannotBeOverwrittenByOldRetryOrAbsentReceipt() = withStore { store ->
+        store.prepare(operation())
+        store.updateState(A, OPERATION, PendingState.CONFIRMED)
+        store.prepare(operation())
+        store.resolveAbsent(A, OPERATION)
+        assertEquals(PendingState.CONFIRMED, store.pendingFor(A).single().state)
+        assertThrows(IllegalStateException::class.java) { store.updateState(A, OPERATION, PendingState.UNKNOWN) }
+        assertEquals(PendingState.CONFIRMED, store.pendingFor(A).single().state)
+    }
+
+    @Test fun concurrentStoresCannotReplaceTheSameOperation() {
+        val name = "test-${UUID.randomUUID()}.db"
+        val pool = java.util.concurrent.Executors.newFixedThreadPool(2)
+        try {
+            PendingDatabase.open(context, name).use { first ->
+                PendingDatabase.open(context, name).use { second ->
+                    val start = java.util.concurrent.CountDownLatch(1)
+                    val stores = listOf(first, second)
+                    val candidates = listOf(operation(), operation().copy(envelope = """{"activityId":"another"}""", requestHash = "different-hash"))
+                    val results = stores.zip(candidates).map { (store, candidate) ->
+                        pool.submit<Boolean> {
+                            start.await()
+                            try { store.prepare(candidate); true } catch (_: IllegalArgumentException) { false }
+                        }
+                    }
+                    start.countDown()
+                    assertEquals(1, results.count { it.get(10, java.util.concurrent.TimeUnit.SECONDS) })
+                    val saved = first.pendingFor(A).single()
+                    assertTrue(saved in candidates)
+                    assertEquals(listOf(saved), second.pendingFor(A))
+                }
+            }
+        } finally { pool.shutdownNow(); context.deleteDatabase(name) }
+    }
 }
 
 @Target(AnnotationTarget.FUNCTION)
