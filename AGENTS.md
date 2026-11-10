@@ -18,3 +18,9 @@ Desde la raíz del proyecto, en PowerShell:
 - No permitir asignar XP manualmente ni superar los topes diarios por atributo.
 - No exponer atributos, actividades ni historial de otras cuentas.
 - No reiniciar la progresión sin confirmación explícita ni borrar la cuenta, el nombre de usuario, las actividades personalizadas o el historial al reiniciar.
+
+## Flujo de tareas y commits
+- Trabajar una tarea T a la vez; no iniciar la siguiente antes de cerrar la revisión de la actual.
+- Al finalizar cada T, informar cambios y resultados de sus verificaciones, y esperar la decisión del usuario sobre el commit antes de continuar.
+- Crear un commit individual por cada T autorizada, con Conventional Commits en español; no agrupar varias T en un mismo commit.
+- No incluir cambios de otras tareas en el commit de la T actual. No hacer push.
