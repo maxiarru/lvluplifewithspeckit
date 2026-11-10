@@ -125,3 +125,22 @@ Para reanudar T001: proporcionar acceso de descarga a Gradle y repositorios de d
 - Cubre autenticación requerida, proveedor simulado inválido/vencido/revocado/deshabilitado, campos prohibidos/desconocidos/XP, propietario ajeno, JSON malformado, cuerpo excesivo y errores seguros sin secretos. Verificación Firebase real y revocación del adaptador todavía pendientes de T010.
 - serverModule es solo un punto de composición sin rutas/adaptadores; permitió ejecutar el rojo antes de implementarlos. T007 acredita escritura y ejecución roja, no seguridad funcional verde; T010–T011 deben hacerla pasar antes de cerrar el bloque Foundational.
 - T009 pide ejecutar todas las pruebas servidor antes de T010–T011, pero estas pruebas deben seguir rojas hasta esos adaptadores. Se ejecutarán primero los tests específicos de tipos/puertos; T009 no se considerará cerrada hasta lograr la regresión completa tras T011. Se conserva el orden de implementación y no se omiten pruebas.
+
+## Corte de revisión por tarea — 2026-11-10
+
+- Por indicación del usuario, a partir de este punto se detiene el avance al finalizar cada T y se espera su decisión sobre hacer commit antes de continuar. No hay commits posteriores a ba839bc (T005).
+- T007 tiene rojo observado y permanece pendiente de revisión/commit del usuario. T008 y T009 se habían empezado antes de esa indicación y sus cambios quedan sin commit.
+- T008: build de instrumentación llegó a connectedDebugAndroidTest en el AVD API30, sin informe confirmado. Se detuvo el daemon Gradle exclusivo del proyecto para respetar el corte; no se acredita ejecución roja de los casos ni cierre de proceso y T008 sigue sin marcar.
+- T009: comando enfocado `:domain:test :server:test --tests lvluplife.application.PortsTest --write-locks --no-daemon` APROBADO en1m47s. Tipos/puertos implementados en el working tree, sin cierre de tarea: faltan inspección de dependencias y suite completa verde tras T010–T011. Log `.tooling/t009-focused.log`.
+- No existe .specify/extensions.yml al revisar el cierre de esta ejecución parcial; sin hooks posteriores registrados. MVP y Foundational NO completados.
+
+## TDD — 2026-11-10: T008 ROJO observado al reanudar
+
+- Prerrequisitos y checklists nuevamente PASS (integridad36/36, requirements16/16), sin modificar sus marcas. Sin extensions.yml.
+- Tras el corte anterior, el informe UTP indicaba aborto externo y cero tests: no se contó como rojo. Se instalaron los APK ya compilados mediante adb install -r -t y se ejecutó instrumentación directamente en Pixel_6a_API_30/API30, emulator-5554.
+- `adb shell am instrument -w -r -e class lvluplife.data.PendingStoreTest lvluplife.android.test/androidx.test.runner.AndroidJUnitRunner`: 5 pruebas ejecutadas, 5 fallos por IllegalStateException: Pending persistence is not implemented. Evidencia `.tooling/t008-direct-red.log`.
+- Se ejecutaron individualmente PendingStoreProcessStages#persistBeforeProcessDeath y #recoverAfterProcessDeath con `adb shell am force-stop lvluplife.android` entre ambas: 1 prueba/1 fallo por etapa, misma ausencia de implementación. Logs `.tooling/t008-process-before-red.log` y `.tooling/t008-process-after-red.log`. No se acredita aún recuperación efectiva de datos tras matar el proceso.
+- Casos: persistencia previa al transporte, reapertura, clave(uid,operationId), borradores y sesiones A/B, UNKNOWN ante recibo ausente, conservación del sobre y eliminación solo definitiva. La fábrica de producción contiene únicamente un contrato/stub fallante; Room no implementado hasta T013.
+- scripts/test-pending-process.ps1 ejecutará ambas etapas con force-stop y exigirá OK de cada etapa al cerrar T013. Las pruebas de estado no sustituyen los tests futuros del coordinador de envíos de T015.
+- T008 marcada por escritura y ejecución roja de sus pruebas, no por persistencia implementada ni pruebas verdes. El usuario autorizó en este turno los commits pendientes por separado; no se hizo push.
+- `gradlew.bat :app:assembleDebugAndroidTest --write-locks --no-daemon`: APROBADO en40s, 50 tareas al día; lockfile de instrumentación actualizado. Log `.tooling/t008-test-build.log`.

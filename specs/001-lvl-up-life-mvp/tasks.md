@@ -29,7 +29,7 @@ Objetivo: infraestructura común verificable, sin fórmulas de progresión antic
 
 - [X] T007 [P] Escribir y ejecutar pruebas de autenticación, esquema estricto, ausencia de secretos, UID ajeno y errores HTTP de `contracts/api.md` en `server/src/test/kotlin/lvluplife/api/TrustBoundaryTest.kt`; comprobar fallo antes de los adaptadores.
 
-- [ ] T008 [P] Escribir y ejecutar pruebas de persistencia antes de envío, cierre de proceso, filtros por UID y sesiones A/B en `app/src/androidTest/kotlin/lvluplife/data/PendingStoreTest.kt`; incluir recibo ausente que mantiene Unknown.
+- [X] T008 [P] Escribir y ejecutar pruebas de persistencia antes de envío, cierre de proceso, filtros por UID y sesiones A/B en `app/src/androidTest/kotlin/lvluplife/data/PendingStoreTest.kt`; incluir recibo ausente que mantiene Unknown.
 
 - [ ] T009 Crear contratos y tipos compartidos en `domain/src/main/kotlin/lvluplife/model/Identity.kt` y `server/src/main/kotlin/lvluplife/application/Ports.kt`: UID, revisión, UUID, reloj explícito, puertos persistencia; sin dependencias externas en dominio. Finalizar con `domain/src/test/kotlin/lvluplife/model/IdentityTest.kt` verde para UID/UUID/revisión y fake que implemente Ports en `server/src/test/kotlin/lvluplife/application/PortsTest.kt`; ejecutar :domain:test y :server:test. Inspeccionar :domain:dependencies --configuration runtimeClasspath: solo stdlib/plataforma, sin Android/Compose/Firebase/Ktor ni dependencia de app/server.
 

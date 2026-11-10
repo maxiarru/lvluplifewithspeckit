@@ -13,6 +13,7 @@ android {
         versionCode = 1
         versionName = "0.1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["notAnnotation"] = "lvluplife.data.ProcessStage"
     }
     buildFeatures { compose = true }
     compileOptions {
@@ -26,6 +27,8 @@ dependencies {
     implementation(libs.compose.material3)
     implementation(libs.activity.compose)
     testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.test.junit)
 }
 
 tasks.withType<Test>().configureEach {
