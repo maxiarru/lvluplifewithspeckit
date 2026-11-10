@@ -13,6 +13,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
+    implementation(libs.firebase.admin)
     testImplementation(kotlin("test-junit"))
     testImplementation(libs.ktor.server.test.host)
     add(integrationTest.implementationConfigurationName, sourceSets.main.get().output)
