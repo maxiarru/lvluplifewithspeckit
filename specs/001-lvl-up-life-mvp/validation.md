@@ -109,3 +109,12 @@ Para reanudar T001: proporcionar acceso de descarga a Gradle y repositorios de d
 - Backup deshabilitado y recursos legacy/API31+ excluyen toda la carpeta database (base y sidecars), tanto cloud-backup como device-transfer. Prueba verifica referencias efectivas y exclusiones de ambas variantes.
 - Durante el trabajo aparecieron 76 imágenes aportadas en drawable con nombres no válidos para Android. Primer build falló en packageDebugResources; se normalizaron mayúsculas/espacios/tildes a nombres Android, sin modificar contenido ni sobrescribir archivos. Se comprobó ausencia de colisiones y destino dentro de drawable. Mapeo original/nuevo local: `.tooling/t004-resource-renames.json`.
 - Las imágenes compilan, pero NO se acredita todavía correspondencia semántica clase/etapa ni calidad visual US5 (T064–T070 siguen pendientes). En particular, los nombres originales incluyen orcaculo y Guerrero monje III; su asignación final debe revisarse con el inventario US5.
+
+## Implementación — 2026-11-10: T005
+
+- `gradlew.bat :domain:test --tests lvluplife.fixtures.ClockFixtureTest :server:integrationTest --tests lvluplife.fixtures.FaultFixtureTest :server:jar :domain:jar --write-locks --no-daemon`: APROBADO en50s. Reloj: 2 pruebas; fallos: 3 pruebas; sin fallos/errores/omitidas. Log `.tooling/t005-fixtures.log`, XML en domain/build/test-results/test y server/build/test-results/integrationTest.
+- Reloj avanza reproduciblemente por299/300s, zona explícita conserva instante y rechaza retroceso. Cuentas A/B sintéticas distintas.
+- Simulador de límite de commit: fallo anterior no persiste; posterior conserva valor aunque pierda respuesta; caso normal conserva aislamiento entre fixtures. No sustituye las pruebas posteriores de transacciones Firestore.
+- Inspección de entradas ZIP de domain.jar y server.jar: ninguna referencia a fixtures/MutableClock/FaultPoint/TestEnvironment. rg en los tres source sets main no encontró estos controles. Solo existen en test/integrationTest, sin rutas ni configuración pública de reloj/fallos.
+- Setup T001–T005 completado. T006 ya estaba aprobada documentalmente; ninguna regla crítica de progresión implementada todavía.
+- Commit local previo: 8daa992, bloque verificado T001–T004. Sin push.
