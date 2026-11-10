@@ -3,12 +3,9 @@ package lvluplife.api
 import com.google.firebase.auth.AuthErrorCode
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
-import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.*
 import io.ktor.server.request.path
-import io.ktor.server.response.respondText
 import io.ktor.util.AttributeKey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -58,7 +55,7 @@ internal fun Application.installIdentityGuard(verifyToken: (String) -> String?) 
         val header = call.request.headers.getAll(HttpHeaders.Authorization)?.singleOrNull()
         val token = header?.let { bearer.matchEntire(it)?.groupValues?.get(1) }
         if (token == null) {
-            call.authenticationError(HttpStatusCode.Unauthorized, "AUTH_REQUIRED")
+            call.respondApiError(ApiError.AUTH_REQUIRED)
             finish()
             return@intercept
         }
@@ -68,28 +65,19 @@ internal fun Application.installIdentityGuard(verifyToken: (String) -> String?) 
         } catch (cancelled: CancellationException) {
             throw cancelled
         } catch (_: SecurityException) {
-            call.authenticationError(HttpStatusCode.Forbidden, "FORBIDDEN")
+            call.respondApiError(ApiError.FORBIDDEN)
             finish()
             return@intercept
         } catch (_: Exception) {
-            call.authenticationError(HttpStatusCode.ServiceUnavailable, "TEMPORARILY_UNAVAILABLE")
+            call.respondApiError(ApiError.TEMPORARILY_UNAVAILABLE)
             finish()
             return@intercept
         }
         if (uid == null) {
-            call.authenticationError(HttpStatusCode.Unauthorized, "AUTH_REQUIRED")
+            call.respondApiError(ApiError.AUTH_REQUIRED)
             finish()
             return@intercept
         }
         call.attributes.put(verifiedUidKey, uid)
     }
-}
-
-private suspend fun ApplicationCall.authenticationError(status: HttpStatusCode, code: String) {
-    val message = when (code) {
-        "AUTH_REQUIRED" -> "Se requiere una sesión válida."
-        "FORBIDDEN" -> "Acceso denegado."
-        else -> "No se pudo verificar la sesión. Intentá nuevamente."
-    }
-    respondText("""{"error":{"code":"$code","message":"$message"}}""", ContentType.Application.Json, status)
 }
