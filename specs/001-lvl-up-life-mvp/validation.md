@@ -144,3 +144,12 @@ Para reanudar T001: proporcionar acceso de descarga a Gradle y repositorios de d
 - scripts/test-pending-process.ps1 ejecutará ambas etapas con force-stop y exigirá OK de cada etapa al cerrar T013. Las pruebas de estado no sustituyen los tests futuros del coordinador de envíos de T015.
 - T008 marcada por escritura y ejecución roja de sus pruebas, no por persistencia implementada ni pruebas verdes. El usuario autorizó en este turno los commits pendientes por separado; no se hizo push.
 - `gradlew.bat :app:assembleDebugAndroidTest --write-locks --no-daemon`: APROBADO en40s, 50 tareas al día; lockfile de instrumentación actualizado. Log `.tooling/t008-test-build.log`.
+
+## Implementación — 2026-11-10: T009
+
+- Tipos UID/UUID/revisión y puertos de reloj, identidad y persistencia implementados. IdentityTest: 3 pruebas verdes; PortsTest: 2 verdes, fake sin Firebase con separación por UID. Los 2 tests de reloj anteriores permanecen verdes.
+- Ejecución enfocada previa APROBADA: `:domain:test :server:test --tests lvluplife.application.PortsTest --write-locks --no-daemon` (1m47s).
+- `gradlew.bat :domain:dependencies --configuration runtimeClasspath :domain:test :server:test --continue --write-locks --no-daemon`: ejecutado. Reporte de dominio: únicamente kotlin-stdlib2.4.20 y annotations13.0, sin Android/Compose/Firebase/Ktor ni app/server. Log `.tooling/t009-regression.log`.
+- Resultado global de la ejecución: FALLIDO por las mismas 7 pruebas rojas de TrustBoundaryTest creadas en T007; PortsTest pasó (2/2), dominio sin fallos. No hay fallos nuevos de tipos/puertos. Esta ejecución NO acredita suite completa del servidor verde.
+- Aclaración de la interpretación anterior: T009 exige IdentityTest/PortsTest verdes, ejecutar las suites e inspeccionar dependencias. Esos criterios de su alcance están satisfechos; las pruebas rojas de adaptadores de T007 se cierran expresamente en T010–T011. T009 se marca completada por tipos/puertos, sin declarar completo Foundational ni modificar las exigencias de seguridad pendientes.
+- Commits de reanudación: fb662e8 (regla de trabajo), c6d9df8 (T007), 333bce4 (T008). El usuario autorizó estos commits y el avance posterior en este turno; sin push.
