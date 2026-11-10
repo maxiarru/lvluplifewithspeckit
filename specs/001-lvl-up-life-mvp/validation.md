@@ -118,3 +118,10 @@ Para reanudar T001: proporcionar acceso de descarga a Gradle y repositorios de d
 - Inspección de entradas ZIP de domain.jar y server.jar: ninguna referencia a fixtures/MutableClock/FaultPoint/TestEnvironment. rg en los tres source sets main no encontró estos controles. Solo existen en test/integrationTest, sin rutas ni configuración pública de reloj/fallos.
 - Setup T001–T005 completado. T006 ya estaba aprobada documentalmente; ninguna regla crítica de progresión implementada todavía.
 - Commit local previo: 8daa992, bloque verificado T001–T004. Sin push.
+
+## TDD — 2026-11-10: T007 ROJO observado
+
+- `gradlew.bat :server:test --tests lvluplife.api.TrustBoundaryTest --write-locks --no-daemon`: ejecutó 7 pruebas, las 7 FALLARON por comportamiento ausente (404 frente a401/400/403/413/503 esperados). Compilación exitosa: no se confunde error de compilación con prueba roja. Log `.tooling/t007-red.log`, XML server/build/test-results/test/TEST-lvluplife.api.TrustBoundaryTest.xml.
+- Cubre autenticación requerida, proveedor simulado inválido/vencido/revocado/deshabilitado, campos prohibidos/desconocidos/XP, propietario ajeno, JSON malformado, cuerpo excesivo y errores seguros sin secretos. Verificación Firebase real y revocación del adaptador todavía pendientes de T010.
+- serverModule es solo un punto de composición sin rutas/adaptadores; permitió ejecutar el rojo antes de implementarlos. T007 acredita escritura y ejecución roja, no seguridad funcional verde; T010–T011 deben hacerla pasar antes de cerrar el bloque Foundational.
+- T009 pide ejecutar todas las pruebas servidor antes de T010–T011, pero estas pruebas deben seguir rojas hasta esos adaptadores. Se ejecutarán primero los tests específicos de tipos/puertos; T009 no se considerará cerrada hasta lograr la regresión completa tras T011. Se conserva el orden de implementación y no se omiten pruebas.
