@@ -55,3 +55,57 @@ Resultado: **36 aprobados, 0 pendientes, 0 bloqueados**. La aprobación acredita
 - T084 permanece pendiente: esta tabla cubre CHK001–CHK036 y no sustituye la matriz futura RF-01–57, RNF-01–13 y AC-01–131 con evidencia de ejecución.
 - Las tareas de implementación, incluido T082 y su validación de builds/tests, conservan sus estados pendientes. Esta revisión no autoriza despliegues ni crea infraestructura remota.
 - El checklist requirements.md mantiene su ciclo separado; no se modificó durante esta evaluación.
+
+## Intento de implementación — 2026-11-05
+
+Estado: bloqueado en T001, sin completar Setup ni avanzar a tareas dependientes.
+
+- Prerrequisitos: `.specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks` terminó con código 0 y seleccionó `specs/001-lvl-up-life-mvp`.
+- Gate de checklists: integridad 36/36 y requirements 16/16, sin pendientes. No se modificaron sus marcas.
+- No existe `.specify/extensions.yml`; no hay hooks pre/post que ejecutar en este intento.
+- Se revisaron plan, tareas, modelo, investigación, contratos, quickstart y constitución. El repositorio no contiene todavía módulos ni wrapper. Se añadió `.gitignore` para Kotlin/Android, herramientas locales y credenciales; el wrapper JAR queda expresamente permitido.
+- `java -version` falló: Java no está en PATH. El runtime de `C:\Program Files\Android\Android Studio\jbr` falla por ausencia de `lib\jvm.cfg`. El runtime de Android Studio2 sí responde, pero es OpenJDK 25.0.3; no acredita el JDK 17 exigido.
+- Caché local: distribuciones Gradle 8.0 y 8.7; ninguna 9.5.0. `.gradle/jdks` no contiene un JDK. SDK local: plataformas android-33 y android-34, sin android-37.
+- `Invoke-WebRequest https://services.gradle.org/distributions/gradle-9.5.0-bin.zip.sha256 -TimeoutSec 20` falló por host desconocido en sandbox. Repetido con ejecución ampliada, terminó por timeout. `Test-NetConnection services.gradle.org -Port 443 -InformationLevel Quiet` devolvió False y un aviso de fallo de resolución de nombre. La ejecución ampliada fue admitida; no hubo rechazo de aprobación automática.
+- No se ejecutaron `gradlew --version`, `help --info`, `reportBuildVersions`, builds ni tests: el wrapper y las herramientas requeridas no están disponibles. No hay lockfiles ni versiones efectivas verificadas. No se sustituyeron las versiones del plan.
+- T001 permanece sin marcar. Las demás tareas conservan su estado; se detiene la ejecución conforme a la regla de fallo de tarea secuencial de speckit-implement. No hay evidencia roja/verde de implementación en este intento.
+
+Para reanudar T001: proporcionar acceso de descarga a Gradle y repositorios de dependencias, JDK 17 y SDK API 37 (o instalaciones locales accesibles). Después generar y verificar wrapper/configuración, resolver pins/KSP y lockfiles y ejecutar todos los comandos de cierre de T001 antes de continuar T002. No se requiere crear infraestructura remota para resolver este bloqueo.
+
+## Implementación — 2026-11-10: T001
+
+- Checklists: integridad 36/36 y requirements 16/16, sin cambios de marcas. No existe `.specify/extensions.yml` (sin hooks previos).
+- Se descargaron Gradle 9.5.0 y Temurin JDK 17.0.21+9 en `.tooling/` (ignorado). SHA-256 de distribución Gradle verificado: `553c78f50dafcd54d65b9a444649057857469edf836431389695608536d6b746`, fijado también en el wrapper generado por Gradle.
+- `gradlew.bat --version`: APROBADO, Gradle 9.5.0/JVM 17.0.21. El Kotlin 2.3.20 de esa salida es el Kotlin interno de Gradle, no KGP.
+- `gradlew.bat help --info --write-locks --no-daemon`: APROBADO, configuración raíz mínima en 1m57s. Generó `buildscript-gradle.lockfile` y `settings-gradle.lockfile`.
+- `gradlew.bat reportBuildVersions --no-daemon`: APROBADO, AGP=9.3.1, KGP=2.4.20, Compose compiler=2.4.20, KSP=2.3.10, Gradle=9.5.0, JVM=17.0.21. Versiones obtenidas de artefactos resueltos, no solo del catálogo.
+- Catálogo sin versiones dinámicas; configuraciones de proyecto rechazan dependencias dinámicas/changing. El procesador Room y la compilación Android se verificarán con los módulos, no se acreditan aquí.
+- Evidencia local: `.tooling/t001-help.log` y `.tooling/t001-versions.log`. Ejecuciones con JAVA_HOME apuntando a `.tooling/jdk-17.0.21+9` y GRADLE_USER_HOME a `.tooling/gradle-user-home`.
+- El sandbox impide DNS/conexión al daemon; ejecución ampliada admitida permitió descargas y configuración. Ningún rechazo automático de aprobación.
+
+## Implementación — 2026-11-10: T002
+
+- `gradlew.bat :domain:compileKotlin :server:compileKotlin :app:assembleDebug :server:integrationTestClasses --write-locks --no-daemon`: APROBADO en 2m47s, 39 tareas ejecutadas. Evidencia local `.tooling/t002-build.log`.
+- Dominio JVM puro, servidor Ktor/JVM17, Android Compose minSdk29/targetSdk37. Aplicación y servicio solo contienen un esqueleto de arranque; ninguna historia funcional acreditada.
+- AGP instaló Build Tools 36.0.0 y SDK Platform 37.0 revisión 2 usando las licencias ya presentes en el SDK local. No se sustituyó API37 por API34.
+- `gradlew.bat :server:tasks --all --no-daemon`: APROBADO en 55s, integrationTest e integrationTestClasses disponibles; `.tooling/t002-tasks.log`. integrationTestClasses es NO-SOURCE por ahora: no acredita pruebas ejecutadas.
+- Lockfiles generados para domain/server/app. Pins adicionales: Ktor3.3.0, Compose BOM2025.10.00, Activity1.11.0, JUnit4.13.2; se conservan las versiones obligatorias del plan.
+- Primer intento falló porque Gradle prohíbe combinar dependency locking y failOnDynamicVersions. Se retiró failOnDynamicVersions/failOnChangingVersions; siguen los pins explícitos y lockfiles. Esta corrección reemplaza la afirmación de rechazo automático de versiones dinámicas en la entrada T001.
+- APK de arranque: `app/build/outputs/apk/debug/app-debug.apk`. Sin instalación ni tests de dispositivo todavía.
+
+## Implementación — 2026-11-10: T003
+
+- Configurados proyecto demo-lvluplife, Auth127.0.0.1:9099 y Firestore127.0.0.1:8080; reglas deny-all e índices inicialmente vacíos. CLI13.35.1/SDK cliente11.10.0 fijados en package.json y package-lock.json; paquete privado sin publicación.
+- `npm.cmd install --no-fund --no-audit`: APROBADO (676 paquetes). Node instalado25.1.0/npm11.6.2; advertencia de engine de superstatic (18/20/22), no impidió esta verificación. No acredita compatibilidad con Node LTS en otros entornos.
+- Con JAVA_HOME del JDK17 local y su bin en PATH: `npm.cmd run verify:emulators`: APROBADO; expande el comando emulators:exec especificado por T003. Evidencia `.tooling/t003-emulators.log`.
+- SDK web cliente, sin Admin: lecturas/escrituras sin autenticar denegadas, autenticación anónima sintética exitosa y lecturas/escrituras autenticadas también denegadas. 4 comprobaciones PASS y Auth disponible. El script solo admite el proyecto demo y hosts locales fijados; no imprime tokens.
+- Primer intento consultó un endpoint Auth con método GET no soportado (405); se corrigió la sonda para acreditar disponibilidad por autenticación real en el emulador y se repitió completa con código0.
+- Emuladores cerrados por emulators:exec al terminar. No se crearon recursos remotos ni se acreditó Google real, IAM o persistencia en producción.
+
+## Implementación — 2026-11-10: T004
+
+- `gradlew.bat :app:assembleDebug :app:assembleRelease :app:testDebugUnitTest --tests lvluplife.VariantSecurityTest --write-locks --no-daemon`: APROBADO en 3m, 89 tareas (68 ejecutadas). Evidencia `.tooling/t004-security.log` y `app/build/test-results/testDebugUnitTest/TEST-lvluplife.VariantSecurityTest.xml`: 3 pruebas, 0 fallos/errores/omitidas.
+- Pruebas sobre manifests fusionados y XML de packaged_res de ambas variantes: release deniega cleartext sin excepciones; debug solo habilita localhost/127.0.0.1/10.0.2.2, base denegada. No se configura Auth/Firestore de producción en este esqueleto. TLS del servicio desplegado no probado; restricciones TLS del cliente HTTP se cerrarán al implementar T014.
+- Backup deshabilitado y recursos legacy/API31+ excluyen toda la carpeta database (base y sidecars), tanto cloud-backup como device-transfer. Prueba verifica referencias efectivas y exclusiones de ambas variantes.
+- Durante el trabajo aparecieron 76 imágenes aportadas en drawable con nombres no válidos para Android. Primer build falló en packageDebugResources; se normalizaron mayúsculas/espacios/tildes a nombres Android, sin modificar contenido ni sobrescribir archivos. Se comprobó ausencia de colisiones y destino dentro de drawable. Mapeo original/nuevo local: `.tooling/t004-resource-renames.json`.
+- Las imágenes compilan, pero NO se acredita todavía correspondencia semántica clase/etapa ni calidad visual US5 (T064–T070 siguen pendientes). En particular, los nombres originales incluyen orcaculo y Guerrero monje III; su asignación final debe revisarse con el inventario US5.

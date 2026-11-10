@@ -1,0 +1,34 @@
+# Kotlin / Gradle / Android
+.gradle/
+.kotlin/
+**/build/
+out/
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+*.iml
+local.properties
+.cxx/
+.externalNativeBuild/
+captures/
+
+# Local configuration and credentials
+.env*
+google-services.json
+*-service-account.json
+*.jks
+*.keystore
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.tmp
+*.swp
+*.log
+
+# Local tooling and emulator data
+.tooling/
+node_modules/
+.firebase/
