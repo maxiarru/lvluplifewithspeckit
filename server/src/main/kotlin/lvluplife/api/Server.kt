@@ -75,8 +75,17 @@ fun Application.serverModule(handlers: ApiHandlers, verifyToken: (String) -> Str
 }
 
 fun main() {
-    // Data handlers remain unavailable until their application services are implemented.
-    embeddedServer(Netty, port = 8081) { serverModule() }.start(wait = true)
+    val config = ServerConfig.fromEnvironment()
+    ServerResources.open(config).use { resources ->
+        // Data handlers remain unavailable until their application services are implemented.
+        val engine = embeddedServer(Netty, port = config.port) {
+            serverModule { resources.identityVerifier.verify(it)?.value }
+        }
+        Runtime.getRuntime().addShutdownHook(Thread {
+            try { engine.stop(500, 3000) } finally { resources.close() }
+        })
+        engine.start(wait = true)
+    }
 }
 
 private fun ApplicationCall.requireQueryKeys(expected: Set<String>) {

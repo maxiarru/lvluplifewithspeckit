@@ -14,6 +14,7 @@ dependencies {
     implementation(libs.ktor.server.core)
     implementation(libs.ktor.server.netty)
     implementation(libs.firebase.admin)
+    implementation(libs.google.firestore)
     implementation(libs.jackson.databind)
     implementation(libs.ktor.server.status.pages)
     testImplementation(kotlin("test-junit"))
