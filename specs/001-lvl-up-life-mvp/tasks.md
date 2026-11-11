@@ -81,7 +81,7 @@ Objetivo: catálogo, carga, motor canónico y recuperación de creaciones. Prueb
 
 - [X] T026 [P] [US2] Escribir y ejecutar pruebas de niveles, sobrantes, inactividad, clase y etapas en `domain/src/test/kotlin/lvluplife/progression/ProgressionTest.kt`: AC-36–62, 82–85, 91–92, 106–107; fallo observado antes de reglas.
 
-- [ ] T027 [P] [US2] Escribir y ejecutar pruebas de replay/orden estable y validación temporal en `domain/src/test/kotlin/lvluplife/progression/ReplayTest.kt`: AC-16–18, 85, 93, 96, 98, 102, 104–105, 124; incluir fecha abierta/cerrada, UTC−3 y ciclo explícito.
+- [X] T027 [P] [US2] Escribir y ejecutar pruebas de replay/orden estable y validación temporal en `domain/src/test/kotlin/lvluplife/progression/ReplayTest.kt`: AC-16–18, 85, 93, 96, 98, 102, 104–105, 124; incluir fecha abierta/cerrada, UTC−3 y ciclo explícito.
 
 - [ ] T028 [P] [US2] Escribir y ejecutar contratos /catalog, /progress, CREATE_RECORD y /operations/{operationId} en `server/src/integrationTest/kotlin/lvluplife/record/CreateRecordContractTest.kt`: XP del cliente rechazada, payload/ciclo/fecha/duración, respuesta perdida, concurrencia y recibo antiguo. Para /catalog comprobar las 11 actividades, los datos de las 26 clases y sus etapas válidas (76 combinaciones), sin exigir archivos de imagen ni referencias visuales resolubles antes de US5.
 
