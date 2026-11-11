@@ -3,7 +3,10 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.ksp)
     alias(libs.plugins.room)
+    alias(libs.plugins.google.services) apply false
 }
+// Local Firebase/OAuth configuration is never committed and is optional for offline/test builds.
+if (file("google-services.json").isFile) apply(plugin = "com.google.gms.google-services")
 android {
     namespace = "lvluplife"
     compileSdk = 37
@@ -32,6 +35,11 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.jackson.databind)
     implementation(libs.coroutines.core)
+    implementation(libs.coroutines.play.services)
+    implementation(libs.credentials)
+    implementation(libs.credentials.play.services)
+    implementation(libs.googleid)
+    implementation(libs.firebase.auth.android)
     ksp(libs.room.compiler)
     testImplementation(libs.junit)
     testImplementation(libs.mockwebserver)

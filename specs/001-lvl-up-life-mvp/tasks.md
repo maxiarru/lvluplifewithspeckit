@@ -66,7 +66,7 @@ Objetivo: acceso Google, alta única y privacidad. Prueba independiente: cuentas
 
 - [X] T021 [US1] Implementar GET /me y COMPLETE_PROFILE en `server/src/main/kotlin/lvluplife/api/AccountRoutes.kt`; cuenta existente recupera perfil, sin duplicar alta; hacer verdes contratos y carrera por nombre.
 
-- [ ] T022 [US1] Implementar Credential Manager/Google ID y Firebase Auth en `app/src/main/kotlin/lvluplife/data/GoogleSignIn.kt`; sesión cancelada no escribe, sesión vencida suspende recuperación y denegación informa sin exponer datos.
+- [X] T022 [US1] Implementar Credential Manager/Google ID y Firebase Auth en `app/src/main/kotlin/lvluplife/data/GoogleSignIn.kt`; sesión cancelada no escribe, sesión vencida suspende recuperación y denegación informa sin exponer datos.
 
 - [ ] T023 [US1] Implementar acceso, nombre y navegación autenticada en `app/src/main/kotlin/lvluplife/ui/AccessScreen.kt`, `ProfileScreen.kt` y `AppNavigation.kt`; manejar nombre ocupado y reintento con nuevo comando.
 
