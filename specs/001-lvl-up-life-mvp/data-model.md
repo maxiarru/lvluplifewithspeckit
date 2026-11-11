@@ -18,6 +18,31 @@ Todas las rutas privadas se resuelven a partir del UID verificado. El cliente no
 
 El catálogo inicial de 11 actividades y la tabla de 26 clases: Novato con una etapa y las otras 25 con tres (76 imágenes) son datos versionados del dominio y recursos del producto, no editables por el usuario. No se inventan tasas ni asignaciones nuevas. `rulesVersion` identifica las reglas aprobadas; cambiar fórmulas exige actualizar especificaciones, no una configuración remota arbitraria.
 
+### Admisión de creación de T039
+
+CreateRecord y RecordRoutes conectan CREATE_RECORD desde el despacho autenticado
+y su esquema estricto. Recuperan el recibo antes de resolver definiciones o generar
+un nuevo ID. ActivityCatalog resuelve los básicos; los personalizados se leen solo
+de activities del UID verificado, como duraciones ordinarias sin CON. Un ID ajeno
+o desconocido no puede convertirse en una definición arbitraria.
+
+RecordStore conserva un snapshot de ActivityDefinition con id, name, category,
+mode, primary, secondary y experienceRule dentro de cada registro. Sus codecs
+restauran ActivityRecord con identidad, creación, actualización, versión y tombstone;
+un documento incoherente falla como indisponibilidad, sin convertir corrupción en
+rechazo funcional persistido. Las comidas omiten durationMinutes.
+
+CreateRecord prepara el plan con RecordValidation y ReplayEngine sobre el snapshot
+estable de T038. Distingue componentes/modalidad inválidos, fecha no permitida y
+saldo diario insuficiente. El ID permanece fijo durante reintentos del intento;
+createdAt/updatedAt provienen del instante final aceptado. El plan confirma registro,
+proyección actual y recibo junto con la revisión de raíz. Los resultados definitivos
+se recuperan intactos; errores transitorios no se convierten en recibos de rechazo.
+
+RecordOperations.progressionResult centraliza la representación de progresión
+usada en el recibo y la proyección persistida; esta última usa asOfDate en lugar de
+businessDate. Las consultas de progreso, catálogo y operaciones siguen en T040.
+
 ### Snapshot y confirmación de registros de T038
 
 RevisionTransaction.recordSnapshot lee raíz, documento del ciclo actual, registros

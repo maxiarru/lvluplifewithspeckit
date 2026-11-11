@@ -24,21 +24,23 @@ class RecordOperations(private val operations: OperationStore) {
             require(command.payload.path("recordId").textValue() == record.id.value) { "Record result identity mismatch" }
         require((command.type == CommandType.DELETE_RECORD) == (record.deletedAt != null)) { "Record result deletion mismatch" }
         require(!record.updatedAt.isAfter(progression.computedAt)) { "Result precedes record update" }
-        val className = requireNotNull(ClassCatalog.find(progression.classId)) { "Unknown progression class" }.name
-        val snapshot = mapOf("cycleId" to progression.cycleId.value, "revision" to progression.revision.value,
-            "businessDate" to progression.businessDate.toString(), "computedAt" to progression.computedAt.toString(),
-            "generalLevel" to progression.general.level.toLong(), "generalRemainder" to progression.general.remaining.toLong(),
-            "classId" to progression.classId, "stage" to progression.stage.toLong(),
-            "unlockedStages" to ClassRules.unlockedStages(className, progression.general.level).map(Int::toLong),
-            "attributes" to progression.attributes.entries.associate { (attribute, state) -> attribute.name to
-                mapOf("level" to state.attribute.level.toLong(), "xp" to state.attribute.xp.toLong(), "inactiveDates" to state.inactiveDates.toLong()) })
         val result = mapOf("recordId" to record.id.value, "version" to record.version,
             "createdAt" to record.createdAt.toString(), "cycleId" to progression.cycleId.value,
-            "revision" to progression.revision.value, "progression" to snapshot)
+            "revision" to progression.revision.value, "progression" to progressionResult(progression))
         return OperationDecision.Confirmed(emptyMap(), writes, result)
     }
 
     companion object {
         fun supports(type: CommandType) = type in setOf(CommandType.CREATE_RECORD, CommandType.EDIT_RECORD, CommandType.DELETE_RECORD)
+        fun progressionResult(progression: Progression): Map<String, Any?> {
+            val className = requireNotNull(ClassCatalog.find(progression.classId)) { "Unknown progression class" }.name
+            return mapOf("cycleId" to progression.cycleId.value, "revision" to progression.revision.value,
+                "businessDate" to progression.businessDate.toString(), "computedAt" to progression.computedAt.toString(),
+                "generalLevel" to progression.general.level.toLong(), "generalRemainder" to progression.general.remaining.toLong(),
+                "classId" to progression.classId, "stage" to progression.stage.toLong(),
+                "unlockedStages" to ClassRules.unlockedStages(className, progression.general.level).map(Int::toLong),
+                "attributes" to progression.attributes.entries.associate { (attribute, state) -> attribute.name to
+                    mapOf("level" to state.attribute.level.toLong(), "xp" to state.attribute.xp.toLong(), "inactiveDates" to state.inactiveDates.toLong()) })
+        }
     }
 }

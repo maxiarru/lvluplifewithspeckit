@@ -8,6 +8,8 @@ import kotlinx.coroutines.withContext
 import lvluplife.application.AuthoritativeClock
 import lvluplife.application.CompleteProfile
 import lvluplife.application.RecordOperations
+import lvluplife.application.CreateRecord
+import lvluplife.persistence.RecordStore
 import lvluplife.persistence.AccountStore
 import lvluplife.persistence.OperationStore
 import lvluplife.persistence.RevisionTransaction
@@ -20,8 +22,10 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
     val operations = OperationStore(firestore)
     val complete = CompleteProfile(accounts, operations, RevisionTransaction(firestore, operations, clock))
     val records = RecordOperations(operations)
+    val create = CreateRecord(RecordStore(firestore), records, RevisionTransaction(firestore, operations, clock))
     return ApiHandlers(command = { uid, command ->
         withContext(Dispatchers.IO) {
+            if (command.type == CommandType.CREATE_RECORD) return@withContext createRecordResponse(create, uid, command)
             val receipt = when {
                 command.type == CommandType.COMPLETE_PROFILE -> complete.execute(uid, command)
                 RecordOperations.supports(command.type) -> records.recover(uid, command)

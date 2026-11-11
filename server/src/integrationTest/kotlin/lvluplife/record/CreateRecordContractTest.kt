@@ -29,6 +29,52 @@ import lvluplife.progression.ReplayEngine
 /** HTTP contracts against real local Firestore. Identity/time/fault injection exists only in this fixture. */
 class CreateRecordContractTest {
     private val json = ObjectMapper()
+    @Test fun createReplyAndStoredProjectionAgreeWithoutDependingOnProgressQuery() = scenario { f ->
+        val response = confirmed(client.create(f))
+        val result = response.path("result"); val p = result.path("progression")
+        assertEquals(f.cycle(), result.path("cycleId").textValue())
+        assertEquals(1, result.path("version").intValue()); assertEquals(6, p.path("attributes").path("STR").path("xp").intValue())
+        assertEquals((f.root()["revision"] as Number).toLong(), p.path("revision").longValue())
+        assertEquals(f.root()["revision"], f.projection()["revision"])
+        assertStoredAttribute(f, "STR", 1, 6)
+        val record = f.records().single()
+        assertEquals(result.path("recordId").textValue(), record.id)
+        assertEquals("strength", record.getString("activityDefinition.id"))
+        assertEquals("STR", record.getString("activityDefinition.primary"))
+    }
+    @Test fun customDefinitionIsResolvedOnlyFromTheAuthenticatedOwnersActivities() = scenario { f ->
+        val fields = mapOf("name" to "Práctica mental", "category" to "Propia", "primary" to "MEN", "createdAt" to f.now.toString())
+        f.resources.documents.write(f.a, listOf("activities", "synthetic-custom"), fields)
+        val result = confirmed(client.create(f, payload("synthetic-custom"))).path("result").path("progression")
+        assertEquals(6, result.path("attributes").path("MEN").path("xp").intValue())
+        assertStoredAttribute(f, "MEN", 1, 6)
+        rejected(client.create(f, payload("synthetic-custom"), token = f.tokenB, cycle = f.cycle(f.b)), "INVALID_INPUT")
+        assertTrue(f.records(f.b).isEmpty())
+    }
+    @Test fun sleepAndMealCreationsRebuildStoredProgressWithoutQueryEndpoints() = scenario { f ->
+        confirmed(client.create(f, payload("sleep"))); confirmed(client.create(f, payload("sleep")))
+        assertStoredAttribute(f, "MEN", 1, 3)
+        repeat(5) { confirmed(client.create(f, mapOf("activityId" to "meal", "activityDate" to "2026-11-11"))) }
+        assertStoredAttribute(f, "CON", 1, 28)
+        assertEquals(7, f.records().size)
+    }
+    @Test fun lostCreateReplyRecoversByResendingTheSameEnvelopeWithoutNewWrites() = scenario { f ->
+        val id = OperationId.create(); f.dropAfterCommit.set(true)
+        assertEquals(HttpStatusCode.ServiceUnavailable, client.create(f, id = id).status)
+        assertFalse(f.dropAfterCommit.get()); assertEquals(1, f.records().size)
+        val before = f.root(); val original = assertNotNull(f.receipt(id))
+        f.now = Instant.parse("2026-11-20T15:00:00Z")
+        val recovered = confirmed(client.create(f, id = id))
+        assertEquals(original.validatedAt.toString(), recovered.path("validatedAt").textValue())
+        assertEquals(before, f.root()); assertEquals(1, f.records().size)
+    }
+    @Test fun concurrentCreateRepliesAndProjectionRespectTheLastXpPointWithoutQueryEndpoints() = scenario { f ->
+        confirmed(client.create(f, payload(minutes = 235)))
+        val responses = coroutineScope { listOf(async { client.create(f, payload(minutes = 5)) }, async { client.create(f, payload(minutes = 5)) }).map { it.await() } }
+        responses.forEach { confirmed(it) }
+        assertEquals(3, f.records().size); assertStoredAttribute(f, "STR", 2, 18)
+        assertEquals(f.root()["revision"], f.projection()["revision"])
+    }
     /** T037 receipt fixture: real shared commit protocol, without pretending the T039 creation handler exists. */
     private fun seedReceipt(f: Fixture, type: CommandType = CommandType.CREATE_RECORD, reject: Boolean = false): Pair<CommandEnvelope, OperationReceipt> {
         val cycle = Cycle(f.a, CycleId(f.cycle()), f.now)
