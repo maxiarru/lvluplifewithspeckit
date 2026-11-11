@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.test.platform.app.InstrumentationRegistry
 import java.util.UUID
 import java.util.Collections
@@ -180,6 +181,9 @@ class RecordFlowTest {
             compose.onNodeWithTag("attribute-$attribute-xp").assertTextEquals("0 XP")
         expect("Nivel general 1"); compose.onNodeWithTag("general-xp-bar").assertDoesNotExist()
         compose.onNodeWithTag("character-class").assertTextContains("Novato")
+        java.io.File(context.cacheDir, "t043-home.png").outputStream().use { output ->
+            compose.onRoot().captureToImage().asAndroidBitmap().compress(android.graphics.Bitmap.CompressFormat.PNG, 100, output)
+        }
     }
     @Test fun loadingDoesNotPretendInitialZeroProgressIsConfirmed() = scenario { r, _ ->
         val delayed = CompletableDeferred<RecordProgressView>()
@@ -248,5 +252,15 @@ class RecordFlowTest {
         compose.runOnIdle { r.online = true }; expect("Actividad guardada")
         assertEquals(1, r.submissions.size)
         assertEquals(original, r.store.pendingFor("synthetic-a").single().operationId)
+    }
+    @Test fun returningFromBackgroundReloadsConfirmedProgressWithoutANewActivity() = scenario { r, _ ->
+        val calls = AtomicInteger()
+        mount(r, RecordFlowProgress { if (calls.incrementAndGet() == 1) progress(12, 0) else progress(13, 12) })
+        expect("Registrar actividad"); compose.onNodeWithTag("attribute-STR-xp").assertTextEquals("0 XP")
+        compose.activityRule.scenario.moveToState(androidx.lifecycle.Lifecycle.State.CREATED)
+        compose.activityRule.scenario.moveToState(androidx.lifecycle.Lifecycle.State.RESUMED)
+        compose.waitUntil(5_000) { calls.get() >= 2 }
+        compose.onNodeWithTag("attribute-STR-xp").assertTextEquals("12 XP")
+        assertTrue(r.submissions.isEmpty())
     }
 }

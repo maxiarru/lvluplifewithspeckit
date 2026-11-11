@@ -12,7 +12,7 @@ import lvluplife.data.*
 
 data class RecordFormView(val draft: RecordDraft = RecordDraft("strength", LocalDate.now(ZoneOffset.ofHours(-3)).toString(), "0", ""),
     val options: List<RecordOption> = emptyList(), val open: Boolean = false, val busy: Boolean = true,
-    val pending: OperationSnapshot? = null, val unresolved: Boolean = false, val message: String? = null)
+    val pending: OperationSnapshot? = null, val unresolved: Boolean = false, val message: String? = null, val settlement: Long = 0)
 
 class RecordFormController(private val session: SessionController, private val records: RecordFlowRecords,
     private val scope: CoroutineScope) {
@@ -86,11 +86,12 @@ class RecordFormController(private val session: SessionController, private val r
     private fun receive(snapshot: OperationSnapshot) {
         if (!valid() || snapshot.ref.uid != uid) return
         mutable.value = when (snapshot.state) {
-            PendingState.CONFIRMED -> { intent = null; mutable.value.copy(busy = false, open = false, pending = null, unresolved = false, message = "Actividad guardada") }
+            PendingState.CONFIRMED -> { intent = null; mutable.value.copy(busy = false, open = false, pending = null, unresolved = false,
+                message = "Actividad guardada", settlement = mutable.value.settlement + 1) }
             PendingState.REJECTED -> { intent = null; mutable.value.copy(busy = false, open = snapshot.error != ApiFailureCode.CYCLE_CLOSED,
                 options = if (snapshot.error == ApiFailureCode.CYCLE_CLOSED) emptyList() else mutable.value.options,
-                pending = null, unresolved = false, message = message(snapshot.error)) }
-            else -> mutable.value.copy(busy = false, pending = snapshot, message = snapshot.error?.let(::message) ?: mutable.value.message)
+                pending = null, unresolved = false, message = message(snapshot.error), settlement = mutable.value.settlement + 1) }
+            else -> mutable.value.copy(busy = false, open = false, pending = snapshot, message = snapshot.error?.let(::message) ?: mutable.value.message)
         }
     }
     private fun message(code: ApiFailureCode?): String = when (code) {

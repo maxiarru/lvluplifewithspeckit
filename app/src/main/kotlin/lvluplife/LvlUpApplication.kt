@@ -38,6 +38,7 @@ class AndroidAppGraph(context: Context) {
     @Volatile private var defaultNetwork: Network? = connectivity.activeNetwork
     val accounts: AccessAccounts
     val records: RecordFlowRecords?
+    val progress: RecordFlowProgress?
     init {
         // Application-scoped callback: updates Compose without polling or retaining an Activity/account.
         connectivity.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
@@ -53,11 +54,13 @@ class AndroidAppGraph(context: Context) {
         if (api == null) {
             accounts = AccessAccounts { throw OperationBlocked(ApiFailureCode.TEMPORARILY_UNAVAILABLE) }
             records = null
+            progress = null
         } else {
             val operations = OperationCoordinator(store, api, session, online)
             coordinator = operations
             accounts = ApiAccessAccounts(api, operations, store, session)
             records = RecordRepository(api, operations, store, session, online).also { recordAdapter = it }
+            progress = ProgressRepository(api, session)
         }
     }
 }

@@ -18,6 +18,31 @@ Todas las rutas privadas se resuelven a partir del UID verificado. El cliente no
 
 El catálogo inicial de 11 actividades y la tabla de 26 clases: Novato con una etapa y las otras 25 con tres (76 imágenes) son datos versionados del dominio y recursos del producto, no editables por el usuario. No se inventan tasas ni asignaciones nuevas. `rulesVersion` identifica las reglas aprobadas; cambiar fórmulas exige actualizar especificaciones, no una configuración remota arbitraria.
 
+### Principal y progreso confirmado de T043
+
+ProgressRepository consulta progreso y metadatos del catálogo con la sesión
+original, valida revisión/tiempo/fecha, seis saldos enteros y clase/etapa permitidas,
+y devuelve un snapshot inmutable. No consulta recibos ni usa sus proyecciones como
+estado actual. No guarda progreso privado en Room ni calcula XP o clasificación.
+
+ProgressController pertenece a UID/época de sesión y descarta respuestas tardías,
+consultas reemplazadas y revisiones menores a la ya mostrada. Sin datos confirmados
+muestra Loading o Error, nunca ceros inventados. Si falla la actualización conserva
+solo datos de la misma sesión, señalados como Stale y con reintento.
+
+HomeScreen muestra la apariencia de la clase/etapa confirmada, seis atributos con
+nivel/XP, fecha y nivel general sin barra de XP general. CurrentAppearance vincula
+explícitamente los recursos locales existentes, incluidos los nombres heredados
+orcaculo y guerrero_monje_iii. No se deduce el archivo desde un ID recibido ni se
+usa Novato para clases desconocidas. La auditoría visual completa y el catálogo
+de apariencias/desbloqueos siguen en US5.
+
+RecordFlow refresca progreso al recibir un resultado definitivo, reconectar o volver
+de segundo plano. La primera entrada hace una sola consulta inicial; el observador
+de ciclo de vida se elimina al disponer la composición. Un pendiente incierto
+vuelve al principal conservando su borrador/identidad y no concede XP optimista.
+MainActivity y el grafo inyectan el repositorio real a la navegación autenticada.
+
 ### Carga Android y borrador de T042
 
 RecordRepository implementa RecordFlowRecords con ApiClient, PendingStore y el
