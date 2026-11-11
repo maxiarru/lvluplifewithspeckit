@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         val graph = (application as LvlUpApplication).graph
         val google = lvluplife.data.AndroidGoogleSignIn.create(this)
         setContent {
-            MaterialTheme { lvluplife.ui.AppNavigation(graph.session, google, graph.accounts) }
+            MaterialTheme { lvluplife.ui.AppNavigation(graph.session, google, graph.accounts, graph.records) }
         }
     }
 }

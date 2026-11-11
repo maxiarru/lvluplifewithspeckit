@@ -37,6 +37,7 @@ class RecordFlowTest {
         val retries = Collections.synchronizedList(mutableListOf<OperationRef>())
         var response = PendingState.CONFIRMED
         var error: ApiFailureCode? = null
+        var resultOnRecovery: PendingState? = null
         var delay: CompletableDeferred<Unit>? = null
         override suspend fun catalog(uid: String) = listOf(RecordOption("strength", "Entrenamiento de fuerza", true), RecordOption("meal", "Comida saludable", false))
         override suspend fun draft(uid: String): RecordDraft? = withContext(Dispatchers.IO) { store.draftFor(uid)?.let {
@@ -44,8 +45,12 @@ class RecordFlowTest {
             RecordDraft(value.getString("activityId"), value.getString("date"), value.getString("hours"), value.getString("minutes"))
         } }
         override suspend fun saveDraft(uid: String, draft: RecordDraft) = withContext(Dispatchers.IO) { store.saveDraft(Draft(uid, encode(draft))) }
-        override suspend fun pending(uid: String) = withContext(Dispatchers.IO) { store.pendingFor(uid).filter { it.state !in setOf(PendingState.CONFIRMED, PendingState.REJECTED) }
-            .map { OperationSnapshot(OperationRef(uid, it.operationId), it.state, it.safeError?.let(ApiFailureCode::valueOf)) }
+        override suspend fun pending(uid: String) = withContext(Dispatchers.IO) {
+            store.pendingFor(uid).filter { it.state !in setOf(PendingState.CONFIRMED, PendingState.REJECTED) }.map {
+                val outcome = resultOnRecovery.takeIf { online }
+                if (outcome != null) store.updateState(uid, it.operationId, outcome, null)
+                OperationSnapshot(OperationRef(uid, it.operationId), outcome ?: it.state, it.safeError?.let(ApiFailureCode::valueOf))
+            }
         }
         override suspend fun submit(uid: String, intentId: String, draft: RecordDraft): OperationSnapshot = withContext(Dispatchers.IO) {
             check(online); submissions += intentId to draft
@@ -234,5 +239,14 @@ class RecordFlowTest {
         compose.onNodeWithText("Confirmación pendiente").assertDoesNotExist()
         assertTrue(r.retries.isEmpty()); assertTrue(r.store.pendingFor("synthetic-b").isEmpty())
         assertEquals(id, r.store.pendingFor("synthetic-a").single().operationId)
+    }
+    @Test fun reconnectionChecksOriginalPendingWithoutCreatingAnotherIntent() = scenario { r, _ ->
+        r.response = PendingState.UNKNOWN; mount(r); fill(); send(); expect("Confirmación pendiente")
+        val original = r.store.pendingFor("synthetic-a").single().operationId
+        compose.runOnIdle { r.online = false }; expect("Sin conexión")
+        r.resultOnRecovery = PendingState.CONFIRMED
+        compose.runOnIdle { r.online = true }; expect("Actividad guardada")
+        assertEquals(1, r.submissions.size)
+        assertEquals(original, r.store.pendingFor("synthetic-a").single().operationId)
     }
 }

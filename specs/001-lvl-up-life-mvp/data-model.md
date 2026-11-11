@@ -18,6 +18,37 @@ Todas las rutas privadas se resuelven a partir del UID verificado. El cliente no
 
 El catálogo inicial de 11 actividades y la tabla de 26 clases: Novato con una etapa y las otras 25 con tres (76 imágenes) son datos versionados del dominio y recursos del producto, no editables por el usuario. No se inventan tasas ni asignaciones nuevas. `rulesVersion` identifica las reglas aprobadas; cambiar fórmulas exige actualizar especificaciones, no una configuración remota arbitraria.
 
+### Carga Android y borrador de T042
+
+RecordRepository implementa RecordFlowRecords con ApiClient, PendingStore y el
+OperationCoordinator existente. Captura el ciclo al cargar catálogo/progreso y
+lo conserva para el envío; no consulta otro ciclo para trasladar una intención
+antigua. Cada envío usa prepare/submit del coordinador, con sobre durable antes
+del transporte; retry consulta el UUID original y conserva sus bytes/cuenta/ciclo.
+
+Los componentes textuales del borrador se conservan bajo recordDraft en la fila
+Draft del UID, preservando otras secciones como profileUsername. La validación
+local evita componentes inválidos y omite duración en comida; saldo, fecha vigente
+y XP siempre se deciden en servidor. El dispositivo solo propone la fecha inicial,
+sin modificar la fecha de un sobre pendiente al cambiar el día.
+
+RecordFormController separa borrador, intención, envío activo y pendiente. Bloquea
+dobles toques y edición del sobre incierto, conserva entrada al rechazar y crea
+otra intención al corregir. El almacenamiento usa Room mediante los adaptadores
+existentes, sin migración ni descarte de pendientes. Errores locales se convierten en mensajes
+seguros y no disparan transporte. La lectura inicial del borrador ocurre una sola
+vez por controlador para no reemplazar edición actual al reconectar.
+
+RecordScreen y RecordFlow se conectan a AppNavigation/MainActivity para cuentas
+con perfil. Cambios de UID/época disponen el controlador y bloquean respuestas
+tardías. El grafo limpia contexto/avisos en memoria al cerrar sesión, conservando
+Room por UID. Un callback de conectividad de Application actualiza disponibilidad
+sin polling; al reconectar se consulta el pendiente, sin crear UUID ni reenviar
+automáticamente una ausencia UNKNOWN. Los resultados ya resueltos al restaurar
+sesión se entregan una vez al formulario, sin usar su proyección antigua como actual.
+
+La presentación del principal y su repositorio de progreso siguen en T043.
+
 ### Consultas y publicación de progreso de T040
 
 ReadProgress reconstruye desde el snapshot de registros del ciclo actual; nunca
