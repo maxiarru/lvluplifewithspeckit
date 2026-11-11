@@ -17,15 +17,138 @@ import kotlinx.coroutines.coroutineScope
 import kotlin.test.*
 import lvluplife.api.*
 import lvluplife.application.AuthoritativeClock
+import lvluplife.application.RecordOperations
 import lvluplife.fixtures.FaultPoint
 import lvluplife.fixtures.InjectedFault
 import lvluplife.model.*
 import lvluplife.persistence.OperationStore
 import lvluplife.persistence.ReceiptOutcome
+import lvluplife.persistence.*
+import lvluplife.progression.ReplayEngine
 
 /** HTTP contracts against real local Firestore. Identity/time/fault injection exists only in this fixture. */
 class CreateRecordContractTest {
     private val json = ObjectMapper()
+    /** T037 receipt fixture: real shared commit protocol, without pretending the T039 creation handler exists. */
+    private fun seedReceipt(f: Fixture, type: CommandType = CommandType.CREATE_RECORD, reject: Boolean = false): Pair<CommandEnvelope, OperationReceipt> {
+        val cycle = Cycle(f.a, CycleId(f.cycle()), f.now)
+        val record = ActivityRecord.create(RecordId("synthetic-receipt-record"), cycle.id,
+            ActivityCatalog.find(ActivityId("strength"))!!, BusinessTime.date(f.now), 30, f.now)
+        val payload = when (type) {
+            CommandType.CREATE_RECORD -> payload()
+            CommandType.EDIT_RECORD -> mapOf("recordId" to record.id.value, "expectedVersion" to 1, "activityDate" to "2026-11-11")
+            CommandType.DELETE_RECORD -> mapOf("recordId" to record.id.value, "expectedVersion" to 1)
+            else -> error("Unsupported fixture command")
+        }
+        val command = CommandEnvelope(OperationId.create(), type, cycle.id.value, json.valueToTree(payload))
+        val operations = OperationStore(f.resources.firestore)
+        val receipt = RevisionTransaction(f.resources.firestore, operations, AuthoritativeClock { f.now })
+            .commit(f.a, command, Revision((f.root()["revision"] as Number).toLong())) { snapshot, now ->
+                if (reject) OperationDecision.Rejected(ApiError.DATE_NOT_ALLOWED) else {
+                    val actual = when (type) {
+                        CommandType.DELETE_RECORD -> record.markDeleted(now)
+                        CommandType.EDIT_RECORD -> record.correct(record.activityDate, durationMinutes = 35, now = now)
+                        else -> record
+                    }
+                    val replay = ReplayEngine.rebuild(cycle, listOf(actual), now)
+                    val progression = Progression.derived(cycle, snapshot.revision!!.next(), now, replay.attributes,
+                        replay.general, replay.appearance.classId, replay.appearance.stage)
+                    RecordOperations(operations).confirmation(f.a, command, actual, progression,
+                        listOf(DocumentWrite(listOf("synthetic", "receipt-effect"), mapOf("marker" to command.operationId.value))))
+                }
+            }
+        return command to receipt
+    }
+    private suspend fun HttpClient.resend(f: Fixture, command: CommandEnvelope, token: String = f.tokenA) = post("/v1/commands") {
+        bearerAuth(token); contentType(ContentType.Application.Json)
+        setBody(json.writeValueAsString(mapOf("operationId" to command.operationId.value, "type" to command.type.name,
+            "cycleId" to command.cycleId, "payload" to command.payload)))
+    }
+
+    @Test fun persistedRecordReceiptsRecoverBeforeExpiredDateClosedCycleOrClockRead() = scenario { f ->
+        for (type in listOf(CommandType.CREATE_RECORD, CommandType.EDIT_RECORD, CommandType.DELETE_RECORD)) {
+            val (command, original) = seedReceipt(f, type)
+            val before = f.root()
+            f.resources.documents.write(f.a, emptyList(), before + ("currentCycleId" to "synthetic-new-cycle"))
+            val changed = f.root()
+            f.now = Instant.parse("2026-11-20T15:00:00Z")
+            f.clockSequence.add(Instant.parse("2026-11-21T15:00:00Z"))
+            val replay = body(client.resend(f, command))
+            assertEquals("CONFIRMED", replay.path("outcome").textValue())
+            assertEquals(original.validatedAt.toString(), replay.path("validatedAt").textValue())
+            assertEquals(json.readTree(json.writeValueAsString(original.result)), replay.path("result"))
+            assertEquals(changed, f.root()); assertEquals(1, f.clockSequence.size)
+            f.clockSequence.clear(); f.now = Instant.parse("2026-11-11T15:00:00Z")
+            f.resources.documents.write(f.a, emptyList(), before)
+        }
+    }
+    @Test fun persistedRecordRejectionRecoversWithoutRecheckingDateOrChangingRevision() = scenario { f ->
+        val (command, original) = seedReceipt(f, reject = true)
+        val before = f.root(); f.now = Instant.parse("2026-11-20T15:00:00Z")
+        val response = client.resend(f, command)
+        val r = rejected(response, "DATE_NOT_ALLOWED")
+        assertEquals(original.validatedAt.toString(), r.path("validatedAt").textValue())
+        assertEquals(before, f.root()); assertTrue(f.records().isEmpty())
+    }
+    @Test fun persistedRecordReceiptReturnsOriginalProgressionAndNoPrivateFields() = scenario { f ->
+        val (command, original) = seedReceipt(f)
+        val response = client.resend(f, command)
+        assertEquals(HttpStatusCode.OK, response.status)
+        val r = body(response)
+        assertEquals(json.readTree(json.writeValueAsString(original.result)), r.path("result"))
+        assertEquals(original.validatedAt.toString(), r.path("validatedAt").textValue())
+        assertFalse(r.has("requestHash")); assertFalse(r.has("commandType"))
+        val p = r.path("result").path("progression")
+        assertEquals(original.revision.value, p.path("revision").longValue())
+        assertEquals(command.cycleId, p.path("cycleId").textValue())
+        assertEquals(6, p.path("attributes").path("STR").path("xp").intValue())
+        assertEquals(0, p.path("attributes").path("STR").path("inactiveDates").intValue())
+    }
+    @Test fun persistedRecordReceiptCannotBeReadOrRecoveredByAnotherUid() = scenario { f ->
+        val (command, _) = seedReceipt(f)
+        val foreign = f.root(f.b)
+        assertNull(OperationStore(f.resources.firestore).find(f.b, command.operationId))
+        assertNull(RecordOperations(OperationStore(f.resources.firestore)).recover(f.b, command))
+        assertEquals(foreign, f.root(f.b)); assertNull(f.receipt(command.operationId, f.b))
+    }
+    @Test fun persistedRecordUuidCollisionChecksPayloadCycleAndCommandType() = scenario { f ->
+        val (command, _) = seedReceipt(f)
+        val before = f.receipt(command.operationId)
+        val changedPayload = command.payload.deepCopy<JsonNode>().also { (it as com.fasterxml.jackson.databind.node.ObjectNode).put("minutes", 35) }
+        val variants = listOf(command.copy(payload = changedPayload), command.copy(cycleId = "synthetic-other-cycle"),
+            command.copy(type = CommandType.DELETE_RECORD, payload = json.valueToTree(mapOf("recordId" to "synthetic-receipt-record", "expectedVersion" to 1))))
+        for (variant in variants) {
+            val response = client.resend(f, variant)
+            assertEquals(HttpStatusCode.Conflict, response.status)
+            assertEquals("OPERATION_ID_REUSED", body(response).path("error").path("code").textValue())
+            assertEquals(before, f.receipt(command.operationId))
+        }
+    }
+    @Test fun persistedRecordProgressionRemainsAtItsAppliedRevisionAfterNewerReceipt() = scenario { f ->
+        val (command, original) = seedReceipt(f)
+        seedReceipt(f)
+        val before = f.root(); val projection = f.projection()
+        val response = client.resend(f, command)
+        assertEquals(HttpStatusCode.OK, response.status)
+        val recovered = body(response).path("result")
+        assertEquals(original.revision.value, recovered.path("revision").longValue())
+        assertEquals(original.revision.value, recovered.path("progression").path("revision").longValue())
+        assertTrue((before["revision"] as Number).toLong() > original.revision.value)
+        assertEquals(before, f.root()); assertEquals(projection, f.projection())
+    }
+    @Test fun recordConfirmationRejectsMismatchedOwnerCycleAndIdentityBeforeAnyWrite() = scenario { f ->
+        val cycle = Cycle(f.a, CycleId(f.cycle()), f.now)
+        val record = ActivityRecord.create(RecordId("synthetic-plan"), cycle.id, ActivityCatalog.find(ActivityId("strength"))!!,
+            BusinessTime.date(f.now), 30, f.now)
+        val command = CommandEnvelope(OperationId.create(), CommandType.CREATE_RECORD, cycle.id.value, json.valueToTree(payload()))
+        val progression = Progression.initial(cycle, Revision(2))
+        val service = RecordOperations(OperationStore(f.resources.firestore)); val before = f.root()
+        assertFailsWith<IllegalArgumentException> { service.confirmation(f.b, command, record, progression, emptyList()) }
+        assertFailsWith<IllegalArgumentException> { service.confirmation(f.a, command.copy(cycleId = "synthetic-other"), record, progression, emptyList()) }
+        val edit = command.copy(type = CommandType.EDIT_RECORD, payload = json.valueToTree(mapOf("recordId" to "synthetic-other")))
+        assertFailsWith<IllegalArgumentException> { service.confirmation(f.a, edit, record, progression, emptyList()) }
+        assertEquals(before, f.root()); assertTrue(f.records().isEmpty())
+    }
     private class Fixture(val resources: ServerResources, initialNow: Instant) {
         val a = Uid("synthetic-record-${UUID.randomUUID()}"); val b = Uid("synthetic-record-${UUID.randomUUID()}")
         val tokenA = "synthetic-record-token-a"; val tokenB = "synthetic-record-token-b"

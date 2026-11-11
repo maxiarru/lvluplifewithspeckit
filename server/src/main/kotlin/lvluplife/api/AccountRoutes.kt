@@ -7,6 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import lvluplife.application.AuthoritativeClock
 import lvluplife.application.CompleteProfile
+import lvluplife.application.RecordOperations
 import lvluplife.persistence.AccountStore
 import lvluplife.persistence.OperationStore
 import lvluplife.persistence.RevisionTransaction
@@ -18,9 +19,17 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
     val accounts = AccountStore(firestore)
     val operations = OperationStore(firestore)
     val complete = CompleteProfile(accounts, operations, RevisionTransaction(firestore, operations, clock))
+    val records = RecordOperations(operations)
     return ApiHandlers(command = { uid, command ->
-        if (command.type != CommandType.COMPLETE_PROFILE) throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
-        withContext(Dispatchers.IO) { receiptResponse(complete.execute(uid, command)) }
+        withContext(Dispatchers.IO) {
+            val receipt = when {
+                command.type == CommandType.COMPLETE_PROFILE -> complete.execute(uid, command)
+                RecordOperations.supports(command.type) -> records.recover(uid, command)
+                    ?: throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
+                else -> throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
+            }
+            receiptResponse(receipt)
+        }
     }, query = { uid, query ->
         if (query != ApiQuery.Me) throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
         withContext(Dispatchers.IO) {

@@ -18,6 +18,27 @@ Todas las rutas privadas se resuelven a partir del UID verificado. El cliente no
 
 El catálogo inicial de 11 actividades y la tabla de 26 clases: Novato con una etapa y las otras 25 con tres (76 imágenes) son datos versionados del dominio y recursos del producto, no editables por el usuario. No se inventan tasas ni asignaciones nuevas. `rulesVersion` identifica las reglas aprobadas; cambiar fórmulas exige actualizar especificaciones, no una configuración remota arbitraria.
 
+### Recibos de registros de T037
+
+RecordOperations integra CREATE_RECORD, EDIT_RECORD y DELETE_RECORD con el
+OperationStore compartido. El despacho busca un recibo propio coincidente antes
+de leer cuenta, ciclo, versión o reloj; un resultado existente se devuelve intacto,
+incluso si su fecha ya expiró o el ciclo dejó de ser actual. Cambiar tipo, ciclo o
+payload con el mismo UUID conserva el recibo original y produce OPERATION_ID_REUSED.
+Sin recibo, el despacho todavía devuelve indisponibilidad hasta conectar los handlers.
+
+confirmation construye el resultado del plan transaccional: recordId, version,
+createdAt, cycleId, revision y progression. Esta instantánea incluye su propia
+revisión, ciclo, fecha de negocio, instante de cálculo, seis saldos con inactividad,
+nivel/contador general, clase, etapa y etapas disponibles. Se comprueba que dueño,
+ciclo e identidad correspondan al registro/progresión suministrados. No hay un
+segundo hash, almacén, política de reintentos ni escritura independiente de recibos:
+RevisionTransaction sigue confirmando efectos, recibo y revisión en conjunto.
+
+La instantánea de un recibo corresponde a su revisión de aplicación; recuperarla
+no publica una proyección actual ni modifica la raíz. La admisión de comandos
+nuevos se integra en T038/T039 y la consulta GET de operaciones en T040.
+
 ### Definición resuelta y modelo de registro de T029
 
 ActivityDefinition conserva ID, nombre, categoría, modalidad, atributos y
