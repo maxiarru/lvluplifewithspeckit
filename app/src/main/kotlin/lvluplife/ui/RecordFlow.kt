@@ -19,7 +19,10 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
         val homeView by home.state.collectAsState()
         val view by controller.state.collectAsState()
         val custom = remember(session, customActivities) { customActivities?.let { CustomActivityController(session, it, scope) } }
-        val customView = custom?.state?.collectAsState()?.value
+        val customView = if (custom != null) {
+            val state by custom.state.collectAsState()
+            state
+        } else null
         DisposableEffect(custom) { onDispose { custom?.dispose() } }
         LaunchedEffect(custom) { custom?.start() }
         LaunchedEffect(customView?.settlement) { if ((customView?.settlement ?: 0) > 0) {

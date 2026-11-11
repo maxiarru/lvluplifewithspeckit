@@ -25,8 +25,10 @@ class CustomActivityController(private val session: SessionController, private v
     private val draftScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var dirty = false
     private var listRequest = 0L
+    @Volatile private var disposed = false
     private val saves = Mutex()
-    private fun valid() = uid != null && session.current()?.uid == uid && session.state.value.sessionId == epoch
+    private fun sessionValid() = uid != null && session.current()?.uid == uid && session.state.value.sessionId == epoch
+    private fun valid() = !disposed && sessionValid()
     fun start() {
         mutable.value = mutable.value.copy(busy = true)
         scope.launch {
@@ -67,12 +69,13 @@ class CustomActivityController(private val session: SessionController, private v
         }
     }
     fun dispose() {
-        if (!dirty || !valid()) { draftScope.cancel(); return }
+        disposed = true
+        if (!dirty || !sessionValid()) { draftScope.cancel(); return }
         val draft = mutable.value.draft
         draftScope.launch {
-            try { saves.withLock { if (valid()) activities.saveDraft(uid!!, draft) } }
+            try { saves.withLock { if (sessionValid()) activities.saveDraft(uid!!, draft) } }
             catch (cancelled: CancellationException) { throw cancelled }
-            catch (blocked: OperationBlocked) { if (valid()) mutable.value = mutable.value.copy(message = message(blocked.code)) }
+            catch (_: Exception) { /* The screen is gone; keep the last durable draft without publishing UI state. */ }
             finally { draftScope.cancel() }
         }
     }
