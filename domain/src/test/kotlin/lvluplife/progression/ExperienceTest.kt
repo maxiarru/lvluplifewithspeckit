@@ -190,4 +190,53 @@ class ExperienceTest {
     @Test fun negativeSleepDurationIsRejectedBeforeAnyAward() {
         assertFailsWith<IllegalArgumentException> { ExperienceRules.sleep(-1, cycle, day) }
     }
+    @Test fun durationRejectsConstitutionAndDuplicateAttributes() {
+        assertFailsWith<IllegalArgumentException> { ExperienceRules.duration(30, CON) }
+        assertFailsWith<IllegalArgumentException> { ExperienceRules.duration(30, STR, CON) }
+        assertFailsWith<IllegalArgumentException> { ExperienceRules.duration(30, STR, STR) }
+    }
+    @Test fun excessiveDurationCannotBeScoredEvenAtLevelFifty() {
+        for (minutes in listOf(1441, Int.MAX_VALUE))
+            assertFailsWith<IllegalArgumentException> { ExperienceRules.duration(minutes, STR, atLevelCap = setOf(STR)) }
+    }
+    @Test fun invalidDailyBudgetsAreRejectedBeforeTheyCanIncreaseAnAward() {
+        for (budget in listOf(mapOf(STR to -1), mapOf(STR to 49), mapOf(MEN to 31), mapOf(CON to 29)))
+            assertFailsWith<IllegalArgumentException> { ExperienceRules.duration(30, STR, awardedToday = budget, atLevelCap = setOf(STR)) }
+    }
+    @Test fun mealCountsAndBudgetsCannotBeNegativeOrBeyondTheXpCap() {
+        assertFailsWith<IllegalArgumentException> { ExperienceRules.meals(-1) }
+        assertFailsWith<IllegalArgumentException> { ExperienceRules.meal(-1) }
+        for (budget in listOf(-1, 29)) assertFailsWith<IllegalArgumentException> { ExperienceRules.meal(0, budget, atLevelCap = true) }
+    }
+    @Test fun largeMealCountsStayCappedWithoutOverflow() {
+        assertEquals(28, ExperienceRules.meals(Int.MAX_VALUE))
+        assertEquals(0, ExperienceRules.meal(Int.MAX_VALUE))
+    }
+    @Test fun sleepRejectsExcessiveDurationAndInvalidBudgetEvenAtMaximumLevel() {
+        assertFailsWith<IllegalArgumentException> { ExperienceRules.sleep(1441, cycle, day) }
+        for (budget in listOf(-1, 31)) assertFailsWith<IllegalArgumentException> {
+            ExperienceRules.sleep(60, cycle, day, awardedToday = budget, atLevelCap = true)
+        }
+    }
+    @Test fun pendingSleepMustContainLessThanOneHourOfNonnegativeMinutes() {
+        for (minutes in listOf(-1, 60, Int.MAX_VALUE))
+            assertFailsWith<IllegalArgumentException> { SleepRemainder(cycle, day, minutes) }
+    }
+    @Test fun outputIsImmutableAndIndependentFromMutableInputBudget() {
+        val budget = mutableMapOf(STR to 47, DEX to 0)
+        val result = ExperienceRules.duration(30, STR, DEX, budget)
+        assertEquals(mapOf(STR to 47, DEX to 0), budget)
+        assertFailsWith<UnsupportedOperationException> { (result as MutableMap)[STR] = 999 }
+        budget.clear()
+        assertEquals(mapOf(STR to 1, DEX to 2), result)
+    }
+    @Test fun dailyLimitsAreCanonicalCompleteAndImmutable() {
+        val expected = mapOf(STR to 48, DEX to 48, INT to 48, WIT to 48, MEN to 30, CON to 28)
+        assertEquals(expected, ExperienceRules.dailyLimits)
+        assertFailsWith<UnsupportedOperationException> { (ExperienceRules.dailyLimits as MutableMap)[STR] = 999 }
+        assertEquals(expected, ExperienceRules.dailyLimits)
+    }
+    @Test fun maximumLevelSecondaryDoesNotChangePrimaryShare() {
+        assertEquals(mapOf(STR to 4, DEX to 0), ExperienceRules.duration(30, STR, DEX, atLevelCap = setOf(DEX)))
+    }
 }

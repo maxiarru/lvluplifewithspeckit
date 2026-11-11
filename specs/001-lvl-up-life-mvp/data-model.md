@@ -68,6 +68,25 @@ Estas validaciones no ejecutan XP, subidas, inactividad ni clasificación.
 La asignación completa de clase/etapa corresponde a T034 y la reconstrucción
 a T036; codecs, publicación transaccional y endpoints se conectan después.
 
+### Cálculo de aportes de T031
+
+ExperienceRules contiene las fórmulas canónicas y un mapa diario inmutable:
+STR/DEX/INT/WIT48, MEN30, CON28. La duración ordinaria usa bloques enteros
+de5 minutos por registro; para dos atributos asigna floor(total/3) al secundario
+y el resto al principal, antes de aplicar márgenes independientes, sin redistribuir.
+Comidas: delta del total de7 XP por cada una de las primeras4; las demás aportan0.
+Sueño:3 XP por bloque completo de60 minutos, con sobrante0–59 ligado a fecha/ciclo.
+La saturación diaria o nivel50 produce aporte0 y consume los bloques completos;
+no conserva XP pendiente ni traslada sobrantes a otra fecha o ciclo.
+
+El motor proporciona presupuestos diarios ya derivados del ciclo/fecha y los
+atributos en nivel50; un presupuesto negativo o superior al tope se rechaza como
+contexto inválido. Los aportes devueltos no modifican entradas y sus mapas no se
+pueden editar. Un aporte0 es un resultado válido, no una razón para descartar el
+registro; T039 persiste los registros válidos independientemente de su aporte.
+La elegibilidad de fecha, duración conjunta, concurrencia y almacenamiento no
+se deciden dentro de estas funciones puras.
+
 ### Codificación de reservas de nombre
 
 `usernameKey` sigue siendo el nombre ASCII en minúsculas. Si coincide con
