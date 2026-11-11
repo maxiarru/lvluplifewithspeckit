@@ -1,7 +1,60 @@
 package lvluplife.api
 
 import com.google.cloud.firestore.Firestore
+import com.fasterxml.jackson.databind.JsonNode
+import io.ktor.http.HttpStatusCode
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import lvluplife.application.AuthoritativeClock
+import lvluplife.application.CompleteProfile
+import lvluplife.persistence.AccountStore
+import lvluplife.persistence.OperationStore
+import lvluplife.persistence.RevisionTransaction
+import lvluplife.persistence.OperationReceipt
+import lvluplife.persistence.ReceiptOutcome
 
-/** T017 compile-time contract only; account services/routes are implemented in T020–T021. */
-fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandlers = ApiHandlers()
+/** Dispatches account endpoints through the common authenticated/schema-checked /v1 routes. */
+fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandlers {
+    val accounts = AccountStore(firestore)
+    val operations = OperationStore(firestore)
+    val complete = CompleteProfile(accounts, operations, RevisionTransaction(firestore, operations, clock))
+    return ApiHandlers(command = { uid, command ->
+        if (command.type != CommandType.COMPLETE_PROFILE) throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
+        withContext(Dispatchers.IO) { receiptResponse(complete.execute(uid, command)) }
+    }, query = { uid, query ->
+        if (query != ApiQuery.Me) throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
+        withContext(Dispatchers.IO) {
+            val account = accounts.read(uid)
+            val body = apiJson.createObjectNode().put("profileRequired", account == null)
+            if (account != null) body.putObject("profile").apply {
+                put("uid", account.uid.value)
+                put("username", account.username.value)
+                put("createdAt", account.createdAt.toString())
+                put("currentCycleId", account.currentCycleId.value)
+                put("revision", account.revision.value)
+                put("schemaVersion", account.schemaVersion)
+            }
+            ApiResponse(body)
+        }
+    })
+}
+
+/** Only the public receipt contract is returned, never request hashes or stored private metadata. */
+internal fun receiptResponse(receipt: OperationReceipt): ApiResponse {
+    val body = apiJson.createObjectNode().apply {
+        put("operationId", receipt.operationId.value)
+        put("outcome", receipt.outcome.name)
+        put("validatedAt", receipt.validatedAt.toString())
+    }
+    return when (receipt.outcome) {
+        ReceiptOutcome.CONFIRMED -> {
+            body.set<JsonNode>("result", apiJson.valueToTree(requireNotNull(receipt.result)))
+            ApiResponse(body, HttpStatusCode.OK)
+        }
+        ReceiptOutcome.REJECTED -> {
+            val error = requireNotNull(receipt.error)
+            body.putObject("error").put("code", error.name).put("message", error.safeMessage)
+            ApiResponse(body, error.status)
+        }
+    }
+}

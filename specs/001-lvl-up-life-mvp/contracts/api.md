@@ -67,6 +67,29 @@ Errores de transporte, 401, 403 y fallos transitorios no son recibos funcionales
 
 No hay endpoint de historial público, asignación manual de XP, cambio de reglas o borrado de cuenta. Otro dispositivo con sesión válida de la misma cuenta consulta los datos ya guardados mediante las rutas de perfil, actividades, progreso e historial, sin necesitar UUID de operaciones. La recuperación de una operación corresponde a la instalación que conserva su sobre pendiente; no hay descubrimiento, importación ni sincronización de pendientes entre dispositivos. Consultar un recibo siempre requiere autenticación y autorización por UID; conocer su UUID no concede acceso.
 
+### Forma de `GET /me`
+
+Identidad válida sin alta completada: `{"profileRequired":true}`, sin crear
+cuenta, ciclo ni proyección. Con perfil propio, la respuesta tiene esta forma:
+
+```json
+{
+  "profileRequired": false,
+  "profile": {
+    "uid": "uid-verificado",
+    "username": "Nombre_Visible",
+    "createdAt": "2026-11-10T15:00:00Z",
+    "currentCycleId": "id-ciclo-vigente",
+    "revision": 1,
+    "schemaVersion": 1
+  }
+}
+```
+
+No incluye reservas globales, hash de comandos ni credenciales. Una lectura
+fallida o un perfil corrupto produce error; no se responde `profileRequired:true`
+como sustituto de ese fallo.
+
 ## Errores y conflictos
 
 | HTTP / código | Efecto y acción del cliente |

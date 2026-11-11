@@ -119,7 +119,7 @@ funcional. Los errores del SDK no se exponen ni se retienen como causas pública
 read/write son primitivas de IO; **ningún escritor funcional debe usarlas fuera
 del protocolo de revisión y commit atómico** de RevisionTransaction. CompleteProfile
 lo reutiliza para cuenta, ciclo, proyección, reserva de nombre y recibo; las rutas
-HTTP del alta se conectan en T021. Los fixtures que escriben fuera del protocolo
+HTTP del alta usan este servicio mediante accountHandlers. Los fixtures que escriben fuera del protocolo
 son exclusivamente datos sintéticos/corrupción deliberada en emuladores aislados.
 No hay rutas para fixtures, reloj ni inyección de fallos en producción.
 
@@ -133,3 +133,16 @@ El ID de reserva usa usernameKey salvo que coincida con `__.*__`: en ese caso
 se antepone `~` para cumplir las restricciones de Firestore sin prohibir nombres
 válidos. Las reglas de acceso directo siguen deny-all; el cliente no conoce ni
 administra estas rutas. No se agregaron permisos IAM ni recursos remotos.
+
+## Rutas de cuenta
+
+El módulo usado por main instala accountHandlers y el verificador Firebase de
+ServerResources. GET /v1/me solo consulta el perfil del UID verificado; no da de
+alta por autenticar. POST /v1/commands con COMPLETE_PROFILE invoca el servicio
+atómico existente. IO bloqueante de Firestore corre en Dispatchers.IO.
+
+Los recibos confirmados devuelven200; rechazos funcionales persistidos,409/422
+con código/mensaje seguros. Otros comandos y consultas mantienen503 hasta sus
+respectivas historias. No se devuelve requestHash ni claves de reserva en la API.
+La prueba runtime usa Ktor testApplication con Auth/Firestore locales y el mismo
+módulo que main; no acredita Google real, Netty/TLS desplegado ni IAM remoto.

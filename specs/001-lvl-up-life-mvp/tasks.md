@@ -64,7 +64,7 @@ Objetivo: acceso Google, alta única y privacidad. Prueba independiente: cuentas
 
 - [X] T020 [US1] Implementar alta, reserva única y proyección inicial atómicas en `server/src/main/kotlin/lvluplife/application/CompleteProfile.kt` y `server/src/main/kotlin/lvluplife/persistence/AccountStore.kt`: conservar escritura visible del nombre, un personaje por UID; reutilizar OperationStore y la base RevisionTransaction de T086–T087 para recibo inmutable, hash y revisión según modelo; añadir las precondiciones y la reserva de nombre del alta, sin duplicar infraestructura.
 
-- [ ] T021 [US1] Implementar GET /me y COMPLETE_PROFILE en `server/src/main/kotlin/lvluplife/api/AccountRoutes.kt`; cuenta existente recupera perfil, sin duplicar alta; hacer verdes contratos y carrera por nombre.
+- [X] T021 [US1] Implementar GET /me y COMPLETE_PROFILE en `server/src/main/kotlin/lvluplife/api/AccountRoutes.kt`; cuenta existente recupera perfil, sin duplicar alta; hacer verdes contratos y carrera por nombre.
 
 - [ ] T022 [US1] Implementar Credential Manager/Google ID y Firebase Auth en `app/src/main/kotlin/lvluplife/data/GoogleSignIn.kt`; sesión cancelada no escribe, sesión vencida suspende recuperación y denegación informa sin exponer datos.
 

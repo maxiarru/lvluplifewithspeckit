@@ -16,6 +16,8 @@ import java.nio.ByteBuffer
 import java.nio.charset.CharacterCodingException
 import java.nio.charset.CodingErrorAction
 import java.time.LocalDate
+import java.time.Instant
+import lvluplife.application.AuthoritativeClock
 import lvluplife.model.OperationId
 import lvluplife.model.Uid
 
@@ -40,6 +42,11 @@ data class ApiHandlers(
 
 fun Application.serverModule(verifyToken: (String) -> String? = ::verifyFirebaseToken) =
     serverModule(ApiHandlers(), verifyToken)
+
+/** Shared with the actual main entry point; all identities are verified by Firebase. */
+fun Application.serverModule(resources: ServerResources) =
+    serverModule(accountHandlers(resources.firestore, AuthoritativeClock { Instant.now() }),
+        verifyToken = { resources.identityVerifier.verify(it)?.value })
 
 fun Application.serverModule(handlers: ApiHandlers, verifyToken: (String) -> String? = ::verifyFirebaseToken) {
     installApiErrors()
@@ -77,9 +84,8 @@ fun Application.serverModule(handlers: ApiHandlers, verifyToken: (String) -> Str
 fun main() {
     val config = ServerConfig.fromEnvironment()
     ServerResources.open(config).use { resources ->
-        // Data handlers remain unavailable until their application services are implemented.
         val engine = embeddedServer(Netty, port = config.port) {
-            serverModule { resources.identityVerifier.verify(it)?.value }
+            serverModule(resources)
         }
         Runtime.getRuntime().addShutdownHook(Thread {
             try { engine.stop(500, 3000) } finally { resources.close() }
