@@ -77,7 +77,7 @@ Objetivo: acceso Google, alta única y privacidad. Prueba independiente: cuentas
 
 Objetivo: catálogo, carga, motor canónico y recuperación de creaciones. Prueba independiente: cuenta preparada, 30 min STR=6 XP, dual=4/2, sueño 30+30=3 MEN, quinta comida 0 XP, topes y cierre/reapertura. RF-06, 10–13, 17–40, 44–45, 47, 49, 51–56.
 
-- [ ] T025 [P] [US2] Escribir y ejecutar fixtures numéricos de XP/reparto/comida/sueño/topes en `domain/src/test/kotlin/lvluplife/progression/ExperienceTest.kt`: AC-25–35, 77–81, 89, 100–101; fallo observado antes de ExperienceRules.
+- [X] T025 [P] [US2] Escribir y ejecutar fixtures numéricos de XP/reparto/comida/sueño/topes en `domain/src/test/kotlin/lvluplife/progression/ExperienceTest.kt`: AC-25–35, 77–81, 89, 100–101; fallo observado antes de ExperienceRules.
 
 - [ ] T026 [P] [US2] Escribir y ejecutar pruebas de niveles, sobrantes, inactividad, clase y etapas en `domain/src/test/kotlin/lvluplife/progression/ProgressionTest.kt`: AC-36–62, 82–85, 91–92, 106–107; fallo observado antes de reglas.
 
