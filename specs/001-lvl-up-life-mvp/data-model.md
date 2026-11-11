@@ -18,6 +18,32 @@ Todas las rutas privadas se resuelven a partir del UID verificado. El cliente no
 
 El catálogo inicial de 11 actividades y la tabla de 26 clases: Novato con una etapa y las otras 25 con tres (76 imágenes) son datos versionados del dominio y recursos del producto, no editables por el usuario. No se inventan tasas ni asignaciones nuevas. `rulesVersion` identifica las reglas aprobadas; cambiar fórmulas exige actualizar especificaciones, no una configuración remota arbitraria.
 
+### Definición resuelta y modelo de registro de T029
+
+ActivityDefinition conserva ID, nombre, categoría, modalidad, atributos y
+experienceRule (DURATION/SLEEP/MEAL). Esta última etiqueta identifica la regla
+canónica, no almacena tasas ni XP elegida por el cliente. Solo los IDs básicos
+sleep y meal pueden usar sus excepciones; MEN personalizado usa DURATION.
+La definición guardada en ActivityRecord es una instantánea inmutable del
+resolver del servidor. activityId deriva de ella para impedir divergencias.
+Los IDs de actividad/registro son segmentos privados de documento válidos,
+sin rutas, controles, patrón reservado __.*__ ni más de1500 bytes UTF-8.
+
+El nombre de una definición ya resuelta está recortado y tiene1–50 puntos de
+código Unicode. La categoría solo debe contener texto no vacío: no se agrega
+un máximo ni recorte obligatorio. El catálogo básico expone una lista que
+no permite mutaciones. Un registro por duración exige1–1440 minutos enteros
+normalizados; comida exige duración ausente. El presupuesto compartido de la
+fecha/ciclo y componentes de entrada se validan aparte en T035.
+
+create fija versión1 y updatedAt=createdAt. correct conserva ID/ciclo/createdAt,
+incrementa versión y permite cambiar entre actividades por duración; comida
+solo cambia de fecha. markDeleted conserva datos y añade tombstone/version,
+sin borrado físico. Un tombstone no admite nuevas correcciones ni otro borrado.
+restore valida versión positiva, modalidad y cronología del estado almacenado.
+Las operaciones del modelo no autorizan ni escriben: ventana de edición,
+cuenta/ciclo vigentes, recibos y transacciones se validan en sus servicios.
+
 ### Codificación de reservas de nombre
 
 `usernameKey` sigue siendo el nombre ASCII en minúsculas. Si coincide con

@@ -18,15 +18,18 @@ class ReplayTest {
     private fun cycle(start: String = "2026-11-01T15:00:00Z") = Cycle(owner, cycleId, Instant.parse(start), RulesVersion.CURRENT)
     private fun duration(id: String, minutes: Int = 30, date: LocalDate = day, at: Instant = created,
         cid: CycleId = cycleId, primary: Attribute = STR, secondary: Attribute? = null) =
-        ReplayRecord(id, cid, date, at, ReplayKind.DURATION, primary, secondary, minutes)
+        ActivityRecord.create(RecordId(id), cid,
+            if (primary == STR && secondary == null) ActivityCatalog.find(ActivityId("strength"))!! else
+                ActivityDefinition(ActivityId("synthetic-custom"), "Actividad de prueba", "Pruebas", ActivityMode.DURATION, primary, secondary),
+            date, minutes, at)
     private fun sleep(id: String, minutes: Int = 30, date: LocalDate = day, cid: CycleId = cycleId) =
-        ReplayRecord(id, cid, date, created, ReplayKind.SLEEP, MEN, durationMinutes = minutes)
-    private fun meal(id: String, date: LocalDate = day) = ReplayRecord(id, cycleId, date, created, ReplayKind.MEAL, CON)
-    private fun replay(records: List<ReplayRecord>, at: Instant = now, current: Cycle = cycle()) = ReplayEngine.rebuild(current, records, at)
+        ActivityRecord.create(RecordId(id), cid, ActivityCatalog.find(ActivityId("sleep"))!!, date, minutes, created)
+    private fun meal(id: String, date: LocalDate = day) = ActivityRecord.create(RecordId(id), cycleId, ActivityCatalog.find(ActivityId("meal"))!!, date, null, created)
+    private fun replay(records: List<ActivityRecord>, at: Instant = now, current: Cycle = cycle()) = ReplayEngine.rebuild(current, records, at)
     private fun balance(xp: Int = 0, inactive: Int = 0, level: Int = 1) = InactivityBalance(AttributeBalance(level, xp), inactive)
-    private fun validate(hours: String, minutes: String, records: List<ReplayRecord> = emptyList(), date: LocalDate = day,
+    private fun validate(hours: String, minutes: String, records: List<ActivityRecord> = emptyList(), date: LocalDate = day,
         cid: CycleId = cycleId, excluding: String? = null) =
-        RecordValidation.durationMinutes(BigDecimal(hours), BigDecimal(minutes), cid, date, records, excluding)
+        RecordValidation.durationMinutes(BigDecimal(hours), BigDecimal(minutes), cid, date, records, excluding?.let(::RecordId))
 
     // AC-17/18/124: the server's validation instant, not request/device time, decides UTC-3 dates.
     @Test fun todayYesterdayAndDayBeforeYesterdayAreAccepted() {
@@ -96,12 +99,12 @@ class ReplayTest {
     }
     @Test fun deletedRecordsReleaseDurationAndReplacementExcludesOriginal() {
         val original = duration("original", 180)
-        val records = listOf(original, duration("other", 1260), duration("deleted", 60).copy(deletedAt = now))
+        val records = listOf(original, duration("other", 1260), duration("deleted", 60).markDeleted(created.plusSeconds(60)))
         assertEquals(120, validate("2", "0", records, excluding = "original"))
         assertFailsWith<IllegalArgumentException> { validate("0", "1", records) }
     }
     @Test fun deletedDurationAloneCannotConsumeTheLastAvailableHour() {
-        val records = listOf(duration("active", 1380), duration("deleted", 60).copy(deletedAt = now))
+        val records = listOf(duration("active", 1380), duration("deleted", 60).markDeleted(created.plusSeconds(60)))
         assertEquals(60, validate("1", "0", records))
     }
     @Test fun threeHoursAtTwentyThreeOClockAreNotLimitedByTimeUntilMidnight() {
@@ -140,7 +143,7 @@ class ReplayTest {
         val a = duration("record-10", 5); val b = duration("record-2", 240)
         val result = replay(listOf(b, a))
         assertEquals(listOf("record-10", "record-2"), result.orderedRecordIds)
-        assertEquals(mapOf(STR to 1), result.recordXp.getValue(a.id)); assertEquals(mapOf(STR to 47), result.recordXp.getValue(b.id))
+        assertEquals(mapOf(STR to 1), result.recordXp.getValue(a.id.value)); assertEquals(mapOf(STR to 47), result.recordXp.getValue(b.id.value))
         assertEquals(result, replay(listOf(a, b))); assertEquals(result, replay(listOf(b, a)))
     }
     @Test fun ordinalIdsDistinguishUpperAndLowerCase() {
@@ -148,17 +151,17 @@ class ReplayTest {
     }
     @Test fun editedValuesKeepTheirOriginalCreationOrder() {
         val original = duration("earlier-created", 5, at = Instant.parse("2026-11-11T12:00:00Z"))
-        val edited = original.copy(durationMinutes = 240)
+        val edited = original.correct(day, durationMinutes = 240, now = original.createdAt.plusSeconds(60))
         val later = duration("later-created", 30, at = Instant.parse("2026-11-11T13:00:00Z"))
         val result = replay(listOf(later, edited))
-        assertEquals(listOf(original.id, later.id), result.orderedRecordIds)
-        assertEquals(mapOf(STR to 48), result.recordXp.getValue(original.id)); assertEquals(mapOf(STR to 0), result.recordXp.getValue(later.id))
+        assertEquals(listOf(original.id.value, later.id.value), result.orderedRecordIds)
+        assertEquals(mapOf(STR to 48), result.recordXp.getValue(original.id.value)); assertEquals(mapOf(STR to 0), result.recordXp.getValue(later.id.value))
         assertEquals(original.createdAt, edited.createdAt)
     }
     @Test fun tombstonesAreExcludedFromXpAndDurationAndOutputOrder() {
-        val deleted = duration("deleted", 240).copy(deletedAt = now)
+        val deleted = duration("deleted", 240).markDeleted(created.plusSeconds(60))
         val result = replay(listOf(deleted, duration("kept")))
-        assertEquals(listOf("kept"), result.orderedRecordIds); assertFalse(result.recordXp.containsKey(deleted.id))
+        assertEquals(listOf("kept"), result.orderedRecordIds); assertFalse(result.recordXp.containsKey(deleted.id.value))
         assertEquals(6, result.recordXp.getValue("kept").getValue(STR)); assertEquals(30, result.durationByDate.getValue(day))
     }
     @Test fun previousCycleRecordsCannotConsumeCurrentCycleXpOrMinutes() {
@@ -229,6 +232,6 @@ class ReplayTest {
         val sunday = duration("sunday", 30, LocalDate.parse("2026-11-08"), Instant.parse("2026-11-09T16:00:00Z"))
         val result = replay(listOf(sunday), Instant.parse("2026-11-10T15:00:00Z"), monday)
         assertEquals(Attribute.entries.associateWith { balance(inactive = 1) } + (STR to balance(6, 1)), result.attributes)
-        assertEquals(mapOf(STR to 6), result.recordXp.getValue(sunday.id))
+        assertEquals(mapOf(STR to 6), result.recordXp.getValue(sunday.id.value))
     }
 }
