@@ -19,7 +19,7 @@ import org.junit.Test
 /** Simulated provider/query ports only. No Google UI, Firebase credentials, or remote writes. */
 class AccessFlowTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
-    private val controller get() = compose.activity.sessionController
+    private val controller = SessionController()
     private class Provider : GoogleSignIn {
         val attempts = AtomicInteger()
         val signOuts = AtomicInteger()

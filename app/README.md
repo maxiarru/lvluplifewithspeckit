@@ -17,7 +17,7 @@ No se crean proyectos/clientes OAuth ni se habilitan proveedores desde el build.
 
 Sin configuración, el proyecto compila para pruebas y la fábrica devuelve
 Unavailable sin abrir el selector ni enviar credenciales. No se incluye una
-configuración ficticia de producción. Las pantallas conectan el adaptador en T023.
+configuración ficticia de producción. MainActivity conecta el adaptador al flujo de acceso y perfil.
 El acceso Google real y los fingerprints/OAuth de un proyecto remoto no se
 acreditan con las pruebas locales.
 
@@ -48,13 +48,34 @@ Desde la raíz, con JDK17/Android SDK configurados:
 
 Con el emulador Android iniciado, en otra terminal instalar los APK debug y
 androidTest con adb. Ejecutar `am instrument -w -r -e class` para
-`lvluplife.data.GoogleCredentialRequestsTest,lvluplife.data.FirebaseSdkIdentityTest,lvluplife.ui.SessionNavigationTest,lvluplife.data.PendingStoreTest`,
+`lvluplife.data.GoogleCredentialRequestsTest,lvluplife.data.FirebaseSdkIdentityTest,lvluplife.ui.SessionNavigationTest,lvluplife.ui.AccessFlowTest,lvluplife.ui.ProfileFlowTest,lvluplife.data.PendingStoreTest`,
 usando `lvluplife.android.test/androidx.test.runner.AndroidJUnitRunner`.
 FirebaseSdkIdentityTest usa una FirebaseApp nombrada de `demo-lvluplife` y
 Auth Emulator en `10.0.2.2:9099` (host del equipo desde Android Emulator).
 Las claims Google son sintéticas: prueba el SDK Firebase real local, no Google real.
 `connectedDebugAndroidTest` también requiere este servicio para dicho test;
-AccessFlowTest tiene sus casos pendientes de implementación UI en T023.
+AccessFlowTest y ProfileFlowTest prueban acceso/alta con puertos simulados; no requieren Google real.
+
+## API y navegación
+
+AndroidAppGraph vive en Application y conecta sesión, Room y ApiAccessAccounts.
+Debug usa `http://10.0.2.2:8081` por defecto (API local, no Auth Emulator).
+Para otro servidor, compilar con `-Plvlup.apiBaseUrl=https://api.example.com`.
+Release requiere una URL HTTPS válida; sin URL configurada muestra error seguro
+al consultar la cuenta. Los controles de ApiEndpoint rechazan HTTP remoto y URLs
+locales en release. La URL no lleva secretos ni rutas de prueba.
+
+La autenticación restaura pendientes propios y consulta `/me`. Solo
+`profileRequired:true` ofrece crear personaje; un fallo de consulta muestra
+error y reintento. El nombre se envía mediante COMPLETE_PROFILE persistido en
+Room antes del POST. Un rechazo permite corregirlo con una intención nueva;
+un resultado incierto conserva el sobre y su UUID, y permite reintentar esa
+operación. El borrador pertenece al UID y no contiene credenciales.
+La confirmación se sigue de otra lectura de `/me`, sin inventar progreso local.
+
+Cerrar sesión limpia inmediatamente datos, formulario y navegación en memoria,
+y después cierra Firebase/Credential Manager. Las respuestas tardías se descartan.
+La limpieza mantiene los pendientes durables ligados a su cuenta original.
 
 Versiones fijadas: Credentials1.6.0, Google ID1.1.1, Firebase Auth25.0.0,
 Google services4.5.0 y coroutines1.10.2; Kotlin/Compose compiler2.4.20 conservados.

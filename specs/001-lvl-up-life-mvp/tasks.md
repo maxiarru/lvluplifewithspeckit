@@ -68,7 +68,7 @@ Objetivo: acceso Google, alta única y privacidad. Prueba independiente: cuentas
 
 - [X] T022 [US1] Implementar Credential Manager/Google ID y Firebase Auth en `app/src/main/kotlin/lvluplife/data/GoogleSignIn.kt`; sesión cancelada no escribe, sesión vencida suspende recuperación y denegación informa sin exponer datos.
 
-- [ ] T023 [US1] Implementar acceso, nombre y navegación autenticada en `app/src/main/kotlin/lvluplife/ui/AccessScreen.kt`, `ProfileScreen.kt` y `AppNavigation.kt`; manejar nombre ocupado y reintento con nuevo comando.
+- [X] T023 [US1] Implementar acceso, nombre y navegación autenticada en `app/src/main/kotlin/lvluplife/ui/AccessScreen.kt`, `ProfileScreen.kt` y `AppNavigation.kt`; manejar nombre ocupado y reintento con nuevo comando.
 
 - [ ] T024 [US1] Ejecutar pruebas US1 y comprobar lectura/escritura API ajena y Firestore directo rechazados en `server/src/integrationTest/kotlin/lvluplife/account/IsolationTest.kt`; registrar resultados y prueba de segunda instalación con misma identidad en `specs/001-lvl-up-life-mvp/validation.md`.
 

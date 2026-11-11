@@ -16,7 +16,10 @@ import org.junit.Test
 
 class SessionNavigationTest {
     @get:Rule val compose = createAndroidComposeRule<MainActivity>()
-    private val controller get() = compose.activity.sessionController
+    private val controller = lvluplife.application.SessionController()
+    @org.junit.Before fun mountIsolatedSession() {
+        compose.runOnIdle { compose.activity.setContent { MaterialTheme { SessionHost(controller) } } }
+    }
     private fun login(uid: String) = compose.runOnIdle { controller.authenticate(SessionToken(uid, "synthetic-token")) }
 
     @Test fun logoutRemovesPrivateScreenAndBackCannotRestoreIt() {

@@ -16,10 +16,18 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "0.1.0"
+        val apiBaseUrl = providers.gradleProperty("lvlup.apiBaseUrl").orElse("").get()
+        buildConfigField("String", "API_BASE_URL", "\"" + apiBaseUrl.replace("\\", "\\\\").replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r") + "\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["notAnnotation"] = "lvluplife.data.ProcessStage"
     }
     buildFeatures { compose = true; buildConfig = true }
+    buildTypes {
+        getByName("debug") {
+            if (!providers.gradleProperty("lvlup.apiBaseUrl").isPresent)
+                buildConfigField("String", "API_BASE_URL", "\"http://10.0.2.2:8081\"")
+        }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17

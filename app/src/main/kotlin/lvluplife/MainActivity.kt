@@ -6,11 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 
 class MainActivity : ComponentActivity() {
-    val sessionController = lvluplife.application.SessionController()
+    val sessionController get() = (application as LvlUpApplication).graph.session
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val graph = (application as LvlUpApplication).graph
+        val google = lvluplife.data.AndroidGoogleSignIn.create(this)
         setContent {
-            MaterialTheme { lvluplife.ui.SessionHost(sessionController) }
+            MaterialTheme { lvluplife.ui.AppNavigation(graph.session, google, graph.accounts) }
         }
     }
 }

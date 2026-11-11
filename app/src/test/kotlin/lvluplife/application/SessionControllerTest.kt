@@ -9,6 +9,18 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class SessionControllerTest {
+    @Test fun staleAuthenticationCannotRestoreAfterLogout() {
+        val c = SessionController(); val epoch = c.authenticationEpoch(); c.logout()
+        assertFalse(c.authenticate(SessionToken("owner-a", "synthetic-a"), expectedEpoch = epoch))
+        assertNull(c.current()); assertEquals(SessionView(), c.state.value)
+    }
+
+    @Test fun staleAuthenticationCannotReplaceANewerAccount() {
+        val c = SessionController(); val epoch = c.authenticationEpoch()
+        c.authenticate(SessionToken("owner-b", "synthetic-b"))
+        assertFalse(c.authenticate(SessionToken("owner-a", "synthetic-a"), expectedEpoch = epoch))
+        assertEquals("owner-b", c.current()?.uid)
+    }
     private val a = SessionToken("owner-a", "synthetic-a")
     private val b = SessionToken("owner-b", "synthetic-b")
     private val ref = OperationRef("owner-a", "123e4567-e89b-42d3-a456-426614174000")

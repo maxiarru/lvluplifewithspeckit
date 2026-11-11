@@ -17,7 +17,7 @@ import lvluplife.application.SessionView
 
 /** No saved private back stack: a session change disposes all account-owned composition state. */
 @Composable
-fun SessionHost(controller: SessionController, content: @Composable (SessionView) -> Unit = {}) {
+fun SessionHost(controller: SessionController, onLogout: () -> Unit = { controller.logout() }, content: @Composable (SessionView) -> Unit = {}) {
     val view by controller.state.collectAsState()
     BackHandler(enabled = view.routes.size > 1) { controller.back() }
     key(view.uid, view.sessionId) {
@@ -37,7 +37,7 @@ fun SessionHost(controller: SessionController, content: @Composable (SessionView
                     Text("Confirmación pendiente")
                 }
                 content(view)
-                Button(onClick = controller::logout) { Text("Cerrar sesión") }
+                Button(onClick = onLogout) { Text("Cerrar sesión") }
             }
         }
     }

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import lvluplife.data.*
 import lvluplife.ui.LoadState
 
-enum class SessionRoute { SIGN_IN, HOME, HISTORY }
+enum class SessionRoute { SIGN_IN, HOME, PROFILE, HISTORY }
 data class SessionView(val uid: String? = null, val routes: List<SessionRoute> = listOf(SessionRoute.SIGN_IN),
     val loads: Map<String, LoadState<Any>> = emptyMap(), val pending: List<OperationSnapshot> = emptyList(), val sessionId: Long = 0)
 class ReadTicket internal constructor(val uid: String, internal val generation: Long, val key: String, internal val request: Long)
@@ -34,10 +34,13 @@ class SessionController(private val operations: SessionOperations? = null) : Ses
     override fun current(): SessionToken? = token
 
     /** Blocking IO when operations are attached. Call only after the identity adapter verifies a fresh session. */
-    fun authenticate(token: SessionToken) {
+    fun authenticationEpoch(): Long = synchronized(lock) { generation }
+
+    fun authenticate(token: SessionToken, expectedEpoch: Long? = null): Boolean {
         require(token.uid.isNotBlank() && token.uid.length <= 128 && '/' !in token.uid && token.uid.none(Char::isISOControl))
         require(token.idToken.isNotEmpty() && token.idToken.all { it.code in 33..126 })
         val lease = synchronized(lock) {
+            if (expectedEpoch != null && expectedEpoch != generation) return false
             clearLocked()
             this.token = token
             mutableState.value = SessionView(uid = token.uid, routes = listOf(SessionRoute.HOME), sessionId = generation)
@@ -45,9 +48,14 @@ class SessionController(private val operations: SessionOperations? = null) : Ses
         }
         try { operations?.resumeAuthenticated(token.uid) }
         catch (blocked: OperationBlocked) { recoveryFailed(lease, blocked.code) }
+        return synchronized(lock) { matches(lease) }
     }
 
     fun logout() = synchronized(lock) { clearLocked() }
+
+    fun showHome(ticket: ReadTicket) = synchronized(lock) {
+        if (accepts(ticket)) mutableState.value = mutableState.value.copy(routes = listOf(SessionRoute.HOME))
+    }
 
     fun navigate(route: SessionRoute) = synchronized(lock) {
         if (token == null || route == SessionRoute.SIGN_IN) return@synchronized
