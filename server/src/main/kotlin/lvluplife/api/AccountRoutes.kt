@@ -9,6 +9,8 @@ import lvluplife.application.AuthoritativeClock
 import lvluplife.application.CompleteProfile
 import lvluplife.application.RecordOperations
 import lvluplife.application.CreateRecord
+import lvluplife.application.CreateCustomActivity
+import lvluplife.persistence.CustomActivityStore
 import lvluplife.application.ReadProgress
 import lvluplife.persistence.RecordStore
 import lvluplife.persistence.AccountStore
@@ -23,6 +25,7 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
     val operations = OperationStore(firestore)
     val transactions = RevisionTransaction(firestore, operations, clock)
     val complete = CompleteProfile(accounts, operations, transactions)
+    val createCustom = CreateCustomActivity(accounts, CustomActivityStore(), operations, transactions)
     val records = RecordOperations(operations)
     val store = RecordStore(firestore)
     val create = CreateRecord(store, records, transactions)
@@ -32,6 +35,7 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
             if (command.type == CommandType.CREATE_RECORD) return@withContext createRecordResponse(create, uid, command)
             val receipt = when {
                 command.type == CommandType.COMPLETE_PROFILE -> complete.execute(uid, command)
+                command.type == CommandType.CREATE_CUSTOM_ACTIVITY -> createCustom.execute(uid, command)
                 RecordOperations.supports(command.type) -> records.recover(uid, command)
                     ?: throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
                 else -> throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
