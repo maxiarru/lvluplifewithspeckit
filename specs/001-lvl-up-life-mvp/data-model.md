@@ -44,6 +44,30 @@ restore valida versión positiva, modalidad y cronología del estado almacenado.
 Las operaciones del modelo no autorizan ni escriben: ventana de edición,
 cuenta/ciclo vigentes, recibos y transacciones se validan en sus servicios.
 
+### Proyección derivada de T030
+
+Progression es una instantánea inmutable: deriva UID/cycleId del ciclo abierto,
+requiere revisión positiva y computedAt no anterior a su inicio, y calcula la
+fecha de negocio mediante BusinessTime (UTC−3 fijo, sin reloj implícito).
+Conserva exactamente seis InactivityBalance y copia defensivamente su mapa.
+No expone constructor/copy públicos ni métodos para editar XP. La fábrica
+derived recibe resultados confiables del motor del servidor, no campos de
+comandos del cliente; initial reutiliza InitialCharacter y el inicio del ciclo.
+
+AttributeBalance normaliza nivel1–50/XP: por debajo de50 el saldo es menor
+que su umbral; en50 es0. GeneralBalance contiene nivel y subidas restantes,
+sin XP general independiente: contador menor al requisito y0 al llegar a50.
+InactivityBalance exige conteo de fechas no negativo, sin máximo nuevo.
+ProgressionThresholds centraliza los umbrales usados tanto por estas invariantes
+como por las futuras transiciones de T032, evitando fórmulas duplicadas.
+El nivel/contador general debe corresponder a la suma de subidas de atributos;
+en50 se admite el excedente descartado. classId es no vacío/sin controles y
+stage pertenece a1–3, con únicamente1 para novato.
+
+Estas validaciones no ejecutan XP, subidas, inactividad ni clasificación.
+La asignación completa de clase/etapa corresponde a T034 y la reconstrucción
+a T036; codecs, publicación transaccional y endpoints se conectan después.
+
 ### Codificación de reservas de nombre
 
 `usernameKey` sigue siendo el nombre ASCII en minúsculas. Si coincide con

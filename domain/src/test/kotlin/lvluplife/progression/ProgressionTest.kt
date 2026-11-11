@@ -3,6 +3,9 @@ package lvluplife.progression
 import java.time.LocalDate
 import kotlin.test.*
 import lvluplife.model.Attribute
+import lvluplife.model.AttributeBalance
+import lvluplife.model.GeneralBalance
+import lvluplife.model.InactivityBalance
 import lvluplife.model.Attribute.*
 
 /** Spec-derived numeric/metadata fixtures only; no implementations of level/inactivity/class formulas. */

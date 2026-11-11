@@ -1,8 +1,10 @@
 package lvluplife.progression
 
 import lvluplife.model.Attribute
+import lvluplife.model.AttributeBalance
+import lvluplife.model.GeneralBalance
 
-/** Compile-only contract for T026. Actual rules belong to T032; no level math is implemented. */
+/** Compile-only T026 transition contract; T032 reuses the model's canonical normalization thresholds. */
 object LevelRules {
     fun attribute(current: AttributeBalance, awardedXp: Int): AttributeAdvance =
         throw NotImplementedError("Level rules are not implemented (T032)")
@@ -12,7 +14,5 @@ object LevelRules {
         throw NotImplementedError("Level rules are not implemented (T032)")
 }
 
-data class AttributeBalance(val level: Int, val xp: Int)
 data class AttributeAdvance(val balance: AttributeBalance, val levelsGained: Int)
 data class AttributesAdvance(val attributes: Map<Attribute, AttributeBalance>, val levelsGained: Int)
-data class GeneralBalance(val level: Int, val remaining: Int)
