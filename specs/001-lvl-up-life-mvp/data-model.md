@@ -87,6 +87,26 @@ registro; T039 persiste los registros válidos independientemente de su aporte.
 La elegibilidad de fecha, duración conjunta, concurrencia y almacenamiento no
 se deciden dentro de estas funciones puras.
 
+### Transiciones de nivel de T032
+
+LevelRules aplica aportes confiables de XP y consume únicamente los umbrales
+necesarios, reutilizando ProgressionThresholds. Puede normalizar un agregado
+que cruce varias transiciones; los sobrantes se conservan mientras el nivel
+resultante sea menor que50 y se descartan al llegar a50, manteniendo XP0.
+Reporta la diferencia real entre niveles inicial/final como levelsGained.
+Su operación sobre los seis atributos mantiene los no afectados y devuelve
+un mapa inmutable más la suma de subidas reales, no la cantidad de XP.
+
+El nivel general consume esas subidas por sus bandas canónicas y conserva
+el contador restante hasta el máximo50, donde queda0. No agrega una reserva
+de XP general. Entradas negativas se rechazan incluso al máximo. Las sumas
+temporales usan Long y los bucles quedan limitados por los niveles, evitando
+desbordamientos con agregados grandes. No se mutan los balances de entrada.
+Topes diarios, modalidad y elegibilidad temporal se resuelven antes de aplicar
+estos aportes; los agregados de las pruebas no habilitan XP manual ni registros
+que superen los topes. Una corrección se reconstruye con replay, no con subidas
+negativas aplicadas sobre el estado vigente.
+
 ### Codificación de reservas de nombre
 
 `usernameKey` sigue siendo el nombre ASCII en minúsculas. Si coincide con

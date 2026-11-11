@@ -90,7 +90,7 @@ Objetivo: catálogo, carga, motor canónico y recuperación de creaciones. Prueb
 
 - [X] T031 [US2] Implementar `domain/src/main/kotlin/lvluplife/progression/ExperienceRules.kt`: fórmulas exactas de spec, bloques enteros, acumulación de sueño por fecha/ciclo y topes STR/DEX/INT/WIT 48, MEN 30, CON 28; guardar registros con 0 XP. Ejecutar pruebas rojas correspondientes hasta verde.
 
-- [ ] T032 [US2] Implementar `domain/src/main/kotlin/lvluplife/progression/LevelRules.kt`: niveles 1–50, sobrantes, XP cero al 50 y contador general sin XP general; cerrar con casos de niveles de ProgressionTest ejecutados previamente en rojo y ahora verdes.
+- [X] T032 [US2] Implementar `domain/src/main/kotlin/lvluplife/progression/LevelRules.kt`: niveles 1–50, sobrantes, XP cero al 50 y contador general sin XP general; cerrar con casos de niveles de ProgressionTest ejecutados previamente en rojo y ahora verdes.
 - [ ] T033 [US2] Implementar `domain/src/main/kotlin/lvluplife/progression/InactivityRules.kt`: seis fechas de gracia y luego hasta 5 XP sin perder nivel ni saldo negativo, solo fechas cerradas y XP efectiva positiva interrumpe inactividad; cerrar con casos de inactividad de ProgressionTest previamente rojos y ahora verdes.
 
 - [ ] T034 [US2] Implementar `domain/src/main/kotlin/lvluplife/progression/ClassRules.kt` y `ClassCatalog.kt`: tabla exacta de 26 clases, equilibrio 80 % sin redondeo, prioridad Novato con solo Etapa I y etapas I/II/III por 1/15/35 para las otras 25 clases. Hacer verdes pruebas correspondientes; recursos completos se entregan en US5.
