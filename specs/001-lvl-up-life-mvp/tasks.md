@@ -56,7 +56,7 @@ Objetivo: infraestructura común verificable, sin fórmulas de progresión antic
 
 Objetivo: acceso Google, alta única y privacidad. Prueba independiente: cuentas nuevas/existentes, Martin/martin concurrentes, cancelación, denegación y acceso desde segundo dispositivo sin cargar actividades. RF-01–05, 52, 57; AC-01–05, 67–68, 70, 72, 90, 94–95, 119–120, 130–131.
 
-- [ ] T017 [P] [US1] Escribir y ejecutar pruebas contractuales y de alta concurrente en `server/src/integrationTest/kotlin/lvluplife/account/AccountContractTest.kt`: /me, COMPLETE_PROFILE, nombre inválido y UID ajeno; no crear perfil por autenticar o cancelar.
+- [X] T017 [P] [US1] Escribir y ejecutar pruebas contractuales y de alta concurrente en `server/src/integrationTest/kotlin/lvluplife/account/AccountContractTest.kt`: /me, COMPLETE_PROFILE, nombre inválido y UID ajeno; no crear perfil por autenticar o cancelar.
 
 - [ ] T018 [P] [US1] Escribir y ejecutar pruebas de acceso/cancelación, cuenta existente y limpieza al cambiar sesión en `app/src/androidTest/kotlin/lvluplife/ui/AccessFlowTest.kt`; simular proveedor en tests sin acreditar Google real.
 
