@@ -18,6 +18,16 @@ Todas las rutas privadas se resuelven a partir del UID verificado. El cliente no
 
 El catálogo inicial de 11 actividades y la tabla de 26 clases: Novato con una etapa y las otras 25 con tres (76 imágenes) son datos versionados del dominio y recursos del producto, no editables por el usuario. No se inventan tasas ni asignaciones nuevas. `rulesVersion` identifica las reglas aprobadas; cambiar fórmulas exige actualizar especificaciones, no una configuración remota arbitraria.
 
+### Codificación de reservas de nombre
+
+`usernameKey` sigue siendo el nombre ASCII en minúsculas. Si coincide con
+`__.*__`, el ID físico de su reserva lleva el prefijo `~`; los demás IDs usan
+la clave directamente. Firestore reserva ese patrón de IDs, pero RF-04 permite
+esos nombres. `~` no pertenece al alfabeto de usuario, por lo que la codificación
+no introduce colisiones ni modifica nombres visibles. Las reservas guardan la
+clave original y solo el servidor resuelve su ruta. Véanse los
+[límites de IDs de Firestore](https://firebase.google.com/docs/firestore/quotas).
+
 ## Validaciones y progresión
 
 - RF-10/47: horas y minutos enteros no negativos, minutos 0–59 y total >0. Validar componentes antes de convertir para impedir normalizar minutos 60 o fracciones silenciosamente. Suma de duración vigente por fecha/ciclo ≤1.440, también concurrente. Comidas no consumen minutos.

@@ -52,6 +52,8 @@ class OperationStore(private val firestore: Firestore) {
         decode(await(reference(uid, operationId).get()), operationId)
     }
 
+    fun findMatching(uid: Uid, command: CommandEnvelope): OperationReceipt? = match(command, find(uid, command.operationId))
+
     /** Read before staging any write. An existing receipt wins over subsequent application validation. */
     fun read(transaction: Transaction, uid: Uid, command: CommandEnvelope): OperationReceipt? {
         val receipt = safeRead { decode(await(transaction.get(reference(uid, command.operationId))), command.operationId) }

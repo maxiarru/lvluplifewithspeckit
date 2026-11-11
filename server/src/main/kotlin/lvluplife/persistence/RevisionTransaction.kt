@@ -14,15 +14,17 @@ import lvluplife.api.CommandEnvelope
 import lvluplife.application.AuthoritativeClock
 import lvluplife.model.Revision
 import lvluplife.model.Uid
+import lvluplife.model.Username
 
 /** Paths are relative collection/document pairs beneath the verified UID. */
 data class DocumentWrite(val path: List<String>, val fields: Map<String, Any?>)
 /** Null expects absence; otherwise the specified fields must still equal their expected values. */
 data class DocumentCondition(val path: List<String>, val expectedFields: Map<String, Any?>?)
 data class RevisionSnapshot(val root: Map<String, Any?>?, val revision: Revision?,
-    val documents: Map<List<String>, Map<String, Any?>?>)
+    val documents: Map<List<String>, Map<String, Any?>?>, val usernameOwners: Map<String, Uid?> = emptyMap())
 sealed interface OperationDecision {
-    data class Confirmed(val rootFields: Map<String, Any?>, val writes: List<DocumentWrite>, val result: Map<String, Any?>) : OperationDecision
+    data class Confirmed(val rootFields: Map<String, Any?>, val writes: List<DocumentWrite>, val result: Map<String, Any?>,
+        val claims: List<Username> = emptyList()) : OperationDecision
     data class Rejected(val error: ApiError) : OperationDecision
 }
 class RevisionChanged : RuntimeException("Revision changed")
@@ -34,6 +36,7 @@ class PreconditionChanged : RuntimeException("Precondition changed")
 class RevisionTransaction(private val firestore: Firestore, private val operations: OperationStore, private val clock: AuthoritativeClock) {
     fun commit(uid: Uid, command: CommandEnvelope, expectedRevision: Revision?,
         conditions: List<DocumentCondition> = emptyList(),
+        usernames: List<Username> = emptyList(),
         decide: (RevisionSnapshot, Instant) -> OperationDecision): OperationReceipt {
         var future: ApiFuture<OperationReceipt>? = null
         try {
@@ -57,14 +60,23 @@ class RevisionTransaction(private val firestore: Firestore, private val operatio
                         expected.all { (key, value) -> actual.containsKey(key) && actual[key] == value }
                     if (!matches) throw PreconditionChanged()
                 }
+                val usernameOwners = usernames.distinctBy { it.key }.associate { name ->
+                    val fields = await(transaction.get(firestore.document(usernameReservationPath(name)))).data
+                    name.key to fields?.let {
+                        require(it["usernameKey"] == null || it["usernameKey"] == name.key) { "Invalid name reservation" }
+                        Uid(it["uid"] as String)
+                    }
+                }
                 val next = (revision ?: Revision(0)).next()
                 val validationNow = clock.now()
-                val decision = try { decide(RevisionSnapshot(root, revision, documents), validationNow) }
+                val decision = try { decide(RevisionSnapshot(root, revision, documents, usernameOwners), validationNow) }
                 catch (failure: Exception) { throw DecisionFailure(failure) }
                 val receipt = when (decision) {
                     is OperationDecision.Confirmed -> {
                         require("revision" !in decision.rootFields) { "Revision is controlled by the commit protocol" }
                         decision.writes.forEach { validatePath(it.path) }
+                        require(decision.claims.distinctBy { it.key }.size == decision.claims.size) { "Duplicate name claim" }
+                        require(decision.claims.all { it.key in usernameOwners && usernameOwners[it.key] == null }) { "Name claim was not read as absent" }
                         OperationReceipt(command.operationId, command.type, operations.canonicalHash(command),
                             ReceiptOutcome.CONFIRMED, validationNow, next, command.cycleId, result = decision.result)
                     }
@@ -77,6 +89,10 @@ class RevisionTransaction(private val firestore: Firestore, private val operatio
                 transaction.set(rootReference, rootFields + ("revision" to next.value), SetOptions.merge())
                 if (decision is OperationDecision.Confirmed) decision.writes.forEach { write ->
                     transaction.set(firestore.document("users/${uid.value}/${write.path.joinToString("/")}"), write.fields)
+                }
+                if (decision is OperationDecision.Confirmed) decision.claims.forEach { name ->
+                    transaction.create(firestore.document(usernameReservationPath(name)),
+                        mapOf("uid" to uid.value, "usernameKey" to name.key, "createdAt" to validationNow.toString()))
                 }
                 receipt
             }, options)
@@ -112,3 +128,7 @@ class RevisionTransaction(private val firestore: Firestore, private val operatio
         if (failure is ExecutionException && failure.cause != null) unwrapCause(failure.cause!!) else failure
     private class DecisionFailure(val original: Exception) : RuntimeException("Decision failed", original)
 }
+
+/** '~' is outside the username alphabet, so escaping reserved IDs cannot alias a valid raw key. */
+internal fun usernameReservationPath(name: Username): String =
+    "usernames/" + if (Regex("__.*__").matches(name.key)) "~${name.key}" else name.key

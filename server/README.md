@@ -96,8 +96,8 @@ conceden Owner, Editor, Firebase Admin ni roles de service agent al runtime.
 Permisos de despliegue, impersonación e invocación de Cloud Run pertenecen a
 identidades/políticas separadas y no se han configurado aquí.
 
-La lista cubre el runtime del MVP planeado; listar documentos y usar transacciones
-se validará al implementar sus adaptadores. **IAM remoto no probado**: los
+La lista cubre el runtime del MVP planeado; las lecturas y transacciones se
+validaron contra emuladores locales. **IAM remoto no probado**: los
 emuladores no acreditan estos permisos ni los límites/región de producción.
 
 Fuentes: [IAM Firestore](https://firebase.google.com/docs/firestore/security/iam),
@@ -117,6 +117,19 @@ conservar el resultado desconocido y consultar recibo; nunca tratarla como recha
 funcional. Los errores del SDK no se exponen ni se retienen como causas públicas.
 
 read/write son primitivas de IO; **ningún escritor funcional debe usarlas fuera
-del protocolo de revisión y commit atómico** que implementarán T085–T087. Los
-tests actuales escriben datos sintéticos aislados sin handlers de mutación activos.
+del protocolo de revisión y commit atómico** de RevisionTransaction. CompleteProfile
+lo reutiliza para cuenta, ciclo, proyección, reserva de nombre y recibo; las rutas
+HTTP del alta se conectan en T021. Los fixtures que escriben fuera del protocolo
+son exclusivamente datos sintéticos/corrupción deliberada en emuladores aislados.
 No hay rutas para fixtures, reloj ni inyección de fallos en producción.
+
+Las reservas globales de nombre se leen antes de escribir y se crean con
+precondición de ausencia, dentro del mismo commit por UID. La revisión sigue
+controlada por el protocolo; los conflictos obligan a reconstruir el candidato,
+con un máximo de cuatro intentos del caso de uso además del límite del SDK.
+Los fallos transitorios conservan resultado desconocido para el cliente.
+
+El ID de reserva usa usernameKey salvo que coincida con `__.*__`: en ese caso
+se antepone `~` para cumplir las restricciones de Firestore sin prohibir nombres
+válidos. Las reglas de acceso directo siguen deny-all; el cliente no conoce ni
+administra estas rutas. No se agregaron permisos IAM ni recursos remotos.

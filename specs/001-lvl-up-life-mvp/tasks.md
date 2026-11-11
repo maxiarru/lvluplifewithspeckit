@@ -62,7 +62,7 @@ Objetivo: acceso Google, alta única y privacidad. Prueba independiente: cuentas
 
 - [X] T019 [US1] Crear cuenta y ciclo inicial en `domain/src/main/kotlin/lvluplife/model/Account.kt` y `Cycle.kt`: «UID Firebase único», «nombre `[A-Za-z0-9_]{1,15}`, clave ASCII lowercase», «Uno actual; comienza por alta o reinicio»; personaje Novato y seis atributos nivel 1/0 XP; closedAt opcional y rulesVersion según modelo.
 
-- [ ] T020 [US1] Implementar alta, reserva única y proyección inicial atómicas en `server/src/main/kotlin/lvluplife/application/CompleteProfile.kt` y `server/src/main/kotlin/lvluplife/persistence/AccountStore.kt`: conservar escritura visible del nombre, un personaje por UID; reutilizar OperationStore y la base RevisionTransaction de T086–T087 para recibo inmutable, hash y revisión según modelo; añadir las precondiciones y la reserva de nombre del alta, sin duplicar infraestructura.
+- [X] T020 [US1] Implementar alta, reserva única y proyección inicial atómicas en `server/src/main/kotlin/lvluplife/application/CompleteProfile.kt` y `server/src/main/kotlin/lvluplife/persistence/AccountStore.kt`: conservar escritura visible del nombre, un personaje por UID; reutilizar OperationStore y la base RevisionTransaction de T086–T087 para recibo inmutable, hash y revisión según modelo; añadir las precondiciones y la reserva de nombre del alta, sin duplicar infraestructura.
 
 - [ ] T021 [US1] Implementar GET /me y COMPLETE_PROFILE en `server/src/main/kotlin/lvluplife/api/AccountRoutes.kt`; cuenta existente recupera perfil, sin duplicar alta; hacer verdes contratos y carrera por nombre.
 
