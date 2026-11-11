@@ -79,7 +79,7 @@ Objetivo: catálogo, carga, motor canónico y recuperación de creaciones. Prueb
 
 - [X] T025 [P] [US2] Escribir y ejecutar fixtures numéricos de XP/reparto/comida/sueño/topes en `domain/src/test/kotlin/lvluplife/progression/ExperienceTest.kt`: AC-25–35, 77–81, 89, 100–101; fallo observado antes de ExperienceRules.
 
-- [ ] T026 [P] [US2] Escribir y ejecutar pruebas de niveles, sobrantes, inactividad, clase y etapas en `domain/src/test/kotlin/lvluplife/progression/ProgressionTest.kt`: AC-36–62, 82–85, 91–92, 106–107; fallo observado antes de reglas.
+- [X] T026 [P] [US2] Escribir y ejecutar pruebas de niveles, sobrantes, inactividad, clase y etapas en `domain/src/test/kotlin/lvluplife/progression/ProgressionTest.kt`: AC-36–62, 82–85, 91–92, 106–107; fallo observado antes de reglas.
 
 - [ ] T027 [P] [US2] Escribir y ejecutar pruebas de replay/orden estable y validación temporal en `domain/src/test/kotlin/lvluplife/progression/ReplayTest.kt`: AC-16–18, 85, 93, 96, 98, 102, 104–105, 124; incluir fecha abierta/cerrada, UTC−3 y ciclo explícito.
 
