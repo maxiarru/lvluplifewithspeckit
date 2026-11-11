@@ -66,7 +66,7 @@ stage pertenece a1–3, con únicamente1 para novato.
 
 Estas validaciones no ejecutan XP, subidas, inactividad ni clasificación.
 La asignación completa de clase/etapa se implementa en T034 y la reconstrucción
-corresponde a T036; codecs, publicación transaccional y endpoints se conectan después.
+en T036; codecs, publicación transaccional y endpoints se conectan después.
 
 ### Clasificación y catálogo de T034
 
@@ -84,6 +84,32 @@ La apariencia refleja la etapa disponible en el nivel general actual1–50,
 incluso después de una corrección que lo reduzca. Nombres desconocidos se
 rechazan. ClassAppearance expone el ID canónico para la futura proyección;
 la persistencia, consultas y vinculación de imágenes se implementan después.
+
+### Reconstrucción pura de T036
+
+ReplayEngine.rebuild recibe ciclo abierto, registros con definiciones resueltas e
+instante autoritativo. Parte siempre de InitialCharacter y filtra otros ciclos y
+tombstones; no toma como entrada una proyección anterior. Exige versión de reglas
+soportada, identidades únicas por snapshot y cronología coherente de registros
+vigentes. Ordena por fecha de actividad, creación e ID ordinal, sin usar updatedAt
+para decidir prioridades de aporte.
+
+Cada fecha reinicia presupuesto de XP, minutos de sueño pendientes, comidas y
+duración. Cada aporte pasa por ExperienceRules y LevelRules; al terminar sus
+actividades se aplica InactivityRules por atributo, incluidos días sin registros.
+Solo las fechas cerradas pueden descontar y ninguna anterior al inicio del ciclo
+cuenta para inactividad. Una carga retroactiva del nuevo ciclo puede aportar XP
+antes de esa fecha sin heredar contadores del ciclo anterior. No se reaplica la
+ventana de admisión de hoy/ayer/anteayer al historial ya guardado.
+
+La salida contiene fecha de negocio, seis saldos con inactividad, saldo general,
+clase/etapa, IDs procesados y XP efectiva por registro (incluidos aportes cero).
+durationByDate es disperso: contiene solo fechas con minutos consumidos. Todas
+las colecciones de salida, incluidos los mapas por registro, son inmutables y
+no comparten almacenamiento mutable con las entradas. La reconstrucción también
+rechaza sumas de duración superiores a 1440 en una fecha del ciclo actual.
+El cálculo no ejecuta IO ni confirma revisiones; su publicación atómica y uso
+en comandos/consultas se conectan en las tareas de servidor siguientes.
 
 ### Validación de registros de T035
 
