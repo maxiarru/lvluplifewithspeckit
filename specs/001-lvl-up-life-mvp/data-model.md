@@ -85,6 +85,23 @@ incluso después de una corrección que lo reduzca. Nombres desconocidos se
 rechazan. ClassAppearance expone el ID canónico para la futura proyección;
 la persistencia, consultas y vinculación de imágenes se implementan después.
 
+### Validación de registros de T035
+
+RecordValidation recibe el instante autoritativo explícito; acepta únicamente la
+fecha de negocio UTC−3 actual y sus dos anteriores. La diferencia de fechas se
+calcula sin desplazar la fecha solicitada, incluso para valores extremos.
+Esta ventana admite registros nuevos/correcciones; no limita el replay histórico.
+
+Horas y minutos BigDecimal se validan antes de convertir: enteros no negativos,
+minutos 0–59 y total 1–1440. Representaciones como 1.00 son enteras; fracciones
+no se truncan. La suma usa solo duración vigente de la fecha/ciclo solicitados,
+excluye tombstones y permite excluir el ID original al reemplazarlo. Comidas
+no consumen minutos y sueño comparte el presupuesto con las demás duraciones.
+El margen se resta y se rechaza al agotarlo, sin acumular sumas que desborden.
+La función no modifica registros ni consulta el reloj. T038 debe integrar estos
+chequeos con la revisión del snapshot y revalidación temporal antes del commit:
+este cálculo puro no acredita por sí solo la exclusión concurrente en Firestore.
+
 ### Cálculo de aportes de T031
 
 ExperienceRules contiene las fórmulas canónicas y un mapa diario inmutable:
