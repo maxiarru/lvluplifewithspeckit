@@ -107,6 +107,23 @@ estos aportes; los agregados de las pruebas no habilitan XP manual ni registros
 que superen los topes. Una corrección se reconstruye con replay, no con subidas
 negativas aplicadas sobre el estado vigente.
 
+### Inactividad por fecha de T033
+
+InactivityRules recibe el balance después de aplicar XP y el aporte efectivo
+total de esa fecha antes de penalizar. Un aporte positivo reinicia el contador,
+incluso en la fecha abierta, sin volver a sumar XP. Un aporte0 en la fecha
+actual no cuenta un día ni aplica descuento. Al cerrar una fecha inactiva se
+incrementa el contador; las primeras6 no descuentan y desde la séptima se
+restan hasta5 XP, conservando siempre el nivel y evitando saldo negativo.
+Nivel50 conserva0 XP; la fecha que llegó a50 puede haber recibido XP positiva
+antes de terminar con saldo0 y sigue siendo activa.
+
+Los datos de entrada y salida son inmutables; XP efectiva negativa o fecha
+futura son contexto inválido. El contador usa incremento comprobado sin
+desbordar. La selección de fechas del ciclo, su orden y su procesamiento una
+sola vez pertenecen al replay de T036: no se debe aplicar de nuevo el cierre
+histórico sobre una proyección previamente penalizada.
+
 ### Codificación de reservas de nombre
 
 `usernameKey` sigue siendo el nombre ASCII en minúsculas. Si coincide con
