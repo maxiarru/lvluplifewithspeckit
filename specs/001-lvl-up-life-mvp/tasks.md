@@ -50,7 +50,7 @@ Objetivo: infraestructura común verificable, sin fórmulas de progresión antic
 
 - [X] T086 Implementar recibos/hash/idempotencia en `server/src/main/kotlin/lvluplife/persistence/OperationStore.kt`: recibo inmutable confirmado o rechazado funcional definitivo, clave por UID/UUID y sin TTL en MVP. Hacer verdes los casos de recibos de T085; no fijar resultado ante fallo transitorio. Esta infraestructura queda disponible antes del alta US1.
 
-- [ ] T087 Implementar la base transaccional en `server/src/main/kotlin/lvluplife/persistence/RevisionTransaction.kt`: leer recibo/raíz/precondiciones antes de escribir y confirmar atómicamente el cambio, recibo y revisión; admitir creación inicial de raíz y conflictos concurrentes sin depender de modelos de US1 ni del motor US2. Hacer verdes los casos atómicos de T085. US1 añade reserva de nombre/cuenta/ciclo y US2 extiende la base con snapshot/replay y validaciones de registros.
+- [X] T087 Implementar la base transaccional en `server/src/main/kotlin/lvluplife/persistence/RevisionTransaction.kt`: leer recibo/raíz/precondiciones antes de escribir y confirmar atómicamente el cambio, recibo y revisión; admitir creación inicial de raíz y conflictos concurrentes sin depender de modelos de US1 ni del motor US2. Hacer verdes los casos atómicos de T085. US1 añade reserva de nombre/cuenta/ciclo y US2 extiende la base con snapshot/replay y validaciones de registros.
 
 ## Phase 3: US1 — Cuenta y personaje propios (P1)
 

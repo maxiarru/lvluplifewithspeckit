@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.security.MessageDigest
 import java.time.Instant
 import java.util.concurrent.CancellationException
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import lvluplife.api.ApiError
 import lvluplife.api.ApiException
@@ -53,8 +54,16 @@ class OperationStore(private val firestore: Firestore) {
 
     /** Read before staging any write. An existing receipt wins over subsequent application validation. */
     fun read(transaction: Transaction, uid: Uid, command: CommandEnvelope): OperationReceipt? {
-        val hash = canonicalHash(command)
         val receipt = safeRead { decode(await(transaction.get(reference(uid, command.operationId))), command.operationId) }
+        return match(command, receipt)
+    }
+
+    /** Keep SDK retryable errors intact inside its callback; RevisionTransaction sanitizes final failures. */
+    internal fun readForCommit(transaction: Transaction, uid: Uid, command: CommandEnvelope): OperationReceipt? =
+        match(command, decode(await(transaction.get(reference(uid, command.operationId))), command.operationId))
+
+    private fun match(command: CommandEnvelope, receipt: OperationReceipt?): OperationReceipt? {
+        val hash = canonicalHash(command)
         if (receipt != null && (receipt.requestHash != hash || receipt.commandType != command.type || receipt.cycleId != command.cycleId)) {
             throw ApiException(ApiError.OPERATION_ID_REUSED)
         }
@@ -136,6 +145,7 @@ class OperationStore(private val firestore: Firestore) {
     }
 
     private fun <T> await(future: ApiFuture<T>): T = try { future.get(10, TimeUnit.SECONDS) }
+    catch (failure: ExecutionException) { future.cancel(true); throw (failure.cause ?: failure) }
     catch (failure: Exception) { future.cancel(true); throw failure }
 
     private fun <T> safeRead(block: () -> T): T = try { block() }
