@@ -50,6 +50,23 @@ real del emulador verificado por Firebase Admin. Las otras suites de integració
 se añadirán en sus tareas; esto no acredita aún atomicidad/idempotencia ni Google
 real. La reconexión probada reconstruye el cliente; no simula una caída de red.
 
+IsolationTest usa tokens reales de Auth Emulator con el mismo serverModule que
+main. Comprueba que parámetros de propietario, rutas adivinadas y UID en comandos
+no seleccionan otra cuenta; una cabecera X-User-Id tampoco sustituye al token.
+El mismo UUID en cuentas distintas tiene recibos independientes. Un nombre ocupado
+no revela al propietario ni modifica sus datos. Comprueba también63 intentos REST
+directos a Firestore:7 rutas privadas/globales ×3 identidades (sin sesión,
+propietario y otra cuenta) × GET/PATCH/DELETE, todos403 PERMISSION_DENIED y sin
+alterar las instantáneas preparadas por Admin. Incluye cuenta, ciclo, proyección,
+actividad personalizada, registro, recibo y reserva de nombre.
+
+El alcance es US1 y la frontera común de confianza. Consultas/comandos aún no
+implementados de progreso/registros/historial tendrán sus pruebas en sus historias;
+un503 de funcionalidad pendiente no se considera evidencia de autorización.
+La prueba nativa de dos instalaciones usa el runtime Netty local y está documentada
+en [app/README.md](../app/README.md). Ninguna de estas pruebas acredita Google real,
+IAM, TLS de producción ni un despliegue remoto.
+
 ## Producción y ADC
 
 LVLUP_ENV ausente o `production` selecciona producción. GOOGLE_CLOUD_PROJECT es

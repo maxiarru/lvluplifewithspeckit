@@ -70,7 +70,7 @@ Objetivo: acceso Google, alta única y privacidad. Prueba independiente: cuentas
 
 - [X] T023 [US1] Implementar acceso, nombre y navegación autenticada en `app/src/main/kotlin/lvluplife/ui/AccessScreen.kt`, `ProfileScreen.kt` y `AppNavigation.kt`; manejar nombre ocupado y reintento con nuevo comando.
 
-- [ ] T024 [US1] Ejecutar pruebas US1 y comprobar lectura/escritura API ajena y Firestore directo rechazados en `server/src/integrationTest/kotlin/lvluplife/account/IsolationTest.kt`; registrar resultados y prueba de segunda instalación con misma identidad en `specs/001-lvl-up-life-mvp/validation.md`.
+- [X] T024 [US1] Ejecutar pruebas US1 y comprobar lectura/escritura API ajena y Firestore directo rechazados en `server/src/integrationTest/kotlin/lvluplife/account/IsolationTest.kt`; registrar resultados y prueba de segunda instalación con misma identidad en `specs/001-lvl-up-life-mvp/validation.md`.
 
 
 ## Phase 4: US2 — Registrar y reconocer progreso (P1)

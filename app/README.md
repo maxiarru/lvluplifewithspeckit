@@ -77,6 +77,46 @@ Cerrar sesión limpia inmediatamente datos, formulario y navegación en memoria,
 y después cierra Firebase/Credential Manager. Las respuestas tardías se descartan.
 La limpieza mantiene los pendientes durables ligados a su cuenta original.
 
+## Validar US1 y una segunda instalación
+
+Usar un emulador Android descartable con soporte multiusuario (se verificó API30,
+Pixel_6a_API_30) y usuario0 en primer plano. El arnés rechaza dispositivos físicos.
+Desde la raíz, con JAVA_HOME/JDK17, Android SDK y las variables locales de
+[server/README.md](../server/README.md) configurados:
+
+```powershell
+.\gradlew.bat :app:testDebugUnitTest :app:assembleDebug :app:assembleDebugAndroidTest :server:installDist --write-locks --no-daemon
+.\node_modules\.bin\firebase.cmd emulators:exec --project demo-lvluplife --config firebase/firebase.json --only auth,firestore "node scripts/test-us1.mjs C:/ruta/al/Android/Sdk/platform-tools/adb.exe emulator-5554"
+```
+
+8081 debe estar libre. test-us1 arranca el runtime Netty compilado con los mismos
+handlers y verificador de main, ejecuta tres etapas de AccountInstallationStages,
+las28 pruebas nativas de acceso/perfil/SDK/navegación/Room y cierra el servidor.
+Las etapas usan la anotación ProcessStage para quedar fuera de la ejecución
+Android común: necesitan orden, mismo run ID y dos instalaciones.
+
+test-account-installations instala los mismos APK en usuario0 y en un usuario
+Android nuevo. Cada instalación tiene UID Linux, preferencias, FirebaseAuth y
+Room privados. Ambas usan el SDK Firebase real contra Auth Emulator con las
+mismas claims Google sintéticas. El alta de la primera llega a Netty/Firestore
+y el transporte de prueba pierde la respuesta después de verificar CONFIRMED;
+el coordinador conserva Unknown. La segunda consulta solo `/me`, sin crear un
+perfil ni consultar/importar el UUID pendiente. El arnés compara hashes del UID
+Firebase y del perfil completo, comprueba UIDs Linux distintos y reabre la
+primera después de force-stop para verificar su borrador/pendiente originales.
+Los checkpoints no imprimen tokens, nombres, UID Firebase ni sobres.
+
+El arnés elimina únicamente el usuario Android que creó; mantiene el usuario0
+y su base normal pending.db. Los fixtures del usuario0 usan nombres privados
+account-installation-<run ID>, separados de la base de la app. No borra cuentas
+reales ni configura OAuth. Prueba dos instalaciones aisladas en un emulador,
+no dos dispositivos físicos ni el selector Google real. La resolución HTTP
+de recibos sigue planificada en T040; esta prueba conserva Unknown y no la acredita.
+
+La regresión del servidor, incluidas las reglas de acceso directo y los intentos
+de propietario ajeno, se ejecuta con el comando integrationTest de
+[server/README.md](../server/README.md).
+
 Versiones fijadas: Credentials1.6.0, Google ID1.1.1, Firebase Auth25.0.0,
 Google services4.5.0 y coroutines1.10.2; Kotlin/Compose compiler2.4.20 conservados.
 
