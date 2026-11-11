@@ -1,6 +1,6 @@
 # Contrato HTTP v1
 
-Diseño para cliente Android y servicio autoritativo; no es una API implementada. Referencias: [modelo](../data-model.md), [spec](../spec.md).
+Contrato para cliente Android y servicio autoritativo, implementado incrementalmente por tareas. La evidencia ejecutada está en [validation.md](../validation.md). Referencias: [modelo](../data-model.md), [spec](../spec.md).
 
 ## Convenciones y confianza
 
@@ -89,6 +89,29 @@ cuenta, ciclo ni proyección. Con perfil propio, la respuesta tiene esta forma:
 No incluye reservas globales, hash de comandos ni credenciales. Una lectura
 fallida o un perfil corrupto produce error; no se responde `profileRequired:true`
 como sustituto de ese fallo.
+
+### Formas de datos de US2 fijadas por los contratos de T028
+
+`GET /catalog` devuelve `activities` y `classes` como arrays. Actividad:
+`id`, `name`, `category`, `mode` (`DURATION` o `OCCURRENCE`), `primary` y
+`secondary` (null si no corresponde). IDs estables del catálogo básico, en el
+orden de la tabla del PRD: strength, aerobic, meal, study, hobby, sleep,
+crossfit, martial-arts, yoga, practical-skill y strategy-games. Dormir conserva
+mode DURATION; su ID identifica la excepción de sueño. Clases: `id`, `name`,
+`attributes` (conjunto de atributos para puras/pares; vacío para condiciones
+globales), `balancedCount` (1–6; null para Novato), `initialOnly` (true solo
+para Novato) y `stages` (array de enteros). initialOnly significa seis niveles1
+y tiene prioridad. Se verifican26 entradas y76 combinaciones clase/etapa, sin
+exigir referencias de imagen antes de US5. IDs de clase no vacíos y únicos;
+el ID inicial es novato, coherente con la proyección de alta.
+
+`GET /progress` devuelve `cycleId`, `revision`, `computedAt`, `businessDate`,
+`generalLevel`, `generalRemainder`, `classId`, `stage`, `unlockedStages` y
+`attributes`. attributes es un objeto con exactamente STR/DEX/CON/INT/WIT/MEN;
+cada entrada tiene `level`, `xp` e `inactiveDates`. Las fechas/instantes son
+ISO/RFC3339. La respuesta es una proyección vigente, no el resultado de un
+comando antiguo. Los recibos mantienen el formato definitivo descrito arriba;
+ausencia: `{"operationId":"UUID","outcome":"UNKNOWN"}`, HTTP200 y sin error.
 
 ## Errores y conflictos
 
