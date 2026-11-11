@@ -121,7 +121,7 @@ Objetivo: crear y reutilizar definiciones propias. Prueba independiente: cuenta 
 
 - [X] T047 [P] [US3] Escribir y ejecutar prueba de crear/recuperar/reutilizar y conservación de entradas en `app/src/androidTest/kotlin/lvluplife/ui/CustomActivityFlowTest.kt`.
 
-- [ ] T048 [US3] Crear `domain/src/main/kotlin/lvluplife/model/CustomActivity.kt` y validaciones: «Nombre trim 1–50, categoría no vacía, principal y secundario pertenecientes a STR/DEX/INT/WIT/MEN y diferentes entre sí; sin CON», secondary opcional; aplicar matriz de compatibilidad exacta del spec. Hacer verdes pruebas dominio.
+- [X] T048 [US3] Crear `domain/src/main/kotlin/lvluplife/model/CustomActivity.kt` y validaciones: «Nombre trim 1–50, categoría no vacía, principal y secundario pertenecientes a STR/DEX/INT/WIT/MEN y diferentes entre sí; sin CON», secondary opcional; aplicar matriz de compatibilidad exacta del spec. Hacer verdes pruebas dominio.
 
 - [ ] T049 [US3] Implementar persistencia por UID, revisión y recibo mediante infraestructura US2 en `server/src/main/kotlin/lvluplife/persistence/CustomActivityStore.kt` y `server/src/main/kotlin/lvluplife/application/CreateCustomActivity.kt`; conservar createdAt y solo crear/reutilizar, sin CRUD adicional.
 
