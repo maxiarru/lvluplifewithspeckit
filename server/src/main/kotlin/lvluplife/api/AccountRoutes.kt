@@ -9,6 +9,7 @@ import lvluplife.application.AuthoritativeClock
 import lvluplife.application.CompleteProfile
 import lvluplife.application.RecordOperations
 import lvluplife.application.CreateRecord
+import lvluplife.application.ReadProgress
 import lvluplife.persistence.RecordStore
 import lvluplife.persistence.AccountStore
 import lvluplife.persistence.OperationStore
@@ -20,9 +21,12 @@ import lvluplife.persistence.ReceiptOutcome
 fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandlers {
     val accounts = AccountStore(firestore)
     val operations = OperationStore(firestore)
-    val complete = CompleteProfile(accounts, operations, RevisionTransaction(firestore, operations, clock))
+    val transactions = RevisionTransaction(firestore, operations, clock)
+    val complete = CompleteProfile(accounts, operations, transactions)
     val records = RecordOperations(operations)
-    val create = CreateRecord(RecordStore(firestore), records, RevisionTransaction(firestore, operations, clock))
+    val store = RecordStore(firestore)
+    val create = CreateRecord(store, records, transactions)
+    val progress = ReadProgress(store, transactions)
     return ApiHandlers(command = { uid, command ->
         withContext(Dispatchers.IO) {
             if (command.type == CommandType.CREATE_RECORD) return@withContext createRecordResponse(create, uid, command)
@@ -35,8 +39,14 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
             receiptResponse(receipt)
         }
     }, query = { uid, query ->
-        if (query != ApiQuery.Me) throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
         withContext(Dispatchers.IO) {
+            when (query) {
+                ApiQuery.Catalog -> return@withContext catalogResponse()
+                ApiQuery.Progress -> return@withContext progressResponse(progress, uid)
+                is ApiQuery.Operation -> return@withContext operationResponse(operations, uid, query.operationId)
+                ApiQuery.Me -> Unit
+                else -> throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
+            }
             val account = accounts.read(uid)
             val body = apiJson.createObjectNode().put("profileRequired", account == null)
             if (account != null) body.putObject("profile").apply {

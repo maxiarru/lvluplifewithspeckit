@@ -19,6 +19,7 @@ import lvluplife.model.Uid
 import lvluplife.model.Username
 import lvluplife.model.CycleId
 import lvluplife.model.BusinessTime
+import lvluplife.model.Progression
 
 /** Paths are relative collection/document pairs beneath the verified UID. */
 data class DocumentWrite(val path: List<String>, val fields: Map<String, Any?>)
@@ -42,6 +43,49 @@ data class RecordSnapshot(val root: Map<String, Any?>, val revision: Revision, v
  * decide must be pure, may be invoked again by the SDK, and must not perform external IO.
  */
 class RevisionTransaction(private val firestore: Firestore, private val operations: OperationStore, private val clock: AuthoritativeClock) {
+    /** Publish a freshly rebuilt query result under the same revision barrier, without inventing an operation receipt. */
+    fun publishProgress(uid: Uid, prepare: (RecordSnapshot, Instant, Revision) -> Progression,
+        fields: (Progression) -> Map<String, Any?>): Progression {
+        repeat(4) {
+            var future: ApiFuture<Progression>? = null
+            try {
+                val snapshot = recordSnapshot(uid)
+                val calculatedAt = clock.now()
+                val next = snapshot.revision.next()
+                val prepared = prepare(snapshot, calculatedAt, next)
+                val options = TransactionOptions.createReadWriteOptionsBuilder().setNumberOfAttempts(5).build()
+                future = firestore.runTransaction({ transaction ->
+                    val rootReference = firestore.document("users/${uid.value}")
+                    val root = await(transaction.get(rootReference)).data
+                    if (root != snapshot.root) throw RevisionChanged()
+                    val cycle = await(transaction.get(firestore.document("users/${uid.value}/cycles/${snapshot.cycleId.value}"))).data
+                    if (cycle != snapshot.cycle || cycle == null || cycle["closedAt"] != null) throw PreconditionChanged()
+                    val validationNow = clock.now()
+                    if (BusinessTime.date(calculatedAt) != BusinessTime.date(validationNow)) throw RecordDateChanged()
+                    val result = if (validationNow == calculatedAt) prepared else prepare(snapshot, validationNow, next)
+                    require(result.uid == uid && result.cycleId == snapshot.cycleId && result.revision == next && result.computedAt == validationNow) {
+                        "Projection metadata mismatch"
+                    }
+                    val projection = fields(result)
+                    // All reads are complete; projection and root revision become visible together.
+                    transaction.set(firestore.document("users/${uid.value}/projections/current"), projection)
+                    transaction.set(rootReference, mapOf("revision" to next.value), SetOptions.merge())
+                    result
+                }, options)
+                return future.get(20, TimeUnit.SECONDS)
+            } catch (failure: Exception) {
+                future?.cancel(true)
+                when (val actual = unwrap(failure)) {
+                    is RevisionChanged, is PreconditionChanged, is RecordDateChanged -> Unit
+                    is CancellationException -> throw actual
+                    is InterruptedException -> { Thread.currentThread().interrupt(); throw PersistenceUnavailable() }
+                    else -> throw PersistenceUnavailable()
+                }
+            }
+        }
+        throw PersistenceUnavailable()
+    }
+
     fun recordSnapshot(uid: Uid): RecordSnapshot {
         try {
             val rootReference = firestore.document("users/${uid.value}")

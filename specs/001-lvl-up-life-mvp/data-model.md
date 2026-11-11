@@ -18,6 +18,28 @@ Todas las rutas privadas se resuelven a partir del UID verificado. El cliente no
 
 El catálogo inicial de 11 actividades y la tabla de 26 clases: Novato con una etapa y las otras 25 con tres (76 imágenes) son datos versionados del dominio y recursos del producto, no editables por el usuario. No se inventan tasas ni asignaciones nuevas. `rulesVersion` identifica las reglas aprobadas; cambiar fórmulas exige actualizar especificaciones, no una configuración remota arbitraria.
 
+### Consultas y publicación de progreso de T040
+
+ReadProgress reconstruye desde el snapshot de registros del ciclo actual; nunca
+usa la proyección guardada ni la instantánea de un recibo como entrada. Así aplica
+inactividad aunque no haya cargas nuevas y no duplica descuentos al consultar
+varias veces. Reutiliza RecordStore, ReplayEngine y Progression.
+
+RevisionTransaction.publishProgress publica proyección y revisión de raíz juntas,
+sin inventar UUID ni crear un recibo para una consulta. Usa la lectura estable de
+T038, prepara fuera de la transacción y verifica raíz/ciclo antes de escribir.
+Cambios de revisión o fecha de negocio descartan el cálculo; el instante final
+se comprueba después de las lecturas. La salida lleva exactamente la revisión e
+instante publicados. Datos corruptos o contención no publican resultados parciales.
+
+CatalogRoutes entrega las 11 actividades y las condiciones/etapas de las 26 clases
+desde los catálogos canónicos, sin mutaciones ni referencias de imágenes todavía.
+OperationRoutes lee solo operations del UID autenticado: HTTP 200 para recibo
+definitivo confirmado/rechazado o UNKNOWN sin efecto lateral si no existe.
+Conserva el contenido original y omite hash y metadatos privados. Recuperar un
+recibo antiguo no modifica la proyección vigente. CustomActivities e History
+continúan pendientes de sus tareas respectivas.
+
 ### Admisión de creación de T039
 
 CreateRecord y RecordRoutes conectan CREATE_RECORD desde el despacho autenticado
@@ -77,7 +99,8 @@ OperationStore compartido. El despacho busca un recibo propio coincidente antes
 de leer cuenta, ciclo, versión o reloj; un resultado existente se devuelve intacto,
 incluso si su fecha ya expiró o el ciclo dejó de ser actual. Cambiar tipo, ciclo o
 payload con el mismo UUID conserva el recibo original y produce OPERATION_ID_REUSED.
-Sin recibo, el despacho todavía devuelve indisponibilidad hasta conectar los handlers.
+Sin recibo, CREATE_RECORD continúa a la admisión de T039; EDIT_RECORD y DELETE_RECORD
+permanecen indisponibles hasta conectar sus handlers.
 
 confirmation construye el resultado del plan transaccional: recordId, version,
 createdAt, cycleId, revision y progression. Esta instantánea incluye su propia

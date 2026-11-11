@@ -29,6 +29,64 @@ import lvluplife.progression.ReplayEngine
 /** HTTP contracts against real local Firestore. Identity/time/fault injection exists only in this fixture. */
 class CreateRecordContractTest {
     private val json = ObjectMapper()
+    @Test fun rejectedReceiptLookupIsSuccessfulReadOfOriginalDefinitiveResult() = scenario { f ->
+        val id = OperationId.create(); val original = rejected(client.create(f, payload(date = "2026-11-08"), id), "DATE_NOT_ALLOWED")
+        val before = f.root()
+        val response = client.get("/v1/operations/${id.value}") { bearerAuth(f.tokenA) }
+        assertEquals(HttpStatusCode.OK, response.status); assertEquals(original, body(response))
+        assertEquals(before, f.root())
+    }
+    @Test fun progressRebuildIgnoresCorruptCachedProjectionAndCreatesNoOperationReceipt() = scenario { f ->
+        confirmed(client.create(f))
+        val before = f.root(); val receipts = f.resources.firestore.collection("users/${f.a.value}/operations").get().get(10, TimeUnit.SECONDS).size()
+        f.resources.documents.write(f.a, listOf("projections", "current"), mapOf("classId" to "synthetic-corrupt", "xp" to 9999L))
+        val p = progress(client, f)
+        assertEquals(6, p.path("attributes").path("STR").path("xp").intValue())
+        assertEquals((before["revision"] as Number).toLong() + 1, p.path("revision").longValue())
+        assertEquals(f.root()["revision"], f.projection()["revision"])
+        assertEquals(receipts, f.resources.firestore.collection("users/${f.a.value}/operations").get().get(10, TimeUnit.SECONDS).size())
+    }
+    @Test fun progressCrossingMidnightPublishesOnlyTheFinalBusinessDate() = scenario { f ->
+        confirmed(client.create(f)); val beforeRevision = (f.root()["revision"] as Number).toLong()
+        val before = Instant.parse("2026-11-12T02:59:59.999Z"); val after = Instant.parse("2026-11-12T03:00:00Z")
+        f.now = before; f.clockSequence.addAll(listOf(before, after))
+        val p = progress(client, f)
+        assertEquals("2026-11-12", p.path("businessDate").textValue()); assertEquals(after.toString(), p.path("computedAt").textValue())
+        assertEquals(1, p.path("attributes").path("DEX").path("inactiveDates").intValue())
+        assertEquals(0, p.path("attributes").path("STR").path("inactiveDates").intValue())
+        assertEquals(beforeRevision + 1, p.path("revision").longValue()); assertTrue(f.clockSequence.isEmpty())
+        assertEquals("2026-11-12", f.projection()["asOfDate"])
+    }
+    @Test fun progressQueryCannotExposeAnotherAccountsAttributes() = scenario { f ->
+        confirmed(client.create(f))
+        val a = progress(client, f)
+        val response = client.get("/v1/progress") { bearerAuth(f.tokenB) }
+        assertEquals(HttpStatusCode.OK, response.status); val b = body(response)
+        assertEquals(6, a.path("attributes").path("STR").path("xp").intValue())
+        assertEquals(0, b.path("attributes").path("STR").path("xp").intValue())
+        assertEquals(f.cycle(f.b), b.path("cycleId").textValue()); assertFalse(b.toString().contains(f.a.value))
+    }
+    @Test fun corruptStoredRecordFailsProgressWithoutPublishingPartialState() = scenario { f ->
+        confirmed(client.create(f)); val before = f.root(); val projection = f.projection()
+        val record = f.records().single()
+        f.resources.documents.write(f.a, listOf("records", record.id), record.data + ("durationMinutes" to 0L))
+        val response = client.get("/v1/progress") { bearerAuth(f.tokenA) }
+        assertEquals(HttpStatusCode.ServiceUnavailable, response.status)
+        assertEquals(before, f.root()); assertEquals(projection, f.projection())
+        assertFalse(response.bodyAsText().contains(f.a.value))
+    }
+    @Test fun concurrentProgressQueriesAndCreationsConvergeWithoutLostRecords() = scenario { f ->
+        repeat(3) {
+            coroutineScope {
+                val write = async { confirmed(client.create(f)) }
+                val query = async { progress(client, f) }
+                write.await(); query.await()
+            }
+        }
+        val final = progress(client, f)
+        assertEquals(3, f.records().size); assertEquals(18, final.path("attributes").path("STR").path("xp").intValue())
+        assertEquals(f.root()["revision"], f.projection()["revision"])
+    }
     @Test fun createReplyAndStoredProjectionAgreeWithoutDependingOnProgressQuery() = scenario { f ->
         val response = confirmed(client.create(f))
         val result = response.path("result"); val p = result.path("progression")
