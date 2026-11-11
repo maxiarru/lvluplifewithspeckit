@@ -58,7 +58,7 @@ Objetivo: acceso Google, alta única y privacidad. Prueba independiente: cuentas
 
 - [X] T017 [P] [US1] Escribir y ejecutar pruebas contractuales y de alta concurrente en `server/src/integrationTest/kotlin/lvluplife/account/AccountContractTest.kt`: /me, COMPLETE_PROFILE, nombre inválido y UID ajeno; no crear perfil por autenticar o cancelar.
 
-- [ ] T018 [P] [US1] Escribir y ejecutar pruebas de acceso/cancelación, cuenta existente y limpieza al cambiar sesión en `app/src/androidTest/kotlin/lvluplife/ui/AccessFlowTest.kt`; simular proveedor en tests sin acreditar Google real.
+- [X] T018 [P] [US1] Escribir y ejecutar pruebas de acceso/cancelación, cuenta existente y limpieza al cambiar sesión en `app/src/androidTest/kotlin/lvluplife/ui/AccessFlowTest.kt`; simular proveedor en tests sin acreditar Google real.
 
 - [ ] T019 [US1] Crear cuenta y ciclo inicial en `domain/src/main/kotlin/lvluplife/model/Account.kt` y `Cycle.kt`: «UID Firebase único», «nombre `[A-Za-z0-9_]{1,15}`, clave ASCII lowercase», «Uno actual; comienza por alta o reinicio»; personaje Novato y seis atributos nivel 1/0 XP; closedAt opcional y rulesVersion según modelo.
 
