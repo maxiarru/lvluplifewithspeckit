@@ -65,8 +65,25 @@ en50 se admite el excedente descartado. classId es no vacío/sin controles y
 stage pertenece a1–3, con únicamente1 para novato.
 
 Estas validaciones no ejecutan XP, subidas, inactividad ni clasificación.
-La asignación completa de clase/etapa corresponde a T034 y la reconstrucción
-a T036; codecs, publicación transaccional y endpoints se conectan después.
+La asignación completa de clase/etapa se implementa en T034 y la reconstrucción
+corresponde a T036; codecs, publicación transaccional y endpoints se conectan después.
+
+### Clasificación y catálogo de T034
+
+ClassCatalog centraliza las 26 clases con ID estable, nombre, atributos exactos
+para clases puras/pares, cantidad equilibrada y etapas. Novato usa initialOnly,
+sin condición por cantidad, y solo etapa1. Las otras25 tienen etapas1/2/3,
+con mínimos generales1/15/35. Las colecciones y sus condiciones son inmutables.
+Los IDs son slugs ASCII en español (por ejemplo maestro-de-armas y
+heroe-integral); no se usan para inferir nombres de archivos de imágenes.
+
+ClassRules exige los seis niveles1–50, prioriza todos en1 como Novato y compara
+nivel*5 >= máximo*4 para seleccionar los equilibrados sin redondeo. Una clase
+pura o par depende del conjunto de atributos; para3–6 solo importa la cantidad.
+La apariencia refleja la etapa disponible en el nivel general actual1–50,
+incluso después de una corrección que lo reduzca. Nombres desconocidos se
+rechazan. ClassAppearance expone el ID canónico para la futura proyección;
+la persistencia, consultas y vinculación de imágenes se implementan después.
 
 ### Cálculo de aportes de T031
 
