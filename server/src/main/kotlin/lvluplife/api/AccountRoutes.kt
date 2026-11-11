@@ -25,7 +25,8 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
     val operations = OperationStore(firestore)
     val transactions = RevisionTransaction(firestore, operations, clock)
     val complete = CompleteProfile(accounts, operations, transactions)
-    val createCustom = CreateCustomActivity(accounts, CustomActivityStore(), operations, transactions)
+    val custom = CustomActivityStore(firestore)
+    val createCustom = CreateCustomActivity(accounts, custom, operations, transactions)
     val records = RecordOperations(operations)
     val store = RecordStore(firestore)
     val create = CreateRecord(store, records, transactions)
@@ -47,6 +48,7 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
             when (query) {
                 ApiQuery.Catalog -> return@withContext catalogResponse()
                 ApiQuery.Progress -> return@withContext progressResponse(progress, uid)
+                ApiQuery.CustomActivities -> return@withContext customActivitiesResponse(custom, uid)
                 is ApiQuery.Operation -> return@withContext operationResponse(operations, uid, query.operationId)
                 ApiQuery.Me -> Unit
                 else -> throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)

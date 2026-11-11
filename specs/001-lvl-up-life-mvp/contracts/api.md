@@ -29,7 +29,7 @@ Base `/v1`; JSON UTF-8; HTTPS TLS ≥1.2. Todas las rutas requieren `Authorizati
 | `type` | Campos | Resultado confirmado |
 |---|---|---|
 | `COMPLETE_PROFILE` | `payload.username`; sin ciclo | Reserva nombre único case-insensitive y crea cuenta/personaje/ciclo solo si faltan; identidad ya completada conserva su único perfil. |
-| `CREATE_CUSTOM_ACTIVITY` | `payload.name`, `category`, `primary`, `secondary?`; sin ciclo | ID de definición propia reutilizable. |
+| `CREATE_CUSTOM_ACTIVITY` | `payload.name`, `category`, `primary`, `secondary?`; sin ciclo | `activityId`, `createdAt` autoritativo y `revision` de la definición propia reutilizable. |
 | `CREATE_RECORD` | `cycleId`; `activityId`, `activityDate`, `hours` y `minutes` para duración; comida sin duración | ID, versión 1, creación autoritativa y revisión resultante. |
 | `EDIT_RECORD` | `cycleId`; `recordId`, `expectedVersion`, valores resultantes permitidos | Mismo ID/creación, versión incrementada y revisión resultante. |
 | `DELETE_RECORD` | `cycleId`; `recordId`, `expectedVersion` | ID eliminado, versión nueva y revisión resultante; no resurrección en reintento. |
@@ -66,6 +66,10 @@ Errores de transporte, 401, 403 y fallos transitorios no son recibos funcionales
 | `GET /v1/operations/{operationId}` | HTTP 200 con el recibo propio definitivo si existe, confirmado o rechazado. Si no, HTTP 200 con `outcome: UNKNOWN`; no prueba de rechazo ni de ausencia de envío en vuelo. Se puede reenviar el mismo sobre. No revela recibos de otros UID. |
 
 No hay endpoint de historial público, asignación manual de XP, cambio de reglas o borrado de cuenta. Otro dispositivo con sesión válida de la misma cuenta consulta los datos ya guardados mediante las rutas de perfil, actividades, progreso e historial, sin necesitar UUID de operaciones. La recuperación de una operación corresponde a la instalación que conserva su sobre pendiente; no hay descubrimiento, importación ni sincronización de pendientes entre dispositivos. Consultar un recibo siempre requiere autenticación y autorización por UID; conocer su UUID no concede acceso.
+
+### Forma de `GET /custom-activities`
+
+Devuelve `{"revision":12,"items":[],"complete":true}` para una lista propia vacía confirmada. Cada elemento contiene `id`, `name`, `category`, `mode: "DURATION"`, `primary`, `secondary` (null si no tiene) y `createdAt` UTC. Orden ascendente por instante de creación y luego ID ordinal. No expone UID ni hashes de recibos. La consulta verifica una revisión estable antes de publicar todos los elementos; un documento inválido o un fallo de lectura produce error sin lista parcial ni `complete: true`. No modifica revisión ni crea recibos.
 
 ### Forma de `GET /me`
 

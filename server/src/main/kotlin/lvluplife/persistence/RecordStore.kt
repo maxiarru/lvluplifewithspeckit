@@ -4,19 +4,13 @@ import com.google.cloud.firestore.Firestore
 import java.time.Instant
 import java.time.LocalDate
 import lvluplife.application.RecordOperations
+import lvluplife.application.ActivityResolver
 import lvluplife.model.*
 
 /** UID-scoped definition resolver and pure record/projection codecs; mutations use RevisionTransaction. */
 class RecordStore(firestore: Firestore) {
-    private val documents = FirestoreAccess(firestore)
-    fun definition(uid: Uid, id: ActivityId): ActivityDefinition? {
-        ActivityCatalog.find(id)?.let { return it }
-        val fields = documents.read(uid, listOf("activities", id.value)) ?: return null
-        return decode {
-            ActivityDefinition(id, fields["name"] as String, fields["category"] as String, ActivityMode.DURATION,
-                Attribute.valueOf(fields["primary"] as String), (fields["secondary"] as String?)?.let(Attribute::valueOf))
-        }
-    }
+    private val activities = ActivityResolver(CustomActivityStore(firestore))
+    fun definition(uid: Uid, id: ActivityId): ActivityDefinition? = activities.resolve(uid, id)
     fun cycle(uid: Uid, snapshot: RecordSnapshot): Cycle = decode {
         val fields = requireNotNull(snapshot.cycle)
         Cycle(uid, snapshot.cycleId, Instant.parse(fields["startedAt"] as String), RulesVersion(Math.toIntExact(fields["rulesVersion"] as Long)),
