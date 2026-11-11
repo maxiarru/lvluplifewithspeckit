@@ -18,6 +18,33 @@ Todas las rutas privadas se resuelven a partir del UID verificado. El cliente no
 
 El catálogo inicial de 11 actividades y la tabla de 26 clases: Novato con una etapa y las otras 25 con tres (76 imágenes) son datos versionados del dominio y recursos del producto, no editables por el usuario. No se inventan tasas ni asignaciones nuevas. `rulesVersion` identifica las reglas aprobadas; cambiar fórmulas exige actualizar especificaciones, no una configuración remota arbitraria.
 
+### Snapshot y confirmación de registros de T038
+
+RevisionTransaction.recordSnapshot lee raíz, documento del ciclo actual, registros
+de ese ciclo y raíz nuevamente. Solo acepta raíces iguales; una revisión/cambio
+detectado descarta el conjunto. Consulta únicamente bajo el UID verificado y
+conserva tombstones para que el dominio resuelva vigencia. Los mapas y listas
+del snapshot son copias inmutables, incluidos sus campos anidados.
+
+commitRecords recupera primero cualquier recibo coincidente. Sin él obtiene el
+snapshot estable y ejecuta prepare fuera de la transacción. prepare es puro:
+recibe datos e instante y devuelve un OperationDecision, sin consultar Firestore.
+El commit compartido vuelve a leer recibo, revisión, ciclo y precondiciones antes
+de escribir. Si cambia revisión/precondición se descarta el cálculo y se repite
+la lectura completa; contención persistente devuelve indisponibilidad sin recibo.
+
+El instante final se obtiene después de las lecturas transaccionales. Un cambio
+de fecha UTC−3 exige volver a calcular fuera de la transacción. Si solo cambia
+el instante, prepare vuelve a ejecutarse en memoria con ese tiempo, para que
+createdAt y el orden ordinal correspondan al intento aceptado. No hay nuevas
+lecturas después de escribir. Un ciclo que no corresponde o está cerrado produce
+CYCLE_CLOSED sin invocar replay. Cada resultado definitivo incrementa revisión;
+registro/proyección/raíz/recibo se confirman con el protocolo atómico existente.
+
+T038 entrega la infraestructura y sus pruebas con planes de dominio y Firestore
+reales. La resolución/codec de registros y admisión HTTP se conectan en T039;
+no hay todavía un segundo handler de creación dentro de la infraestructura.
+
 ### Recibos de registros de T037
 
 RecordOperations integra CREATE_RECORD, EDIT_RECORD y DELETE_RECORD con el

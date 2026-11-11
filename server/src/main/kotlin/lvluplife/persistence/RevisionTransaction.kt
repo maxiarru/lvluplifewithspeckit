@@ -5,16 +5,20 @@ import com.google.cloud.firestore.SetOptions
 import com.google.cloud.firestore.TransactionOptions
 import com.google.api.core.ApiFuture
 import java.time.Instant
+import java.util.Collections
 import java.util.concurrent.CancellationException
 import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
 import lvluplife.api.ApiError
 import lvluplife.api.ApiException
 import lvluplife.api.CommandEnvelope
+import lvluplife.api.CommandType
 import lvluplife.application.AuthoritativeClock
 import lvluplife.model.Revision
 import lvluplife.model.Uid
 import lvluplife.model.Username
+import lvluplife.model.CycleId
+import lvluplife.model.BusinessTime
 
 /** Paths are relative collection/document pairs beneath the verified UID. */
 data class DocumentWrite(val path: List<String>, val fields: Map<String, Any?>)
@@ -30,10 +34,83 @@ sealed interface OperationDecision {
 class RevisionChanged : RuntimeException("Revision changed")
 class PreconditionChanged : RuntimeException("Precondition changed")
 
+/** Strongly consistent, UID-scoped input for external pure replay. Includes tombstones. */
+data class RecordSnapshot(val root: Map<String, Any?>, val revision: Revision, val cycleId: CycleId,
+    val cycle: Map<String, Any?>?, val records: Map<String, Map<String, Any?>>)
+
 /** Short commit only: callers rebuild their external snapshot on RevisionChanged/PreconditionChanged.
  * decide must be pure, may be invoked again by the SDK, and must not perform external IO.
  */
 class RevisionTransaction(private val firestore: Firestore, private val operations: OperationStore, private val clock: AuthoritativeClock) {
+    fun recordSnapshot(uid: Uid): RecordSnapshot {
+        try {
+            val rootReference = firestore.document("users/${uid.value}")
+            val before = requireNotNull(await(rootReference.get()).data) { "Missing account root" }
+            val revision = Revision(before["revision"] as Long)
+            require(revision.value > 0) { "Invalid account revision" }
+            val cycleId = CycleId(before["currentCycleId"] as String)
+            val cycle = await(firestore.document("users/${uid.value}/cycles/${cycleId.value}").get()).data
+            val records = await(firestore.collection("users/${uid.value}/records")
+                .whereEqualTo("cycleId", cycleId.value).get()).documents.associate { document ->
+                document.id to immutableFields(requireNotNull(document.data))
+            }
+            val after = await(rootReference.get()).data
+            if (before != after) throw RevisionChanged()
+            return RecordSnapshot(immutableFields(before), revision, cycleId, cycle?.let(::immutableFields),
+                Collections.unmodifiableMap(records))
+        } catch (changed: RevisionChanged) { throw changed }
+        catch (cancelled: CancellationException) { throw cancelled }
+        catch (_: InterruptedException) { Thread.currentThread().interrupt(); throw PersistenceUnavailable() }
+        catch (_: Exception) { throw PersistenceUnavailable() }
+    }
+
+    /** prepare performs pure replay only; it may run again after conflict or for final authoritative creation time. */
+    fun commitRecords(uid: Uid, command: CommandEnvelope, conditions: List<DocumentCondition> = emptyList(),
+        prepare: (RecordSnapshot, Instant) -> OperationDecision): OperationReceipt {
+        require(command.type in setOf(CommandType.CREATE_RECORD, CommandType.EDIT_RECORD, CommandType.DELETE_RECORD)) {
+            "Expected record mutation"
+        }
+        repeat(4) {
+            operations.findMatching(uid, command)?.let { return it }
+            try {
+                val snapshot = recordSnapshot(uid)
+                val calculatedAt = clock.now()
+                val cyclePath = listOf("cycles", snapshot.cycleId.value)
+                val prepared = if (command.cycleId != snapshot.cycleId.value || snapshot.cycle == null || snapshot.cycle["closedAt"] != null)
+                    OperationDecision.Rejected(ApiError.CYCLE_CLOSED) else prepare(snapshot, calculatedAt)
+                return commit(uid, command, snapshot.revision,
+                    conditions = conditions + DocumentCondition(cyclePath, snapshot.cycle)) { latest, validationNow ->
+                    if (BusinessTime.date(calculatedAt) != BusinessTime.date(validationNow)) throw RecordDateChanged()
+                    val currentCycle = latest.documents[cyclePath]
+                    when {
+                        latest.root?.get("currentCycleId") != command.cycleId || currentCycle == null || currentCycle["closedAt"] != null ->
+                            OperationDecision.Rejected(ApiError.CYCLE_CLOSED)
+                        // A final creation instant can move an ordinal tie. Rebuild purely, with no extra IO inside commit.
+                        validationNow != calculatedAt -> prepare(snapshot, validationNow)
+                        else -> prepared
+                    }
+                }
+            } catch (_: RevisionChanged) { /* Discard the external replay and read root/records/root again. */ }
+            catch (_: PreconditionChanged) { /* Never commit a plan with obsolete document preconditions. */ }
+            catch (_: RecordDateChanged) { /* Rebuild outside the transaction for the new business date. */ }
+        }
+        throw PersistenceUnavailable()
+    }
+
+    private class RecordDateChanged : RuntimeException("Business date changed")
+
+    private fun immutableFields(fields: Map<String, Any?>): Map<String, Any?> =
+        Collections.unmodifiableMap(fields.mapValues { immutableValue(it.value) })
+
+    private fun immutableValue(value: Any?): Any? = when (value) {
+        is Map<*, *> -> Collections.unmodifiableMap(value.entries.associate { (key, item) ->
+            require(key is String) { "Invalid document field" }
+            key to immutableValue(item)
+        })
+        is List<*> -> Collections.unmodifiableList(value.map(::immutableValue))
+        else -> value
+    }
+
     fun commit(uid: Uid, command: CommandEnvelope, expectedRevision: Revision?,
         conditions: List<DocumentCondition> = emptyList(),
         usernames: List<Username> = emptyList(),
