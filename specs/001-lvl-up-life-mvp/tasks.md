@@ -127,7 +127,7 @@ Objetivo: crear y reutilizar definiciones propias. Prueba independiente: cuenta 
 
 - [X] T050 [US3] Implementar rutas y resolución de actividad propia al registrar en `server/src/main/kotlin/lvluplife/api/ActivityRoutes.kt` y `server/src/main/kotlin/lvluplife/application/ActivityResolver.kt`: orden estable creación/ID, respuesta completa o error, nunca definition ni atributos del cliente como autoridad.
 
-- [ ] T051 [US3] Implementar formulario y selector reutilizable en `app/src/main/kotlin/lvluplife/ui/CustomActivityScreen.kt` y `ActivityPicker.kt`, repositorio `app/src/main/kotlin/lvluplife/data/ActivityRepository.kt`; usar coordinador de operaciones y borradores por UID.
+- [X] T051 [US3] Implementar formulario y selector reutilizable en `app/src/main/kotlin/lvluplife/ui/CustomActivityScreen.kt` y `ActivityPicker.kt`, repositorio `app/src/main/kotlin/lvluplife/data/ActivityRepository.kt`; usar coordinador de operaciones y borradores por UID.
 
 - [ ] T052 [US3] Ejecutar suites US3 y registro reutilizado con el motor US2; registrar resultados de validación, aislamiento y recuperación en `specs/001-lvl-up-life-mvp/validation.md`.
 

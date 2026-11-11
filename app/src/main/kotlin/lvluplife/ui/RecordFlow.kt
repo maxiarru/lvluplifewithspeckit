@@ -18,6 +18,14 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
         val home = remember(session, progress) { ProgressController(session, progress, scope) }
         val homeView by home.state.collectAsState()
         val view by controller.state.collectAsState()
+        val custom = remember(session, customActivities) { customActivities?.let { CustomActivityController(session, it, scope) } }
+        val customView = custom?.state?.collectAsState()?.value
+        DisposableEffect(custom) { onDispose { custom?.dispose() } }
+        LaunchedEffect(custom) { custom?.start() }
+        LaunchedEffect(customView?.settlement) { if ((customView?.settlement ?: 0) > 0) {
+            controller.refreshCatalog()
+            custom?.refreshList()
+        } }
         val online = records.online
         var recoverOnConnection by remember { mutableStateOf(false) }
         val lifecycle = LocalLifecycleOwner.current.lifecycle
@@ -37,17 +45,22 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
         LaunchedEffect(controller) { controller.start() }
         LaunchedEffect(home) { home.refresh() }
         LaunchedEffect(view.settlement) { if (view.settlement > 0) home.refresh() }
-        LaunchedEffect(online, view.busy, recoverOnConnection) {
+        LaunchedEffect(online, view.busy, customView?.busy, recoverOnConnection) {
             if (!online) recoverOnConnection = true
-            else if (recoverOnConnection && !view.busy) {
+            else if (recoverOnConnection && !view.busy && customView?.busy != true) {
                 recoverOnConnection = false
                 controller.start()
+                custom?.start()
                 home.refresh()
             }
         }
         if (sessionView.uid != null) Column {
-            if (!view.open) HomeScreen(homeView, home::refresh)
-            RecordScreen(view, controller, online)
+            if (customView?.open != true) {
+                if (!view.open) HomeScreen(homeView, home::refresh)
+                RecordScreen(view, controller, online)
+            }
+            if (!view.open && custom != null && customView != null)
+                CustomActivityScreen(customView, custom, customActivities?.online ?: online)
         }
     }
 }

@@ -85,7 +85,9 @@ class OperationCoordinator(
         else resolve(row, resendAbsent = true, generation = epoch.get())
     }
 
-    override fun recover(): List<OperationSnapshot> = synchronized(networkLock) {
+    override fun recover(): List<OperationSnapshot> = recoverSelected(null)
+    fun recoverFor(type: ApiCommandType): List<OperationSnapshot> = recoverSelected(type)
+    private fun recoverSelected(type: ApiCommandType?): List<OperationSnapshot> = synchronized(networkLock) {
         val uid = currentUid() ?: return@synchronized emptyList()
         val pending = local { store.pendingFor(uid) }
         if (uid in authSuspended || pending.any { it.safeError == ApiFailureCode.AUTH_REQUIRED.name }) {
@@ -94,7 +96,7 @@ class OperationCoordinator(
         }
         val results = mutableListOf<OperationSnapshot>()
         val generation = epoch.get()
-        for (original in pending) {
+        for (original in pending.filter { type == null || it.commandType == type.name }) {
             if (currentUid() != uid || generation != epoch.get() || uid in authSuspended) break
             val row = if (original.state in setOf(PendingState.SENDING, PendingState.RESOLVING)) {
                 local { store.updateState(uid, original.operationId, PendingState.UNKNOWN, original.safeError) }

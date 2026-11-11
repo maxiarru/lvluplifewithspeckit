@@ -11,10 +11,11 @@ import lvluplife.application.SessionController
 import lvluplife.data.GoogleSignIn
 import lvluplife.application.RecordFlowRecords
 import lvluplife.application.RecordFlowProgress
+import lvluplife.application.CustomActivityFlowActivities
 
 @Composable
 fun AppNavigation(session: SessionController, google: GoogleSignIn, accounts: AccessAccounts, records: RecordFlowRecords? = null,
-    progress: RecordFlowProgress? = null) {
+    progress: RecordFlowProgress? = null, customActivities: CustomActivityFlowActivities? = null) {
     val scope = rememberCoroutineScope()
     val controller = remember(session, google, accounts) { AccessController(session, google, accounts, scope) }
     val access by controller.state.collectAsState()
@@ -27,7 +28,7 @@ fun AppNavigation(session: SessionController, google: GoogleSignIn, accounts: Ac
             (access.profile as? ProfileLookup.Existing)?.let {
                 Text(it.username)
                 if (records != null && progress != null && view.routes.lastOrNull() == lvluplife.application.SessionRoute.HOME)
-                    RecordFlow(session, records, progress)
+                    RecordFlow(session, records, progress, customActivities)
             }
             if (access.profile == null) {
                 Text(access.error ?: "Cargando…")

@@ -46,6 +46,12 @@ class RecordFormController(private val session: SessionController, private val r
     fun open() { if (!mutable.value.busy && mutable.value.pending == null && !mutable.value.unresolved)
         mutable.value = mutable.value.copy(open = true, message = null) }
     fun close() { if (!mutable.value.busy) mutable.value = mutable.value.copy(open = false) }
+    fun refreshCatalog() { scope.launch {
+        try { val options = records.catalog(uid ?: return@launch)
+            if (valid()) mutable.value = mutable.value.copy(options = options)
+        } catch (cancelled: CancellationException) { throw cancelled }
+        catch (blocked: OperationBlocked) { if (valid()) mutable.value = mutable.value.copy(message = message(blocked.code)) }
+    } }
     fun change(draft: RecordDraft) {
         if (!valid() || mutable.value.busy || mutable.value.pending != null || mutable.value.unresolved) return
         intent = null; mutable.value = mutable.value.copy(draft = draft, message = null)

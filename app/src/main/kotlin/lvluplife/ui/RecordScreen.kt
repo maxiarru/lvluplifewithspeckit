@@ -2,8 +2,6 @@ package lvluplife.ui
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -23,10 +21,7 @@ fun RecordScreen(view: RecordFormView, controller: RecordFormController, online:
         if (!online) Text("Sin conexión")
         if (view.open) {
             Text("Registrar actividad", style = MaterialTheme.typography.titleLarge)
-            LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) { items(view.options) { option ->
-                FilterChip(selected = option.id == view.draft.activityId, enabled = !locked,
-                    onClick = { controller.change(view.draft.copy(activityId = option.id)) }, label = { Text(option.name) })
-            } }
+            ActivityPicker(view.options, view.draft.activityId, !locked) { controller.change(view.draft.copy(activityId = it)) }
             OutlinedTextField(value = view.draft.date, onValueChange = { controller.change(view.draft.copy(date = it)) },
                 label = { Text("Fecha") }, singleLine = true, enabled = !locked, modifier = Modifier.fillMaxWidth())
             if (view.options.firstOrNull { it.id == view.draft.activityId }?.duration == true) Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {

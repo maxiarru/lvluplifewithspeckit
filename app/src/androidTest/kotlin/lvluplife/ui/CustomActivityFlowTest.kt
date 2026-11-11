@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.test.platform.app.InstrumentationRegistry
 import java.util.Collections
 import java.util.UUID
@@ -138,6 +139,14 @@ class CustomActivityFlowTest {
     @Test fun acceptsDistinctOptionalSecondaryAndNeverOffersConstitution() = scenario { a, _ ->
         mount(a); fill(); compose.onNodeWithTag("custom-secondary-WIT").performScrollTo().performClick()
         compose.onNodeWithTag("custom-primary-CON").assertDoesNotExist(); compose.onNodeWithTag("custom-secondary-CON").assertDoesNotExist()
+        compose.runOnIdle {
+            compose.activity.getSystemService(android.view.inputmethod.InputMethodManager::class.java)
+                .hideSoftInputFromWindow(compose.activity.window.decorView.windowToken, 0)
+        }
+        compose.waitForIdle()
+        java.io.File(context.cacheDir, "t051-custom-form.png").outputStream().use {
+            compose.onRoot().captureToImage().asAndroidBitmap().compress(android.graphics.Bitmap.CompressFormat.PNG, 100, it)
+        }
         send(); expect("Actividad personalizada guardada"); assertEquals("WIT", a.submitted.single().third.secondary)
     }
     @Test fun definitiveRejectionPreservesInputsAndCorrectionCreatesAnotherUuid() = scenario { a, _ ->

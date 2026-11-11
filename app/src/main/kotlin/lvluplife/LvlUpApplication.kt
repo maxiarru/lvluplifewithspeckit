@@ -17,16 +17,19 @@ class LvlUpApplication : Application() {
 class AndroidAppGraph(context: Context) {
     private var coordinator: OperationCoordinator? = null
     private var recordAdapter: RecordRepository? = null
+    private var activityAdapter: ActivityRepository? = null
     val session: SessionController = SessionController(object : SessionOperations {
         override fun recover(): List<OperationSnapshot> {
             val uid = session.current()?.uid ?: return emptyList()
             val ids = recordAdapter?.recoveryIds(uid) ?: emptySet()
+            val activityIds = activityAdapter?.recoveryIds(uid) ?: emptySet()
             val results = coordinator?.recover() ?: emptyList()
             recordAdapter?.rememberRecovered(results.filter { it.ref.operationId in ids })
+            activityAdapter?.rememberRecovered(results.filter { it.ref.operationId in activityIds })
             return results
         }
         override fun resumeAuthenticated(uid: String) { coordinator?.resumeAuthenticated(uid) }
-        override fun clearSessionMemory() { coordinator?.clearSessionMemory(); recordAdapter?.clearMemory() }
+        override fun clearSessionMemory() { coordinator?.clearSessionMemory(); recordAdapter?.clearMemory(); activityAdapter?.clearMemory() }
         override fun requiresAuthentication(uid: String) = coordinator?.requiresAuthentication(uid) ?: false
     })
     private val store = PendingDatabase.open(context.applicationContext)
@@ -39,6 +42,7 @@ class AndroidAppGraph(context: Context) {
     val accounts: AccessAccounts
     val records: RecordFlowRecords?
     val progress: RecordFlowProgress?
+    val activities: CustomActivityFlowActivities?
     init {
         // Application-scoped callback: updates Compose without polling or retaining an Activity/account.
         connectivity.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
@@ -55,11 +59,13 @@ class AndroidAppGraph(context: Context) {
             accounts = AccessAccounts { throw OperationBlocked(ApiFailureCode.TEMPORARILY_UNAVAILABLE) }
             records = null
             progress = null
+            activities = null
         } else {
             val operations = OperationCoordinator(store, api, session, online)
             coordinator = operations
             accounts = ApiAccessAccounts(api, operations, store, session)
-            records = RecordRepository(api, operations, store, session, online).also { recordAdapter = it }
+            activities = ActivityRepository(api, operations, store, session, online).also { activityAdapter = it }
+            records = RecordRepository(api, operations, store, session, online, activities).also { recordAdapter = it }
             progress = ProgressRepository(api, session)
         }
     }

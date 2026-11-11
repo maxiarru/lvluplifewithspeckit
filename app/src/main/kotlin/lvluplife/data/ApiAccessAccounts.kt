@@ -45,11 +45,13 @@ class ApiAccessAccounts(private val api: ApiClient, private val operations: Oper
     }
     override suspend fun saveName(uid: String, username: String): Unit = withContext(Dispatchers.IO) {
         owner(uid)
+        synchronized(store) {
         val previous = store.draftFor(uid)?.content
         val root = previous?.let { runCatching { json.readTree(it) as? ObjectNode }.getOrNull() }
             ?: json.createObjectNode().also { if (previous != null) it.put("previousDraft", previous) }
         root.put("profileUsername", username)
-        store.saveDraft(Draft(uid, json.writeValueAsString(root)))
+        owner(uid); store.saveDraft(Draft(uid, json.writeValueAsString(root)))
+        }
     }
     override suspend fun pendingProfile(uid: String): OperationSnapshot? = withContext(Dispatchers.IO) {
         owner(uid)

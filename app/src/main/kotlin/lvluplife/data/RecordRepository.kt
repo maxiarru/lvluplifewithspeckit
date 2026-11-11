@@ -9,7 +9,7 @@ import java.time.LocalDate
 
 class RecordRepository(private val api: ApiClient, private val operations: OperationCoordinator,
     private val store: PendingStore, private val sessions: SessionTokenProvider,
-    private val connected: () -> Boolean) : RecordFlowRecords {
+    private val connected: () -> Boolean, private val custom: CustomActivityFlowActivities? = null) : RecordFlowRecords {
     override val online get() = connected()
     private val json = ObjectMapper()
     private data class Context(val cycle: String, val options: List<RecordOption>)
@@ -49,7 +49,9 @@ class RecordRepository(private val api: ApiClient, private val operations: Opera
             require(options.isNotEmpty() && options.map { it.id }.toSet().size == options.size)
             Context(cycle, options)
         } catch (_: Exception) { throw OperationBlocked(ApiFailureCode.UNREADABLE_RESPONSE) }
-        owner(uid); contexts[uid] = context; context.options
+        val combined = context.copy(options = context.options + custom?.list(uid).orEmpty().map { RecordOption(it.id, it.name, true) })
+        if (combined.options.map { it.id }.toSet().size != combined.options.size) throw OperationBlocked(ApiFailureCode.UNREADABLE_RESPONSE)
+        owner(uid); contexts[uid] = combined; combined.options
     }
     override suspend fun draft(uid: String): RecordDraft? = withContext(Dispatchers.IO) {
         owner(uid)
@@ -61,18 +63,20 @@ class RecordRepository(private val api: ApiClient, private val operations: Opera
     }
     override suspend fun saveDraft(uid: String, draft: RecordDraft): Unit = withContext(Dispatchers.IO) {
         owner(uid)
+        synchronized(store) {
         val previous = local { store.draftFor(uid) }?.content
         val root = previous?.let { runCatching { json.readTree(it) as? ObjectNode }.getOrNull() }
             ?: json.createObjectNode().also { if (previous != null) it.put("previousDraft", previous) }
         root.set<com.fasterxml.jackson.databind.JsonNode>("recordDraft", json.valueToTree(mapOf("activityId" to draft.activityId,
             "date" to draft.date, "hours" to draft.hours, "minutes" to draft.minutes)))
         owner(uid); local { store.saveDraft(Draft(uid, json.writeValueAsString(root))) }
+        }
     }
     override suspend fun pending(uid: String): List<OperationSnapshot> = withContext(Dispatchers.IO) {
         owner(uid)
         val startup = recoveredAtStartup.values.filter { it.ref.uid == uid }.toList()
         val ids = recoveryIds(uid)
-        val recovered = if (online) operations.recover().filter { it.ref.operationId in ids } else emptyList()
+        val recovered = if (online) operations.recoverFor(ApiCommandType.CREATE_RECORD).filter { it.ref.operationId in ids } else emptyList()
         owner(uid)
         val remaining = local { store.pendingFor(uid) }.filter { it.commandType == ApiCommandType.CREATE_RECORD.name }.map {
             OperationSnapshot(OperationRef(uid, it.operationId), it.state, it.safeError?.let(ApiFailureCode::valueOf))
