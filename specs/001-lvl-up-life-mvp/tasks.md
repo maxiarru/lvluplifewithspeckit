@@ -117,7 +117,7 @@ Objetivo: catálogo, carga, motor canónico y recuperación de creaciones. Prueb
 Objetivo: crear y reutilizar definiciones propias. Prueba independiente: cuenta preparada, principal STR sin secundario válido; rechazar CON, repetidos e incompatibles; registrar definición recuperada. RF-07–09; AC-07–11, 69, 73–76.
 
 - [X] T045 [P] [US3] Escribir y ejecutar pruebas de dominio de definiciones en `domain/src/test/kotlin/lvluplife/activity/CustomActivityTest.kt`: nombre/categoría, CON, repetidos y compatibilidad; comprobar fallo antes del modelo/validación.
-- [ ] T046 [P] [US3] Escribir y ejecutar contratos CREATE_CUSTOM_ACTIVITY/GET /custom-activities en `server/src/integrationTest/kotlin/lvluplife/activity/ActivityContractTest.kt`; incluir cuenta ajena y fallos/reintentos; comprobar fallo antes del servicio.
+- [X] T046 [P] [US3] Escribir y ejecutar contratos CREATE_CUSTOM_ACTIVITY/GET /custom-activities en `server/src/integrationTest/kotlin/lvluplife/activity/ActivityContractTest.kt`; incluir cuenta ajena y fallos/reintentos; comprobar fallo antes del servicio.
 
 - [ ] T047 [P] [US3] Escribir y ejecutar prueba de crear/recuperar/reutilizar y conservación de entradas en `app/src/androidTest/kotlin/lvluplife/ui/CustomActivityFlowTest.kt`.
 
