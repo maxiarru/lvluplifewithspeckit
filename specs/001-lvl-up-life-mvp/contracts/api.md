@@ -41,6 +41,18 @@ Para edición de comida solo `activityDate`; no conversión de modalidad. Para d
 
 Resultado definitivo, HTTP 200 para confirmado y 409/422 para rechazo funcional persistido:
 
+Contrato RESET_PROGRESSION fijado por T072: sobre con `cycleId` esperado y payload
+exactamente `{"confirmed":true}`. Confirmación omitida, falsa o de otro tipo, campos
+de propietario/destino/progresión y ciclo omitido o inválido reciben400 sin recibo.
+El resultado confirmado contiene `closedCycleId`, `cycleId` nuevo, `revision` y
+`progression` inicial con el formato de progreso existente. Cuenta y colecciones
+se conservan; cierre del ciclo anterior, alta del nuevo, puntero, proyección y recibo
+se confirman juntos. Otro UUID contra ciclo ya cerrado recibe CYCLE_CLOSED; mismo
+UUID/sobre recupera recibo original antes de reevaluar ciclo. Cambiar ciclo con ese
+UUID es OPERATION_ID_REUSED. No se traslada un CREATE_RECORD del ciclo anterior al
+nuevo: si gana primero queda en el historial anterior y si gana el reset se rechaza.
+La implementación de estos contratos válidos corresponde a T075.
+
 ```json
 {
   "operationId": "UUID",

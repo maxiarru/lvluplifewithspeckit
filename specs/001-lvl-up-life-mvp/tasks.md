@@ -179,7 +179,7 @@ Objetivo: reinicio confirmado y recuperable, con datos conservados. Prueba indep
 
 - [X] T071 [P] [US6] Escribir y ejecutar pruebas de nuevo ciclo en `domain/src/test/kotlin/lvluplife/progression/ResetTest.kt`: consumos/sueño/comidas/inactividad nuevos, carga retroactiva y estado inicial; no borrar cuenta, nombre, actividades ni historial.
 
-- [ ] T072 [P] [US6] Escribir y ejecutar contratos RESET_PROGRESSION en `server/src/integrationTest/kotlin/lvluplife/reset/ResetContractTest.kt`: confirmed:true obligatorio, ciclo esperado, doble reinicio y carrera con CREATE_RECORD según AC-114–115.
+- [X] T072 [P] [US6] Escribir y ejecutar contratos RESET_PROGRESSION en `server/src/integrationTest/kotlin/lvluplife/reset/ResetContractTest.kt`: confirmed:true obligatorio, ciclo esperado, doble reinicio y carrera con CREATE_RECORD según AC-114–115.
 
 - [ ] T073 [P] [US6] Escribir y ejecutar pruebas de confirmación/cancelación, Pending y cierre/reapertura en `app/src/androidTest/kotlin/lvluplife/ui/ResetFlowTest.kt`; mismo pendiente no produce otro ciclo.
 
