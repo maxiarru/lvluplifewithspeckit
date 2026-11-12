@@ -11,7 +11,10 @@ data class HistoryItem(val id: String, val cycleId: String, val activityId: Stri
 data class HistoryPage(val revision: Long, val periodStart: String, val periodEndExclusive: String, val items: List<HistoryItem>)
 data class CorrectionDraft(val recordId: String, val cycleId: String, val expectedVersion: Long,
     val activityId: String, val date: String, val hours: String?, val minutes: String?)
-fun interface HistoryFlowHistory { suspend fun load(uid: String, selection: HistorySelection): HistoryPage }
+fun interface HistoryFlowHistory {
+    val online: Boolean get() = true
+    suspend fun load(uid: String, selection: HistorySelection): HistoryPage
+}
 interface HistoryFlowCorrections {
     val online: Boolean
     suspend fun draft(uid: String): CorrectionDraft?

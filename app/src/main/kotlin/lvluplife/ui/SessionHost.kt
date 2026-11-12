@@ -36,7 +36,7 @@ fun SessionHost(controller: SessionController, onLogout: () -> Unit = { controll
                 if (view.pending.any { it.state in setOf(lvluplife.data.PendingState.UNKNOWN, lvluplife.data.PendingState.SENDING, lvluplife.data.PendingState.RESOLVING) }) {
                     Text("Confirmación pendiente")
                 }
-                content(view)
+                Column(Modifier.weight(1f, fill = false)) { content(view) }
                 Button(onClick = onLogout) { Text("Cerrar sesión") }
             }
         }

@@ -43,6 +43,7 @@ class AndroidAppGraph(context: Context) {
     val records: RecordFlowRecords?
     val progress: RecordFlowProgress?
     val activities: CustomActivityFlowActivities?
+    val history: HistoryFlowHistory?
     init {
         // Application-scoped callback: updates Compose without polling or retaining an Activity/account.
         connectivity.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
@@ -60,6 +61,7 @@ class AndroidAppGraph(context: Context) {
             records = null
             progress = null
             activities = null
+            history = null
         } else {
             val operations = OperationCoordinator(store, api, session, online)
             coordinator = operations
@@ -67,6 +69,7 @@ class AndroidAppGraph(context: Context) {
             activities = ActivityRepository(api, operations, store, session, online).also { activityAdapter = it }
             records = RecordRepository(api, operations, store, session, online, activities).also { recordAdapter = it }
             progress = ProgressRepository(api, session)
+            history = HistoryRepository(api, session, online)
         }
     }
 }

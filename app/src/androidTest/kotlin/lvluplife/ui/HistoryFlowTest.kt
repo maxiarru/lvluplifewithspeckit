@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.test.platform.app.InstrumentationRegistry
 import java.time.Instant
 import java.util.Collections
@@ -140,6 +141,9 @@ class HistoryFlowTest {
         f.rows["synthetic-a"]=listOf(f.current.copy(cycleId="cycle-previous",canCorrect=false))
         mount(f);open();expect("Entrenamiento de fuerza")
         compose.onNodeWithTag("history-edit-record-one").assertDoesNotExist();compose.onNodeWithTag("history-delete-record-one").assertDoesNotExist()
+        java.io.File(context.cacheDir,"t061-history.png").outputStream().use {
+            compose.onRoot().captureToImage().asAndroidBitmap().compress(android.graphics.Bitmap.CompressFormat.PNG,100,it)
+        }
     }
     @Test fun editingSendsOriginalIdentityVersionAndKeepsOneIntentDuringDoubleTap() = scenario { f,_ ->
         f.mutationGate=CompletableDeferred();mount(f);open();change();send()
