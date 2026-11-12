@@ -3,8 +3,8 @@ package lvluplife.ui
 import lvluplife.ui.theme.*
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Alignment
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,24 +23,32 @@ fun SessionHost(controller: SessionController, onLogout: () -> Unit = { controll
     val view by controller.state.collectAsState()
     BackHandler(enabled = view.routes.size > 1) { controller.back() }
     key(view.uid, view.sessionId) {
-        Column(Modifier.padding(24.dp)) {
-            Text("Lvl Up Life")
+        BoxWithConstraints {
+        val compact=maxHeight<480.dp
+        Column(Modifier.padding(if(compact)12.dp else 24.dp)) {
+            if(!compact || view.uid==null) Text("Lvl Up Life")
             if (view.uid == null) {
                 Text("Iniciá sesión para continuar")
             } else {
-                if (view.routes.last() == SessionRoute.HISTORY) {
+                if(compact) Row(Modifier.fillMaxWidth(),verticalAlignment=Alignment.CenterVertically) {
+                    Text(if(view.routes.last()==SessionRoute.HISTORY) "Tu historial" else "Lvl Up Life",Modifier.weight(1f))
+                    if(view.routes.last()==SessionRoute.HISTORY) ActionButton({ controller.back() }) { Text("Volver") }
+                    else ActionButton({ controller.navigate(SessionRoute.HISTORY) }) { Text("Historial") }
+                    ActionButton(onClick=onLogout) { Text("Cerrar sesión") }
+                } else if (view.routes.last() == SessionRoute.HISTORY) {
                     Text("Tu historial")
                     ActionButton(onClick = { controller.back() }) { Text("Volver") }
                 } else {
                     ActionButton(onClick = { controller.navigate(SessionRoute.HISTORY) }) { Text("Historial") }
                 }
-                view.loads.values.forEach { LoadStateMessage(it) }
+                view.loads.values.filterNot { compact && it is LoadState.Confirmed }.forEach { LoadStateMessage(it) }
                 if (view.pending.any { it.state in setOf(lvluplife.data.PendingState.UNKNOWN, lvluplife.data.PendingState.SENDING, lvluplife.data.PendingState.RESOLVING) }) {
                     Text("Confirmación pendiente")
                 }
                 Column(Modifier.weight(1f, fill = false)) { content(view) }
-                ActionButton(onClick = onLogout) { Text("Cerrar sesión") }
+                if(!compact) ActionButton(onClick = onLogout) { Text("Cerrar sesión") }
             }
+        }
         }
     }
 }

@@ -126,6 +126,7 @@ class HistoryContractTest {
     @Test fun emptySuccessfulDayHasExplicitBoundsAndDoesNotMutateRevisionOrReceipts() = scenario { f ->
         val root=f.root();val receipts=f.resources.firestore.collection("users/${f.a.value}/operations").get().get().size()
         val h=client.history(f)
+        assertEquals(f.now.toString(),h.path("observedAt").textValue())
         assertEquals("2026-11-11",h.path("periodStart").textValue());assertEquals("2026-11-12",h.path("periodEndExclusive").textValue())
         assertEquals(emptyList(),ids(h));assertEquals(root["revision"],h.path("revision").longValue());assertEquals(root,f.root())
         assertEquals(receipts,f.resources.firestore.collection("users/${f.a.value}/operations").get().get().size())

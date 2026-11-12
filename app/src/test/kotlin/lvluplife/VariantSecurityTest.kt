@@ -23,6 +23,7 @@ class VariantSecurityTest {
 
     @Test fun releaseRejectsCleartextAndEmulatorOverrides() {
         val app = manifest("release")
+        assertFalse(permissions(app).contains("android.permission.ACCESS_LOCAL_NETWORK"))
         assertEquals("false", app.getAttributeNS(androidNamespace, "usesCleartextTraffic"))
         assertEquals("@xml/network_security_config", app.getAttributeNS(androidNamespace, "networkSecurityConfig"))
         val config = resource("release", "network_security_config")
@@ -34,6 +35,7 @@ class VariantSecurityTest {
 
     @Test fun debugAllowsOnlyLocalCleartextExceptions() {
         assertEquals("true", manifest("debug").getAttributeNS(androidNamespace, "usesCleartextTraffic"))
+        assertTrue(permissions(manifest("debug")).contains("android.permission.ACCESS_LOCAL_NETWORK"))
         val config = resource("debug", "network_security_config")
         val base = config.getElementsByTagName("base-config").item(0) as Element
         assertEquals("false", base.getAttribute("cleartextTrafficPermitted"))
@@ -42,6 +44,11 @@ class VariantSecurityTest {
             (0 until domains.length).map { domains.item(it).textContent.trim() }.toSet())
         val local = config.getElementsByTagName("domain-config").item(0) as Element
         assertEquals("true", local.getAttribute("cleartextTrafficPermitted"))
+    }
+
+    private fun permissions(app: Element): Set<String> {
+        val nodes = app.ownerDocument.getElementsByTagName("uses-permission")
+        return (0 until nodes.length).map { (nodes.item(it) as Element).getAttributeNS(androidNamespace, "name") }.toSet()
     }
 
     @Test fun bothVariantsExcludeDatabaseAndSidecarsFromAllBackupModes() {

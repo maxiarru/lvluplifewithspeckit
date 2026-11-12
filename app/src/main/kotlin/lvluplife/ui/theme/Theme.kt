@@ -12,7 +12,10 @@ import androidx.compose.ui.semantics.stateDescription
 @Composable
 fun LvlUpTheme(dark: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     MaterialTheme(colorScheme=if(dark) darkColorScheme() else lightColorScheme()) {
-        Surface(Modifier.fillMaxSize(),color=MaterialTheme.colorScheme.surface,contentColor=MaterialTheme.colorScheme.onSurface) { content() }
+        Surface(Modifier.fillMaxSize(),color=MaterialTheme.colorScheme.surface,contentColor=MaterialTheme.colorScheme.onSurface) {
+            val insets=if(android.os.Build.VERSION.SDK_INT>=35) Modifier.safeDrawingPadding() else Modifier
+            Box(Modifier.fillMaxSize().then(insets),propagateMinConstraints=true) { content() }
+        }
     }
 }
 @Composable

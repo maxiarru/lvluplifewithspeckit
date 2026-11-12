@@ -1,0 +1,551 @@
+{
+  "date": "2026-11-12T16:43:23.175Z",
+  "environment": "local emulators",
+  "serial": "emulator-5560",
+  "apkHashes": {
+    "app/build/outputs/apk/debug/app-debug.apk": "4f64bf371cfc532961a0025783da643a56cc9015062ba26ef5f02feaa8703a3a",
+    "app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk": "3f3a9008dd2735c54bddb29fff3e33eaf2afaa86edcba0037582ce779ff3df5a"
+  },
+  "cells": [
+    {
+      "id": "api29-phone-portrait",
+      "api": 29,
+      "kind": "phone",
+      "orientation": "portrait",
+      "widthDp": 360,
+      "heightDp": 640,
+      "image": "system-images;android-29;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API29",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "6631decd-a1c7-412a-810d-664f6424d7fd",
+      "startedAt": "2026-11-12T16:48:26.732Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 720x1280",
+        "density": "Physical density: 320",
+        "rotation": "0",
+        "fingerprint": "google/sdk_gphone_x86_64/generic_x86_64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+        "release": "10"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 5997,
+          "owner": "7f7aa12d1f12dcb26b51c5db460f23ac0c6dee7f31c64fd7114ff9d37a17431c",
+          "state": "43f67accd120ec77cba31ff51cc7bc37c3d29f81445221d2b95b0a7f884b0049"
+        },
+        "after": {
+          "pid": 6287,
+          "owner": "7f7aa12d1f12dcb26b51c5db460f23ac0c6dee7f31c64fd7114ff9d37a17431c",
+          "state": "43f67accd120ec77cba31ff51cc7bc37c3d29f81445221d2b95b0a7f884b0049"
+        }
+      },
+      "captures": [
+        "api29-phone-portrait/profile.png",
+        "api29-phone-portrait/delete.png",
+        "api29-phone-portrait/history-error.png",
+        "api29-phone-portrait/classes.png",
+        "api29-phone-portrait/reset.png",
+        "api29-phone-portrait/confirmed-before-close.png",
+        "api29-phone-portrait/draft-reopened.png",
+        "api29-phone-portrait/history-reopened.png",
+        "api29-phone-portrait/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:49:02.477Z"
+    },
+    {
+      "id": "api29-phone-landscape",
+      "api": 29,
+      "kind": "phone",
+      "orientation": "landscape",
+      "widthDp": 640,
+      "heightDp": 360,
+      "image": "system-images;android-29;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API29",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "ac76a8af-5f7f-4670-a29c-e3b2a0f11cc4",
+      "startedAt": "2026-11-12T16:49:02.478Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 720x1280",
+        "density": "Physical density: 320",
+        "rotation": "1",
+        "fingerprint": "google/sdk_gphone_x86_64/generic_x86_64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+        "release": "10"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 6471,
+          "owner": "18dde2fa3a89fa32686afac5437917382d792aaeb3b9a37817faba8fc6a47980",
+          "state": "cb56b151f1b70d344b0239be5b81b68c80e0692aca199a6e1f71d4264c684b8a"
+        },
+        "after": {
+          "pid": 6667,
+          "owner": "18dde2fa3a89fa32686afac5437917382d792aaeb3b9a37817faba8fc6a47980",
+          "state": "cb56b151f1b70d344b0239be5b81b68c80e0692aca199a6e1f71d4264c684b8a"
+        }
+      },
+      "captures": [
+        "api29-phone-landscape/profile.png",
+        "api29-phone-landscape/delete.png",
+        "api29-phone-landscape/history-error.png",
+        "api29-phone-landscape/classes.png",
+        "api29-phone-landscape/reset.png",
+        "api29-phone-landscape/confirmed-before-close.png",
+        "api29-phone-landscape/draft-reopened.png",
+        "api29-phone-landscape/history-reopened.png",
+        "api29-phone-landscape/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:49:39.081Z"
+    },
+    {
+      "id": "api29-tablet-portrait",
+      "api": 29,
+      "kind": "tablet",
+      "orientation": "portrait",
+      "widthDp": 800,
+      "heightDp": 1280,
+      "image": "system-images;android-29;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API29",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "f777d479-2140-4a6d-821d-6e68bb0c8c7d",
+      "startedAt": "2026-11-12T16:49:39.082Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 1600x2560",
+        "density": "Physical density: 320",
+        "rotation": "0",
+        "fingerprint": "google/sdk_gphone_x86_64/generic_x86_64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+        "release": "10"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 6864,
+          "owner": "f1521e0b12efd0155b72a585f41c006518e83b06c130217f3050c668a863d663",
+          "state": "399ffd2d1c25eb062c7c86f1fc5c1a03fc6578cbfcc52bda9b69e37452e08d1b"
+        },
+        "after": {
+          "pid": 7008,
+          "owner": "f1521e0b12efd0155b72a585f41c006518e83b06c130217f3050c668a863d663",
+          "state": "399ffd2d1c25eb062c7c86f1fc5c1a03fc6578cbfcc52bda9b69e37452e08d1b"
+        }
+      },
+      "captures": [
+        "api29-tablet-portrait/profile.png",
+        "api29-tablet-portrait/delete.png",
+        "api29-tablet-portrait/history-error.png",
+        "api29-tablet-portrait/classes.png",
+        "api29-tablet-portrait/reset.png",
+        "api29-tablet-portrait/confirmed-before-close.png",
+        "api29-tablet-portrait/draft-reopened.png",
+        "api29-tablet-portrait/history-reopened.png",
+        "api29-tablet-portrait/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:50:13.630Z"
+    },
+    {
+      "id": "api29-tablet-landscape",
+      "api": 29,
+      "kind": "tablet",
+      "orientation": "landscape",
+      "widthDp": 1280,
+      "heightDp": 800,
+      "image": "system-images;android-29;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API29",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "3b0ec759-58dc-4741-8048-a80f751be082",
+      "startedAt": "2026-11-12T16:50:13.631Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 1600x2560",
+        "density": "Physical density: 320",
+        "rotation": "1",
+        "fingerprint": "google/sdk_gphone_x86_64/generic_x86_64:10/QSR1.211112.011/13135432:userdebug/dev-keys",
+        "release": "10"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 7205,
+          "owner": "e96aaaf326d06b7f2e51d31a33b3f9eab49d5c553cc610b7084a40c394d31768",
+          "state": "a3eeddc7a5ff1bd7ba3c9e28e2739aa11d19df2800ae72181fbb957a686b4e6c"
+        },
+        "after": {
+          "pid": 7352,
+          "owner": "e96aaaf326d06b7f2e51d31a33b3f9eab49d5c553cc610b7084a40c394d31768",
+          "state": "a3eeddc7a5ff1bd7ba3c9e28e2739aa11d19df2800ae72181fbb957a686b4e6c"
+        }
+      },
+      "captures": [
+        "api29-tablet-landscape/profile.png",
+        "api29-tablet-landscape/delete.png",
+        "api29-tablet-landscape/history-error.png",
+        "api29-tablet-landscape/classes.png",
+        "api29-tablet-landscape/reset.png",
+        "api29-tablet-landscape/confirmed-before-close.png",
+        "api29-tablet-landscape/draft-reopened.png",
+        "api29-tablet-landscape/history-reopened.png",
+        "api29-tablet-landscape/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:50:49.670Z"
+    },
+    {
+      "id": "api31-phone-portrait",
+      "api": 31,
+      "kind": "phone",
+      "orientation": "portrait",
+      "widthDp": 360,
+      "heightDp": 640,
+      "image": "system-images;android-31;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API31",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "58df8cef-bd5d-4588-86b5-a0c9dbf91a05",
+      "startedAt": "2026-11-12T16:51:58.580Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 720x1280",
+        "density": "Physical density: 320",
+        "rotation": "0",
+        "fingerprint": "google/sdk_gphone64_x86_64/emulator64_x86_64_arm64:12/SE1A.220826.008/10564458:userdebug/dev-keys",
+        "release": "12"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 4414,
+          "owner": "c01631410c10069abd5a0de1ddae7d67c9790d8b3d01fb6002f98612e7d03bca",
+          "state": "af41c2f795a001b58fe8097fbddd9a657f811a6d90c56d2bbf3f7775614d4853"
+        },
+        "after": {
+          "pid": 4581,
+          "owner": "c01631410c10069abd5a0de1ddae7d67c9790d8b3d01fb6002f98612e7d03bca",
+          "state": "af41c2f795a001b58fe8097fbddd9a657f811a6d90c56d2bbf3f7775614d4853"
+        }
+      },
+      "captures": [
+        "api31-phone-portrait/profile.png",
+        "api31-phone-portrait/delete.png",
+        "api31-phone-portrait/history-error.png",
+        "api31-phone-portrait/classes.png",
+        "api31-phone-portrait/reset.png",
+        "api31-phone-portrait/confirmed-before-close.png",
+        "api31-phone-portrait/draft-reopened.png",
+        "api31-phone-portrait/history-reopened.png",
+        "api31-phone-portrait/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:52:37.008Z"
+    },
+    {
+      "id": "api31-phone-landscape",
+      "api": 31,
+      "kind": "phone",
+      "orientation": "landscape",
+      "widthDp": 640,
+      "heightDp": 360,
+      "image": "system-images;android-31;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API31",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "86f72c31-2395-4552-9e5e-299bc5227187",
+      "startedAt": "2026-11-12T16:52:37.009Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 720x1280",
+        "density": "Physical density: 320",
+        "rotation": "1",
+        "fingerprint": "google/sdk_gphone64_x86_64/emulator64_x86_64_arm64:12/SE1A.220826.008/10564458:userdebug/dev-keys",
+        "release": "12"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 4917,
+          "owner": "e7ad957b9873fc1f3515f90157824999f2284efb6b0cb6d606e5a6701a4cd92c",
+          "state": "b3b745a48320380ed6f2ca5548e99bb26c4bc16616f75be0b2746e832e815e84"
+        },
+        "after": {
+          "pid": 5048,
+          "owner": "e7ad957b9873fc1f3515f90157824999f2284efb6b0cb6d606e5a6701a4cd92c",
+          "state": "b3b745a48320380ed6f2ca5548e99bb26c4bc16616f75be0b2746e832e815e84"
+        }
+      },
+      "captures": [
+        "api31-phone-landscape/profile.png",
+        "api31-phone-landscape/delete.png",
+        "api31-phone-landscape/history-error.png",
+        "api31-phone-landscape/classes.png",
+        "api31-phone-landscape/reset.png",
+        "api31-phone-landscape/confirmed-before-close.png",
+        "api31-phone-landscape/draft-reopened.png",
+        "api31-phone-landscape/history-reopened.png",
+        "api31-phone-landscape/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:53:17.057Z"
+    },
+    {
+      "id": "api31-tablet-portrait",
+      "api": 31,
+      "kind": "tablet",
+      "orientation": "portrait",
+      "widthDp": 800,
+      "heightDp": 1280,
+      "image": "system-images;android-31;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API31",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "0ee6b477-99af-42fb-b550-07cf37b262b6",
+      "startedAt": "2026-11-12T16:53:17.058Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 1600x2560",
+        "density": "Physical density: 320",
+        "rotation": "0",
+        "fingerprint": "google/sdk_gphone64_x86_64/emulator64_x86_64_arm64:12/SE1A.220826.008/10564458:userdebug/dev-keys",
+        "release": "12"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 5225,
+          "owner": "80baad7f51ec58c0ab19167a11bf57d6c41204e4cf2a69934f625b1c2eec451d",
+          "state": "e0e36c94f450831162c973f1093d81fbb078afa1eadeb377f85ea8b7fabdbed6"
+        },
+        "after": {
+          "pid": 5334,
+          "owner": "80baad7f51ec58c0ab19167a11bf57d6c41204e4cf2a69934f625b1c2eec451d",
+          "state": "e0e36c94f450831162c973f1093d81fbb078afa1eadeb377f85ea8b7fabdbed6"
+        }
+      },
+      "captures": [
+        "api31-tablet-portrait/profile.png",
+        "api31-tablet-portrait/delete.png",
+        "api31-tablet-portrait/history-error.png",
+        "api31-tablet-portrait/classes.png",
+        "api31-tablet-portrait/reset.png",
+        "api31-tablet-portrait/confirmed-before-close.png",
+        "api31-tablet-portrait/draft-reopened.png",
+        "api31-tablet-portrait/history-reopened.png",
+        "api31-tablet-portrait/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:53:55.734Z"
+    },
+    {
+      "id": "api31-tablet-landscape",
+      "api": 31,
+      "kind": "tablet",
+      "orientation": "landscape",
+      "widthDp": 1280,
+      "heightDp": 800,
+      "image": "system-images;android-31;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API31",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "4117ecce-2b1c-4dfd-934a-72f539675711",
+      "startedAt": "2026-11-12T16:53:55.735Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 1600x2560",
+        "density": "Physical density: 320",
+        "rotation": "1",
+        "fingerprint": "google/sdk_gphone64_x86_64/emulator64_x86_64_arm64:12/SE1A.220826.008/10564458:userdebug/dev-keys",
+        "release": "12"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 5501,
+          "owner": "4a91db7349b346def0bd4b808dbe64604e9053434e32fdec70c593701fd798db",
+          "state": "bd29a4878c3565602aa145acbe9b7983907d00e10a5de25b15c078fbb74f635f"
+        },
+        "after": {
+          "pid": 5637,
+          "owner": "4a91db7349b346def0bd4b808dbe64604e9053434e32fdec70c593701fd798db",
+          "state": "bd29a4878c3565602aa145acbe9b7983907d00e10a5de25b15c078fbb74f635f"
+        }
+      },
+      "captures": [
+        "api31-tablet-landscape/profile.png",
+        "api31-tablet-landscape/delete.png",
+        "api31-tablet-landscape/history-error.png",
+        "api31-tablet-landscape/classes.png",
+        "api31-tablet-landscape/reset.png",
+        "api31-tablet-landscape/confirmed-before-close.png",
+        "api31-tablet-landscape/draft-reopened.png",
+        "api31-tablet-landscape/history-reopened.png",
+        "api31-tablet-landscape/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:54:32.251Z"
+    },
+    {
+      "id": "api37-phone-portrait",
+      "api": 37,
+      "kind": "phone",
+      "orientation": "portrait",
+      "widthDp": 360,
+      "heightDp": 640,
+      "image": "system-images;android-37.0;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API37_0",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "dea688db-b964-466f-84f1-fafaf0ed9adc",
+      "startedAt": "2026-11-12T16:44:37.094Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 720x1280",
+        "density": "Physical density: 320",
+        "rotation": "lock 0",
+        "fingerprint": "google/sdk_gphone64_x86_64/emu64xa:17/CE2A.260420.051.A3/16571990:userdebug/dev-keys",
+        "release": "17"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 3514,
+          "owner": "9b8ce784236125822fb638a7ab83a40a8a5a1461220c0772d82b1f35e62c8a0b",
+          "state": "bf25508d486d59e73f39477e464d502f0771790a3cfe373d4a71363ec8ca4453"
+        },
+        "after": {
+          "pid": 3698,
+          "owner": "9b8ce784236125822fb638a7ab83a40a8a5a1461220c0772d82b1f35e62c8a0b",
+          "state": "bf25508d486d59e73f39477e464d502f0771790a3cfe373d4a71363ec8ca4453"
+        }
+      },
+      "captures": [
+        "api37-phone-portrait/profile.png",
+        "api37-phone-portrait/delete.png",
+        "api37-phone-portrait/history-error.png",
+        "api37-phone-portrait/classes.png",
+        "api37-phone-portrait/reset.png",
+        "api37-phone-portrait/confirmed-before-close.png",
+        "api37-phone-portrait/draft-reopened.png",
+        "api37-phone-portrait/history-reopened.png",
+        "api37-phone-portrait/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:45:23.709Z"
+    },
+    {
+      "id": "api37-phone-landscape",
+      "api": 37,
+      "kind": "phone",
+      "orientation": "landscape",
+      "widthDp": 640,
+      "heightDp": 360,
+      "image": "system-images;android-37.0;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API37_0",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "7ef65c35-aebf-4e18-8fd8-0a142583c003",
+      "startedAt": "2026-11-12T16:45:23.710Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 720x1280",
+        "density": "Physical density: 320",
+        "rotation": "lock 1",
+        "fingerprint": "google/sdk_gphone64_x86_64/emu64xa:17/CE2A.260420.051.A3/16571990:userdebug/dev-keys",
+        "release": "17"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 3866,
+          "owner": "394d2a24d0745fa232d8cf7ef5568c161bf6a6deb9106aaad45e8875d1636836",
+          "state": "cc37fecc9319519b73bf1ca00444af6b2da013b012610c8cea28b0c54c44b988"
+        },
+        "after": {
+          "pid": 3987,
+          "owner": "394d2a24d0745fa232d8cf7ef5568c161bf6a6deb9106aaad45e8875d1636836",
+          "state": "cc37fecc9319519b73bf1ca00444af6b2da013b012610c8cea28b0c54c44b988"
+        }
+      },
+      "captures": [
+        "api37-phone-landscape/profile.png",
+        "api37-phone-landscape/delete.png",
+        "api37-phone-landscape/history-error.png",
+        "api37-phone-landscape/classes.png",
+        "api37-phone-landscape/reset.png",
+        "api37-phone-landscape/confirmed-before-close.png",
+        "api37-phone-landscape/draft-reopened.png",
+        "api37-phone-landscape/history-reopened.png",
+        "api37-phone-landscape/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:46:06.139Z"
+    },
+    {
+      "id": "api37-tablet-portrait",
+      "api": 37,
+      "kind": "tablet",
+      "orientation": "portrait",
+      "widthDp": 800,
+      "heightDp": 1280,
+      "image": "system-images;android-37.0;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API37_0",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "5e2f91c8-22e8-4e15-9e79-d987d0bb3d3a",
+      "startedAt": "2026-11-12T16:46:06.140Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 1600x2560",
+        "density": "Physical density: 320",
+        "rotation": "lock 0",
+        "fingerprint": "google/sdk_gphone64_x86_64/emu64xa:17/CE2A.260420.051.A3/16571990:userdebug/dev-keys",
+        "release": "17"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 4200,
+          "owner": "751020326b8956a9e3032e59c782ee84656e98036eae3ad8ea5b09460e3eb616",
+          "state": "11a8128b621c498af90013007e1b12a35d82996099edd51141fce1ae63033695"
+        },
+        "after": {
+          "pid": 4330,
+          "owner": "751020326b8956a9e3032e59c782ee84656e98036eae3ad8ea5b09460e3eb616",
+          "state": "11a8128b621c498af90013007e1b12a35d82996099edd51141fce1ae63033695"
+        }
+      },
+      "captures": [
+        "api37-tablet-portrait/profile.png",
+        "api37-tablet-portrait/delete.png",
+        "api37-tablet-portrait/history-error.png",
+        "api37-tablet-portrait/classes.png",
+        "api37-tablet-portrait/reset.png",
+        "api37-tablet-portrait/confirmed-before-close.png",
+        "api37-tablet-portrait/draft-reopened.png",
+        "api37-tablet-portrait/history-reopened.png",
+        "api37-tablet-portrait/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:46:46.911Z"
+    },
+    {
+      "id": "api37-tablet-landscape",
+      "api": 37,
+      "kind": "tablet",
+      "orientation": "landscape",
+      "widthDp": 1280,
+      "heightDp": 800,
+      "image": "system-images;android-37.0;google_apis;x86_64",
+      "avd": "LvlUp_Matrix_API37_0",
+      "status": "APROBADO",
+      "reason": "Recorrido crítico y reapertura real del proceso aprobados",
+      "run": "857e8660-af5e-4039-9b42-c3e8989c6d3c",
+      "startedAt": "2026-11-12T16:46:46.912Z",
+      "display": {
+        "size": "Physical size: 1080x1920\r\nOverride size: 1600x2560",
+        "density": "Physical density: 320",
+        "rotation": "lock 1",
+        "fingerprint": "google/sdk_gphone64_x86_64/emu64xa:17/CE2A.260420.051.A3/16571990:userdebug/dev-keys",
+        "release": "17"
+      },
+      "checkpoints": {
+        "before": {
+          "pid": 4484,
+          "owner": "594abe76b33abde2d66eb5458691e672f1dbd8ea81180f7d0539e2d77a6e0507",
+          "state": "dbd006402329f99f0642dd5a8763f0644ddbfebff18295e80f31e255320856ce"
+        },
+        "after": {
+          "pid": 4598,
+          "owner": "594abe76b33abde2d66eb5458691e672f1dbd8ea81180f7d0539e2d77a6e0507",
+          "state": "dbd006402329f99f0642dd5a8763f0644ddbfebff18295e80f31e255320856ce"
+        }
+      },
+      "captures": [
+        "api37-tablet-landscape/profile.png",
+        "api37-tablet-landscape/delete.png",
+        "api37-tablet-landscape/history-error.png",
+        "api37-tablet-landscape/classes.png",
+        "api37-tablet-landscape/reset.png",
+        "api37-tablet-landscape/confirmed-before-close.png",
+        "api37-tablet-landscape/draft-reopened.png",
+        "api37-tablet-landscape/history-reopened.png",
+        "api37-tablet-landscape/reopened.png"
+      ],
+      "finishedAt": "2026-11-12T16:47:28.862Z"
+    }
+  ]
+}

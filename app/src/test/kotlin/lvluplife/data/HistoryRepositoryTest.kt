@@ -9,6 +9,24 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class HistoryRepositoryTest {
+    @Test fun serverObservationTimeControlsHintDespiteDeviceClockSkewAndPreservesExactBoundary()=runBlocking {
+        val f=Fixture()
+        // The fixture's device clock is before this creation time; the server's observation is authoritative.
+        val item=f.item.replace("14:59:00Z","15:01:00Z")
+        for((observed,allowed) in listOf("15:01:00Z" to true,"15:05:59Z" to true,"15:06:00Z" to false,"15:00:59Z" to false)) {
+            f.body=f.page("2026-11-11","2026-11-12",item).dropLast(1)+",\"observedAt\":\"2026-11-11T$observed\"}"
+            assertEquals(allowed,f.repository.load("owner-a",f.selection).items.single().canCorrect)
+        }
+        f.body=f.page("2026-11-11","2026-11-12",f.item).dropLast(1)+",\"observedAt\":\"2026-11-11T16:00:00Z\"}"
+        assertFalse(f.repository.load("owner-a",f.selection).items.single().canCorrect)
+    }
+    @Test fun malformedServerObservationCannotBecomeAnEmptyOrCorrectableHistory()=runBlocking {
+        val f=Fixture();val valid=f.body
+        for(value in listOf("null","123","\"not-an-instant\"")) {
+            f.body=valid.dropLast(1)+",\"observedAt\":$value}"
+            blocked(ApiFailureCode.UNREADABLE_RESPONSE) { f.repository.load("owner-a",f.selection) }
+        }
+    }
     private class Fixture {
         var token: SessionToken? = SessionToken("owner-a","synthetic-token")
         var online=true;var replaceSession=false;var fail=false;var profileUid="owner-a"

@@ -1,0 +1,31 @@
+INSTRUMENTATION_STATUS: class=lvluplife.ui.DeviceMatrixStages
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=
+lvluplife.ui.DeviceMatrixStages:
+INSTRUMENTATION_STATUS: test=criticalFlowsBeforeClosingProcess
+INSTRUMENTATION_STATUS_CODE: 1
+INSTRUMENTATION_STATUS: matrixCell=api31-phone-portrait
+INSTRUMENTATION_STATUS: matrixOwner=c01631410c10069abd5a0de1ddae7d67c9790d8b3d01fb6002f98612e7d03bca
+INSTRUMENTATION_STATUS: matrixPid=4414
+INSTRUMENTATION_STATUS: matrixStage=before-close
+INSTRUMENTATION_STATUS: matrixState=af41c2f795a001b58fe8097fbddd9a657f811a6d90c56d2bbf3f7775614d4853
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_STATUS: class=lvluplife.ui.DeviceMatrixStages
+INSTRUMENTATION_STATUS: current=1
+INSTRUMENTATION_STATUS: id=AndroidJUnitRunner
+INSTRUMENTATION_STATUS: numtests=1
+INSTRUMENTATION_STATUS: stream=.
+INSTRUMENTATION_STATUS: test=criticalFlowsBeforeClosingProcess
+INSTRUMENTATION_STATUS_CODE: 0
+INSTRUMENTATION_RESULT: stream=
+
+Time: 24.463
+
+OK (1 test)
+
+
+INSTRUMENTATION_CODE: -1
+s_glBindAttribLocation: bind attrib 0 name position
+s_glBindAttribLocation: bind attrib 1 name localCoord

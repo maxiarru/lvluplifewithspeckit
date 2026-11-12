@@ -1,0 +1,62 @@
+{
+  "domain": {
+    "tests": 322,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "execution": "UP-TO-DATE"
+  },
+  "server-unit": {
+    "tests": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "execution": "executed"
+  },
+  "server-integration": {
+    "tests": 232,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "execution": "executed"
+  },
+  "android-jvm": {
+    "tests": 142,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "execution": "executed"
+  },
+  "android-instrumented": {
+    "tests": 136,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "execution": "executed",
+    "avd": "Pixel_6a_API_30",
+    "api": 30,
+    "sizePixels": "1080x2400",
+    "densityDpi": 420,
+    "parts": {
+      "accessibility": {
+        "tests": 15,
+        "seconds": 94.301
+      },
+      "reset": {
+        "tests": 17,
+        "seconds": 42.922
+      },
+      "previous": {
+        "tests": 104,
+        "seconds": 339.264
+      }
+    }
+  },
+  "matrix": {
+    "cells": 12,
+    "approved": 12,
+    "instrumentedStages": 24,
+    "originalCaptures": 108,
+    "execution": "executed"
+  }
+}

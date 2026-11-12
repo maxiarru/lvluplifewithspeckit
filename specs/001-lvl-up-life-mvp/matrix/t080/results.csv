@@ -1,0 +1,13 @@
+cell,api,size_dp,orientation,status,reason
+"api29-phone-portrait","29","360x640","portrait","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api29-phone-landscape","29","640x360","landscape","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api29-tablet-portrait","29","800x1280","portrait","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api29-tablet-landscape","29","1280x800","landscape","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api31-phone-portrait","31","360x640","portrait","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api31-phone-landscape","31","640x360","landscape","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api31-tablet-portrait","31","800x1280","portrait","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api31-tablet-landscape","31","1280x800","landscape","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api37-phone-portrait","37","360x640","portrait","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api37-phone-landscape","37","640x360","landscape","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api37-tablet-portrait","37","800x1280","portrait","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"
+"api37-tablet-landscape","37","1280x800","landscape","APROBADO","Recorrido crítico y reapertura real del proceso aprobados"

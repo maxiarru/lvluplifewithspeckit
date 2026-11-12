@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <!-- Android 17 requires this for the local Firebase/API development emulators. -->
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
     <application android:usesCleartextTraffic="true" tools:replace="android:usesCleartextTraffic" />
 </manifest>

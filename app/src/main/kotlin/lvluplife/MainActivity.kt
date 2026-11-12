@@ -2,6 +2,7 @@ package lvluplife
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 
@@ -9,6 +10,8 @@ class MainActivity : ComponentActivity() {
     val sessionController get() = (application as LvlUpApplication).graph.session
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionBar?.hide()
+        if(android.os.Build.VERSION.SDK_INT>=35) enableEdgeToEdge()
         val graph = (application as LvlUpApplication).graph
         val google = lvluplife.data.AndroidGoogleSignIn.create(this)
         setContent {

@@ -5,6 +5,8 @@ import lvluplife.ui.theme.*
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,7 +17,7 @@ import lvluplife.application.AccessView
 @Composable
 fun ProfileScreen(view: AccessView, controller: AccessController) {
     BackHandler { controller.logout() }
-    Column(Modifier.padding(24.dp)) {
+    Column(Modifier.verticalScroll(rememberScrollState()).padding(24.dp)) {
         Text("Elegí tu nombre de usuario", style = MaterialTheme.typography.headlineSmall)
         InputField(value = view.username, onValueChange = controller::changeName,
             label = { Text("Nombre de usuario") }, singleLine = true,

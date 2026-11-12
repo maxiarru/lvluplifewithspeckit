@@ -57,7 +57,7 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
                 ApiQuery.Catalog -> return@withContext catalogResponse()
                 ApiQuery.Progress -> return@withContext progressResponse(progress, uid)
                 ApiQuery.CustomActivities -> return@withContext customActivitiesResponse(custom, uid)
-                is ApiQuery.History -> return@withContext historyResponse(history, store, uid, query)
+                is ApiQuery.History -> return@withContext historyResponse(history, store, uid, query, clock)
                 is ApiQuery.Operation -> return@withContext operationResponse(operations, uid, query.operationId)
                 ApiQuery.Me -> Unit
             }

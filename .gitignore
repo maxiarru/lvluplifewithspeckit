@@ -27,6 +27,7 @@ Thumbs.db
 *.tmp
 *.swp
 *.log
+!specs/001-lvl-up-life-mvp/matrix/t080/**/*.log
 
 # Local tooling and emulator data
 .tooling/

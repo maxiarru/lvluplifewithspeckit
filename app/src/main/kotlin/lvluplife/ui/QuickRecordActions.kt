@@ -1,6 +1,8 @@
 package lvluplife.ui
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -34,7 +36,7 @@ fun QuickRecordActions(view: RecordFormView, controller: RecordFormController, e
             "meal" -> "Registrar comida saludable"
             "sleep" -> "Registrar sueño"
             else -> "Registrar entrenamiento"
-        }) },text={ Column {
+        }) },text={ Column(Modifier.verticalScroll(rememberScrollState())) {
             Text("Hoy · $date")
             if(meal) Text("Una comida saludable")
             else {

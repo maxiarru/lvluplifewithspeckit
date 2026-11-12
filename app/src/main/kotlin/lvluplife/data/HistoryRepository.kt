@@ -56,7 +56,9 @@ class HistoryRepository(private val api: ApiClient, private val sessions: Sessio
             require(me.path("profileRequired").isBoolean && !me.path("profileRequired").booleanValue())
             require(me.path("profile").path("uid").textValue() == uid)
             val currentCycle = id(me.path("profile").path("currentCycleId"))
-            val observedAt = clock.instant()
+            // Server time prevents a slightly skewed device clock from hiding a just-created record's actions.
+            // Old API responses retain the previous advisory fallback; the server always validates the mutation.
+            val observedAt = if(body.has("observedAt")) Instant.parse(requireNotNull(body.path("observedAt").textValue())) else clock.instant()
             val items = body.path("items").map { row ->
                 val recordId = id(row.path("recordId")); val cycle = id(row.path("cycleId")); val activity = id(row.path("activityId"))
                 val definition = row.path("activityDefinition"); require(definition.isObject && id(definition.path("id")) == activity)
