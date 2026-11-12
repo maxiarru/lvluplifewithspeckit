@@ -1,0 +1,23 @@
+{
+  "domain": {
+    "tests": 322,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "execution": "UP-TO-DATE in final regression"
+  },
+  "server-unit": {
+    "tests": 34,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "execution": "UP-TO-DATE in final regression"
+  },
+  "server-integration": {
+    "tests": 234,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "execution": "executed"
+  }
+}

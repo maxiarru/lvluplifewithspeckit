@@ -29,5 +29,21 @@ val integrationTestTask = tasks.register<Test>("integrationTest") {
     classpath = integrationTest.runtimeClasspath
     useJUnit()
     shouldRunAfter(tasks.test)
+    // Test-only child JVM for cold startup; never added to the production runtime.
+    val performanceClasspath = layout.buildDirectory.file("tmp/performance-runtime-classpath.txt")
+    systemProperty("lvlup.perf.classpathFile", performanceClasspath.get().asFile.absolutePath)
+    doFirst {
+        performanceClasspath.get().asFile.apply {
+            parentFile.mkdirs()
+            writeText(integrationTest.runtimeClasspath.asPath)
+        }
+    }
+    systemProperty("lvlup.perf.ktorVersion", libs.versions.ktor.get())
+    systemProperty("lvlup.perf.firestoreVersion", libs.versions.firestore.get())
+    for (key in listOf("LVLUP_PERF_PROFILE", "LVLUP_PERF_N", "LVLUP_PERF_WARMUP",
+        "LVLUP_PERF_WORKERS", "LVLUP_PERF_SEED", "LVLUP_PERF_COLD_N", "LVLUP_PERF_REVISION")) {
+        inputs.property("performance.$key", providers.environmentVariable(key).orElse("DEFAULT"))
+    }
+    outputs.dir(layout.buildDirectory.dir("reports/performance"))
 }
 tasks.check { dependsOn(integrationTestTask) }
