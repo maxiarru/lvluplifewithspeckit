@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.data.CorrectionRepositoryTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:39.124Z" hostname="CERUS" time="0.117">
+  <properties/>
+  <testcase name="startupDefinitiveDeleteIsDeliveredOnceWithOriginalKind" classname="lvluplife.data.CorrectionRepositoryTest" time="0.033"/>
+  <testcase name="durationOptionsNeverOfferMealConversion" classname="lvluplife.data.CorrectionRepositoryTest" time="0.003"/>
+  <testcase name="unknownEditAndDeleteLookupBeforeResendingExactOriginalBytes" classname="lvluplife.data.CorrectionRepositoryTest" time="0.02"/>
+  <testcase name="editPersistsObservedCycleAndVersionBeforeTransportWithoutRefreshingThem" classname="lvluplife.data.CorrectionRepositoryTest" time="0.006"/>
+  <testcase name="mealEditOnlySendsDateWhileDeleteOnlySendsIdentityAndExpectedVersion" classname="lvluplife.data.CorrectionRepositoryTest" time="0.009"/>
+  <testcase name="coldRecoveryRetainsDeleteTypeAndDoesNotTransmitAnUnrelatedCreation" classname="lvluplife.data.CorrectionRepositoryTest" time="0.012"/>
+  <testcase name="invalidInputsAndOfflineNeverAllocateOrSendCorrections" classname="lvluplife.data.CorrectionRepositoryTest" time="0.011"/>
+  <testcase name="anotherOwnerCannotRetryOrReplaceOriginalEnvelope" classname="lvluplife.data.CorrectionRepositoryTest" time="0.007"/>
+  <testcase name="draftAndClearPreserveOtherNamespacesAndOwner" classname="lvluplife.data.CorrectionRepositoryTest" time="0.015"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

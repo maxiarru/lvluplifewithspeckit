@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.progression.ResetTest" tests="23" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:02.599Z" hostname="CERUS" time="0.022">
+  <properties/>
+  <testcase name="unsupportedProgressionRulesCannotBeSilentlyReplaced" classname="lvluplife.progression.ResetTest" time="0.002"/>
+  <testcase name="missingExplicitConfirmationCannotProduceTransition" classname="lvluplife.progression.ResetTest" time="0.0"/>
+  <testcase name="keepsAccountIdentityUsernameCreationSchemaAndOwnedDefinitionHistoryValues" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="revisionOverflowCannotPublishWrappedRevision" classname="lvluplife.progression.ResetTest" time="0.0"/>
+  <testcase name="sameExplicitInputsYieldSameTransitionValuesWithoutAllocatingAnotherIdentity" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="fourPreviousMealsDoNotConsumeNewCycleFourScoringMeals" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="firstSixClosedDatesHaveNoPenaltyAndSeventhDeductsOnlyOnceFromNewCycle" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="oldInactivityDoesNotPenalizeNewCycleAtCreation" classname="lvluplife.progression.ResetTest" time="0.0"/>
+  <testcase name="oldMentalSleepCapDoesNotConsumeNewCycleMentalCap" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="initialProjectionHasSixLevelOneZeroXpAndNoGeneralRemainderOrInactivity" classname="lvluplife.progression.ResetTest" time="0.0"/>
+  <testcase name="oldDailyStrengthCapDoesNotConsumeNewCycleAward" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="cycleOwnerAndAccountCurrentPointerMustMatch" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="existingReplayAcceptsBackdatedNewCycleRecordWithoutPreStartInactivity" classname="lvluplife.progression.ResetTest" time="0.0"/>
+  <testcase name="old24HoursDoNotConsumeNewCycleDurationAndOneHourLeaves23Available" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="recentOldRecordCannotBeCorrectedOrDeletedThroughNewCycle" classname="lvluplife.progression.ResetTest" time="0.004"/>
+  <testcase name="sundayBackdateAfterMondayResetDoesNotCountSundayAsNewCycleInactivity" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="closesOnlyCurrentCycleAndStartsDistinctCycleAtExactAuthoritativeInstant" classname="lvluplife.progression.ResetTest" time="0.0"/>
+  <testcase name="alreadyClosedCycleAndReusedCurrentIdentityAreRejected" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="existingReplaySeparatesOldCapsMealsSleepRemainderAndDurationFromExplicitNewCycle" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="resetCannotPrecedeCycleCreation" classname="lvluplife.progression.ResetTest" time="0.0"/>
+  <testcase name="existingReplayStartsNewGracePeriodAndDoesNotApplySeventhDatePenaltyTwice" classname="lvluplife.progression.ResetTest" time="0.001"/>
+  <testcase name="old59SleepMinutesCannotCombineWithNewSingleMinute" classname="lvluplife.progression.ResetTest" time="0.0"/>
+  <testcase name="yesterdayAndDayBeforeRecordsCreatedAfterResetBelongToNewCycleAndGrantXp" classname="lvluplife.progression.ResetTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

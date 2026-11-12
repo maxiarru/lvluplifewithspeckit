@@ -1,0 +1,61 @@
+{
+  "hub": {
+    "listen": [
+      {
+        "address": "127.0.0.1",
+        "family": "IPv4",
+        "port": 4400
+      },
+      {
+        "address": "::1",
+        "family": "IPv6",
+        "port": 4400
+      }
+    ],
+    "name": "hub",
+    "host": "127.0.0.1",
+    "port": 4400
+  },
+  "logging": {
+    "listen": [
+      {
+        "address": "127.0.0.1",
+        "family": "IPv4",
+        "port": 4500
+      }
+    ],
+    "name": "logging",
+    "host": "127.0.0.1",
+    "port": 4500
+  },
+  "auth": {
+    "listen": [
+      {
+        "address": "127.0.0.1",
+        "family": "IPv4",
+        "port": 9099
+      }
+    ],
+    "name": "auth",
+    "host": "127.0.0.1",
+    "port": 9099
+  },
+  "firestore": {
+    "listen": [
+      {
+        "address": "127.0.0.1",
+        "family": "IPv4",
+        "port": 8080
+      }
+    ],
+    "name": "firestore",
+    "host": "127.0.0.1",
+    "port": 8080,
+    "pid": 12116,
+    "reservedPorts": [
+      9150
+    ],
+    "webSocketHost": "127.0.0.1",
+    "webSocketPort": 9150
+  }
+}

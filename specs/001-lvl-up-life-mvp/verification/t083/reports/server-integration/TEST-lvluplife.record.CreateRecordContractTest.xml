@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.record.CreateRecordContractTest" tests="46" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:53:33.452Z" hostname="CERUS" time="18.495">
+  <properties/>
+  <testcase name="lostCreateReplyRecoversByResendingTheSameEnvelopeWithoutNewWrites" classname="lvluplife.record.CreateRecordContractTest" time="0.059"/>
+  <testcase name="sameUuidDifferentContentCannotReplaceRecordOrOriginalReceipt" classname="lvluplife.record.CreateRecordContractTest" time="0.061"/>
+  <testcase name="concurrentProgressQueriesAndCreationsConvergeWithoutLostRecords" classname="lvluplife.record.CreateRecordContractTest" time="7.918"/>
+  <testcase name="unknownActivityCannotFallbackToAnArbitraryDefinition" classname="lvluplife.record.CreateRecordContractTest" time="0.045"/>
+  <testcase name="wrongOrForeignCycleIsRejectedWithoutMovingTheRecord" classname="lvluplife.record.CreateRecordContractTest" time="0.047"/>
+  <testcase name="concurrentDistinctUuidsShareLastDailyXpPointAndBothPersist" classname="lvluplife.record.CreateRecordContractTest" time="2.556"/>
+  <testcase name="persistedRecordUuidCollisionChecksPayloadCycleAndCommandType" classname="lvluplife.record.CreateRecordContractTest" time="0.055"/>
+  <testcase name="persistedRecordReceiptsRecoverBeforeExpiredDateClosedCycleOrClockRead" classname="lvluplife.record.CreateRecordContractTest" time="0.06"/>
+  <testcase name="persistedRecordReceiptReturnsOriginalProgressionAndNoPrivateFields" classname="lvluplife.record.CreateRecordContractTest" time="0.031"/>
+  <testcase name="invalidDurationComponentsProduceDefinitiveRejectionsWithoutRecords" classname="lvluplife.record.CreateRecordContractTest" time="0.1"/>
+  <testcase name="operationLookupReturnsExactlyItsOriginalDefinitiveReceipt" classname="lvluplife.record.CreateRecordContractTest" time="0.045"/>
+  <testcase name="anotherUidCannotReadKnownOperationUuidOrItsRecord" classname="lvluplife.record.CreateRecordContractTest" time="0.046"/>
+  <testcase name="progressCrossingMidnightPublishesOnlyTheFinalBusinessDate" classname="lvluplife.record.CreateRecordContractTest" time="0.058"/>
+  <testcase name="customDefinitionIsResolvedOnlyFromTheAuthenticatedOwnersActivities" classname="lvluplife.record.CreateRecordContractTest" time="0.057"/>
+  <testcase name="absentOperationIsUnknownRatherThanRejectedAndCreatesNoReceipt" classname="lvluplife.record.CreateRecordContractTest" time="0.028"/>
+  <testcase name="intentionalSameContentWithNewUuidCreatesAnotherRecord" classname="lvluplife.record.CreateRecordContractTest" time="0.077"/>
+  <testcase name="invalidDateProducesImmutableRejectionAndNewUuidCanCorrectIt" classname="lvluplife.record.CreateRecordContractTest" time="0.073"/>
+  <testcase name="clientXpOrAttributeOverridesAreRejectedBeforeWrites" classname="lvluplife.record.CreateRecordContractTest" time="0.05"/>
+  <testcase name="dualActivityUsesServerDefinitionAndFourTwoSplit" classname="lvluplife.record.CreateRecordContractTest" time="0.062"/>
+  <testcase name="persistedRecordReceiptCannotBeReadOrRecoveredByAnotherUid" classname="lvluplife.record.CreateRecordContractTest" time="0.032"/>
+  <testcase name="sleepAndMealCreationsRebuildStoredProgressWithoutQueryEndpoints" classname="lvluplife.record.CreateRecordContractTest" time="0.14"/>
+  <testcase name="initialProgressHasSixAttributesCurrentCycleAndAuthoritativeMetadata" classname="lvluplife.record.CreateRecordContractTest" time="0.035"/>
+  <testcase name="createReplyAndStoredProjectionAgreeWithoutDependingOnProgressQuery" classname="lvluplife.record.CreateRecordContractTest" time="0.042"/>
+  <testcase name="recordConfirmationRejectsMismatchedOwnerCycleAndIdentityBeforeAnyWrite" classname="lvluplife.record.CreateRecordContractTest" time="0.028"/>
+  <testcase name="catalogContainsAllClassConditionsAndSeventySixNumericStagesWithoutRequiringImages" classname="lvluplife.record.CreateRecordContractTest" time="0.029"/>
+  <testcase name="sleepAccumulatesOnlyItsOwnTwoHalfHours" classname="lvluplife.record.CreateRecordContractTest" time="0.074"/>
+  <testcase name="persistedRecordRejectionRecoversWithoutRecheckingDateOrChangingRevision" classname="lvluplife.record.CreateRecordContractTest" time="0.035"/>
+  <testcase name="durationAndMealModalitiesCannotBeMixed" classname="lvluplife.record.CreateRecordContractTest" time="0.053"/>
+  <testcase name="lostReplyAfterActualCommitRecoversWithoutDuplicateRecordOrXp" classname="lvluplife.record.CreateRecordContractTest" time="0.057"/>
+  <testcase name="concurrentCreateRepliesAndProjectionRespectTheLastXpPointWithoutQueryEndpoints" classname="lvluplife.record.CreateRecordContractTest" time="2.99"/>
+  <testcase name="commonAuthenticationAndOwnerQueryGuardsProtectAllUs2Endpoints" classname="lvluplife.record.CreateRecordContractTest" time="0.031"/>
+  <testcase name="failureBeforeCommitHasNoDefinitiveReceiptAndAllowsSameUuidRetry" classname="lvluplife.record.CreateRecordContractTest" time="0.043"/>
+  <testcase name="rejectedReceiptLookupIsSuccessfulReadOfOriginalDefinitiveResult" classname="lvluplife.record.CreateRecordContractTest" time="0.038"/>
+  <testcase name="finalValidationAfterUtcThreeMidnightRejectsPreviouslyAllowedAnteayer" classname="lvluplife.record.CreateRecordContractTest" time="0.047"/>
+  <testcase name="progressQueriesApplyClosedDateInactivityWithoutNewRecordsAndDoNotDoublePenalize" classname="lvluplife.record.CreateRecordContractTest" time="0.061"/>
+  <testcase name="progressRebuildIgnoresCorruptCachedProjectionAndCreatesNoOperationReceipt" classname="lvluplife.record.CreateRecordContractTest" time="0.053"/>
+  <testcase name="fifthMealIsStoredWithNoAdditionalConstitutionXpOrDuration" classname="lvluplife.record.CreateRecordContractTest" time="0.109"/>
+  <testcase name="concurrentDurationsCompeteForOneRemainingHour" classname="lvluplife.record.CreateRecordContractTest" time="2.781"/>
+  <testcase name="persistedRecordProgressionRemainsAtItsAppliedRevisionAfterNewerReceipt" classname="lvluplife.record.CreateRecordContractTest" time="0.032"/>
+  <testcase name="progressQueryCannotExposeAnotherAccountsAttributes" classname="lvluplife.record.CreateRecordContractTest" time="0.054"/>
+  <testcase name="acceptedActivityDatesAreStoredAsRequestedWithoutSubstitution" classname="lvluplife.record.CreateRecordContractTest" time="0.071"/>
+  <testcase name="durationCreationCommitsRecordProjectionRootAndReceiptTogether" classname="lvluplife.record.CreateRecordContractTest" time="0.053"/>
+  <testcase name="corruptStoredRecordFailsProgressWithoutPublishingPartialState" classname="lvluplife.record.CreateRecordContractTest" time="0.05"/>
+  <testcase name="catalogContainsExactlyElevenBasicDefinitions" classname="lvluplife.record.CreateRecordContractTest" time="0.028"/>
+  <testcase name="fractionalDurationIsRejectedBySchemaWithNoFunctionalReceipt" classname="lvluplife.record.CreateRecordContractTest" time="0.027"/>
+  <testcase name="oldReceiptAfterNewerRecordAndExpiredDateDoesNotOverwriteCurrentProgress" classname="lvluplife.record.CreateRecordContractTest" time="0.07"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,96 @@
+{
+  "task": "T083",
+  "sourceRevision": "362be0ba6d63e06868d21ca72d1aed01771c5926",
+  "checkout": "C:\\Cerus\\Curso\\GitHub\\lvluplifewithspeckit\\.tooling\\t083-checkout",
+  "checkoutChanges": "M specs/001-lvl-up-life-mvp/quickstart.md",
+  "checkedAt": "2026-11-12T23:03:16.797088+00:00",
+  "quickstartSha256": "ebc412973115a17a7279688dc56aef4f775020a52f68124abaac7b00fef59904",
+  "environment": {
+    "powershell": "7.6.9",
+    "node": "22.23.5",
+    "npm": "10.9.9",
+    "firebaseCli": "13.35.1",
+    "jdk": "Temurin17.0.21+9",
+    "gradle": "9.5.0",
+    "androidSdkShared": true,
+    "gradleDependencyCacheShared": true,
+    "npmCache": "isolated .tooling/t083-isolated-npm-cache",
+    "nodeArchive": "node-v22.23.5-win-x64.zip",
+    "nodeSha256": "4a191082e9706866830379d577d2cc8a50c776fcd9436a8d061b063ed0d9a0e3",
+    "nodeManifest": "https://nodejs.org/dist/latest-v22.x/SHASUMS256.txt",
+    "avd": "Pixel_6a_API_30",
+    "serial": "emulator-5554",
+    "androidApi": 30,
+    "pixels": "1080x2400",
+    "densityDpi": 420
+  },
+  "suites": {
+    "domain": {
+      "tests": 322,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executedInPhase": "quick-check",
+      "automaticBundle": "UP-TO-DATE after earlier successful execution in clone"
+    },
+    "server-unit": {
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executedInPhase": "quick-check",
+      "automaticBundle": "UP-TO-DATE after earlier successful execution in clone"
+    },
+    "android-jvm": {
+      "tests": 142,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executedInPhase": "quick-check",
+      "automaticBundle": "UP-TO-DATE after earlier successful execution in clone"
+    },
+    "server-integration": {
+      "tests": 234,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executedInPhase": "manual-integration",
+      "automaticBundle": "UP-TO-DATE after earlier successful execution in clone"
+    },
+    "android-connected": {
+      "tests": 136,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executedInPhase": "automatic-validation",
+      "automaticBundle": "executed"
+    }
+  },
+  "commands": {
+    "npmCi": "APROBADO with isolated cache; same package-lock",
+    "firebaseVersion": "13.35.1",
+    "verifyEmulators": "APROBADO, five PASS messages",
+    "quickCheck": "APROBADO, 3m15s,60 tasks executed",
+    "manualEmulators": "APROBADO, hub ports8080/9099",
+    "serverRun": "APROBADO, HTTP401 without token; stopped with Ctrl+C",
+    "installDebug": "APROBADO,25s,1 executed/39 UP-TO-DATE",
+    "launch": "APROBADO, Status ok, access screen only",
+    "manualIntegration": "APROBADO,2m15s,234 cases",
+    "automaticBundle": "APROBADO,6m30s,34 executed/62 UP-TO-DATE,136 connected cases"
+  },
+  "finalLocalPortsListening": {
+    "8081": false,
+    "8080": false,
+    "9099": false
+  },
+  "incidentsResolved": [
+    "Initial npm ci ran in root due to cwd mistake; no tracked changes; installation repeated in clone",
+    "Node25 attempt emitted unsupported engine warning; candidate verified on Node22",
+    "First Node22 install with prior cache missed yaml/dist/index.js; fresh isolated cache restored exact lock installation"
+  ],
+  "notAvailable": [
+    "Google real: no google-services.json/default_web_client_id; no OAuth sign-in or infrastructure creation",
+    "API37-specific manual permission branch not re-executed; prior T080 matrix evidence applies",
+    "Installing Android Studio/SDK/JDK from zero, physical device provisioning, production deployment and broad performance studies not performed"
+  ]
+}

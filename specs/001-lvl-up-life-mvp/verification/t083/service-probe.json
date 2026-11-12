@@ -1,0 +1,4 @@
+{
+  "StatusCode": 401,
+  "Body": "{\"error\":{\"code\":\"AUTH_REQUIRED\",\"message\":\"Se requiere una sesión válida.\"}}"
+}

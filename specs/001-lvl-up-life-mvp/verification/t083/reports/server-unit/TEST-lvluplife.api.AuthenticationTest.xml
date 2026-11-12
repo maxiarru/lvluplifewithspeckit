@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.api.AuthenticationTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:45.707Z" hostname="CERUS" time="2.094">
+  <properties/>
+  <testcase name="providerFailureIsUnavailableWithNoOriginalMessageOrCause" classname="lvluplife.api.AuthenticationTest" time="0.13"/>
+  <testcase name="blankTokenNeverInvokesProviderAndInvalidProviderUidFailsClosed" classname="lvluplife.api.AuthenticationTest" time="0.002"/>
+  <testcase name="cancellationIsPreserved" classname="lvluplife.api.AuthenticationTest" time="0.001"/>
+  <testcase name="expiredRevokedDisabledDeletedAndInvalidIdentityAreRejected" classname="lvluplife.api.AuthenticationTest" time="0.0"/>
+  <testcase name="callerCannotOverrideVerifiedOwnerThroughQueryOrOtherHeaders" classname="lvluplife.api.AuthenticationTest" time="1.517"/>
+  <testcase name="ambiguousOrMalformedAuthorizationNeverInvokesVerifier" classname="lvluplife.api.AuthenticationTest" time="0.4"/>
+  <testcase name="verifierAlwaysChecksRevocationAndDerivesUidFromVerifiedToken" classname="lvluplife.api.AuthenticationTest" time="0.001"/>
+  <testcase name="unavailableProviderDoesNotLeakTokenInHttpResponse" classname="lvluplife.api.AuthenticationTest" time="0.032"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+]]></system-err>
+</testsuite>

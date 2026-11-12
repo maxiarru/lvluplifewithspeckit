@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.activity.CustomActivityTest" tests="20" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:01.997Z" hostname="CERUS" time="0.183">
+  <properties/>
+  <testcase name="oneCharacterNameIsAccepted" classname="lvluplife.activity.CustomActivityTest" time="0.119"/>
+  <testcase name="emptyOrWhitespaceOnlyTrimmedNamesAreRejected" classname="lvluplife.activity.CustomActivityTest" time="0.024"/>
+  <testcase name="identityOwnerAndCreationComeFromExplicitServerInputs" classname="lvluplife.activity.CustomActivityTest" time="0.001"/>
+  <testcase name="categoryIsFreeTextAndHasNoInventedShortLimitOrNormalization" classname="lvluplife.activity.CustomActivityTest" time="0.001"/>
+  <testcase name="savedDefinitionIsReusableAcrossRecordsAndCyclesWithoutChangingItsIdentity" classname="lvluplife.activity.CustomActivityTest" time="0.009"/>
+  <testcase name="unicodeCharactersAreCountedAsCodePointsNotUtf16Units" classname="lvluplife.activity.CustomActivityTest" time="0.001"/>
+  <testcase name="constitutionCannotBePrincipalWithOrWithoutSecondary" classname="lvluplife.activity.CustomActivityTest" time="0.003"/>
+  <testcase name="nameIsTrimmedBeforeCheckingLengthAndPersistingDefinition" classname="lvluplife.activity.CustomActivityTest" time="0.008"/>
+  <testcase name="fiftyCharacterNameIsAccepted" classname="lvluplife.activity.CustomActivityTest" time="0.001"/>
+  <testcase name="constitutionCannotBeSecondaryForAnyAllowedPrincipal" classname="lvluplife.activity.CustomActivityTest" time="0.0"/>
+  <testcase name="allTwentyOrderedDistinctPairsAreCompatible" classname="lvluplife.activity.CustomActivityTest" time="0.001"/>
+  <testcase name="everyAllowedPrimaryCanOmitSecondary" classname="lvluplife.activity.CustomActivityTest" time="0.001"/>
+  <testcase name="mentalCustomActivityUsesOrdinaryDurationRuleRatherThanSleep" classname="lvluplife.activity.CustomActivityTest" time="0.0"/>
+  <testcase name="basicCatalogueIdentitiesCannotBeReusedForACustomDefinition" classname="lvluplife.activity.CustomActivityTest" time="0.001"/>
+  <testcase name="emptyOrBlankCategoryIsRejected" classname="lvluplife.activity.CustomActivityTest" time="0.001"/>
+  <testcase name="sameLocalIdentityInDifferentOwnersHasNoGlobalSharedState" classname="lvluplife.activity.CustomActivityTest" time="0.0"/>
+  <testcase name="fiftyOneUnicodeCharactersAreRejected" classname="lvluplife.activity.CustomActivityTest" time="0.0"/>
+  <testcase name="repeatedPrincipalAndSecondaryAreRejected" classname="lvluplife.activity.CustomActivityTest" time="0.0"/>
+  <testcase name="equalNamesAreNotAnUnspecifiedUniquenessConstraint" classname="lvluplife.activity.CustomActivityTest" time="0.001"/>
+  <testcase name="fiftyOneCharactersAfterTrimmingAreRejected" classname="lvluplife.activity.CustomActivityTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

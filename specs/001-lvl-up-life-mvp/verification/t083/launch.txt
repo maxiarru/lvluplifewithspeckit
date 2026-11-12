@@ -1,0 +1,7 @@
+Starting: Intent { cmp=lvluplife.android/lvluplife.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: lvluplife.android/lvluplife.MainActivity
+TotalTime: 1998
+WaitTime: 2012
+Complete

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.data.ApiClientTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:38.743Z" hostname="CERUS" time="0.194">
+  <properties/>
+  <testcase name="definitiveRejectionRequiresOriginalUuidAndReceiptMetadata" classname="lvluplife.data.ApiClientTest" time="0.014"/>
+  <testcase name="serializationEscapesTextAndRejectsCredentialsAndManualXp" classname="lvluplife.data.ApiClientTest" time="0.004"/>
+  <testcase name="explicitRetryUsesExactlyTheOriginalEnvelope" classname="lvluplife.data.ApiClientTest" time="0.002"/>
+  <testcase name="absentReceiptIsUnknownAndNeverDefinitiveRejection" classname="lvluplife.data.ApiClientTest" time="0.001"/>
+  <testcase name="malformedMismatchedOrAmbiguousResponsesKeepMutationUnknown" classname="lvluplife.data.ApiClientTest" time="0.004"/>
+  <testcase name="productionTransportAllowsOnlyModernTlsAndNeverReplaysOrRedirects" classname="lvluplife.data.ApiClientTest" time="0.002"/>
+  <testcase name="timeoutAndConnectionFailureNeverMeanMutationWasNotApplied" classname="lvluplife.data.ApiClientTest" time="0.002"/>
+  <testcase name="nonJsonAndNonReceiptErrorsDoNotConfirmOrRejectMutations" classname="lvluplife.data.ApiClientTest" time="0.003"/>
+  <testcase name="commandSerializationPreservesIdentityAndNeverPutsTokenOrUidInBodyOrUrl" classname="lvluplife.data.ApiClientTest" time="0.001"/>
+  <testcase name="productionEndpointRejectsHttpEmulatorsAndCredentialBearingUrls" classname="lvluplife.data.ApiClientTest" time="0.001"/>
+  <testcase name="serviceUnavailableWithImmediateRetryAfterDoesNotReplayPost" classname="lvluplife.data.ApiClientTest" time="0.153"/>
+  <testcase name="missingOrDifferentSessionCannotSendAnOwnersOperation" classname="lvluplife.data.ApiClientTest" time="0.002"/>
+  <testcase name="unauthorizedSuspendsAndForbiddenStopsWithoutAutomaticRetries" classname="lvluplife.data.ApiClientTest" time="0.002"/>
+  <testcase name="queriesEncodeOnlyAllowedParametersAndFailureIsNotEmptyData" classname="lvluplife.data.ApiClientTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

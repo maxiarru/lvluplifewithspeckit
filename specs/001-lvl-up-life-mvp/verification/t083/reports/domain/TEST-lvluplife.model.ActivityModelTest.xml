@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.model.ActivityModelTest" tests="31" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:02.224Z" hostname="CERUS" time="0.023">
+  <properties/>
+  <testcase name="singleMinuteAndWholeDayAreValidNormalizedDurations" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="tombstonePreservesRecordIdentityAndValuesAndAdvancesVersion" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="customOccurrenceModalityIsInvalid" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="unknownActivityDoesNotFallBackToABasicDefinition" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="correctionCannotConvertBetweenMealAndDuration" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="durationRecordKeepsNormalizedMinutesIdentityAndDefinition" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="definitionNameLengthExtremesAreAccepted" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="categoryIsFreeNonemptyTextWithoutAnInventedTrimOrLengthLimit" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="versionCannotOverflowDuringCorrectionOrDeletion" classname="lvluplife.model.ActivityModelTest" time="0.002"/>
+  <testcase name="duplicatePrimaryAndSecondaryIsInvalid" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="customDefinitionsCannotImpersonateSleepOrMealRules" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="sleepAndMealDefinitionsRequireTheirCanonicalAttributeAndMode" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="mealCannotCarryAnyDurationIncludingZero" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="mealCorrectionOnlyChangesDateAndKeepsNoDuration" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="mealRecordHasNoDuration" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="tombstoneCannotBeCorrectedOrDeletedAgain" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="restoredRecordRetainsVersionAndDeletionMetadataWithoutAllocatingIdentity" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="mealCorrectionCannotReplaceItsResolvedDefinition" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="allDifferentCustomAttributePairsIncludingMentalUseOrdinaryDuration" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="correctionPreservesIdCycleAndCreationButChangesVersionAndCurrentValues" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="constitutionCannotBeUsedByCustomDurationDefinitions" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="sleepIsStillADurationRecord" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="exactElevenBasicActivitiesMatchApprovedData" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="durationCorrectionCanSwitchToSleepWithoutChangingModality" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="catalogCannotBeChangedByItsCaller" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="definitionsRequireNormalizedNonemptyNameAndCategory" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="ordinaryAndSleepDurationAreRequiredAndPositiveWithinOneDay" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="updatesCannotPredateCreationOrPreviousUpdate" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="restoringStorageRequiresPositiveVersionAndConsistentTimestamps" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <testcase name="activityAndRecordIdsCannotEscapeDocumentPaths" classname="lvluplife.model.ActivityModelTest" time="0.001"/>
+  <testcase name="copyingADefinitionCannotModifyCanonicalCatalogEntry" classname="lvluplife.model.ActivityModelTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

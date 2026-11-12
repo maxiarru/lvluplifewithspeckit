@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.reset.ResetRecoveryTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:53:54.224Z" hostname="CERUS" time="0.997">
+  <properties/>
+  <testcase name="invalidAuthenticationRetainsPendingUntilOriginalAccountCanRecover" classname="lvluplife.reset.ResetRecoveryTest" time="0.107"/>
+  <testcase name="retryAfterAnotherResetRejectsOriginalCycleWithoutRetargetingIt" classname="lvluplife.reset.ResetRecoveryTest" time="0.083"/>
+  <testcase name="anotherInstallationReadsConfirmedProgressAndPreservedDataWithoutImportingPending" classname="lvluplife.reset.ResetRecoveryTest" time="0.166"/>
+  <testcase name="lostDefinitiveRejectionIsRecoveredWithoutCreatingAnotherCycleOrReceipt" classname="lvluplife.reset.ResetRecoveryTest" time="0.094"/>
+  <testcase name="foreignAccountCannotReadOrRecoverOriginalOwnersJournalOrReceipt" classname="lvluplife.reset.ResetRecoveryTest" time="0.106"/>
+  <testcase name="beforeCommitFailureLeavesEverythingUnchangedThenReopenedJournalResendsExactEnvelopeOnce" classname="lvluplife.reset.ResetRecoveryTest" time="0.136"/>
+  <testcase name="lateLookupAndRepeatedOldEnvelopeNeverRollbackASecondReset" classname="lvluplife.reset.ResetRecoveryTest" time="0.103"/>
+  <testcase name="missingLocalPendingDoesNotDiscoverOrRecreateAnotherInstallationsOperation" classname="lvluplife.reset.ResetRecoveryTest" time="0.087"/>
+  <testcase name="lostResponseAfterCommitIsRecoveredByLookupOnlyFromReopenedOriginalInstallation" classname="lvluplife.reset.ResetRecoveryTest" time="0.114"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

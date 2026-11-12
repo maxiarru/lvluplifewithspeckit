@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.data.ClassCatalogRepositoryTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:38.943Z" hostname="CERUS" time="0.177">
+  <properties/>
+  <testcase name="duplicateUnknownShapeOrReorderedResourceEntriesAreRejected" classname="lvluplife.data.ClassCatalogRepositoryTest" time="0.069"/>
+  <testcase name="completeCatalogueUsesOnlyGetAndPreservesServerMinimums" classname="lvluplife.data.ClassCatalogRepositoryTest" time="0.011"/>
+  <testcase name="otherOwnerAndReplacedSameUidLeaseCannotPublishData" classname="lvluplife.data.ClassCatalogRepositoryTest" time="0.027"/>
+  <testcase name="returnedListsCannotBeMutatedByPresentation" classname="lvluplife.data.ClassCatalogRepositoryTest" time="0.012"/>
+  <testcase name="offlineAndHttpFailureNeverReturnFalseEmptyCatalogue" classname="lvluplife.data.ClassCatalogRepositoryTest" time="0.01"/>
+  <testcase name="missingFractionalOutOfRangeOrDescendingMinimumsAreRejected" classname="lvluplife.data.ClassCatalogRepositoryTest" time="0.02"/>
+  <testcase name="incompleteDuplicateOrExtraNoviceStagesCannotBecomeSuccessfulCatalogue" classname="lvluplife.data.ClassCatalogRepositoryTest" time="0.026"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

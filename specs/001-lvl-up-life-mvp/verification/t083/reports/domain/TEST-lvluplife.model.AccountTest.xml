@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.model.AccountTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:02.194Z" hostname="CERUS" time="0.023">
+  <properties/>
+  <testcase name="closedCycleKeepsOriginalIdentityStartAndRulesAndCannotCloseBeforeStart" classname="lvluplife.model.AccountTest" time="0.004"/>
+  <testcase name="initialCharacterIsNoviceWithSixLevelOneZeroExperienceAttributes" classname="lvluplife.model.AccountTest" time="0.004"/>
+  <testcase name="initialAttributeCollectionCannotBeChangedToAffectOtherAccounts" classname="lvluplife.model.AccountTest" time="0.002"/>
+  <testcase name="startBindsAccountAndOpenCycleToTheProvidedUidAndInstant" classname="lvluplife.model.AccountTest" time="0.006"/>
+  <testcase name="explicitInputsMakeInitialStateDeterministicWithoutReadingClockOrGeneratingIds" classname="lvluplife.model.AccountTest" time="0.001"/>
+  <testcase name="invalidCycleIdsRulesAndAccountMetadataAreRejected" classname="lvluplife.model.AccountTest" time="0.001"/>
+  <testcase name="validAsciiNamesPreserveVisibleSpellingAndDeriveLowercaseKey" classname="lvluplife.model.AccountTest" time="0.0"/>
+  <testcase name="invalidNamesAreRejectedRatherThanTrimmedOrTransliterated" classname="lvluplife.model.AccountTest" time="0.001"/>
+  <testcase name="differentOwnersHaveSeparateAccountsAndCyclesWithoutSharingPrivateFields" classname="lvluplife.model.AccountTest" time="0.001"/>
+  <testcase name="usernameKeyIsIndependentOfDeviceOrServerLocale" classname="lvluplife.model.AccountTest" time="0.001"/>
+  <testcase name="suppliedRevisionAndRulesMetadataArePreservedWhenCreatingProfileAfterOtherReceipts" classname="lvluplife.model.AccountTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

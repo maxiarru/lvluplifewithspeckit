@@ -1,0 +1,26 @@
+
+> verify:emulators
+> firebase emulators:exec --project demo-lvluplife --config firebase/firebase.json --only auth,firestore "node firebase/verify-emulators.mjs"
+
+!  emulators: You are not currently authenticated so some features may not work correctly. Please run firebase login to authenticate the CLI.
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-lvluplife", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  firestore: Firestore Emulator logging to firestore-debug.log
++  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: node firebase/verify-emulators.mjs
+PASS unauthenticated client read denied
+[2026-11-12T22:48:46.712Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x8d2bb199 error. Code: 7 Message: 7 PERMISSION_DENIED:
+false for 'create' @ L5, false for 'update' @ L5
+PASS unauthenticated client write denied
+PASS Auth available on 9099; Firestore on 8080
+PASS authenticated client read denied
+[2026-11-12T22:48:46.809Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x8d2bb19b error. Code: 7 Message: 7 PERMISSION_DENIED:
+false for 'create' @ L5, false for 'update' @ L5
+PASS authenticated client write denied
++  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+!  Firestore Emulator has exited upon receiving signal: SIGINT
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator

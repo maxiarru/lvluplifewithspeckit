@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.reset.ResetContractTest" tests="20" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:53:52.625Z" hostname="CERUS" time="1.596">
+  <properties/>
+  <testcase name="recentOldCycleRecordCannotBeEditedOrDeletedAfterReset" classname="lvluplife.reset.ResetContractTest" time="0.108"/>
+  <testcase name="consecutiveConfirmedResetsPreserveSchemaAndRulesWithoutReusingCycleIdentity" classname="lvluplife.reset.ResetContractTest" time="0.073"/>
+  <testcase name="concurrentSameResetUuidHasOneTransitionAndIdenticalReceipts" classname="lvluplife.reset.ResetContractTest" time="0.054"/>
+  <testcase name="resetRequiresExpectedCycleAndCannotAcceptClientOwnerOrTargetCycle" classname="lvluplife.reset.ResetContractTest" time="0.077"/>
+  <testcase name="sameUuidRecoversOriginalReceiptWithoutCreatingAnotherCycle" classname="lvluplife.reset.ResetContractTest" time="0.067"/>
+  <testcase name="confirmedResetClosesOldCycleCreatesNewAndPublishesInitialProjectionAtomically" classname="lvluplife.reset.ResetContractTest" time="0.084"/>
+  <testcase name="unauthenticatedResetCannotChangeAnyAccountOrCreateReceipt" classname="lvluplife.reset.ResetContractTest" time="0.052"/>
+  <testcase name="readingProfileHistoryAndCatalogueNeverRequestsImplicitReset" classname="lvluplife.reset.ResetContractTest" time="0.073"/>
+  <testcase name="sameUuidWithDifferentExpectedCycleRejectsCollisionWithoutChangingReceipt" classname="lvluplife.reset.ResetContractTest" time="0.076"/>
+  <testcase name="sameUuidIsScopedToVerifiedOwnerAndCanResetBothAccountsIndependently" classname="lvluplife.reset.ResetContractTest" time="0.073"/>
+  <testcase name="overlappingResetThatCommitsBeforeCreateRejectsOldEnvelopeWithoutTransferringIt" classname="lvluplife.reset.ResetContractTest" time="0.093"/>
+  <testcase name="backdatedRecordAfterResetBelongsToNewCycleAndAwardsOnlyNewProgress" classname="lvluplife.reset.ResetContractTest" time="0.107"/>
+  <testcase name="resetRequiresLiteralBooleanTrueAndRejectsMissingFalseOrExtraFieldsWithoutWrites" classname="lvluplife.reset.ResetContractTest" time="0.092"/>
+  <testcase name="concurrentDifferentResetUuidsAgainstSameCycleHaveExactlyOneWinner" classname="lvluplife.reset.ResetContractTest" time="0.063"/>
+  <testcase name="resetPreservesAccountUsernameCustomActivitiesAndEveryHistoricalSnapshot" classname="lvluplife.reset.ResetContractTest" time="0.135"/>
+  <testcase name="previous24HoursDoNotPreventOneHourInNewCycleOrEraseOldHistory" classname="lvluplife.reset.ResetContractTest" time="0.1"/>
+  <testcase name="differentUuidAgainstAlreadyClosedExpectedCycleIsRejectedWithoutAnotherReset" classname="lvluplife.reset.ResetContractTest" time="0.059"/>
+  <testcase name="originalReceiptAfterAnotherResetDoesNotRollBackCurrentPointerOrProjection" classname="lvluplife.reset.ResetContractTest" time="0.067"/>
+  <testcase name="overlappingCreateThatCommitsBeforeResetRemainsOnlyInOldCycleHistory" classname="lvluplife.reset.ResetContractTest" time="0.088"/>
+  <testcase name="foreignExpectedCycleCannotResetOrExposeAnotherOwnersAccount" classname="lvluplife.reset.ResetContractTest" time="0.054"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

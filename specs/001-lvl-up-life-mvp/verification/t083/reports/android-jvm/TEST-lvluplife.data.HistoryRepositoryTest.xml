@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.data.HistoryRepositoryTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:39.320Z" hostname="CERUS" time="0.085">
+  <properties/>
+  <testcase name="malformedServerObservationCannotBecomeAnEmptyOrCorrectableHistory" classname="lvluplife.data.HistoryRepositoryTest" time="0.018"/>
+  <testcase name="replacedSessionOrWrongProfileOwnerCannotPublishData" classname="lvluplife.data.HistoryRepositoryTest" time="0.006"/>
+  <testcase name="successfulEmptyQueryIsExplicitAndHistoryCollectionsAreImmutable" classname="lvluplife.data.HistoryRepositoryTest" time="0.006"/>
+  <testcase name="completeHistoryPreservesOriginalMetadataAndUsesOnlyReadRequests" classname="lvluplife.data.HistoryRepositoryTest" time="0.004"/>
+  <testcase name="previousCycleExpiredAndFutureCreationNeverGrantCorrectionPermission" classname="lvluplife.data.HistoryRepositoryTest" time="0.006"/>
+  <testcase name="serverObservationTimeControlsHintDespiteDeviceClockSkewAndPreservesExactBoundary" classname="lvluplife.data.HistoryRepositoryTest" time="0.017"/>
+  <testcase name="incompleteCorruptOrDuplicateRowsCannotBecomePartialOrEmptySuccess" classname="lvluplife.data.HistoryRepositoryTest" time="0.008"/>
+  <testcase name="weekAndMonthRequireCorrectCompleteCalendarBounds" classname="lvluplife.data.HistoryRepositoryTest" time="0.009"/>
+  <testcase name="tombstoneOutOfPeriodAndUnsortedResponseAreRejectedInsteadOfFilteredLocally" classname="lvluplife.data.HistoryRepositoryTest" time="0.005"/>
+  <testcase name="serverErrorOfflineAndInvalidInputNeverProduceEmptyConfirmedHistory" classname="lvluplife.data.HistoryRepositoryTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

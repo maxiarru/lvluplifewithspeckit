@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.activity.ActivityContractTest" tests="28" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:52:40.863Z" hostname="CERUS" time="4.608">
+  <properties/>
+  <testcase name="missingWrongTypedAndUnknownPayloadFieldsAreSchemaErrorsWithoutReceipts" classname="lvluplife.activity.ActivityContractTest" time="0.098"/>
+  <testcase name="repeatedAttributesAreRejected" classname="lvluplife.activity.ActivityContractTest" time="0.08"/>
+  <testcase name="cycleIsNotAcceptedForAnAccountScopedDefinition" classname="lvluplife.activity.ActivityContractTest" time="0.065"/>
+  <testcase name="corruptStoredDefinitionCannotBePresentedAsACompletePartialList" classname="lvluplife.activity.ActivityContractTest" time="0.121"/>
+  <testcase name="listHasStableCreationThenOrdinalIdOrderAndCompleteMetadata" classname="lvluplife.activity.ActivityContractTest" time="0.167"/>
+  <testcase name="concurrentSameUuidCreatesOnlyOneDefinition" classname="lvluplife.activity.ActivityContractTest" time="2.201"/>
+  <testcase name="everyAllowedPrimaryCanBeCreatedWithoutSecondary" classname="lvluplife.activity.ActivityContractTest" time="0.128"/>
+  <testcase name="rejectedUuidIsImmutableAndCorrectionNeedsANewUuid" classname="lvluplife.activity.ActivityContractTest" time="0.084"/>
+  <testcase name="failureBeforeCommitDoesNotCreateDefinitiveRejection" classname="lvluplife.activity.ActivityContractTest" time="0.066"/>
+  <testcase name="clientOwnerXpAndCreationOverridesAreRejectedBeforeWrites" classname="lvluplife.activity.ActivityContractTest" time="0.07"/>
+  <testcase name="initialListIsCompleteEmptyAndReadOnly" classname="lvluplife.activity.ActivityContractTest" time="0.065"/>
+  <testcase name="unknownAttributeNamesAreFunctionalRejections" classname="lvluplife.activity.ActivityContractTest" time="0.078"/>
+  <testcase name="anotherOwnersDefinitionCannotBeUsedToCreateARecord" classname="lvluplife.activity.ActivityContractTest" time="0.13"/>
+  <testcase name="freeCategoryIsPreservedWithoutInventedShortLimit" classname="lvluplife.activity.ActivityContractTest" time="0.066"/>
+  <testcase name="ownSavedDefinitionCanBeReusedAsOrdinaryMentalDuration" classname="lvluplife.activity.ActivityContractTest" time="0.125"/>
+  <testcase name="constitutionAsSecondaryIsRejected" classname="lvluplife.activity.ActivityContractTest" time="0.054"/>
+  <testcase name="reusedUuidWithChangedContentCannotReplaceOriginal" classname="lvluplife.activity.ActivityContractTest" time="0.061"/>
+  <testcase name="creationWithoutSecondaryCommitsOwnedDefinitionRevisionAndReceipt" classname="lvluplife.activity.ActivityContractTest" time="0.071"/>
+  <testcase name="constitutionAsPrincipalIsRejected" classname="lvluplife.activity.ActivityContractTest" time="0.053"/>
+  <testcase name="sameUuidAndContentReturnOriginalResultWithoutAnotherDefinition" classname="lvluplife.activity.ActivityContractTest" time="0.059"/>
+  <testcase name="lostReplyAfterConfirmedCommitRecoversFromOwnReceipt" classname="lvluplife.activity.ActivityContractTest" time="0.064"/>
+  <testcase name="blankCategoryCannotBeStored" classname="lvluplife.activity.ActivityContractTest" time="0.061"/>
+  <testcase name="trimmedBoundaryNamesAndUnicodeAreStoredCanonically" classname="lvluplife.activity.ActivityContractTest" time="0.075"/>
+  <testcase name="invalidNamesProduceDefinitiveRejectionsWithoutDefinitions" classname="lvluplife.activity.ActivityContractTest" time="0.08"/>
+  <testcase name="otherUidCannotSeeDefinitionAndMayUseSameOperationUuidIndependently" classname="lvluplife.activity.ActivityContractTest" time="0.069"/>
+  <testcase name="sameNameWithNewUuidCreatesAnotherIntentionalDefinition" classname="lvluplife.activity.ActivityContractTest" time="0.074"/>
+  <testcase name="allDistinctOrderedPairsAreAcceptedByTheService" classname="lvluplife.activity.ActivityContractTest" time="0.291"/>
+  <testcase name="commonAuthAndOwnerQueryGuardsApplyBeforeCustomHandlers" classname="lvluplife.activity.ActivityContractTest" time="0.048"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

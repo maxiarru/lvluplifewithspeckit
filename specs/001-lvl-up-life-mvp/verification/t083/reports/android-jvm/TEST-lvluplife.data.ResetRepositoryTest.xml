@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.data.ResetRepositoryTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:39.548Z" hostname="CERUS" time="0.067">
+  <properties/>
+  <testcase name="offlineUnconfirmedAndInvalidCycleNeverAllocateOrSend" classname="lvluplife.data.ResetRepositoryTest" time="0.02"/>
+  <testcase name="unknownLooksUpBeforeResendingExactOriginalEnvelope" classname="lvluplife.data.ResetRepositoryTest" time="0.006"/>
+  <testcase name="startupReceiptIsDeliveredOnceEvenAfterCoordinatorRemovesJournal" classname="lvluplife.data.ResetRepositoryTest" time="0.006"/>
+  <testcase name="sessionChangeAfterPreparationRetainsOwnerAndNeverSendsForNewSession" classname="lvluplife.data.ResetRepositoryTest" time="0.011"/>
+  <testcase name="scopedRecoveryLeavesOtherCommandsAndOtherOwnersUntouched" classname="lvluplife.data.ResetRepositoryTest" time="0.007"/>
+  <testcase name="ownerChangeCannotRetryOrReassignOriginalEnvelopeAndDraftsStayIntact" classname="lvluplife.data.ResetRepositoryTest" time="0.008"/>
+  <testcase name="preparationFailureRetainsSameUuidEnvelopeAndIntent" classname="lvluplife.data.ResetRepositoryTest" time="0.005"/>
+  <testcase name="persistsExplicitConfirmationAndObservedCycleBeforeTransportWithoutMetadataReads" classname="lvluplife.data.ResetRepositoryTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.progression.ExperienceTest" tests="53" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:02.343Z" hostname="CERUS" time="0.031">
+  <properties/>
+  <testcase name="durationRejectsConstitutionAndDuplicateAttributes" classname="lvluplife.progression.ExperienceTest" time="0.002"/>
+  <testcase name="excessiveDurationCannotBeScoredEvenAtLevelFifty" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="aValidRecordAfterDailyCapHasZeroContributionRatherThanAnError" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="primaryAndSecondaryRolesAreNotInterchanged" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="allDifferentCompatibleDurationPairsUseTheSameSplitIncludingMental" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="mealCountsAndBudgetsCannotBeNegativeOrBeyondTheXpCap" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="incompleteSleepMinuteRemaindersStayWithinTheSameDay" classname="lvluplife.progression.ExperienceTest" time="0.007"/>
+  <testcase name="ordinaryDailyMarginsFromZeroThroughFiveClipSixXp" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="customMentalDurationUsesFiveMinuteRuleInsteadOfSleepRule" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="fullOrdinaryMarginAllowsExactlySixXp" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="customMentalDurationAndSleepUseOneSharedDailyCap" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="maximumLevelSecondaryDoesNotChangePrimaryShare" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="levelFiftyPrimaryDoesNotTransferXpToSecondary" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="cappedSecondaryDoesNotDonateItsShareToPrimary" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="mentalCustomDurationSharesTheSameThirtyXpBudgetAsSleep" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="sleepAcrossDifferentCyclesOnSameDateDoesNotCombinePendingMinutes" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="dualDailyMarginsAreIndependent" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="outputIsImmutableAndIndependentFromMutableInputBudget" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="largeMealCountsStayCappedWithoutOverflow" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="invalidDailyBudgetsAreRejectedBeforeTheyCanIncreaseAnAward" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="ordinaryDurationBoundariesHaveLiteralExpectedContributions" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="zeroDurationIsRejectedBeforeAnyAward" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="fourMealsHaveLiteralTwentyEightXpTotal" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="levelFiftyConstitutionReceivesNoMealXp" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="sleepAcrossDifferentDatesDoesNotCombinePendingMinutes" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="fifthAndLaterMealsHaveZeroXpWithoutRejectingTheActivity" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="sleepBoundariesHaveLiteralXpAndRemainders" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="pendingSleepMustContainLessThanOneHourOfNonnegativeMinutes" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="sleepRejectsExcessiveDurationAndInvalidBudgetEvenAtMaximumLevel" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="tenMinuteDualActivityHasPositiveXpOnlyForPrimary" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="sixtySleepMinutesGiveThreeMentalXp" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="twoHalfHoursOnSameDateAndCycleCompleteOneSleepBlock" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="cappedPrimaryDoesNotDonateItsShareToSecondary" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="eachOfFirstFourMealsGivesSevenXp" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="negativeDurationIsRejectedBeforeAnyAward" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="twoAcceptedFiveMinuteContributionsShareTheLastDailyPoint" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="noMealRecordsMeanZeroMealContributions" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="mentalDailyMarginsFromZeroThroughTwoClipThreeSleepXp" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="negativeSleepDurationIsRejectedBeforeAnyAward" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="mentalShareUsesItsOwnThirtyXpLimitInADualActivity" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="sleepAfterMentalCapHasZeroXpWithoutRejectingValidDuration" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="sleepAtLevelFiftyMentalGivesNoXp" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="largestValidDailyDurationStillCannotExceedOrdinaryCap" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="sleepConsumesFullBlocksEvenWhenDailyXpIsClipped" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="mealCountBoundariesHaveLiteralDailyTotals" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="zeroSleepDurationIsRejectedBeforeAnyAward" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="thirtyMinuteDualActivityGivesFourAndTwo" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="thirtyMinutesOfEachOrdinaryAttributeGiveSixXp" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="dualRoundingBoundariesHaveLiteralExpectedContributions" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="levelFiftyAttributeReceivesNoXp" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="budgetsAreInputsAndCannotBeMutatedByCalculation" classname="lvluplife.progression.ExperienceTest" time="0.0"/>
+  <testcase name="ordinaryRemaindersDoNotAccumulateAcrossRecords" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <testcase name="dailyLimitsAreCanonicalCompleteAndImmutable" classname="lvluplife.progression.ExperienceTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

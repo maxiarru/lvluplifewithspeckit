@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.data.FirebaseGoogleSignInTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:39.245Z" hostname="CERUS" time="0.073">
+  <properties/>
+  <testcase name="refreshOriginalAccountForcesFreshFirebaseToken" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.018"/>
+  <testcase name="logoutClearsFirebaseEvenIfProviderStateClearFails" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.002"/>
+  <testcase name="refreshRequiresOriginalUidAndNeverFetchesAnotherAccountsToken" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.001"/>
+  <testcase name="missingStoredIdentityReturnsToAccess" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.002"/>
+  <testcase name="lateExchangeAfterLogoutCannotRestoreTheOldIdentity" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.009"/>
+  <testcase name="successiveActivityAdaptersShareTheSameFirebaseLease" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.016"/>
+  <testcase name="rejectedFirebaseExchangeClearsPartialAuthentication" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.002"/>
+  <testcase name="restoreUsesSdkRefreshWithoutOpeningPickerOrCreatingAnotherIdentity" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.001"/>
+  <testcase name="deniedPickerDoesNotRetryOrExposeProviderException" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.002"/>
+  <testcase name="cancelledPickerDoesNotExchangeCredentialOrRetry" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.001"/>
+  <testcase name="exchangesGoogleCredentialForFirebaseSessionInsteadOfSendingGoogleToken" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.003"/>
+  <testcase name="coroutineCancellationCleansUpEvenWhenFirebaseTaskFinishesLate" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.008"/>
+  <testcase name="unexpectedProviderFailureIsSafeUnavailable" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.002"/>
+  <testcase name="wrongUidInvalidTokenOrNonGoogleUserCannotBecomeAuthenticated" classname="lvluplife.data.FirebaseGoogleSignInTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

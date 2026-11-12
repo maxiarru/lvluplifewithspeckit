@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.api.ClassCatalogContractTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:47.809Z" hostname="CERUS" time="0.247">
+  <properties/>
+  <testcase name="all26StableClassIdsArePresentExactlyOnce" classname="lvluplife.api.ClassCatalogContractTest" time="0.15"/>
+  <testcase name="stageAvailabilityAgreesWithClassRulesAt14And15And34And35" classname="lvluplife.api.ClassCatalogContractTest" time="0.025"/>
+  <testcase name="publicMetadataMatchesCanonicalDomainWithoutOmittingClassesOrStages" classname="lvluplife.api.ClassCatalogContractTest" time="0.022"/>
+  <testcase name="everyValidClassStageHasOneUniqueAndroidResourceReference" classname="lvluplife.api.ClassCatalogContractTest" time="0.024"/>
+  <testcase name="noviceHasOnlyStageOneImageAndNoInventedLaterStages" classname="lvluplife.api.ClassCatalogContractTest" time="0.025"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

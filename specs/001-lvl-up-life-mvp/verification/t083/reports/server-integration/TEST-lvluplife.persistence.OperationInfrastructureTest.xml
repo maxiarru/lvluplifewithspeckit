@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.persistence.OperationInfrastructureTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:53:02.248Z" hostname="CERUS" time="5.447">
+  <properties/>
+  <testcase name="canonicalHashIgnoresObjectOrderAndOperationIdentity" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.003"/>
+  <testcase name="revisionMismatchDoesNotWriteEffectOrReceipt" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.017"/>
+  <testcase name="definitiveRejectionChangesOnlyReceiptAndRevision" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.018"/>
+  <testcase name="confirmedReceiptRemainsOriginalAcrossReconnectAndTimeChanges" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.022"/>
+  <testcase name="firstCommitCreatesRootEffectAndReceiptTogether" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.012"/>
+  <testcase name="transientErrorCannotBePersistedAsFunctionalRejection" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.009"/>
+  <testcase name="absentReceiptIsUnknownAndSameUuidIsScopedToUid" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.016"/>
+  <testcase name="failureBeforeCommitLeavesNoRootEffectOrReceiptAndRetryCanSucceed" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.015"/>
+  <testcase name="receiptIsReadBeforeObsoleteRevisionPreconditionsOrDecision" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.014"/>
+  <testcase name="preconditionsAreReadBeforeWritesAndChangedDocumentAbortsWholeCommit" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.026"/>
+  <testcase name="rejectedReceiptIsImmutableAndCorrectionUsesNewUuid" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.016"/>
+  <testcase name="transientDependencyFailureCreatesNoDefinitiveReceipt" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.012"/>
+  <testcase name="canonicalHashIncludesTypeCycleAndPayload" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.004"/>
+  <testcase name="sameUuidWithDifferentContentConflictsWithoutReplacingReceipt" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.014"/>
+  <testcase name="concurrentSameUuidCommitsOnlyOneEffectAndReturnsSameReceipt" classname="lvluplife.persistence.OperationInfrastructureTest" time="2.601"/>
+  <testcase name="lostResponseAfterCommitRecoversOriginalReceiptWithoutSecondEffect" classname="lvluplife.persistence.OperationInfrastructureTest" time="0.021"/>
+  <testcase name="concurrentDifferentUuidsCannotBothUseTheSameRevision" classname="lvluplife.persistence.OperationInfrastructureTest" time="2.623"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

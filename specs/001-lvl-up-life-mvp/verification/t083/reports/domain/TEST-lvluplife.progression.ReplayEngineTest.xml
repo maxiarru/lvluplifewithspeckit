@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.progression.ReplayEngineTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:02.454Z" hostname="CERUS" time="0.105">
+  <properties/>
+  <testcase name="overdrawnDailyDurationCannotProduceAProjection" classname="lvluplife.progression.ReplayEngineTest" time="0.01"/>
+  <testcase name="emptyOpenCycleStartsFromCanonicalInitialStateAndIsRepeatable" classname="lvluplife.progression.ReplayEngineTest" time="0.002"/>
+  <testcase name="zeroXpAfterPositiveXpDoesNotMakeTheClosedDateInactive" classname="lvluplife.progression.ReplayEngineTest" time="0.0"/>
+  <testcase name="returnedCollectionsAreImmutableAndDetachedFromInput" classname="lvluplife.progression.ReplayEngineTest" time="0.001"/>
+  <testcase name="penaltiesCannotUndoLevelsOrGeneralProgressDuringEmptyDates" classname="lvluplife.progression.ReplayEngineTest" time="0.001"/>
+  <testcase name="dailyXpBudgetsResetOnEachActivityDate" classname="lvluplife.progression.ReplayEngineTest" time="0.001"/>
+  <testcase name="correctionAndDeletionRebuildLevelsGeneralAndClassFromZero" classname="lvluplife.progression.ReplayEngineTest" time="0.001"/>
+  <testcase name="sleepAndCustomMentalDurationShareTheMentalXpBudget" classname="lvluplife.progression.ReplayEngineTest" time="0.0"/>
+  <testcase name="futureActivityOrCreationAndImpossibleSnapshotChronologyAreRejected" classname="lvluplife.progression.ReplayEngineTest" time="0.001"/>
+  <testcase name="duplicateCurrentCycleIdentitiesAreRejectedInsteadOfDoubleAwarded" classname="lvluplife.progression.ReplayEngineTest" time="0.001"/>
+  <testcase name="closedFutureAndUnsupportedCyclesAreRejected" classname="lvluplife.progression.ReplayEngineTest" time="0.0"/>
+  <testcase name="reachingLevelFiftyKeepsThatDateActiveAndLaterAwardsBecomeZero" classname="lvluplife.progression.ReplayEngineTest" time="0.086"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

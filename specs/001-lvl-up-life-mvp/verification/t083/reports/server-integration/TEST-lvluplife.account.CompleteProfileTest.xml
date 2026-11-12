@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.account.CompleteProfileTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:52:33.601Z" hostname="CERUS" time="5.633">
+  <properties/>
+  <testcase name="twoAccountsCompetingForCaseVariantsHaveOneWinnerAndImmutableRejection" classname="lvluplife.account.CompleteProfileTest" time="2.894"/>
+  <testcase name="profileCycleProjectionNameAndReceiptAreCommittedTogether" classname="lvluplife.account.CompleteProfileTest" time="0.057"/>
+  <testcase name="invalidNameRejectsWithoutProfileAndCorrectionUsesNewUuidAndNextRevision" classname="lvluplife.account.CompleteProfileTest" time="0.054"/>
+  <testcase name="existingProfileDoesNotRenameOrResetCycleOrProjection" classname="lvluplife.account.CompleteProfileTest" time="0.059"/>
+  <testcase name="allowedUnderscoreNamesDoNotCollideWithFirestoreReservedDocumentIds" classname="lvluplife.account.CompleteProfileTest" time="0.05"/>
+  <testcase name="unavailablePersistenceNeverCreatesAFunctionalRejection" classname="lvluplife.account.CompleteProfileTest" time="0.005"/>
+  <testcase name="corruptPartialProfileFailsSafelyAndDoesNotReserveRequestedName" classname="lvluplife.account.CompleteProfileTest" time="0.033"/>
+  <testcase name="replayReturnsReceiptBeforeReadingEvenACorruptRoot" classname="lvluplife.account.CompleteProfileTest" time="0.036"/>
+  <testcase name="concurrentDifferentNamesForOneUidCreateOnlyOneCharacter" classname="lvluplife.account.CompleteProfileTest" time="2.408"/>
+  <testcase name="reusedUuidWithDifferentNameCannotOverwriteAnything" classname="lvluplife.account.CompleteProfileTest" time="0.036"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

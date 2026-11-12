@@ -1,0 +1,105 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.5.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDebugBuildConfig
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:processDebugNavigationResources
+> Task :app:parseDebugLocalResources
+> Task :app:generateDebugRFile
+> Task :app:checkDebugAarMetadata
+> Task :app:javaPreCompileDebug
+> Task :app:mapDebugSourceSetPaths
+> Task :app:compileDebugNavigationResources
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:kspDebugKotlin
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:mergeDebugResources
+> Task :app:mergeDebugAssets
+> Task :app:compressDebugAssets
+> Task :app:generateDebugGlobalSynthetics
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:mergeDebugNativeLibs
+> Task :app:writeDebugSigningConfigVersions
+> Task :domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :domain:processResources NO-SOURCE
+> Task :domain:processTestResources NO-SOURCE
+> Task :server:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :server:processResources NO-SOURCE
+> Task :server:processTestResources NO-SOURCE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:generateReleaseBuildConfig
+> Task :app:generateReleaseResources
+> Task :app:checkDebugDuplicateClasses
+> Task :app:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :app:mergeLibDexDebug
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :app:processDebugManifestForPackage
+> Task :app:processDebugResources
+> Task :domain:compileKotlin
+> Task :domain:compileJava NO-SOURCE
+> Task :domain:classes UP-TO-DATE
+> Task :app:mergeExtDexDebug
+> Task :domain:jar
+> Task :app:compileDebugKotlin
+> Task :domain:compileTestKotlin
+> Task :domain:compileTestJava NO-SOURCE
+> Task :domain:testClasses UP-TO-DATE
+> Task :domain:test
+
+> Task :app:compileDebugKotlin
+w: file:///C:/Cerus/Curso/GitHub/lvluplifewithspeckit/.tooling/t083-checkout/app/src/main/kotlin/lvluplife/application/RecordFormController.kt:38:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///C:/Cerus/Curso/GitHub/lvluplifewithspeckit/.tooling/t083-checkout/app/src/main/kotlin/lvluplife/ui/ClassCatalogScreen.kt:41:33 Unnecessary non-null assertion (!!) on a non-null receiver of type 'List<ClassCatalogEntry>'.
+
+> Task :server:compileKotlin
+w: file:///C:/Cerus/Curso/GitHub/lvluplifewithspeckit/.tooling/t083-checkout/server/src/main/kotlin/lvluplife/persistence/OperationStore.kt:113:19 Cast is redundant.
+
+> Task :app:compileDebugJavaWithJavac
+> Task :app:processDebugJavaRes
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:kspDebugUnitTestKotlin SKIPPED
+> Task :app:dexBuilderDebug
+> Task :server:compileJava NO-SOURCE
+> Task :server:classes UP-TO-DATE
+> Task :server:jar
+> Task :app:mergeProjectDexDebug
+> Task :app:bundleDebugClassesToRuntimeJar
+
+> Task :app:compileDebugUnitTestKotlin
+w: file:///C:/Cerus/Curso/GitHub/lvluplifewithspeckit/.tooling/t083-checkout/app/src/test/kotlin/lvluplife/application/AccessControllerTest.kt:72:40 The corresponding parameter in the supertype 'AccessAccounts' is named 'ref'. This may cause problems when calling this function with named arguments.
+
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:copyRoomSchemas NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :app:mergeDebugJavaResource
+> Task :server:compileTestKotlin
+> Task :app:testDebugUnitTest
+> Task :server:compileTestJava NO-SOURCE
+> Task :server:testClasses UP-TO-DATE
+> Task :server:test
+> Task :app:packageDebug
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+
+[Incubating] Problems report is available at: file:///C:/Cerus/Curso/GitHub/lvluplifewithspeckit/.tooling/t083-checkout/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 3m 15s
+60 actionable tasks: 60 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html

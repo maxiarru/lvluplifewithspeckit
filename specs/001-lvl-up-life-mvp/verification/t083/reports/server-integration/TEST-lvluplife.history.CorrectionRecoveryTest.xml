@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.history.CorrectionRecoveryTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:52:45.485Z" hostname="CERUS" time="12.935">
+  <properties/>
+  <testcase name="editDeleteSameSnapshotNeverResurrectsOrOverwritesWinner" classname="lvluplife.history.CorrectionRecoveryTest" time="2.744"/>
+  <testcase name="editFailureBeforeCommitAtMidnightRemainsUnknownThenRevalidatesSameEnvelope" classname="lvluplife.history.CorrectionRecoveryTest" time="0.138"/>
+  <testcase name="finalValidationCrossing299To300RejectsPreparedDelete" classname="lvluplife.history.CorrectionRecoveryTest" time="0.099"/>
+  <testcase name="sameUuidConcurrentEditsReturnIdenticalReceiptAndSingleVersion" classname="lvluplife.history.CorrectionRecoveryTest" time="6.575"/>
+  <testcase name="validEditAcrossMidnightRebuildsProjectionForNewBusinessDate" classname="lvluplife.history.CorrectionRecoveryTest" time="0.118"/>
+  <testcase name="editEditSameSnapshotCommitsOnlyWinnerAndRejectsStaleLoser" classname="lvluplife.history.CorrectionRecoveryTest" time="2.301"/>
+  <testcase name="finalValidationCrossing299To300RejectsPreparedEdit" classname="lvluplife.history.CorrectionRecoveryTest" time="0.102"/>
+  <testcase name="editLostResponseAcrossMidnightAndWindowExpiryRecoversExactReceipt" classname="lvluplife.history.CorrectionRecoveryTest" time="0.129"/>
+  <testcase name="midnightBetweenPreparationAndCommitRevalidatesDateWithoutPartialEdit" classname="lvluplife.history.CorrectionRecoveryTest" time="0.109"/>
+  <testcase name="deleteLostResponseAcrossMidnightAndWindowExpiryRecoversExactReceipt" classname="lvluplife.history.CorrectionRecoveryTest" time="0.119"/>
+  <testcase name="editRejectedAt300Seconds" classname="lvluplife.history.CorrectionRecoveryTest" time="0.089"/>
+  <testcase name="editAcceptedAt299Seconds" classname="lvluplife.history.CorrectionRecoveryTest" time="0.092"/>
+  <testcase name="deleteRejectedAt300Seconds" classname="lvluplife.history.CorrectionRecoveryTest" time="0.1"/>
+  <testcase name="deleteAcceptedAt299Seconds" classname="lvluplife.history.CorrectionRecoveryTest" time="0.094"/>
+  <testcase name="deleteFailureBeforeCommitAtMidnightRemainsUnknownThenCommitsOnce" classname="lvluplife.history.CorrectionRecoveryTest" time="0.126"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

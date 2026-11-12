@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.progression.ReplayTest" tests="38" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:02.566Z" hostname="CERUS" time="0.026">
+  <properties/>
+  <testcase name="oneSimpleActivityGivesOnlyItsOwnAttributeXpOnAnOpenDate" classname="lvluplife.progression.ReplayTest" time="0.002"/>
+  <testcase name="hugeDurationCannotOverflowIntoAnAcceptedSmallValue" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="fractionalHoursOrMinutesAreRejectedWithoutTruncation" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="backdatedActivityReversesThePenaltyItsActivityDateAvoids" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="durationBeyondOneWholeDayIsRejectedEvenWithoutOtherRecords" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="otherDatesAndPreviousCyclesDoNotConsumeCurrentDateBudget" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="deletedDurationAloneCannotConsumeTheLastAvailableHour" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="tombstonesAreExcludedFromXpAndDurationAndOutputOrder" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="mealsConsumeNoDurationBudget" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="queryRebuildsHistoricalRecordsWithoutApplyingNewRecordDateWindow" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="activityDateIsSortedBeforeCreationTime" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="deletedRecordsReleaseDurationAndReplacementExcludesOriginal" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="mealsOnAnotherActivityDateDoNotConsumeTodaysFourMealBudget" classname="lvluplife.progression.ReplayTest" time="0.002"/>
+  <testcase name="sleepAndOrdinaryActivityConsumeTheSameDurationBudget" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="businessDateAndFirstPenaltyChangeAtUtcThreeMidnight" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="zeroAndNegativeDurationComponentsAreRejected" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="equalDatesAndCreationInstantsUseOrdinalIdsRatherThanNumericOrder" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="minuteComponentSixtyOrAboveIsNotNormalizedIntoHours" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="lateCreationDateStillCountsAsFirstInactiveDateWhenItCloses" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="newBusinessDateBecomesValidExactlyAtUtcThreeMidnight" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="windowBeforeUtcThreeMidnightUsesPreviousBusinessDate" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="ordinalIdsDistinguishUpperAndLowerCase" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="twoAdmissionsUnderOneHourOfRemainingBudgetCannotBothConsumeIt" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="resetCycleAllowsEarlierActivityXpButCountsNoPreCycleInactivity" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="fifthMealRemainsInReplayWithZeroXpAndNoMinutes" classname="lvluplife.progression.ReplayTest" time="0.002"/>
+  <testcase name="creationTimeOrdersRecordsWithinSameActivityDate" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="todayYesterdayAndDayBeforeYesterdayAreAccepted" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="previousCycleRecordsCannotConsumeCurrentCycleXpOrMinutes" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="serverResolvedCustomMentalActivityUsesOrdinaryRule" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="tomorrowAndThreeDaysAgoAreRejected" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="editedValuesKeepTheirOriginalCreationOrder" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="threeHoursAtTwentyThreeOClockAreNotLimitedByTimeUntilMidnight" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="twentyThreeHoursAllowExactlyOneMoreHourButNotSixtyOneMinutes" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="requestedAnteayerExpiresAfterUtcThreeMidnightWithoutChangingRequestedDate" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="validDurationComponentsHaveLiteralMinuteTotals" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="sleepRemaindersDoNotCrossActivityDates" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <testcase name="priorCycleSleepCannotCompleteACurrentCycleHalfHour" classname="lvluplife.progression.ReplayTest" time="0.001"/>
+  <testcase name="twoHalfHourSleepRecordsOnOneDateGiveZeroThenThreeXp" classname="lvluplife.progression.ReplayTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

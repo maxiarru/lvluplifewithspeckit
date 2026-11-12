@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.progression.LevelRulesTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-12T22:45:02.396Z" hostname="CERUS" time="0.009">
+  <properties/>
+  <testcase name="negativeXpIsRejectedEvenAtMaximumLevel" classname="lvluplife.progression.LevelRulesTest" time="0.003"/>
+  <testcase name="aggregateGeneralGainsConsumeAllBandsAndDiscardSurplusAtFifty" classname="lvluplife.progression.LevelRulesTest" time="0.0"/>
+  <testcase name="alreadyMaximumAttributeDoesNotReportAnotherGain" classname="lvluplife.progression.LevelRulesTest" time="0.003"/>
+  <testcase name="actualBatchGainsProduceACoherentGeneralProjectionWithoutGeneralXp" classname="lvluplife.progression.LevelRulesTest" time="0.001"/>
+  <testcase name="batchResultIsImmutableAndIndependentOfMutableInputMaps" classname="lvluplife.progression.LevelRulesTest" time="0.0"/>
+  <testcase name="aggregateAttributeXpHasAnExactMaximumBoundaryAndCannotOverflow" classname="lvluplife.progression.LevelRulesTest" time="0.0"/>
+  <testcase name="aggregateXpCanCrossMultipleThresholdsAndKeepExactSurplus" classname="lvluplife.progression.LevelRulesTest" time="0.0"/>
+  <testcase name="batchRejectsNegativeAwardsWithoutMutatingItsInput" classname="lvluplife.progression.LevelRulesTest" time="0.0"/>
+  <testcase name="batchRequiresAllSixCurrentAttributeBalances" classname="lvluplife.progression.LevelRulesTest" time="0.001"/>
+  <testcase name="negativeGeneralGainsAreRejectedEvenAtMaximumLevel" classname="lvluplife.progression.LevelRulesTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
