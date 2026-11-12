@@ -1,5 +1,7 @@
 package lvluplife.ui
 
+import lvluplife.ui.theme.*
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -13,7 +15,7 @@ import lvluplife.application.RecordOption
 fun ActivityPicker(options: List<RecordOption>, selected: String, enabled: Boolean, select: (String) -> Unit) {
     LazyRow(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
         items(options, key = { it.id }) { option ->
-            FilterChip(selected == option.id, { select(option.id) }, { Text(option.name) }, enabled = enabled)
+            ChoiceChip(selected == option.id, { select(option.id) }, { Text(option.name) }, enabled = enabled)
         }
     }
 }

@@ -1,5 +1,7 @@
 package lvluplife.ui
 
+import lvluplife.ui.theme.*
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -44,13 +46,13 @@ fun HomeScreen(view: ProgressView, refresh: () -> Unit, openClasses: (() -> Unit
                 if (view.stale) Text("Mostrando el último progreso confirmado")
                 if (view.loading) Text("Actualizando progreso…")
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Button(onClick = refresh, enabled = !view.loading,colors=ButtonDefaults.buttonColors(
+                    ActionButton(onClick = refresh, enabled = !view.loading,colors=ButtonDefaults.buttonColors(
                         disabledContainerColor=MaterialTheme.colorScheme.surfaceContainerHighest,
                         disabledContentColor=MaterialTheme.colorScheme.onSurface)) { Text("Actualizar progreso") }
-                    if (openClasses != null) Button(onClick = openClasses) { Text("Clases") }
+                    if (openClasses != null) ActionButton(onClick = openClasses) { Text("Clases") }
                 }
             }
-            if (view.error != null) Button(onClick = refresh) { Text("Reintentar consulta") }
+            if (view.error != null) ActionButton(onClick = refresh) { Text("Reintentar consulta") }
         }
     }
 }

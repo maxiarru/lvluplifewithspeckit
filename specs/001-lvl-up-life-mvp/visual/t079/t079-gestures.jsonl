@@ -1,0 +1,5 @@
+{"activityId":"meal","count":2,"gestures":["quick-meal","quick-save"],"mode":"preset","date":"2026-11-12","hours":"0","minutes":"","submissions":1}
+{"activityId":"sleep","count":3,"gestures":["quick-sleep","type-duration-continuously","quick-save"],"mode":"typed","date":"2026-11-12","hours":"7","minutes":"35","submissions":1}
+{"activityId":"sleep","count":3,"gestures":["quick-sleep","quick-duration-420","quick-save"],"mode":"preset","date":"2026-11-12","hours":"7","minutes":"0","submissions":1}
+{"activityId":"strength","count":3,"gestures":["quick-strength","type-duration-continuously","quick-save"],"mode":"typed","date":"2026-11-12","hours":"1","minutes":"15","submissions":1}
+{"activityId":"strength","count":3,"gestures":["quick-strength","quick-duration-30","quick-save"],"mode":"preset","date":"2026-11-12","hours":"0","minutes":"30","submissions":1}

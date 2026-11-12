@@ -1,5 +1,7 @@
 package lvluplife.ui
 
+import lvluplife.ui.theme.*
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -17,7 +19,7 @@ fun CorrectionStatus(view:CorrectionView, controller:CorrectionController, onlin
     view.message?.let { Text(it) }
     if(view.pending != null || view.unresolved) {
         Text("Confirmación pendiente")
-        Button(controller::retry,enabled=!view.busy && online && view.pending?.error !in setOf(ApiFailureCode.AUTH_REQUIRED,ApiFailureCode.FORBIDDEN)) { Text("Reintentar corrección") }
+        ActionButton(controller::retry,enabled=!view.busy && online && view.pending?.error !in setOf(ApiFailureCode.AUTH_REQUIRED,ApiFailureCode.FORBIDDEN)) { Text("Reintentar corrección") }
     }
 }
 
@@ -32,13 +34,14 @@ fun EditRecordScreen(view:CorrectionView,controller:CorrectionController,online:
         if(draft.hours == null) Text("Comida saludable")
         if(!online) Text("Sin conexión")
         if(draft.hours != null) ActivityPicker(view.options,draft.activityId,!locked) { controller.change(draft.copy(activityId=it)) }
-        OutlinedTextField(draft.date,{ controller.change(draft.copy(date=it)) },label={ Text("Fecha") },singleLine=true,enabled=!locked,modifier=Modifier.fillMaxWidth())
+        InputField(draft.date,{ controller.change(draft.copy(date=it)) },label={ Text("Fecha") },singleLine=true,enabled=!locked,modifier=Modifier.fillMaxWidth())
         if(draft.hours != null) Row(horizontalArrangement=Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(draft.hours,{ controller.change(draft.copy(hours=it)) },label={ Text("Horas") },singleLine=true,enabled=!locked,modifier=Modifier.weight(1f))
-            OutlinedTextField(draft.minutes ?: "",{ controller.change(draft.copy(minutes=it)) },label={ Text("Minutos") },singleLine=true,enabled=!locked,modifier=Modifier.weight(1f))
+            InputField(draft.hours,{ controller.change(draft.copy(hours=it)) },label={ Text("Horas") },singleLine=true,enabled=!locked,modifier=Modifier.weight(1f))
+            InputField(draft.minutes ?: "",{ controller.change(draft.copy(minutes=it)) },label={ Text("Minutos") },singleLine=true,enabled=!locked,modifier=Modifier.weight(1f))
         }
-        Button({ keyboard?.hide();controller.submit() },enabled=!locked && online) { Text("Guardar cambios") }
-        TextButton(controller::close,enabled=!view.busy && !view.unresolved) { Text("Volver al historial") }
+        ActionButton({ keyboard?.hide();controller.submit() },enabled=!locked && online) { Text("Guardar cambios") }
+        ActionTextButton(controller::close,enabled=!view.busy && !view.unresolved) { Text("Volver al historial") }
         CorrectionStatus(view,controller,online)
+        if(view.busy) Text("Procesando corrección…")
     }
 }

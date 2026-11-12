@@ -77,6 +77,14 @@ class RecordFormController(private val session: SessionController, private val r
                 unresolved = blocked.code == ApiFailureCode.TEMPORARILY_UNAVAILABLE, message = message(blocked.code)) }
         }
     }
+    fun quick(activityId: String, minutes: Int?, date: String) {
+        val view=mutable.value
+        if(!valid() || view.busy || view.pending != null || view.unresolved || !records.online) return
+        val option=view.options.firstOrNull { it.id==activityId } ?: return
+        if(option.duration && (minutes == null || minutes !in 1..1440) || !option.duration && minutes != null) return
+        change(RecordDraft(activityId,date,minutes?.let { (it/60).toString() } ?: "0",minutes?.let { (it%60).toString() } ?: ""))
+        submit()
+    }
     fun retry() {
         val view = mutable.value
         if (!valid() || view.busy || !records.online || view.pending?.error in setOf(ApiFailureCode.AUTH_REQUIRED, ApiFailureCode.FORBIDDEN)) return

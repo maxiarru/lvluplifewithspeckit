@@ -1,5 +1,7 @@
 package lvluplife.ui
 
+import lvluplife.ui.theme.*
+
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -28,16 +30,16 @@ fun SessionHost(controller: SessionController, onLogout: () -> Unit = { controll
             } else {
                 if (view.routes.last() == SessionRoute.HISTORY) {
                     Text("Tu historial")
-                    Button(onClick = { controller.back() }) { Text("Volver") }
+                    ActionButton(onClick = { controller.back() }) { Text("Volver") }
                 } else {
-                    Button(onClick = { controller.navigate(SessionRoute.HISTORY) }) { Text("Historial") }
+                    ActionButton(onClick = { controller.navigate(SessionRoute.HISTORY) }) { Text("Historial") }
                 }
                 view.loads.values.forEach { LoadStateMessage(it) }
                 if (view.pending.any { it.state in setOf(lvluplife.data.PendingState.UNKNOWN, lvluplife.data.PendingState.SENDING, lvluplife.data.PendingState.RESOLVING) }) {
                     Text("Confirmación pendiente")
                 }
                 Column(Modifier.weight(1f, fill = false)) { content(view) }
-                Button(onClick = onLogout) { Text("Cerrar sesión") }
+                ActionButton(onClick = onLogout) { Text("Cerrar sesión") }
             }
         }
     }

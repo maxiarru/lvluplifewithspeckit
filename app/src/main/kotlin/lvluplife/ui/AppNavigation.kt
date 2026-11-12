@@ -1,5 +1,7 @@
 package lvluplife.ui
 
+import lvluplife.ui.theme.*
+
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
 import androidx.compose.material3.Button
@@ -38,7 +40,7 @@ fun AppNavigation(session: SessionController, google: GoogleSignIn, accounts: Ac
             }
             if (access.profile == null) {
                 Text(access.error ?: "Cargando…")
-                if (access.error != null) Button(onClick = controller::retryLookup, enabled = !access.busy) { Text("Reintentar") }
+                if (access.error != null) ActionButton(onClick = controller::retryLookup, enabled = !access.busy) { Text("Reintentar") }
             }
         }
     }

@@ -3,6 +3,9 @@ package lvluplife.ui
 import androidx.compose.runtime.*
 import lvluplife.application.*
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.ui.Modifier
 import androidx.activity.compose.BackHandler
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -83,9 +86,10 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
             LaunchedEffect(catalog,online) { catalog.refresh() }
             ClassCatalogScreen(catalogView,confirmedLevel,homeView.stale,
                 catalog::refresh,{ catalogOpen=false })
-        } else if (sessionView.uid != null) Column {
+        } else if (sessionView.uid != null) Column(if(!view.open && customView?.open != true) Modifier.verticalScroll(rememberScrollState()) else Modifier) {
             if (customView?.open != true) {
                 if (!view.open) {
+                    if(!resetLocked) QuickRecordActions(view,controller,online && homeView.value != null)
                     HomeScreen(homeView, home::refresh,{ catalogOpen=true })
                 }
                 if (!resetLocked) RecordScreen(view, controller, online)

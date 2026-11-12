@@ -1,5 +1,7 @@
 package lvluplife.ui
 
+import lvluplife.ui.theme.*
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
@@ -13,6 +15,7 @@ fun AccessScreen(busy: Boolean, error: String?, onSignIn: () -> Unit) {
         Text("Lvl Up Life", style = MaterialTheme.typography.headlineMedium)
         Text("Iniciá sesión para continuar")
         error?.let { Text(it) }
-        Button(onClick = onSignIn, enabled = !busy) { Text("Continuar con Google") }
+        if(busy) Text("Iniciando sesión…")
+        ActionButton(onClick = onSignIn, enabled = !busy) { Text("Continuar con Google") }
     }
 }

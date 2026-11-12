@@ -1,5 +1,7 @@
 package lvluplife.ui
 
+import lvluplife.ui.theme.*
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,10 +20,10 @@ fun HistoryScreen(view: HistoryView, controller: HistoryController, online: Bool
     Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).padding(8.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
         Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             for ((period,label) in listOf(HistoryPeriod.day to "Día",HistoryPeriod.week to "Semana",HistoryPeriod.month to "Mes"))
-                FilterChip(view.selection.period == period,{ controller.period(period) },{ Text(label) })
+                ChoiceChip(view.selection.period == period,{ controller.period(period) },{ Text(label) })
         }
-        OutlinedTextField(view.dateInput,controller::date,label={ Text("Fecha del período") },singleLine=true,modifier=Modifier.fillMaxWidth())
-        Button(controller::consult) { Text("Consultar período") }
+        InputField(view.dateInput,controller::date,label={ Text("Fecha del período") },singleLine=true,modifier=Modifier.fillMaxWidth())
+        ActionButton(controller::consult) { Text("Consultar período") }
         if (!online) Text("Sin conexión")
         if (view.loading) Text(if(view.page == null) "Cargando historial…" else "Actualizando historial…")
         if (view.stale) Text("Mostrando el último historial confirmado")
@@ -31,7 +33,7 @@ fun HistoryScreen(view: HistoryView, controller: HistoryController, online: Bool
                 ApiFailureCode.AUTH_REQUIRED -> "Volvé a iniciar sesión para consultar el historial"
                 else -> "No se pudo cargar el historial"
             })
-            TextButton(controller::refresh,enabled=!view.loading) { Text("Reintentar historial") }
+            ActionTextButton(controller::refresh,enabled=!view.loading) { Text("Reintentar historial") }
         }
         view.page?.let { page ->
             Text("Desde ${page.periodStart} hasta ${page.periodEndExclusive} (sin incluir)",style=MaterialTheme.typography.labelSmall)
@@ -43,12 +45,12 @@ fun HistoryScreen(view: HistoryView, controller: HistoryController, online: Bool
                     Text(item.durationMinutes?.let { "$it minutos" } ?: "Realizada")
                     if(item.canCorrect && corrections != null && correctionView != null) Row {
                         val unlocked = !correctionView.busy && correctionView.pending == null && !correctionView.unresolved
-                        TextButton({ corrections.open(item) },enabled=unlocked,modifier=Modifier.testTag("history-edit-${item.id}")) { Text("Editar") }
-                        TextButton({ corrections.askDelete(item) },enabled=unlocked && online,modifier=Modifier.testTag("history-delete-${item.id}")) { Text("Eliminar") }
+                        ActionTextButton({ corrections.open(item) },enabled=unlocked,modifier=Modifier.testTag("history-edit-${item.id}")) { Text("Editar") }
+                        ActionTextButton({ corrections.askDelete(item) },enabled=unlocked && online,modifier=Modifier.testTag("history-delete-${item.id}")) { Text("Eliminar") }
                     }
                 }
             }
-            TextButton(controller::refresh,enabled=!view.loading) { Text("Actualizar historial") }
+            ActionTextButton(controller::refresh,enabled=!view.loading) { Text("Actualizar historial") }
         }
         footer()
     }

@@ -1,5 +1,7 @@
 package lvluplife.ui
 
+import lvluplife.ui.theme.*
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,7 +24,7 @@ fun ClassCatalogScreen(view: ClassCatalogView, generalLevel: Int, staleLevel: Bo
         Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(6.dp)) {
             Text("Clases y etapas",style=MaterialTheme.typography.titleLarge)
             Text("Nivel general $generalLevel")
-            Button(onClick=close) { Text("Volver a principal") }
+            ActionButton(onClick=close) { Text("Volver a principal") }
             if(staleLevel) Text("Usando el último nivel confirmado")
             val entries=view.entries
             val readable=entries!=null && entries.size==26 && entries.map { it.id }.toSet()==ClassAppearance.all.map { it.classId }.toSet() &&
@@ -33,7 +35,7 @@ fun ClassCatalogScreen(view: ClassCatalogView, generalLevel: Int, staleLevel: Bo
             if(view.stale) Text("Mostrando el último catálogo confirmado")
             if(view.error!=null || (!view.loading && !readable)) {
                 Text("No pudimos actualizar las clases")
-                Button(onClick=refresh,enabled=!view.loading) { Text("Reintentar clases") }
+                ActionButton(onClick=refresh,enabled=!view.loading) { Text("Reintentar clases") }
             }
             if(readable) {
                 val rows=entries!!.flatMap { entry -> entry.images.map { entry to it } }

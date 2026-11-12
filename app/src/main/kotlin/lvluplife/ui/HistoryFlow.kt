@@ -1,5 +1,7 @@
 package lvluplife.ui
 
+import lvluplife.ui.theme.*
+
 import androidx.compose.runtime.*
 import androidx.compose.material3.*
 import androidx.lifecycle.Lifecycle
@@ -44,8 +46,8 @@ fun HistoryFlow(session: SessionController, history: HistoryFlowHistory, correct
             correctionView?.confirmingDelete?.let {
                 AlertDialog(onDismissRequest={ correction?.cancelDelete() },title={ Text("Eliminar registro") },
                     text={ Text("Se quitará del historial y se recalculará tu progreso.") },
-                    confirmButton={ TextButton({ correction?.delete() },enabled=online && !correctionView.busy) { Text("Confirmar eliminación") } },
-                    dismissButton={ TextButton({ correction?.cancelDelete() }) { Text("Cancelar") } })
+                    confirmButton={ ActionTextButton({ correction?.delete() },enabled=online && !correctionView.busy) { Text("Confirmar eliminación") } },
+                    dismissButton={ ActionTextButton({ correction?.cancelDelete() }) { Text("Cancelar") } })
             }
         }
     }
