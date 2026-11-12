@@ -71,6 +71,10 @@ No hay endpoint de historial público, asignación manual de XP, cambio de regla
 
 Devuelve `{"revision":12,"items":[],"complete":true}` para una lista propia vacía confirmada. Cada elemento contiene `id`, `name`, `category`, `mode: "DURATION"`, `primary`, `secondary` (null si no tiene) y `createdAt` UTC. Orden ascendente por instante de creación y luego ID ordinal. No expone UID ni hashes de recibos. La consulta verifica una revisión estable antes de publicar todos los elementos; un documento inválido o un fallo de lectura produce error sin lista parcial ni `complete: true`. No modifica revisión ni crea recibos.
 
+### Forma de `GET /history`
+
+Respuesta completa: `periodStart`, `periodEndExclusive` (fechas ISO), `revision`, `items` y `complete: true`. Cada elemento contiene `recordId`, `cycleId`, `activityId`, snapshot `activityDefinition`, `activityDate`, `durationMinutes` para duración, `createdAt`, `updatedAt` y `version`. No expone UID, hashes ni UUID de operaciones. Incluye registros vigentes aunque aporten cero XP; excluye tombstones. Orden ascendente por fecha de actividad, creación original e ID ordinal, incluyendo ciclos anteriores. La lectura no otorga XP ni modifica revisión/proyección/recibos. Los contratos T054 exigen integridad de períodos con más de1.000 registros y coherencia entre revisión y elementos ante escritura concurrente; consulta/implementación pendientes de T057–T059.
+
 ### Forma de `GET /me`
 
 Identidad válida sin alta completada: `{"profileRequired":true}`, sin crear
