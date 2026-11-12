@@ -1,0 +1,17 @@
+{"pair":"home-class","foreground":"#1D1B20","background":"#FEF7FF","ratio":16.231337802469948,"foregroundPixels":3969,"backgroundPixels":23370}
+{"pair":"home-stage","foreground":"#1D1B20","background":"#FEF7FF","ratio":16.231337802469948,"foregroundPixels":1048,"backgroundPixels":8427}
+{"pair":"home-level","foreground":"#1D1B20","background":"#FEF7FF","ratio":16.231337802469948,"foregroundPixels":1891,"backgroundPixels":16457}
+{"pair":"home-xp","foreground":"#1D1B20","background":"#FEF7FF","ratio":16.231337802469948,"foregroundPixels":457,"backgroundPixels":5041}
+{"pair":"home-classes-button","foreground":"#FFFFFF","background":"#6750A4","ratio":6.441234821149803,"foregroundPixels":768,"backgroundPixels":21103}
+{"pair":"home-refresh-button","foreground":"#FFFFFF","background":"#6750A4","ratio":6.441234821149803,"foregroundPixels":2215,"backgroundPixels":40714}
+{"pair":"catalogue-stale-level","foreground":"#1D1B20","background":"#FEF7FF","ratio":16.231337802469948,"foregroundPixels":3789,"backgroundPixels":35530}
+{"pair":"catalogue-stale","foreground":"#1D1B20","background":"#FEF7FF","ratio":16.231337802469948,"foregroundPixels":4749,"backgroundPixels":42942}
+{"pair":"catalogue-error","foreground":"#1D1B20","background":"#FEF7FF","ratio":16.231337802469948,"foregroundPixels":3701,"backgroundPixels":34414}
+{"pair":"catalogue-retry-button","foreground":"#FFFFFF","background":"#6750A4","ratio":6.441234821149803,"foregroundPixels":1979,"backgroundPixels":37111}
+{"pair":"catalogue-locked","foreground":"#1D1B20","background":"#E6E0E9","ratio":13.174944953764376,"foregroundPixels":1404,"backgroundPixels":10711}
+{"pair":"catalogue-minimum","foreground":"#1D1B20","background":"#E6E0E9","ratio":13.174944953764376,"foregroundPixels":829,"backgroundPixels":7125}
+{"pair":"catalogue-unlocked","foreground":"#1D1B20","background":"#E6E0E9","ratio":13.174944953764376,"foregroundPixels":1810,"backgroundPixels":14537}
+{"pair":"catalogue-back-button","foreground":"#FFFFFF","background":"#6750A4","ratio":6.441234821149803,"foregroundPixels":1876,"backgroundPixels":37234}
+{"pair":"home-disabled-refresh","foreground":"#1D1B20","background":"#E6E0E9","ratio":13.174944953764376,"foregroundPixels":2215,"backgroundPixels":40730}
+{"pair":"home-loading","foreground":"#1D1B20","background":"#FEF7FF","ratio":16.231337802469948,"foregroundPixels":2685,"backgroundPixels":25038}
+{"pair":"home-stale","foreground":"#1D1B20","background":"#FEF7FF","ratio":16.231337802469948,"foregroundPixels":4745,"backgroundPixels":43147}

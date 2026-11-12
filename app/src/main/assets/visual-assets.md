@@ -213,4 +213,7 @@ conI/II/III. Sin recursos compartidos entre etapas o lotes. Revisión visual sob
 hojas de contacto y capturas: estilo RPG/pergamino coherente, imágenes completas y
 etapas distinguibles por vestimenta, equipo, pose y efectos. Los títulos dentro del
 PNG no son el único texto de clase/etapa y los textos decorativos no son contenido
-funcional de la app. La inspección de contraste de la UI final sigue en T070.
+funcional de la app. T070 integra el mismo mapeo en la cabecera final de Home y
+verifica17 pares lógicos de contraste en Home/catálogo: mínimo6,44:1 en la paleta
+clara configurada. Evidencia en visual/t070-contrast.md y t070-contrast.jsonl de
+la funcionalidad. La revisión transversal de todos los flujos sigue en T079.

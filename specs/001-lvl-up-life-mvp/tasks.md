@@ -170,7 +170,7 @@ Objetivo: explorar todas las clases y etapas, con apariencia actual coherente. P
 - [X] T068 [US5] Completar respuesta de catálogo visual en `server/src/main/kotlin/lvluplife/api/CatalogRoutes.kt`: extender la ruta de datos creada en T040 sin duplicarla; 26 clases, Novato solo con Etapa I y las otras 25 con tres etapas; completar las referencias visuales con 76 IDs coherentes con recursos y sin entradas Novato II/III; hacer verde ClassCatalogContractTest, sin calcular fórmulas duplicadas.
 - [X] T069 [US5] Implementar Compose en `app/src/main/kotlin/lvluplife/ui/ClassCatalogScreen.kt`: todas las clases desde inicio, Novato solo con Etapa I desbloqueada y sin entradas II/III, desbloqueos 1/15/35 para las otras 25 clases, sin selector de objetivo; hacer verde ClassCatalogFlowTest en 14/15/34/35.
 
-- [ ] T070 [US5] Integrar apariencia final del personaje en `app/src/main/kotlin/lvluplife/ui/HomeScreen.kt`; ejecutar pruebas catálogo/UI y registrar completitud de recursos y contraste en `specs/001-lvl-up-life-mvp/validation.md`.
+- [X] T070 [US5] Integrar apariencia final del personaje en `app/src/main/kotlin/lvluplife/ui/HomeScreen.kt`; ejecutar pruebas catálogo/UI y registrar completitud de recursos y contraste en `specs/001-lvl-up-life-mvp/validation.md`.
 
 
 ## Phase 8: US6 — Reiniciar sin perder historial (P3)

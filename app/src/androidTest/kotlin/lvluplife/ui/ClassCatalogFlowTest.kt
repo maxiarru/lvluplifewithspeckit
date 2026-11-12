@@ -71,12 +71,13 @@ class ClassCatalogFlowTest {
         mountCatalog(level)
         capture("t069-catalog-start-$level.png")
         val list = compose.onNodeWithTag("class-catalog")
+        var index=0
         for (entry in catalog) {
             val stages = entry.images.map { it.stage }
             assertEquals(if (entry.id == "novato") listOf(1) else listOf(1, 2, 3), stages)
             for (stage in stages) {
                 val tag = "class-${entry.id}-stage-$stage"
-                list.performScrollToNode(hasTestTag(tag))
+                list.performScrollToIndex(index++)
                 val expected = if (entry.id == "novato" || stage in unlocked) "Desbloqueada" else "Bloqueada"
                 compose.onNodeWithTag(tag).assertIsDisplayed()
                     .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, expected))
