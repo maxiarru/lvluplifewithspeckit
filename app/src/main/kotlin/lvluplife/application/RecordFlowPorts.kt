@@ -9,6 +9,7 @@ data class RecordProgressView(val revision: Long, val cycleId: String, val busin
     val className: String? = null, val computedAt: java.time.Instant? = null)
 interface RecordFlowRecords {
     val online: Boolean
+    suspend fun classes(uid: String): List<ClassCatalogEntry> = throw OperationBlocked(lvluplife.data.ApiFailureCode.UNREADABLE_RESPONSE)
     suspend fun catalog(uid: String): List<RecordOption>
     suspend fun draft(uid: String): RecordDraft?
     suspend fun saveDraft(uid: String, draft: RecordDraft)

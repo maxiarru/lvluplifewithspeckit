@@ -1,0 +1,110 @@
+package lvluplife.ui
+
+import androidx.activity.compose.setContent
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.*
+import androidx.compose.ui.semantics.SemanticsProperties
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import lvluplife.MainActivity
+import lvluplife.application.*
+import lvluplife.data.SessionToken
+import org.junit.Assert.*
+import org.junit.Rule
+import org.junit.Test
+
+/** Synthetic confirmed server views and catalogue port; no XP/classification engine or network. */
+class ClassCatalogFlowTest {
+    @get:Rule val compose = createAndroidComposeRule<MainActivity>()
+    private val definitions = listOf(
+        "novato" to "Novato", "guerrero" to "Guerrero", "explorador" to "Explorador", "guardian" to "Guardián",
+        "sabio" to "Sabio", "monje" to "Monje", "mistico" to "Místico", "maestro-de-armas" to "Maestro de Armas",
+        "paladin" to "Paladín", "guerrero-arcano" to "Guerrero Arcano", "luchador-monje" to "Luchador Monje",
+        "guerrero-mistico" to "Guerrero Místico", "agil-guardian" to "Ágil Guardián", "artifice" to "Artífice",
+        "ninja" to "Ninja", "explorador-de-suenos" to "Explorador de Sueños", "guardian-de-la-sabiduria" to "Guardián de la Sabiduría",
+        "monje-guardian" to "Monje Guardián", "druida" to "Druida", "ilusionista" to "Ilusionista",
+        "oraculo" to "Oráculo", "monje-espiritual" to "Monje Espiritual", "aventurero-versatil" to "Aventurero Versátil",
+        "maestro-del-equilibrio" to "Maestro del Equilibrio", "heroe-ascendente" to "Héroe Ascendente", "heroe-integral" to "Héroe Integral",
+    )
+    private val roman = mapOf(1 to "I", 2 to "II", 3 to "III")
+    private val catalog = definitions.map { (id, name) ->
+        ClassCatalogEntry(id, name, (if (id == "novato") listOf(1) else listOf(1, 2, 3)).map { stage ->
+            ClassStageImage(stage, id.replace('-', '_') + if (stage == 1) "" else "_${roman.getValue(stage).lowercase()}")
+        })
+    }
+    private fun progress(level: Int, id: String = "novato", name: String = "Novato", stage: Int = 1) =
+        RecordProgressView(10, "synthetic-catalog-cycle", "2026-11-11", level, id, stage,
+            listOf("STR", "DEX", "CON", "INT", "WIT", "MEN").associateWith { RecordAttributeView(1, 0) }, name)
+
+    private inner class Records : RecordFlowRecords {
+        override val online = true
+        override suspend fun classes(uid: String): List<ClassCatalogEntry> {
+            assertEquals("synthetic-catalog-owner", uid)
+            return catalog
+        }
+        override suspend fun catalog(uid: String) = emptyList<RecordOption>()
+        override suspend fun draft(uid: String): RecordDraft? = null
+        override suspend fun saveDraft(uid: String, draft: RecordDraft) { error("El catálogo no debe guardar borradores") }
+        override suspend fun pending(uid: String) = emptyList<OperationSnapshot>()
+        override suspend fun submit(uid: String, intentId: String, draft: RecordDraft): OperationSnapshot = error("El catálogo es de lectura")
+        override suspend fun retry(ref: OperationRef): OperationSnapshot = error("El catálogo no debe reenviar operaciones")
+    }
+    private fun mountCatalog(level: Int) {
+        val session = SessionController()
+        session.authenticate(SessionToken("synthetic-catalog-owner", "synthetic-catalog-token"))
+        val records = Records()
+        compose.runOnIdle { compose.activity.setContent { MaterialTheme {
+            SessionHost(session) { RecordFlow(session, records, RecordFlowProgress { progress(level) }) }
+        } } }
+        compose.waitUntil(5_000) { compose.onAllNodesWithText("Nivel general $level").fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText("Clases").assertExists().performClick()
+        compose.onNodeWithTag("class-catalog").assertIsDisplayed()
+    }
+    private fun checkCatalog(level: Int, unlocked: Set<Int>) {
+        mountCatalog(level)
+        val list = compose.onNodeWithTag("class-catalog")
+        for (entry in catalog) {
+            val stages = entry.images.map { it.stage }
+            assertEquals(if (entry.id == "novato") listOf(1) else listOf(1, 2, 3), stages)
+            for (stage in stages) {
+                val tag = "class-${entry.id}-stage-$stage"
+                list.performScrollToNode(hasTestTag(tag))
+                val expected = if (entry.id == "novato" || stage in unlocked) "Desbloqueada" else "Bloqueada"
+                compose.onNodeWithTag(tag).assertIsDisplayed()
+                    .assert(SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, expected))
+                compose.onNodeWithTag("$tag-image").assertIsDisplayed()
+                    .assertContentDescriptionEquals("${entry.name} · Etapa ${roman.getValue(stage)}")
+            }
+        }
+        compose.onNodeWithTag("class-novato-stage-2").assertDoesNotExist()
+        compose.onNodeWithTag("class-novato-stage-3").assertDoesNotExist()
+        compose.onNodeWithText("Seleccionar clase").assertDoesNotExist()
+        compose.onNodeWithText("Elegir objetivo").assertDoesNotExist()
+    }
+    @Test fun catalogShowsAll26ClassesFromLevelOneWithOnlyFirstStagesUnlocked() = checkCatalog(1, setOf(1))
+    @Test fun catalogAt14ShowsAll25OrdinaryClassesLockedLaterStagesAndNoviceOnlyOne() = checkCatalog(14, setOf(1))
+    @Test fun catalogAt15UnlocksSecondStageForAll25ClassesAndKeepsNoviceOnlyOne() = checkCatalog(15, setOf(1, 2))
+    @Test fun catalogAt34KeepsThirdStageLockedForAll25ClassesAndNoviceOnlyOne() = checkCatalog(34, setOf(1, 2))
+    @Test fun catalogAt35UnlocksAllOrdinaryStagesWithoutInventingNoviceStages() = checkCatalog(35, setOf(1, 2, 3))
+
+    private fun checkAppearance(level: Int, ordinaryStage: Int) {
+        var value by mutableStateOf(progress(level))
+        compose.runOnIdle { compose.activity.setContent { MaterialTheme { HomeScreen(ProgressView(value, loading = false), {}) } } }
+        for ((id, name) in definitions) {
+            val stage = if (id == "novato") 1 else ordinaryStage
+            compose.runOnIdle { value = progress(level, id, name, stage) }
+            compose.onNodeWithTag("character-class").assertTextEquals(name).assertIsDisplayed()
+            compose.onNodeWithContentDescription("$name · Etapa ${roman.getValue(stage)}").assertIsDisplayed()
+            compose.onNodeWithText("Nivel general $level").assertIsDisplayed()
+            compose.onNodeWithText("Apariencia no disponible").assertDoesNotExist()
+            if (id == "novato") {
+                compose.onNodeWithContentDescription("Novato · Etapa II").assertDoesNotExist()
+                compose.onNodeWithContentDescription("Novato · Etapa III").assertDoesNotExist()
+            }
+        }
+    }
+    @Test fun homeRendersAll26ConfirmedAppearancesAt14() = checkAppearance(14, 1)
+    @Test fun homeRendersAll26ConfirmedAppearancesAt15() = checkAppearance(15, 2)
+    @Test fun homeRendersAll26ConfirmedAppearancesAt34() = checkAppearance(34, 2)
+    @Test fun homeRendersAll26ConfirmedAppearancesAt35() = checkAppearance(35, 3)
+}

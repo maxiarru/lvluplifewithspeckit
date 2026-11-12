@@ -14,6 +14,18 @@ Fuente: [spec](../spec.md), [API](api.md). Describe comportamiento requerido par
 
 ## Estados y sesión
 
+Contrato Compose de US5 fijado en T065: acceso `Clases` desde principal y lista
+desplazable con tag `class-catalog`. Cada tarjeta clase/etapa usa
+`class-{id}-stage-{n}` y StateDescription `Desbloqueada` o `Bloqueada`, para comunicar
+el estado sin depender del color. Su imagen usa el mismo tag con sufijo `-image`
+y descripción `{nombre} · Etapa I/II/III`. Las 26 clases y sus 76 imágenes se pueden
+explorar desde nivel1; no se omiten las etapas bloqueadas ni se inventan Novato II/III.
+No hay selección de clase objetivo. La fixture suministra el catálogo mediante
+`RecordFlowRecords.classes`; su default falla de forma segura hasta implementar el
+adaptador en US5. Las pruebas de apariencia reciben vistas confirmadas sintéticas,
+sin ejecutar fórmulas de clasificación/XP en Compose. La comprobación de contenido
+y semántica no sustituye la revisión visual y de recursos de T066–T070.
+
 - `Loading`: consulta en curso; `Confirmed`: respuesta vigente con revisión y fecha; `Empty`: consulta exitosa sin resultados. Error nunca equivale a vacío.
 - `Stale`: datos anteriores de la misma cuenta con aviso de desactualización y opción de reintento. No presentar como actual un saldo de otra fecha o una proyección de un recibo antiguo.
 - `Pending`: envío con resultado desconocido; no anunciar éxito/fallo definitivo ni XP confirmada. Mostrar seguimiento y permitir recuperar/reintentar el mismo envío, con sesión de su cuenta original.
