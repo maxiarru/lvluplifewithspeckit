@@ -14,6 +14,25 @@ Fuente: [spec](../spec.md), [API](api.md). Describe comportamiento requerido par
 
 ## Estados y sesión
 
+Contrato de reinicio fijado por T073 para implementar en T076: acceso desde principal
+con tag `reset-open`; diálogo «¿Reiniciar tu personaje?» y explicación «Se reinicia
+tu progreso. Se conservan tu cuenta, nombre de usuario, actividades personalizadas
+e historial.». Cancelar no prepara ni envía operación. Confirmación con tag
+`reset-confirm` captura el ciclo originalmente observado y persiste confirmed:true
+antes del transporte. El acceso queda deshabilitado mientras hay envío/pendiente;
+doble toque no crea otra intención.
+
+El seguimiento muestra «Confirmación pendiente» y usa `reset-retry`, sin cambiar
+progreso ni anunciar éxito hasta un resultado definitivo. CONFIRMED informa
+«Reinicio confirmado» y consulta progreso vigente; REJECTED informa «Reinicio
+rechazado», sin reenvío automático contra otro ciclo. Corregir/iniciar otra intención
+exige nueva confirmación y UUID. Fallo de preparación local informa «No se pudo
+preparar el reinicio» y permite reintentar la misma intención ya confirmada.
+AUTH_REQUIRED/FORBIDDEN suspenden reintento con mensajes seguros del flujo común.
+Room reabierto conserva UID/UUID/ciclo/sobre original y solo recupera reset de esa
+cuenta; no consume pendientes de otro comando o cuenta. Los puertos de T073 no
+implementan aún este comportamiento ni acreditan recuperación backend real.
+
 Contrato Compose de US5 fijado en T065: acceso `Clases` desde principal y lista
 desplazable con tag `class-catalog`. Cada tarjeta clase/etapa usa
 `class-{id}-stage-{n}` y StateDescription `Desbloqueada` o `Bloqueada`, para comunicar

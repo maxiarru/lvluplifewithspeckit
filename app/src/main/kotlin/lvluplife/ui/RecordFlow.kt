@@ -11,7 +11,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 /** Form host for T042. Confirmed home/progress presentation is connected in T043. */
 @Composable
 fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress: RecordFlowProgress,
-    customActivities: CustomActivityFlowActivities? = null) {
+    customActivities: CustomActivityFlowActivities? = null, reset: ResetFlowOperations? = null) {
     val sessionView by session.state.collectAsState()
     key(sessionView.uid, sessionView.sessionId) {
         val scope = rememberCoroutineScope()
