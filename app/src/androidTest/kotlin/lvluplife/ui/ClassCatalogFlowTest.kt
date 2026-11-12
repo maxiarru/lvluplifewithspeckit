@@ -6,6 +6,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.test.platform.app.InstrumentationRegistry
 import lvluplife.MainActivity
 import lvluplife.application.*
 import lvluplife.data.SessionToken
@@ -29,7 +31,8 @@ class ClassCatalogFlowTest {
     private val roman = mapOf(1 to "I", 2 to "II", 3 to "III")
     private val catalog = definitions.map { (id, name) ->
         ClassCatalogEntry(id, name, (if (id == "novato") listOf(1) else listOf(1, 2, 3)).map { stage ->
-            ClassStageImage(stage, id.replace('-', '_') + if (stage == 1) "" else "_${roman.getValue(stage).lowercase()}")
+            ClassStageImage(stage, id.replace('-', '_') + if (stage == 1) "" else "_${roman.getValue(stage).lowercase()}",
+                mapOf(1 to 1, 2 to 15, 3 to 35).getValue(stage))
         })
     }
     private fun progress(level: Int, id: String = "novato", name: String = "Novato", stage: Int = 1) =
@@ -37,10 +40,14 @@ class ClassCatalogFlowTest {
             listOf("STR", "DEX", "CON", "INT", "WIT", "MEN").associateWith { RecordAttributeView(1, 0) }, name)
 
     private inner class Records : RecordFlowRecords {
+        var fail=false
+        var gate: kotlinx.coroutines.CompletableDeferred<List<ClassCatalogEntry>>?=null
+        var values=this@ClassCatalogFlowTest.catalog
         override val online = true
         override suspend fun classes(uid: String): List<ClassCatalogEntry> {
             assertEquals("synthetic-catalog-owner", uid)
-            return catalog
+            if(fail) throw OperationBlocked(lvluplife.data.ApiFailureCode.NETWORK_ERROR)
+            return gate?.await() ?: values
         }
         override suspend fun catalog(uid: String) = emptyList<RecordOption>()
         override suspend fun draft(uid: String): RecordDraft? = null
@@ -49,19 +56,20 @@ class ClassCatalogFlowTest {
         override suspend fun submit(uid: String, intentId: String, draft: RecordDraft): OperationSnapshot = error("El catálogo es de lectura")
         override suspend fun retry(ref: OperationRef): OperationSnapshot = error("El catálogo no debe reenviar operaciones")
     }
-    private fun mountCatalog(level: Int) {
+    private fun mountCatalog(level: Int, records: Records = Records(), expectList: Boolean = true): SessionController {
         val session = SessionController()
         session.authenticate(SessionToken("synthetic-catalog-owner", "synthetic-catalog-token"))
-        val records = Records()
         compose.runOnIdle { compose.activity.setContent { MaterialTheme {
             SessionHost(session) { RecordFlow(session, records, RecordFlowProgress { progress(level) }) }
         } } }
         compose.waitUntil(5_000) { compose.onAllNodesWithText("Nivel general $level").fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithText("Clases").assertExists().performClick()
-        compose.onNodeWithTag("class-catalog").assertIsDisplayed()
+        if(expectList) compose.onNodeWithTag("class-catalog").assertIsDisplayed()
+        return session
     }
     private fun checkCatalog(level: Int, unlocked: Set<Int>) {
         mountCatalog(level)
+        capture("t069-catalog-start-$level.png")
         val list = compose.onNodeWithTag("class-catalog")
         for (entry in catalog) {
             val stages = entry.images.map { it.stage }
@@ -80,12 +88,49 @@ class ClassCatalogFlowTest {
         compose.onNodeWithTag("class-novato-stage-3").assertDoesNotExist()
         compose.onNodeWithText("Seleccionar clase").assertDoesNotExist()
         compose.onNodeWithText("Elegir objetivo").assertDoesNotExist()
+        capture("t069-catalog-end-$level.png")
+    }
+    private fun capture(name: String) {
+        val context=InstrumentationRegistry.getInstrumentation().targetContext
+        java.io.File(context.cacheDir,name).outputStream().use {
+            compose.onRoot().captureToImage().asAndroidBitmap().compress(android.graphics.Bitmap.CompressFormat.PNG,100,it)
+        }
     }
     @Test fun catalogShowsAll26ClassesFromLevelOneWithOnlyFirstStagesUnlocked() = checkCatalog(1, setOf(1))
     @Test fun catalogAt14ShowsAll25OrdinaryClassesLockedLaterStagesAndNoviceOnlyOne() = checkCatalog(14, setOf(1))
     @Test fun catalogAt15UnlocksSecondStageForAll25ClassesAndKeepsNoviceOnlyOne() = checkCatalog(15, setOf(1, 2))
     @Test fun catalogAt34KeepsThirdStageLockedForAll25ClassesAndNoviceOnlyOne() = checkCatalog(34, setOf(1, 2))
     @Test fun catalogAt35UnlocksAllOrdinaryStagesWithoutInventingNoviceStages() = checkCatalog(35, setOf(1, 2, 3))
+
+    @Test fun failedCatalogueCanRetryAndReturnHomeWithoutWritingAnyOperation() {
+        val records=Records().apply { fail=true }
+        mountCatalog(14,records,expectList=false)
+        compose.onNodeWithText("No pudimos actualizar las clases").assertIsDisplayed()
+        compose.onNodeWithTag("class-catalog").assertDoesNotExist()
+        compose.runOnIdle { records.fail=false }
+        compose.onNodeWithText("Reintentar clases").performClick()
+        compose.onNodeWithTag("class-catalog").assertIsDisplayed()
+        compose.onNodeWithText("Volver a principal").performClick()
+        compose.onNodeWithTag("character-class").assertTextEquals("Novato")
+        compose.onNodeWithText("Clases y etapas").assertDoesNotExist()
+    }
+    @Test fun logoutWhileCatalogueIsLoadingDiscardsLateResponseAndPrivateNavigation() {
+        val records=Records().apply { gate=kotlinx.coroutines.CompletableDeferred() }
+        val session=mountCatalog(15,records,expectList=false)
+        compose.onNodeWithText("Cargando clases…").assertIsDisplayed()
+        compose.runOnIdle { session.logout();records.gate!!.complete(catalog) }
+        compose.onNodeWithText("Iniciá sesión para continuar").assertIsDisplayed()
+        compose.onNodeWithText("Clases y etapas").assertDoesNotExist()
+        compose.onNodeWithTag("class-catalog").assertDoesNotExist()
+    }
+    @Test fun unknownResourceFailsWholeCatalogueInsteadOfShowingPartialOrFallbackImages() {
+        val records=Records().apply { values=catalog.mapIndexed { index,entry -> if(index==0)
+            entry.copy(images=listOf(entry.images.single().copy(resourceId="missing_resource"))) else entry } }
+        mountCatalog(35,records,expectList=false)
+        compose.onNodeWithText("No pudimos actualizar las clases").assertIsDisplayed()
+        compose.onNodeWithTag("class-catalog").assertDoesNotExist()
+        compose.onNodeWithText("Apariencia no disponible").assertDoesNotExist()
+    }
 
     private fun checkAppearance(level: Int, ordinaryStage: Int) {
         var value by mutableStateOf(progress(level))

@@ -21,8 +21,10 @@ el estado sin depender del color. Su imagen usa el mismo tag con sufijo `-image`
 y descripción `{nombre} · Etapa I/II/III`. Las 26 clases y sus 76 imágenes se pueden
 explorar desde nivel1; no se omiten las etapas bloqueadas ni se inventan Novato II/III.
 No hay selección de clase objetivo. La fixture suministra el catálogo mediante
-`RecordFlowRecords.classes`; su default falla de forma segura hasta implementar el
-adaptador en US5. Las pruebas de apariencia reciben vistas confirmadas sintéticas,
+`RecordFlowRecords.classes`; T069 conecta su adaptador real y mantiene un default
+seguro para implementaciones que no lo soportan. Los bloqueos se muestran usando
+minimumLevel del servidor y nivel general confirmado, sin umbrales duplicados.
+Las pruebas de apariencia reciben vistas confirmadas sintéticas,
 sin ejecutar fórmulas de clasificación/XP en Compose. La comprobación de contenido
 y semántica no sustituye la revisión visual y de recursos de T066–T070.
 

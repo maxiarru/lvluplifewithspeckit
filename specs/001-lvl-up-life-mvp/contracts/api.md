@@ -116,7 +116,7 @@ el ID inicial es novato, coherente con la proyección de alta.
 ### Extensión visual US5 fijada por T064
 
 Cada entrada de `classes` conserva los campos anteriores y agrega `images`,
-un array ordenado de objetos `{"stage":1,"resourceId":"novato"}`.
+un array ordenado de objetos `{"stage":1,"resourceId":"novato","minimumLevel":1}`.
 `stage` es entero y corresponde exactamente a las etapas declaradas, una imagen
 por etapa. `resourceId` es el nombre estable de un drawable Android, sin extensión,
 ruta ni ID numérico compilado; formato `[a-z][a-z0-9_]*`. Las 76 referencias deben
@@ -130,6 +130,11 @@ T068 completa esta extensión. Los nombres auditados en T066–T067 usan el ID d
 clase con guiones convertidos a guiones bajos, sin sufijo para etapa I y con `_ii`
 o `_iii` para II/III. Ejemplos: `novato`, `luchador_monje_iii`, `oraculo`.
 Los alias anteriores `guerrero_monje_iii` y `orcaculo` ya no se publican ni se usan.
+
+T069 agrega `minimumLevel` entero a cada imagen, obtenido directamente de
+`ClassCatalog.stageMinimums` canónico (1/15/35). Android muestra el estado comparando
+ese mínimo con el nivel general confirmado; no vuelve a definir los umbrales ni
+calcula progresión o clasificación. Novato solo publica etapa I con mínimo1.
 
 `GET /progress` devuelve `cycleId`, `revision`, `computedAt`, `businessDate`,
 `generalLevel`, `generalRemainder`, `classId`, `stage`, `unlockedStages` y

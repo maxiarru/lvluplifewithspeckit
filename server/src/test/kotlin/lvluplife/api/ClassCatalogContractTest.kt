@@ -88,6 +88,8 @@ class ClassCatalogContractTest {
             assertTrue(images.all { it.path("stage").isIntegralNumber })
             assertEquals(stages, images.map { it.path("stage").intValue() })
             for (image in images) {
+                assertTrue(image.path("minimumLevel").isIntegralNumber)
+                assertEquals(ClassCatalog.stageMinimums.getValue(image.path("stage").intValue()), image.path("minimumLevel").intValue())
                 assertTrue(image.path("resourceId").isTextual)
                 val id = image.path("resourceId").textValue()
                 assertTrue(Regex("[a-z][a-z0-9_]*").matches(id), "Referencia Android inválida")

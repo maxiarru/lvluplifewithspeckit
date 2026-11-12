@@ -12,6 +12,7 @@ internal fun catalogResponse(): ApiResponse = ApiResponse(apiJson.valueToTree(ma
         "attributes" to definition.attributes.map { it.name }, "balancedCount" to definition.balancedCount,
         "initialOnly" to definition.initialOnly, "stages" to definition.stages,
         "images" to definition.stages.map { stage -> mapOf("stage" to stage,
+            "minimumLevel" to ClassCatalog.stageMinimums.getValue(stage),
             "resourceId" to (definition.id.replace('-', '_') + when (stage) {
                 1 -> ""
                 2 -> "_ii"

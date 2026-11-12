@@ -1,5 +1,5 @@
 package lvluplife.application
 
-/** Compile-only catalogue contract for T065; transport and UI are completed in T069. */
-data class ClassStageImage(val stage: Int, val resourceId: String)
+/** Server-authored visual metadata; Android only compares minimumLevel with confirmed general level. */
+data class ClassStageImage(val stage: Int, val resourceId: String, val minimumLevel: Int)
 data class ClassCatalogEntry(val id: String, val name: String, val images: List<ClassStageImage>)

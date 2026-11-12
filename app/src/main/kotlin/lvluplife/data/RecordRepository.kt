@@ -11,6 +11,7 @@ class RecordRepository(private val api: ApiClient, private val operations: Opera
     private val store: PendingStore, private val sessions: SessionTokenProvider,
     private val connected: () -> Boolean, private val custom: CustomActivityFlowActivities? = null) : RecordFlowRecords {
     override val online get() = connected()
+    override suspend fun classes(uid: String): List<ClassCatalogEntry> = ClassCatalogRepository(api,sessions,connected).load(uid)
     private val json = ObjectMapper()
     private data class Context(val cycle: String, val options: List<RecordOption>)
     private val contexts = java.util.concurrent.ConcurrentHashMap<String, Context>()

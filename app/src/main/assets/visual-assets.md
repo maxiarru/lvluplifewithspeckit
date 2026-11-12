@@ -4,7 +4,7 @@
 
 37 imágenes aportadas en el repositorio durante T004 y registradas en el commit
 8daa992. El titular del proyecto confirmó el 2026-11-12: «Generados x mi».
-Origen: imágenes generadas por el propio titular y aportadas para esta app; uso en
+Origen: imágenes generadas con IA por el propio titular y aportadas para esta app; uso en
 Lvl Up Life conforme al alcance indicado. Herramienta de generación no informada.
 No se ha declarado una licencia pública de reutilización para terceros. En T066 no
 se generaron imágenes nuevas ni se alteraron píxeles. Originales PNG1122×1402,
@@ -113,7 +113,7 @@ no acredita todavía la pantalla final del catálogo ni su contraste completo.
 
 ## Lote 2 — T067
 
-39 imágenes generadas y aportadas por el titular, con la misma procedencia confirmada
+39 imágenes generadas con IA y aportadas por el titular, con la misma procedencia confirmada
 el 2026-11-12 para los recursos del proyecto. Herramienta no informada; no se declara
 licencia pública para terceros. Uso en Lvl Up Life. No se alteran píxeles ni se generan
 imágenes nuevas; PNG originales1122×1402. Alias de Oráculo I verificado visualmente.

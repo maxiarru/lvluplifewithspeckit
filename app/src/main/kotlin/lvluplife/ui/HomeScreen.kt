@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import lvluplife.application.ProgressView
 
 @Composable
-fun HomeScreen(view: ProgressView, refresh: () -> Unit) {
+fun HomeScreen(view: ProgressView, refresh: () -> Unit, openClasses: (() -> Unit)? = null) {
     Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         val value = view.value
         if (value == null) {
@@ -37,7 +37,10 @@ fun HomeScreen(view: ProgressView, refresh: () -> Unit) {
             }
             if (view.stale) Text("Mostrando el último progreso confirmado")
             if (view.loading) Text("Actualizando progreso…")
-            Button(onClick = refresh, enabled = !view.loading) { Text("Actualizar progreso") }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Button(onClick = refresh, enabled = !view.loading) { Text("Actualizar progreso") }
+                if (openClasses != null) Button(onClick = openClasses) { Text("Clases") }
+            }
         }
         if (view.error != null) Button(onClick = refresh) { Text("Reintentar consulta") }
     }

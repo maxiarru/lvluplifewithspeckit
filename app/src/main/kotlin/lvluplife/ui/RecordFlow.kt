@@ -3,6 +3,7 @@ package lvluplife.ui
 import androidx.compose.runtime.*
 import lvluplife.application.*
 import androidx.compose.foundation.layout.Column
+import androidx.activity.compose.BackHandler
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -18,6 +19,8 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
         val home = remember(session, progress) { ProgressController(session, progress, scope) }
         val homeView by home.state.collectAsState()
         val view by controller.state.collectAsState()
+        var catalogOpen by remember { mutableStateOf(false) }
+        BackHandler(enabled=catalogOpen) { catalogOpen=false }
         val custom = remember(session, customActivities) { customActivities?.let { CustomActivityController(session, it, scope) } }
         val customView = if (custom != null) {
             val state by custom.state.collectAsState()
@@ -57,9 +60,19 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
                 home.refresh()
             }
         }
-        if (sessionView.uid != null) Column {
+        val confirmedLevel=homeView.value?.generalLevel
+        if (sessionView.uid != null && catalogOpen && confirmedLevel!=null) {
+            val catalog=remember(session,records) { ClassCatalogController(session,records,scope) }
+            val catalogView by catalog.state.collectAsState()
+            DisposableEffect(catalog) { onDispose { catalog.dispose() } }
+            LaunchedEffect(catalog,online) { catalog.refresh() }
+            ClassCatalogScreen(catalogView,confirmedLevel,homeView.stale,
+                catalog::refresh,{ catalogOpen=false })
+        } else if (sessionView.uid != null) Column {
             if (customView?.open != true) {
-                if (!view.open) HomeScreen(homeView, home::refresh)
+                if (!view.open) {
+                    HomeScreen(homeView, home::refresh,{ catalogOpen=true })
+                }
                 RecordScreen(view, controller, online)
             }
             if (!view.open && custom != null && customView != null)
