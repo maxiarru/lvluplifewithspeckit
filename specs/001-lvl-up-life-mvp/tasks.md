@@ -177,7 +177,7 @@ Objetivo: explorar todas las clases y etapas, con apariencia actual coherente. P
 
 Objetivo: reinicio confirmado y recuperable, con datos conservados. Prueba independiente: fixtures con historial/actividades propias, cancelar y confirmar, carrera con registro y respuesta perdida. RF-41–44, 46, 49–55; AC-63–66, 86–88, 99, 102, 114–120.
 
-- [ ] T071 [P] [US6] Escribir y ejecutar pruebas de nuevo ciclo en `domain/src/test/kotlin/lvluplife/progression/ResetTest.kt`: consumos/sueño/comidas/inactividad nuevos, carga retroactiva y estado inicial; no borrar cuenta, nombre, actividades ni historial.
+- [X] T071 [P] [US6] Escribir y ejecutar pruebas de nuevo ciclo en `domain/src/test/kotlin/lvluplife/progression/ResetTest.kt`: consumos/sueño/comidas/inactividad nuevos, carga retroactiva y estado inicial; no borrar cuenta, nombre, actividades ni historial.
 
 - [ ] T072 [P] [US6] Escribir y ejecutar contratos RESET_PROGRESSION en `server/src/integrationTest/kotlin/lvluplife/reset/ResetContractTest.kt`: confirmed:true obligatorio, ciclo esperado, doble reinicio y carrera con CREATE_RECORD según AC-114–115.
 

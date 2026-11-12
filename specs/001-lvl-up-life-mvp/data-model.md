@@ -2,6 +2,21 @@
 
 Fuente: [spec.md](spec.md). Diseño lógico y persistente; no son migraciones implementadas. Tiempos como instantes UTC y fechas de actividad ISO `YYYY-MM-DD` calculadas con offset fijo `-03:00`; no zona horaria del dispositivo.
 
+### Contrato puro de reinicio — T071
+
+`ResetRules.reset(account, currentCycle, newCycleId, now, confirmed)` declara una
+transición sin IO, reloj interno ni generación de IDs. Su implementación corresponde
+a T074. Devuelve `ResetTransition` con cuenta conservada salvo puntero/revisión,
+ciclo anterior cerrado en el instante aceptado, ciclo nuevo abierto y proyección
+inicial con revisión siguiente. Exige confirmación explícita, propietario/puntero
+coherentes, ciclo abierto, ID nuevo distinto, instante válido y reglas soportadas;
+no migra silenciosamente schemaVersion ni rulesVersion.
+
+Historial y actividades propias no son entradas ni escrituras de esta transición.
+Las pruebas puras verifican sus valores y aislamiento de replay por ciclo; la
+conservación de colecciones Firestore, recibos, doble reinicio y carreras se verifica
+en T072/T075 y no se acredita desde este contrato de dominio.
+
 ## Documentos Firestore
 
 Todas las rutas privadas se resuelven a partir del UID verificado. El cliente no accede directamente a Firestore.
