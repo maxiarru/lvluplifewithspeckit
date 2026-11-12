@@ -39,10 +39,11 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
     return ApiHandlers(command = { uid, command ->
         withContext(Dispatchers.IO) {
             if (command.type == CommandType.CREATE_RECORD) return@withContext createRecordResponse(create, uid, command)
+            if (command.type in setOf(CommandType.EDIT_RECORD, CommandType.DELETE_RECORD))
+                return@withContext correctionResponse(correct, uid, command)
             val receipt = when {
                 command.type == CommandType.COMPLETE_PROFILE -> complete.execute(uid, command)
                 command.type == CommandType.CREATE_CUSTOM_ACTIVITY -> createCustom.execute(uid, command)
-                command.type in setOf(CommandType.EDIT_RECORD, CommandType.DELETE_RECORD) -> correct.execute(uid, command)
                 else -> throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
             }
             receiptResponse(receipt)
