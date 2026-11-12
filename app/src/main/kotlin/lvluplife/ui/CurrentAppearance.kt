@@ -15,7 +15,7 @@ internal object CurrentAppearance {
         "maestro-de-armas" to listOf(R.drawable.maestro_de_armas, R.drawable.maestro_de_armas_ii, R.drawable.maestro_de_armas_iii),
         "paladin" to listOf(R.drawable.paladin, R.drawable.paladin_ii, R.drawable.paladin_iii),
         "guerrero-arcano" to listOf(R.drawable.guerrero_arcano, R.drawable.guerrero_arcano_ii, R.drawable.guerrero_arcano_iii),
-        "luchador-monje" to listOf(R.drawable.luchador_monje, R.drawable.luchador_monje_ii, R.drawable.guerrero_monje_iii),
+        "luchador-monje" to listOf(R.drawable.luchador_monje, R.drawable.luchador_monje_ii, R.drawable.luchador_monje_iii),
         "guerrero-mistico" to listOf(R.drawable.guerrero_mistico, R.drawable.guerrero_mistico_ii, R.drawable.guerrero_mistico_iii),
         "agil-guardian" to listOf(R.drawable.agil_guardian, R.drawable.agil_guardian_ii, R.drawable.agil_guardian_iii),
         "artifice" to listOf(R.drawable.artifice, R.drawable.artifice_ii, R.drawable.artifice_iii),
@@ -32,5 +32,6 @@ internal object CurrentAppearance {
         "heroe-ascendente" to listOf(R.drawable.heroe_ascendente, R.drawable.heroe_ascendente_ii, R.drawable.heroe_ascendente_iii),
         "heroe-integral" to listOf(R.drawable.heroe_integral, R.drawable.heroe_integral_ii, R.drawable.heroe_integral_iii),
     )
-    fun image(classId: String, stage: Int): Int? = images[classId]?.getOrNull(stage - 1)
+    fun image(classId: String, stage: Int): Int? =
+        ClassAppearance.binding(classId, stage)?.drawable ?: images[classId]?.getOrNull(stage - 1)
 }
