@@ -12,6 +12,8 @@ import lvluplife.application.CreateRecord
 import lvluplife.application.CreateCustomActivity
 import lvluplife.persistence.CustomActivityStore
 import lvluplife.application.ReadProgress
+import lvluplife.application.ReadHistory
+import lvluplife.persistence.HistoryStore
 import lvluplife.persistence.RecordStore
 import lvluplife.persistence.AccountStore
 import lvluplife.persistence.OperationStore
@@ -31,6 +33,7 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
     val store = RecordStore(firestore)
     val create = CreateRecord(store, records, transactions)
     val progress = ReadProgress(store, transactions)
+    val history = ReadHistory(HistoryStore(firestore))
     return ApiHandlers(command = { uid, command ->
         withContext(Dispatchers.IO) {
             if (command.type == CommandType.CREATE_RECORD) return@withContext createRecordResponse(create, uid, command)
@@ -49,6 +52,13 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
                 ApiQuery.Catalog -> return@withContext catalogResponse()
                 ApiQuery.Progress -> return@withContext progressResponse(progress, uid)
                 ApiQuery.CustomActivities -> return@withContext customActivitiesResponse(custom, uid)
+                is ApiQuery.History -> {
+                    val result = history.execute(uid, query.period, query.date)
+                    return@withContext ApiResponse(apiJson.valueToTree(mapOf(
+                        "periodStart" to result.periodStart.toString(), "periodEndExclusive" to result.periodEndExclusive.toString(),
+                        "revision" to result.revision.value, "complete" to true,
+                        "items" to result.items.map { store.fields(it) + ("recordId" to it.id.value) })))
+                }
                 is ApiQuery.Operation -> return@withContext operationResponse(operations, uid, query.operationId)
                 ApiQuery.Me -> Unit
                 else -> throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
