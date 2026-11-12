@@ -53,16 +53,9 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
                 ApiQuery.Catalog -> return@withContext catalogResponse()
                 ApiQuery.Progress -> return@withContext progressResponse(progress, uid)
                 ApiQuery.CustomActivities -> return@withContext customActivitiesResponse(custom, uid)
-                is ApiQuery.History -> {
-                    val result = history.execute(uid, query.period, query.date)
-                    return@withContext ApiResponse(apiJson.valueToTree(mapOf(
-                        "periodStart" to result.periodStart.toString(), "periodEndExclusive" to result.periodEndExclusive.toString(),
-                        "revision" to result.revision.value, "complete" to true,
-                        "items" to result.items.map { store.fields(it) + ("recordId" to it.id.value) })))
-                }
+                is ApiQuery.History -> return@withContext historyResponse(history, store, uid, query)
                 is ApiQuery.Operation -> return@withContext operationResponse(operations, uid, query.operationId)
                 ApiQuery.Me -> Unit
-                else -> throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
             }
             val account = accounts.read(uid)
             val body = apiJson.createObjectNode().put("profileRequired", account == null)
