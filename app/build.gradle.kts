@@ -59,5 +59,5 @@ dependencies {
 
 tasks.withType<Test>().configureEach {
     // Security tests inspect actual merged manifests and overlaid resources of both variants.
-    dependsOn("processDebugManifest", "processReleaseManifest", "packageDebugResources", "packageReleaseResources")
+    dependsOn("processDebugManifest", "processReleaseManifest", "packageDebugResources", "packageReleaseResources", "generateReleaseBuildConfig")
 }
