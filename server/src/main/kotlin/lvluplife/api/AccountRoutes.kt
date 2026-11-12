@@ -13,6 +13,7 @@ import lvluplife.application.CreateCustomActivity
 import lvluplife.persistence.CustomActivityStore
 import lvluplife.application.ReadProgress
 import lvluplife.application.ReadHistory
+import lvluplife.application.CorrectRecord
 import lvluplife.persistence.HistoryStore
 import lvluplife.persistence.RecordStore
 import lvluplife.persistence.AccountStore
@@ -32,6 +33,7 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
     val records = RecordOperations(operations)
     val store = RecordStore(firestore)
     val create = CreateRecord(store, records, transactions)
+    val correct = CorrectRecord(store, records, transactions)
     val progress = ReadProgress(store, transactions)
     val history = ReadHistory(HistoryStore(firestore))
     return ApiHandlers(command = { uid, command ->
@@ -40,8 +42,7 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
             val receipt = when {
                 command.type == CommandType.COMPLETE_PROFILE -> complete.execute(uid, command)
                 command.type == CommandType.CREATE_CUSTOM_ACTIVITY -> createCustom.execute(uid, command)
-                RecordOperations.supports(command.type) -> records.recover(uid, command)
-                    ?: throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
+                command.type in setOf(CommandType.EDIT_RECORD, CommandType.DELETE_RECORD) -> correct.execute(uid, command)
                 else -> throw ApiException(ApiError.TEMPORARILY_UNAVAILABLE)
             }
             receiptResponse(receipt)

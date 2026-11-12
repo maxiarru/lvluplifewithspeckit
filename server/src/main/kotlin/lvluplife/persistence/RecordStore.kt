@@ -9,6 +9,9 @@ import lvluplife.model.*
 
 /** UID-scoped definition resolver and pure record/projection codecs; mutations use RevisionTransaction. */
 class RecordStore(firestore: Firestore) {
+    private val documents = FirestoreAccess(firestore)
+    fun readRecord(uid: Uid, id: RecordId): ActivityRecord? =
+        documents.read(uid, listOf("records", id.value))?.let { record(id.value, it) }
     private val activities = ActivityResolver(CustomActivityStore(firestore))
     fun definition(uid: Uid, id: ActivityId): ActivityDefinition? = activities.resolve(uid, id)
     fun cycle(uid: Uid, snapshot: RecordSnapshot): Cycle = decode {
