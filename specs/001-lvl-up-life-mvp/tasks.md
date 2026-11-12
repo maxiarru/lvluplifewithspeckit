@@ -187,7 +187,7 @@ Objetivo: reinicio confirmado y recuperable, con datos conservados. Prueba indep
 
 - [X] T075 [US6] Implementar `server/src/main/kotlin/lvluplife/application/ResetProgression.kt` y `server/src/main/kotlin/lvluplife/api/ResetRoutes.kt`: commit cierra ciclo/crea nuevo/cambia puntero/proyección/recibo; conservar colecciones, versión y reglas aprobadas, UUID repetido devuelve recibo y otro UUID con ciclo cerrado se rechaza.
 
-- [ ] T076 [US6] Implementar diálogo y acción en `app/src/main/kotlin/lvluplife/ui/ResetScreen.kt` y `app/src/main/kotlin/lvluplife/data/ResetRepository.kt`: explicar datos preservados, cancelación sin cambio, persistir sobre confirmado antes de enviar, sin reenviar al ciclo nuevo automáticamente.
+- [X] T076 [US6] Implementar diálogo y acción en `app/src/main/kotlin/lvluplife/ui/ResetScreen.kt` y `app/src/main/kotlin/lvluplife/data/ResetRepository.kt`: explicar datos preservados, cancelación sin cambio, persistir sobre confirmado antes de enviar, sin reenviar al ciclo nuevo automáticamente.
 
 - [ ] T077 [US6] Ejecutar fallos antes/después de commit y recuperación de reinicio solo desde instalación que conserva el pendiente en `server/src/integrationTest/kotlin/lvluplife/reset/ResetRecoveryTest.kt`; verificar otro dispositivo consulta estado confirmado sin importar pendientes y registrar evidencia en `specs/001-lvl-up-life-mvp/validation.md`.
 

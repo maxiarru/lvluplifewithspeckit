@@ -1,6 +1,6 @@
 package lvluplife.application
 
-/** Compile-only UI contract for T073. Adapter, confirmation and recovery UI belong to T076. */
+/** Explicit confirmation and recovery of the original owner's reset intent. */
 interface ResetFlowOperations {
     val online: Boolean
     suspend fun pending(uid: String): List<OperationSnapshot>

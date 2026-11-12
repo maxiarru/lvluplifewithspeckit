@@ -3,6 +3,7 @@ package lvluplife.ui
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
@@ -49,6 +50,7 @@ class ResetFlowTest {
         var recovered: PendingState?=null
         var gate: CompletableDeferred<Unit>?=null
         var failBeforePreparation=false
+        var failRecovery=false
         val submissions=Collections.synchronizedList(mutableListOf<Triple<String,String,String>>())
         val retries=Collections.synchronizedList(mutableListOf<OperationRef>())
         val lookups=Collections.synchronizedList(mutableListOf<OperationRef>())
@@ -62,6 +64,7 @@ class ResetFlowTest {
             override suspend fun retry(ref: OperationRef): OperationSnapshot=error("No debe reenviar otro tipo de operación")
         }
         override suspend fun pending(uid: String)=withContext(Dispatchers.IO) {
+            if(failRecovery) throw OperationBlocked(ApiFailureCode.TEMPORARILY_UNAVAILABLE)
             store.pendingFor(uid).filter { it.commandType=="RESET_PROGRESSION" && it.state !in setOf(PendingState.CONFIRMED,PendingState.REJECTED) }.map {
                 val ref=OperationRef(uid,it.operationId);lookups+=ref
                 val state=if(online) recovered ?: it.state else it.state
@@ -116,11 +119,27 @@ class ResetFlowTest {
     private fun open()=compose.onNodeWithTag("reset-open").assertExists().performClick()
     private fun confirm()=compose.onNodeWithTag("reset-confirm").assertExists().performClick()
     private fun retry()=compose.onNodeWithTag("reset-retry").assertExists().performClick()
+    private fun capture(name: String, dialog: Boolean=false) {
+        val root=if(dialog) compose.onNode(isDialog()) else compose.onRoot()
+        java.io.File(context.cacheDir,name).outputStream().use {
+            root.captureToImage().asAndroidBitmap().compress(android.graphics.Bitmap.CompressFormat.PNG,100,it)
+        }
+    }
+
+    @Test fun failedStartupRecoveryBlocksNewResetUntilRetryResolvesTheJournal() = scenario { f,_ ->
+        f.failRecovery=true;mount(f);expect("Confirmación pendiente")
+        compose.onNodeWithTag("reset-open").assertIsNotEnabled()
+        assertTrue(f.submissions.isEmpty());assertTrue(f.store.pendingFor("synthetic-a").isEmpty())
+        f.failRecovery=false;retry()
+        compose.waitUntil(3_000) { compose.onAllNodesWithText("Confirmación pendiente").fetchSemanticsNodes().isEmpty() }
+        compose.onNodeWithTag("reset-open").assertIsEnabled();assertTrue(f.submissions.isEmpty())
+    }
 
     @Test fun openingConfirmationExplainsPreservedDataAndDoesNotPrepareAnOperation() = scenario { f,_ ->
         mount(f);open()
         expect("¿Reiniciar tu personaje?")
         expect("Se reinicia tu progreso. Se conservan tu cuenta, nombre de usuario, actividades personalizadas e historial.")
+        capture("t076-confirmation.png",dialog=true)
         assertTrue(f.submissions.isEmpty());assertTrue(f.store.pendingFor("synthetic-a").isEmpty())
         assertEquals(1,f.remote.cycles.getValue("synthetic-a"));assertEquals(18,f.remote.values.getValue("synthetic-a").attributes.getValue("STR").xp)
     }
@@ -145,6 +164,7 @@ class ResetFlowTest {
         f.result=PendingState.UNKNOWN;mount(f);open();confirm();expect("Confirmación pendiente")
         compose.onNodeWithText("Reinicio confirmado").assertDoesNotExist();assertEquals(1,f.remote.cycles.getValue("synthetic-a"))
         compose.onNodeWithTag("attribute-STR-xp").assertTextEquals("18 XP")
+        capture("t076-pending.png")
         val row=f.store.pendingFor("synthetic-a").single();f.result=PendingState.CONFIRMED;retry();expect("Reinicio confirmado")
         assertEquals(listOf(OperationRef("synthetic-a",row.operationId)),f.retries);assertEquals(1,f.submissions.size)
         assertEquals(row.envelope,f.store.pendingFor("synthetic-a").single().envelope);assertEquals(2,f.remote.cycles.getValue("synthetic-a"))

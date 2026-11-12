@@ -9,6 +9,23 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class SessionControllerTest {
+    @Test fun settlingRecoveredResetRemovesOnlyThatEntryAfterDefinitiveResult() {
+        val ops=Operations();val c=SessionController(ops);c.authenticate(a)
+        val other=ref.copy(operationId="other-operation")
+        ops.result=listOf(OperationSnapshot(ref,PendingState.UNKNOWN),OperationSnapshot(other,PendingState.UNKNOWN));c.recoverPending()
+        val epoch=c.state.value.sessionId
+        c.settlePending(OperationSnapshot(ref,PendingState.UNKNOWN),epoch)
+        assertEquals(2,c.state.value.pending.size)
+        c.settlePending(OperationSnapshot(ref,PendingState.CONFIRMED),epoch)
+        assertEquals(listOf(other),c.state.value.pending.map { it.ref })
+    }
+    @Test fun settlingLateResetCannotRemoveNewSessionsRecoveredPending() {
+        val ops=Operations();val c=SessionController(ops);c.authenticate(a);val old=c.state.value.sessionId
+        c.authenticate(a);ops.result=listOf(OperationSnapshot(ref,PendingState.UNKNOWN));c.recoverPending()
+        c.settlePending(OperationSnapshot(ref,PendingState.REJECTED),old)
+        c.settlePending(OperationSnapshot(ref.copy(uid="owner-b"),PendingState.CONFIRMED),c.state.value.sessionId)
+        assertEquals(ops.result,c.state.value.pending)
+    }
     @Test fun staleAuthenticationCannotRestoreAfterLogout() {
         val c = SessionController(); val epoch = c.authenticationEpoch(); c.logout()
         assertFalse(c.authenticate(SessionToken("owner-a", "synthetic-a"), expectedEpoch = epoch))

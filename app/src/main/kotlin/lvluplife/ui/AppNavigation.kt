@@ -14,11 +14,12 @@ import lvluplife.application.RecordFlowProgress
 import lvluplife.application.CustomActivityFlowActivities
 import lvluplife.application.HistoryFlowHistory
 import lvluplife.application.HistoryFlowCorrections
+import lvluplife.application.ResetFlowOperations
 
 @Composable
 fun AppNavigation(session: SessionController, google: GoogleSignIn, accounts: AccessAccounts, records: RecordFlowRecords? = null,
     progress: RecordFlowProgress? = null, customActivities: CustomActivityFlowActivities? = null, history: HistoryFlowHistory? = null,
-    corrections: HistoryFlowCorrections? = null) {
+    corrections: HistoryFlowCorrections? = null, reset: ResetFlowOperations? = null) {
     val scope = rememberCoroutineScope()
     val controller = remember(session, google, accounts) { AccessController(session, google, accounts, scope) }
     val access by controller.state.collectAsState()
@@ -31,7 +32,7 @@ fun AppNavigation(session: SessionController, google: GoogleSignIn, accounts: Ac
             (access.profile as? ProfileLookup.Existing)?.let {
                 Text(it.username)
                 if (records != null && progress != null && view.routes.lastOrNull() == lvluplife.application.SessionRoute.HOME)
-                    RecordFlow(session, records, progress, customActivities)
+                    RecordFlow(session, records, progress, customActivities, reset)
                 if (history != null && view.routes.lastOrNull() == lvluplife.application.SessionRoute.HISTORY)
                     HistoryFlow(session, history, corrections)
             }

@@ -103,6 +103,13 @@ class SessionController(private val operations: SessionOperations? = null) : Ses
         setLoad(ticket.key, LoadState.Pending(ref))
     }
 
+    /** A screen may settle only its own recovered entry in the same authentication epoch. */
+    fun settlePending(result: OperationSnapshot, expectedEpoch: Long) = synchronized(lock) {
+        if (generation != expectedEpoch || token?.uid != result.ref.uid ||
+            result.state !in setOf(PendingState.CONFIRMED, PendingState.REJECTED)) return@synchronized
+        mutableState.value = mutableState.value.copy(pending=mutableState.value.pending.filterNot { it.ref == result.ref })
+    }
+
     /** Blocking IO entry point; logout never acquires recoveryLock or waits for network calls. */
     fun recoverPending(): Unit = synchronized(recoveryLock) {
         val lease = synchronized(lock) { token?.uid?.let { it to generation } } ?: return@synchronized

@@ -19,20 +19,23 @@ class AndroidAppGraph(context: Context) {
     private var recordAdapter: RecordRepository? = null
     private var activityAdapter: ActivityRepository? = null
     private var correctionAdapter: CorrectionRepository? = null
+    private var resetAdapter: ResetRepository? = null
     val session: SessionController = SessionController(object : SessionOperations {
         override fun recover(): List<OperationSnapshot> {
             val uid = session.current()?.uid ?: return emptyList()
             val ids = recordAdapter?.recoveryIds(uid) ?: emptySet()
             val activityIds = activityAdapter?.recoveryIds(uid) ?: emptySet()
             val correctionIds = correctionAdapter?.recoveryIds(uid) ?: emptySet()
+            val resetIds = resetAdapter?.recoveryIds(uid) ?: emptySet()
             val results = coordinator?.recover() ?: emptyList()
             recordAdapter?.rememberRecovered(results.filter { it.ref.operationId in ids })
             activityAdapter?.rememberRecovered(results.filter { it.ref.operationId in activityIds })
             correctionAdapter?.rememberRecovered(results.filter { it.ref.operationId in correctionIds })
+            resetAdapter?.rememberRecovered(results.filter { it.ref.operationId in resetIds })
             return results
         }
         override fun resumeAuthenticated(uid: String) { coordinator?.resumeAuthenticated(uid) }
-        override fun clearSessionMemory() { coordinator?.clearSessionMemory(); recordAdapter?.clearMemory(); activityAdapter?.clearMemory(); correctionAdapter?.clearMemory() }
+        override fun clearSessionMemory() { coordinator?.clearSessionMemory(); recordAdapter?.clearMemory(); activityAdapter?.clearMemory(); correctionAdapter?.clearMemory(); resetAdapter?.clearMemory() }
         override fun requiresAuthentication(uid: String) = coordinator?.requiresAuthentication(uid) ?: false
     })
     private val store = PendingDatabase.open(context.applicationContext)
@@ -50,6 +53,7 @@ class AndroidAppGraph(context: Context) {
     val activities: CustomActivityFlowActivities?
     val history: HistoryFlowHistory?
     val corrections: HistoryFlowCorrections?
+    val resets: ResetFlowOperations?
     init {
         // Application-scoped callback: updates Compose without polling or retaining an Activity/account.
         connectivity.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
@@ -69,6 +73,7 @@ class AndroidAppGraph(context: Context) {
             activities = null
             history = null
             corrections = null
+            resets = null
         } else {
             val operations = OperationCoordinator(store, api, session, online)
             coordinator = operations
@@ -78,6 +83,7 @@ class AndroidAppGraph(context: Context) {
             progress = ProgressRepository(api, session)
             history = HistoryRepository(api, session, online)
             corrections = CorrectionRepository(api, operations, store, session, online, requireNotNull(records)).also { correctionAdapter = it }
+            resets = ResetRepository(api, operations, store, session, online).also { resetAdapter = it }
         }
     }
 }

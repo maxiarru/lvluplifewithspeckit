@@ -19,6 +19,17 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
         val home = remember(session, progress) { ProgressController(session, progress, scope) }
         val homeView by home.state.collectAsState()
         val view by controller.state.collectAsState()
+        val resetController = remember(session, reset) { reset?.let { ResetController(session,it,scope) } }
+        val resetView = if (resetController != null) {
+            val state by resetController.state.collectAsState()
+            state
+        } else null
+        DisposableEffect(resetController) { onDispose { resetController?.dispose() } }
+        LaunchedEffect(resetController) { resetController?.start() }
+        LaunchedEffect(resetView?.settlement) { if ((resetView?.settlement ?: 0) > 0) {
+            home.refresh()
+            controller.refreshCatalog()
+        } }
         var catalogOpen by remember { mutableStateOf(false) }
         BackHandler(enabled=catalogOpen) { catalogOpen=false }
         val custom = remember(session, customActivities) { customActivities?.let { CustomActivityController(session, it, scope) } }
@@ -51,17 +62,21 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
         LaunchedEffect(controller) { controller.start() }
         LaunchedEffect(home) { home.refresh() }
         LaunchedEffect(view.settlement) { if (view.settlement > 0) home.refresh() }
-        LaunchedEffect(online, view.busy, customView?.busy, recoverOnConnection) {
+        LaunchedEffect(online, view.busy, customView?.busy, resetView?.busy, recoverOnConnection) {
             if (!online) recoverOnConnection = true
-            else if (recoverOnConnection && !view.busy && customView?.busy != true) {
+            else if (recoverOnConnection && !view.busy && customView?.busy != true && resetView?.busy != true) {
                 recoverOnConnection = false
                 controller.start()
                 custom?.start()
+                resetController?.start()
                 home.refresh()
             }
         }
         val confirmedLevel=homeView.value?.generalLevel
-        if (sessionView.uid != null && catalogOpen && confirmedLevel!=null) {
+        val resetLocked=resetView?.let { it.busy || it.pending != null || it.unresolved } == true
+        if (sessionView.uid != null && resetView?.ready == false) {
+            androidx.compose.material3.Text("Cargando reinicios…")
+        } else if (sessionView.uid != null && catalogOpen && confirmedLevel!=null) {
             val catalog=remember(session,records) { ClassCatalogController(session,records,scope) }
             val catalogView by catalog.state.collectAsState()
             DisposableEffect(catalog) { onDispose { catalog.dispose() } }
@@ -73,10 +88,12 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
                 if (!view.open) {
                     HomeScreen(homeView, home::refresh,{ catalogOpen=true })
                 }
-                RecordScreen(view, controller, online)
+                if (!resetLocked) RecordScreen(view, controller, online)
             }
-            if (!view.open && custom != null && customView != null)
+            if (!resetLocked && !view.open && custom != null && customView != null)
                 CustomActivityScreen(customView, custom, customActivities?.online ?: online)
+            if (!view.open && customView?.open != true && resetController != null && resetView != null)
+                ResetScreen(resetView,resetController,homeView.value?.cycleId,reset?.online ?: online)
         }
     }
 }
