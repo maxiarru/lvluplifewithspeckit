@@ -160,7 +160,7 @@ Objetivo: historial completo por período y correcciones recientes consistentes.
 
 Objetivo: explorar todas las clases y etapas, con apariencia actual coherente. Prueba independiente: personajes preparados en niveles 14/15/34/35, catálogo completo y desbloqueos sin cargar actividades. RF-36–40; AC-51–62, 91–92.
 
-- [ ] T064 [P] [US5] Escribir y ejecutar prueba contractual de catálogo visual completo en `server/src/test/kotlin/lvluplife/api/ClassCatalogContractTest.kt`: 26 clases, Novato solo con Etapa I y las otras 25 con tres etapas (76 referencias únicas), ausencia de Novato II/III y referencias consistentes con ClassRules; sin nuevas fórmulas en UI.
+- [X] T064 [P] [US5] Escribir y ejecutar prueba contractual de catálogo visual completo en `server/src/test/kotlin/lvluplife/api/ClassCatalogContractTest.kt`: 26 clases, Novato solo con Etapa I y las otras 25 con tres etapas (76 referencias únicas), ausencia de Novato II/III y referencias consistentes con ClassRules; sin nuevas fórmulas en UI.
 
 - [ ] T065 [P] [US5] Escribir y ejecutar pruebas Compose de catálogo, apariencia y desbloqueos 14/15/34/35 para las 25 clases distintas de Novato y Novato solo con Etapa I desbloqueada, sin II/III, en todos esos niveles del catálogo en `app/src/androidTest/kotlin/lvluplife/ui/ClassCatalogFlowTest.kt`.
 

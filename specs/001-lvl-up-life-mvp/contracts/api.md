@@ -113,6 +113,19 @@ y tiene prioridad. Se verifican26 entradas y76 combinaciones clase/etapa, sin
 exigir referencias de imagen antes de US5. IDs de clase no vacíos y únicos;
 el ID inicial es novato, coherente con la proyección de alta.
 
+### Extensión visual US5 fijada por T064
+
+Cada entrada de `classes` conserva los campos anteriores y agrega `images`,
+un array ordenado de objetos `{"stage":1,"resourceId":"novato"}`.
+`stage` es entero y corresponde exactamente a las etapas declaradas, una imagen
+por etapa. `resourceId` es el nombre estable de un drawable Android, sin extensión,
+ruta ni ID numérico compilado; formato `[a-z][a-z0-9_]*`. Las 76 referencias deben
+ser únicas entre todas las clases y etapas. Novato tiene un único objeto de etapa1;
+no se publican objetos ni recursos de Novato II/III. Las otras25 clases tienen tres.
+La prueba contractual verifica identidad, forma y unicidad; la existencia física,
+el mapeo Android y la calidad visual se verifican en T066–T070. T068 completa esta
+extensión sobre la ruta existente; antes de esa tarea los casos visuales quedan rojos.
+
 `GET /progress` devuelve `cycleId`, `revision`, `computedAt`, `businessDate`,
 `generalLevel`, `generalRemainder`, `classId`, `stage`, `unlockedStages` y
 `attributes`. attributes es un objeto con exactamente STR/DEX/CON/INT/WIT/MEN;
