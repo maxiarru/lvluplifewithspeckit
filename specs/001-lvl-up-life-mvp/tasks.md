@@ -142,7 +142,7 @@ Objetivo: historial completo por período y correcciones recientes consistentes.
 
 - [X] T055 [P] [US4] Escribir y ejecutar pruebas UI de historial vacío/error/Stale, conflictos y recuperación tras cierre en `app/src/androidTest/kotlin/lvluplife/ui/HistoryFlowTest.kt`; no informar éxito ni fallo definitivo con resultado desconocido.
 
-- [ ] T056 [US4] Implementar reglas de corrección en `domain/src/main/kotlin/lvluplife/record/CorrectionRules.kt`: «corrección solo ciclo actual y tiempo transcurrido <300 s», excluir valor previo al validar fecha/duración destino, no convertir modalidades ni cambiar createdAt; hacer verdes pruebas antes de conectar persistencia.
+- [X] T056 [US4] Implementar reglas de corrección en `domain/src/main/kotlin/lvluplife/record/CorrectionRules.kt`: «corrección solo ciclo actual y tiempo transcurrido <300 s», excluir valor previo al validar fecha/duración destino, no convertir modalidades ni cambiar createdAt; hacer verdes pruebas antes de conectar persistencia.
 
 - [ ] T057 [US4] Implementar consulta en `server/src/main/kotlin/lvluplife/application/ReadHistory.kt`: día/semana lunes–domingo/mes UTC−3, todos los ciclos, excluir eliminados y orden estable; devolver período completo bajo revisión estable o error; hacer verdes casos de consulta de HistoryContractTest.
 - [ ] T058 [US4] Implementar edición/eliminación en `server/src/main/kotlin/lvluplife/application/CorrectRecord.kt`: expectedVersion/ciclo/ventana, borrado lógico con deletedAt, «tombstone permite informar conflicto de eliminación», sin recreación; integrar replay/recibo en transacción común y hacer verdes casos de comandos de HistoryContractTest.
