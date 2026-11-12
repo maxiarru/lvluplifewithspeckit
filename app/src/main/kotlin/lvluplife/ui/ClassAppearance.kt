@@ -1,6 +1,6 @@
 package lvluplife.ui
 
-/** Audited US5 batch one. Stable resource names are shared with the public catalogue. */
+/** Audited US5 batches one and two. Stable resource names are shared with the public catalogue. */
 internal data class ClassVisual(val classId: String, val stage: Int, val resourceId: String, val drawable: Int)
 internal object ClassAppearance {
     val batchOne: List<ClassVisual> = listOf(
@@ -42,6 +42,48 @@ internal object ClassAppearance {
         ClassVisual("agil-guardian", 2, "agil_guardian_ii", lvluplife.R.drawable.agil_guardian_ii),
         ClassVisual("agil-guardian", 3, "agil_guardian_iii", lvluplife.R.drawable.agil_guardian_iii),
     )
-    private val byStage = batchOne.associateBy { it.classId to it.stage }
+    val batchTwo: List<ClassVisual> = listOf(
+        ClassVisual("artifice", 1, "artifice", lvluplife.R.drawable.artifice),
+        ClassVisual("artifice", 2, "artifice_ii", lvluplife.R.drawable.artifice_ii),
+        ClassVisual("artifice", 3, "artifice_iii", lvluplife.R.drawable.artifice_iii),
+        ClassVisual("ninja", 1, "ninja", lvluplife.R.drawable.ninja),
+        ClassVisual("ninja", 2, "ninja_ii", lvluplife.R.drawable.ninja_ii),
+        ClassVisual("ninja", 3, "ninja_iii", lvluplife.R.drawable.ninja_iii),
+        ClassVisual("explorador-de-suenos", 1, "explorador_de_suenos", lvluplife.R.drawable.explorador_de_suenos),
+        ClassVisual("explorador-de-suenos", 2, "explorador_de_suenos_ii", lvluplife.R.drawable.explorador_de_suenos_ii),
+        ClassVisual("explorador-de-suenos", 3, "explorador_de_suenos_iii", lvluplife.R.drawable.explorador_de_suenos_iii),
+        ClassVisual("guardian-de-la-sabiduria", 1, "guardian_de_la_sabiduria", lvluplife.R.drawable.guardian_de_la_sabiduria),
+        ClassVisual("guardian-de-la-sabiduria", 2, "guardian_de_la_sabiduria_ii", lvluplife.R.drawable.guardian_de_la_sabiduria_ii),
+        ClassVisual("guardian-de-la-sabiduria", 3, "guardian_de_la_sabiduria_iii", lvluplife.R.drawable.guardian_de_la_sabiduria_iii),
+        ClassVisual("monje-guardian", 1, "monje_guardian", lvluplife.R.drawable.monje_guardian),
+        ClassVisual("monje-guardian", 2, "monje_guardian_ii", lvluplife.R.drawable.monje_guardian_ii),
+        ClassVisual("monje-guardian", 3, "monje_guardian_iii", lvluplife.R.drawable.monje_guardian_iii),
+        ClassVisual("druida", 1, "druida", lvluplife.R.drawable.druida),
+        ClassVisual("druida", 2, "druida_ii", lvluplife.R.drawable.druida_ii),
+        ClassVisual("druida", 3, "druida_iii", lvluplife.R.drawable.druida_iii),
+        ClassVisual("ilusionista", 1, "ilusionista", lvluplife.R.drawable.ilusionista),
+        ClassVisual("ilusionista", 2, "ilusionista_ii", lvluplife.R.drawable.ilusionista_ii),
+        ClassVisual("ilusionista", 3, "ilusionista_iii", lvluplife.R.drawable.ilusionista_iii),
+        ClassVisual("oraculo", 1, "oraculo", lvluplife.R.drawable.oraculo),
+        ClassVisual("oraculo", 2, "oraculo_ii", lvluplife.R.drawable.oraculo_ii),
+        ClassVisual("oraculo", 3, "oraculo_iii", lvluplife.R.drawable.oraculo_iii),
+        ClassVisual("monje-espiritual", 1, "monje_espiritual", lvluplife.R.drawable.monje_espiritual),
+        ClassVisual("monje-espiritual", 2, "monje_espiritual_ii", lvluplife.R.drawable.monje_espiritual_ii),
+        ClassVisual("monje-espiritual", 3, "monje_espiritual_iii", lvluplife.R.drawable.monje_espiritual_iii),
+        ClassVisual("aventurero-versatil", 1, "aventurero_versatil", lvluplife.R.drawable.aventurero_versatil),
+        ClassVisual("aventurero-versatil", 2, "aventurero_versatil_ii", lvluplife.R.drawable.aventurero_versatil_ii),
+        ClassVisual("aventurero-versatil", 3, "aventurero_versatil_iii", lvluplife.R.drawable.aventurero_versatil_iii),
+        ClassVisual("maestro-del-equilibrio", 1, "maestro_del_equilibrio", lvluplife.R.drawable.maestro_del_equilibrio),
+        ClassVisual("maestro-del-equilibrio", 2, "maestro_del_equilibrio_ii", lvluplife.R.drawable.maestro_del_equilibrio_ii),
+        ClassVisual("maestro-del-equilibrio", 3, "maestro_del_equilibrio_iii", lvluplife.R.drawable.maestro_del_equilibrio_iii),
+        ClassVisual("heroe-ascendente", 1, "heroe_ascendente", lvluplife.R.drawable.heroe_ascendente),
+        ClassVisual("heroe-ascendente", 2, "heroe_ascendente_ii", lvluplife.R.drawable.heroe_ascendente_ii),
+        ClassVisual("heroe-ascendente", 3, "heroe_ascendente_iii", lvluplife.R.drawable.heroe_ascendente_iii),
+        ClassVisual("heroe-integral", 1, "heroe_integral", lvluplife.R.drawable.heroe_integral),
+        ClassVisual("heroe-integral", 2, "heroe_integral_ii", lvluplife.R.drawable.heroe_integral_ii),
+        ClassVisual("heroe-integral", 3, "heroe_integral_iii", lvluplife.R.drawable.heroe_integral_iii),
+    )
+    val all: List<ClassVisual> = batchOne + batchTwo
+    private val byStage = all.associateBy { it.classId to it.stage }
     fun binding(classId: String, stage: Int): ClassVisual? = byStage[classId to stage]
 }
