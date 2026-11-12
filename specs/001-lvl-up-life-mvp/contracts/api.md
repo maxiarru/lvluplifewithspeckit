@@ -126,6 +126,11 @@ La prueba contractual verifica identidad, forma y unicidad; la existencia físic
 el mapeo Android y la calidad visual se verifican en T066–T070. T068 completa esta
 extensión sobre la ruta existente; antes de esa tarea los casos visuales quedan rojos.
 
+T068 completa esta extensión. Los nombres auditados en T066–T067 usan el ID de
+clase con guiones convertidos a guiones bajos, sin sufijo para etapa I y con `_ii`
+o `_iii` para II/III. Ejemplos: `novato`, `luchador_monje_iii`, `oraculo`.
+Los alias anteriores `guerrero_monje_iii` y `orcaculo` ya no se publican ni se usan.
+
 `GET /progress` devuelve `cycleId`, `revision`, `computedAt`, `businessDate`,
 `generalLevel`, `generalRemainder`, `classId`, `stage`, `unlockedStages` y
 `attributes`. attributes es un objeto con exactamente STR/DEX/CON/INT/WIT/MEN;

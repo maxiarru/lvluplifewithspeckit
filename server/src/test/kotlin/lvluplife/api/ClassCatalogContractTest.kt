@@ -91,6 +91,8 @@ class ClassCatalogContractTest {
                 assertTrue(image.path("resourceId").isTextual)
                 val id = image.path("resourceId").textValue()
                 assertTrue(Regex("[a-z][a-z0-9_]*").matches(id), "Referencia Android inválida")
+                val suffix = mapOf(1 to "", 2 to "_ii", 3 to "_iii").getValue(image.path("stage").intValue())
+                assertEquals(entry.path("id").textValue().replace('-', '_') + suffix, id)
                 assertTrue(resources.add(id), "Referencia visual duplicada: $id")
                 count++
             }

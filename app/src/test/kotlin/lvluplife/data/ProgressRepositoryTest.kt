@@ -14,7 +14,7 @@ class ProgressRepositoryTest {
         var afterRead: (() -> Unit)? = null
         val requests = mutableListOf<TransportRequest>()
         var data = json.readTree("""{"revision":12,"cycleId":"synthetic-cycle","businessDate":"2026-11-11","computedAt":"2026-11-11T15:00:00Z","generalLevel":1,"generalRemainder":0,"classId":"novato","stage":1,"attributes":{"STR":{"level":1,"xp":6},"DEX":{"level":1,"xp":0},"INT":{"level":1,"xp":0},"WIT":{"level":1,"xp":0},"MEN":{"level":1,"xp":0},"CON":{"level":1,"xp":0}}}""")
-        var catalog = """{"classes":[{"id":"novato","name":"Novato","stages":[1]}]}"""
+        var catalog = """{"classes":[{"id":"novato","name":"Novato","stages":[1],"images":[{"stage":1,"resourceId":"novato"}]}]}"""
         val api = ApiClient(ApiEndpoint.from("https://api.example.test", false), sessions, HttpTransport { request ->
             requests += request
             if (request.url.pathSegments.contains("progress")) {
