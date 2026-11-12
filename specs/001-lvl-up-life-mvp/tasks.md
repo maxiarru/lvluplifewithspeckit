@@ -136,7 +136,7 @@ Objetivo: crear y reutilizar definiciones propias. Prueba independiente: cuenta 
 
 Objetivo: historial completo por período y correcciones recientes consistentes. Prueba independiente: fixtures de fechas/ciclos, admitir a 299 s y rechazar a 300 s, recalcular al editar/eliminar, conflictos y fallos de consulta. RF-14–16, 43–44, 46–49, 53–56.
 
-- [ ] T053 [P] [US4] Escribir y ejecutar pruebas de corrección/replay en `domain/src/test/kotlin/lvluplife/record/CorrectionTest.kt`: AC-19–24, 85–86, 97, 103, 108–109; conservar ID/creación, comida solo fecha y duración solo otra duración, ciclo actual y ventana exclusiva 300 s.
+- [X] T053 [P] [US4] Escribir y ejecutar pruebas de corrección/replay en `domain/src/test/kotlin/lvluplife/record/CorrectionTest.kt`: AC-19–24, 85–86, 97, 103, 108–109; conservar ID/creación, comida solo fecha y duración solo otra duración, ciclo actual y ventana exclusiva 300 s.
 
 - [ ] T054 [P] [US4] Escribir y ejecutar contratos GET /history, EDIT_RECORD y DELETE_RECORD en `server/src/integrationTest/kotlin/lvluplife/history/HistoryContractTest.kt`: períodos UTC−3, páginas bajo revisión estable, expectedVersion, tombstone y AC-110–111, 116–117, 123–125.
 
