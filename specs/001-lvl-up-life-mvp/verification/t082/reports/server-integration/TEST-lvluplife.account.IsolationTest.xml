@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.account.IsolationTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:51:31.090Z" hostname="CERUS" time="1.405">
+  <properties/>
+  <testcase name="foreignQueriesAndGuessedPathsCannotSelectAnotherAccount" classname="lvluplife.account.IsolationTest" time="0.491"/>
+  <testcase name="foreignOwnerInCommandsIsRejectedAndSameUuidIsScopedToVerifiedUid" classname="lvluplife.account.IsolationTest" time="0.157"/>
+  <testcase name="directFirestoreRejectsOwnForeignAndUnauthenticatedReadsWritesAndDeletes" classname="lvluplife.account.IsolationTest" time="0.757"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

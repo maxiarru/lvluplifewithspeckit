@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.api.RequestSchemaTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:50:46.376Z" hostname="CERUS" time="0.395">
+  <properties/>
+  <testcase name="onlyJsonUtf8IsAccepted" classname="lvluplife.api.RequestSchemaTest" time="0.084"/>
+  <testcase name="typedErrorsUseContractStatusAndUnexpectedExceptionsStayPrivate" classname="lvluplife.api.RequestSchemaTest" time="0.05"/>
+  <testcase name="chunkedOversizedBodyIsBoundedWithoutContentLength" classname="lvluplife.api.RequestSchemaTest" time="0.019"/>
+  <testcase name="everyVariantRejectsUnknownPayloadFieldsBeforeDispatch" classname="lvluplife.api.RequestSchemaTest" time="0.049"/>
+  <testcase name="validVariantsReachOnlyVerifiedOwnerAndNeverPretendToBePersisted" classname="lvluplife.api.RequestSchemaTest" time="0.059"/>
+  <testcase name="queryShapeIsStrictAndUnavailableDataIsNeverReturnedAsEmpty" classname="lvluplife.api.RequestSchemaTest" time="0.064"/>
+  <testcase name="wrongTypesMissingFieldsDuplicateKeysAndTrailingJsonAreRejected" classname="lvluplife.api.RequestSchemaTest" time="0.068"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

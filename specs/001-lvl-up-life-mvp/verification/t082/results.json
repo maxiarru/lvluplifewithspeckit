@@ -1,0 +1,306 @@
+{
+  "task": "T082",
+  "sourceRevision": "113b057",
+  "finishedAt": "2026-11-12T22:27:35.056460+00:00",
+  "command": "gradlew.bat assembleDebug :domain:test :server:test testDebugUnitTest :server:integrationTest connectedDebugAndroidTest --rerun-tasks --no-daemon",
+  "buildDuration": "11m56s",
+  "gradleTasksExecuted": 96,
+  "environment": {
+    "jdk": "Temurin17.0.21+9",
+    "gradle": "9.5.0",
+    "kotlin": "2.4.20",
+    "agp": "9.3.1",
+    "node": "25.1.0",
+    "firebaseCliUsed": "13.31.2 from .tooling/firebase-cli",
+    "firebaseCliPinnedInPackage": "13.35.1",
+    "project": "demo-lvluplife",
+    "firestore": "127.0.0.1:8080",
+    "auth": "127.0.0.1:9099",
+    "device": {
+      "avd": "Pixel_6a_API_30",
+      "serial": "emulator-5554",
+      "api": 30,
+      "android": "11",
+      "abi": "x86",
+      "pixels": "1080x2400",
+      "densityDpi": 420,
+      "fingerprint": "google/sdk_gphone_x86/generic_x86_arm:11/RSR1.201013.001/6903271:user/release-keys"
+    }
+  },
+  "suites": {
+    "domain": {
+      "tests": 322,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": true,
+      "reports": [
+        "reports/domain/TEST-lvluplife.activity.CustomActivityTest.xml",
+        "reports/domain/TEST-lvluplife.fixtures.ClockFixtureTest.xml",
+        "reports/domain/TEST-lvluplife.model.AccountTest.xml",
+        "reports/domain/TEST-lvluplife.model.ActivityModelTest.xml",
+        "reports/domain/TEST-lvluplife.model.IdentityTest.xml",
+        "reports/domain/TEST-lvluplife.model.ProgressionModelTest.xml",
+        "reports/domain/TEST-lvluplife.progression.ClassRulesTest.xml",
+        "reports/domain/TEST-lvluplife.progression.ExperienceTest.xml",
+        "reports/domain/TEST-lvluplife.progression.InactivityRulesTest.xml",
+        "reports/domain/TEST-lvluplife.progression.LevelRulesTest.xml",
+        "reports/domain/TEST-lvluplife.progression.ProgressionTest.xml",
+        "reports/domain/TEST-lvluplife.progression.RecordValidationTest.xml",
+        "reports/domain/TEST-lvluplife.progression.ReplayEngineTest.xml",
+        "reports/domain/TEST-lvluplife.progression.ReplayTest.xml",
+        "reports/domain/TEST-lvluplife.progression.ResetTest.xml",
+        "reports/domain/TEST-lvluplife.record.CorrectionTest.xml"
+      ]
+    },
+    "server-unit": {
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": true,
+      "reports": [
+        "reports/server-unit/TEST-lvluplife.api.AuthenticationTest.xml",
+        "reports/server-unit/TEST-lvluplife.api.ClassCatalogContractTest.xml",
+        "reports/server-unit/TEST-lvluplife.api.RequestSchemaTest.xml",
+        "reports/server-unit/TEST-lvluplife.api.ServerConfigTest.xml",
+        "reports/server-unit/TEST-lvluplife.api.TrustBoundaryTest.xml",
+        "reports/server-unit/TEST-lvluplife.application.PortsTest.xml"
+      ]
+    },
+    "android-jvm": {
+      "tests": 142,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": true,
+      "reports": [
+        "reports/android-jvm/TEST-lvluplife.application.AccessControllerTest.xml",
+        "reports/android-jvm/TEST-lvluplife.application.OperationCoordinatorTest.xml",
+        "reports/android-jvm/TEST-lvluplife.application.SessionControllerTest.xml",
+        "reports/android-jvm/TEST-lvluplife.data.ActivityRepositoryTest.xml",
+        "reports/android-jvm/TEST-lvluplife.data.ApiAccessAccountsTest.xml",
+        "reports/android-jvm/TEST-lvluplife.data.ApiClientTest.xml",
+        "reports/android-jvm/TEST-lvluplife.data.ClassCatalogRepositoryTest.xml",
+        "reports/android-jvm/TEST-lvluplife.data.CorrectionRepositoryTest.xml",
+        "reports/android-jvm/TEST-lvluplife.data.FirebaseGoogleSignInTest.xml",
+        "reports/android-jvm/TEST-lvluplife.data.HistoryRepositoryTest.xml",
+        "reports/android-jvm/TEST-lvluplife.data.ProgressRepositoryTest.xml",
+        "reports/android-jvm/TEST-lvluplife.data.RecordRepositoryTest.xml",
+        "reports/android-jvm/TEST-lvluplife.data.ResetRepositoryTest.xml",
+        "reports/android-jvm/TEST-lvluplife.ReleaseConfigTest.xml",
+        "reports/android-jvm/TEST-lvluplife.VariantSecurityTest.xml"
+      ]
+    },
+    "server-integration": {
+      "tests": 234,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": true,
+      "reports": [
+        "reports/server-integration/TEST-lvluplife.account.AccountContractTest.xml",
+        "reports/server-integration/TEST-lvluplife.account.CompleteProfileTest.xml",
+        "reports/server-integration/TEST-lvluplife.account.IsolationTest.xml",
+        "reports/server-integration/TEST-lvluplife.account.RuntimeAccountRoutesTest.xml",
+        "reports/server-integration/TEST-lvluplife.activity.ActivityContractTest.xml",
+        "reports/server-integration/TEST-lvluplife.fixtures.FaultFixtureTest.xml",
+        "reports/server-integration/TEST-lvluplife.history.CorrectionRecoveryTest.xml",
+        "reports/server-integration/TEST-lvluplife.history.HistoryContractTest.xml",
+        "reports/server-integration/TEST-lvluplife.persistence.FirestoreAccessTest.xml",
+        "reports/server-integration/TEST-lvluplife.persistence.OperationInfrastructureTest.xml",
+        "reports/server-integration/TEST-lvluplife.persistence.OperationStoreSafetyTest.xml",
+        "reports/server-integration/TEST-lvluplife.persistence.RecordRevisionTest.xml",
+        "reports/server-integration/TEST-lvluplife.persistence.RevisionTransactionSafetyTest.xml",
+        "reports/server-integration/TEST-lvluplife.quality.PerformanceScenarios.xml",
+        "reports/server-integration/TEST-lvluplife.record.CreateRecordContractTest.xml",
+        "reports/server-integration/TEST-lvluplife.record.CreateRecoveryTest.xml",
+        "reports/server-integration/TEST-lvluplife.reset.ResetContractTest.xml",
+        "reports/server-integration/TEST-lvluplife.reset.ResetRecoveryTest.xml",
+        "reports/server-integration/TEST-lvluplife.security.FullIsolationTest.xml"
+      ]
+    },
+    "android-connected": {
+      "tests": 136,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "executed": true,
+      "reports": [
+        "reports/android-connected/TEST-Pixel_6a_API_30(AVD) - 11-_app-.xml"
+      ]
+    }
+  },
+  "groups": {
+    "APROBADO": [
+      {
+        "check": "assembleDebug",
+        "command": "assembleDebug",
+        "environment": "demo-lvluplife local Auth/Firestore; JDK17; Android emulator API30 for connected tests",
+        "output": "full-validation.txt",
+        "reason": "Forced execution, successful build, zero test failures/errors/skips",
+        "artifactHashes": "apk-hashes.json"
+      },
+      {
+        "check": "domain",
+        "command": ":domain:test",
+        "environment": "demo-lvluplife local Auth/Firestore; JDK17; Android emulator API30 for connected tests",
+        "output": "full-validation.txt",
+        "reason": "Forced execution, successful build, zero test failures/errors/skips",
+        "counts": {
+          "tests": 322,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "executed": true,
+          "reports": [
+            "reports/domain/TEST-lvluplife.activity.CustomActivityTest.xml",
+            "reports/domain/TEST-lvluplife.fixtures.ClockFixtureTest.xml",
+            "reports/domain/TEST-lvluplife.model.AccountTest.xml",
+            "reports/domain/TEST-lvluplife.model.ActivityModelTest.xml",
+            "reports/domain/TEST-lvluplife.model.IdentityTest.xml",
+            "reports/domain/TEST-lvluplife.model.ProgressionModelTest.xml",
+            "reports/domain/TEST-lvluplife.progression.ClassRulesTest.xml",
+            "reports/domain/TEST-lvluplife.progression.ExperienceTest.xml",
+            "reports/domain/TEST-lvluplife.progression.InactivityRulesTest.xml",
+            "reports/domain/TEST-lvluplife.progression.LevelRulesTest.xml",
+            "reports/domain/TEST-lvluplife.progression.ProgressionTest.xml",
+            "reports/domain/TEST-lvluplife.progression.RecordValidationTest.xml",
+            "reports/domain/TEST-lvluplife.progression.ReplayEngineTest.xml",
+            "reports/domain/TEST-lvluplife.progression.ReplayTest.xml",
+            "reports/domain/TEST-lvluplife.progression.ResetTest.xml",
+            "reports/domain/TEST-lvluplife.record.CorrectionTest.xml"
+          ]
+        }
+      },
+      {
+        "check": "server-unit",
+        "command": ":server:test",
+        "environment": "demo-lvluplife local Auth/Firestore; JDK17; Android emulator API30 for connected tests",
+        "output": "full-validation.txt",
+        "reason": "Forced execution, successful build, zero test failures/errors/skips",
+        "counts": {
+          "tests": 34,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "executed": true,
+          "reports": [
+            "reports/server-unit/TEST-lvluplife.api.AuthenticationTest.xml",
+            "reports/server-unit/TEST-lvluplife.api.ClassCatalogContractTest.xml",
+            "reports/server-unit/TEST-lvluplife.api.RequestSchemaTest.xml",
+            "reports/server-unit/TEST-lvluplife.api.ServerConfigTest.xml",
+            "reports/server-unit/TEST-lvluplife.api.TrustBoundaryTest.xml",
+            "reports/server-unit/TEST-lvluplife.application.PortsTest.xml"
+          ]
+        }
+      },
+      {
+        "check": "android-jvm",
+        "command": "testDebugUnitTest",
+        "environment": "demo-lvluplife local Auth/Firestore; JDK17; Android emulator API30 for connected tests",
+        "output": "full-validation.txt",
+        "reason": "Forced execution, successful build, zero test failures/errors/skips",
+        "counts": {
+          "tests": 142,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "executed": true,
+          "reports": [
+            "reports/android-jvm/TEST-lvluplife.application.AccessControllerTest.xml",
+            "reports/android-jvm/TEST-lvluplife.application.OperationCoordinatorTest.xml",
+            "reports/android-jvm/TEST-lvluplife.application.SessionControllerTest.xml",
+            "reports/android-jvm/TEST-lvluplife.data.ActivityRepositoryTest.xml",
+            "reports/android-jvm/TEST-lvluplife.data.ApiAccessAccountsTest.xml",
+            "reports/android-jvm/TEST-lvluplife.data.ApiClientTest.xml",
+            "reports/android-jvm/TEST-lvluplife.data.ClassCatalogRepositoryTest.xml",
+            "reports/android-jvm/TEST-lvluplife.data.CorrectionRepositoryTest.xml",
+            "reports/android-jvm/TEST-lvluplife.data.FirebaseGoogleSignInTest.xml",
+            "reports/android-jvm/TEST-lvluplife.data.HistoryRepositoryTest.xml",
+            "reports/android-jvm/TEST-lvluplife.data.ProgressRepositoryTest.xml",
+            "reports/android-jvm/TEST-lvluplife.data.RecordRepositoryTest.xml",
+            "reports/android-jvm/TEST-lvluplife.data.ResetRepositoryTest.xml",
+            "reports/android-jvm/TEST-lvluplife.ReleaseConfigTest.xml",
+            "reports/android-jvm/TEST-lvluplife.VariantSecurityTest.xml"
+          ]
+        }
+      },
+      {
+        "check": "server-integration",
+        "command": ":server:integrationTest",
+        "environment": "demo-lvluplife local Auth/Firestore; JDK17; Android emulator API30 for connected tests",
+        "output": "full-validation.txt",
+        "reason": "Forced execution, successful build, zero test failures/errors/skips",
+        "counts": {
+          "tests": 234,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "executed": true,
+          "reports": [
+            "reports/server-integration/TEST-lvluplife.account.AccountContractTest.xml",
+            "reports/server-integration/TEST-lvluplife.account.CompleteProfileTest.xml",
+            "reports/server-integration/TEST-lvluplife.account.IsolationTest.xml",
+            "reports/server-integration/TEST-lvluplife.account.RuntimeAccountRoutesTest.xml",
+            "reports/server-integration/TEST-lvluplife.activity.ActivityContractTest.xml",
+            "reports/server-integration/TEST-lvluplife.fixtures.FaultFixtureTest.xml",
+            "reports/server-integration/TEST-lvluplife.history.CorrectionRecoveryTest.xml",
+            "reports/server-integration/TEST-lvluplife.history.HistoryContractTest.xml",
+            "reports/server-integration/TEST-lvluplife.persistence.FirestoreAccessTest.xml",
+            "reports/server-integration/TEST-lvluplife.persistence.OperationInfrastructureTest.xml",
+            "reports/server-integration/TEST-lvluplife.persistence.OperationStoreSafetyTest.xml",
+            "reports/server-integration/TEST-lvluplife.persistence.RecordRevisionTest.xml",
+            "reports/server-integration/TEST-lvluplife.persistence.RevisionTransactionSafetyTest.xml",
+            "reports/server-integration/TEST-lvluplife.quality.PerformanceScenarios.xml",
+            "reports/server-integration/TEST-lvluplife.record.CreateRecordContractTest.xml",
+            "reports/server-integration/TEST-lvluplife.record.CreateRecoveryTest.xml",
+            "reports/server-integration/TEST-lvluplife.reset.ResetContractTest.xml",
+            "reports/server-integration/TEST-lvluplife.reset.ResetRecoveryTest.xml",
+            "reports/server-integration/TEST-lvluplife.security.FullIsolationTest.xml"
+          ]
+        }
+      },
+      {
+        "check": "android-connected",
+        "command": "connectedDebugAndroidTest",
+        "environment": "demo-lvluplife local Auth/Firestore; JDK17; Android emulator API30 for connected tests",
+        "output": "full-validation.txt",
+        "reason": "Forced execution, successful build, zero test failures/errors/skips",
+        "counts": {
+          "tests": 136,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "executed": true,
+          "reports": [
+            "reports/android-connected/TEST-Pixel_6a_API_30(AVD) - 11-_app-.xml"
+          ]
+        }
+      },
+      {
+        "check": "Firestore direct client denial",
+        "command": "node firebase/verify-emulators.mjs",
+        "environment": "existing local Auth9099/Firestore8080, Firebase client11.10.0",
+        "output": "rules-verification.txt",
+        "reason": "Four client read/write attempts denied before/after anonymous sign-in; auth availability also verified; exit0"
+      }
+    ],
+    "FALLIDO": [],
+    "NO DISPONIBLE": [
+      {
+        "check": "Google real",
+        "command": "Test-Path app/google-services.json; search app/src XML for default_web_client_id",
+        "environment": "local checkout; no configured integration Firebase/OAuth client",
+        "output": "google-configuration.json",
+        "reason": "Both configuration checks absent. Real sign-in not attempted; no infrastructure created."
+      }
+    ]
+  },
+  "limits": [
+    "No real Google/OAuth selector or production deployment",
+    "ProcessStage tests deliberately excluded from standard connected runner; prior staged matrix evidence remains T080, not recounted here",
+    "Smoke performance is local and does not establish production p95/availability/session targets",
+    "CLI used differs from root package pin; exact environment recorded; quickstart command audit belongs to T083"
+  ]
+}

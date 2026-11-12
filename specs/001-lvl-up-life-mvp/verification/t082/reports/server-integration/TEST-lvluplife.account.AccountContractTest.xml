@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.account.AccountContractTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:51:15.411Z" hostname="CERUS" time="9.871">
+  <properties/>
+  <testcase name="changedContentOfSameUuidCannotRenameAccountOrReplaceReceipt" classname="lvluplife.account.AccountContractTest" time="3.123"/>
+  <testcase name="invalidNamesAreRejectedWithoutAssigningProfileOrCharacter" classname="lvluplife.account.AccountContractTest" time="0.592"/>
+  <testcase name="completeProfileCreatesNameCycleProjectionAndReceiptTogether" classname="lvluplife.account.AccountContractTest" time="0.086"/>
+  <testcase name="invalidIdentityDoesNotCreateProfileOrRevealPrivateData" classname="lvluplife.account.AccountContractTest" time="0.039"/>
+  <testcase name="meReturnsOnlyTheAuthenticatedProfileAndAnotherClientSeesTheSameAccount" classname="lvluplife.account.AccountContractTest" time="0.116"/>
+  <testcase name="existingAccountKeepsItsSingleCharacterNameAndCycleAcrossNewCommands" classname="lvluplife.account.AccountContractTest" time="0.112"/>
+  <testcase name="concurrentCommandsForOneUidNeverCreateTwoCharactersOrReserveTwoNames" classname="lvluplife.account.AccountContractTest" time="3.075"/>
+  <testcase name="concurrentCaseVariantsHaveExactlyOneWinnerAndNoPartialLoserProfile" classname="lvluplife.account.AccountContractTest" time="2.458"/>
+  <testcase name="meRequiresProfileWithoutCreatingAnythingOnAuthenticationOrAbandonment" classname="lvluplife.account.AccountContractTest" time="0.037"/>
+  <testcase name="oneAndFifteenAsciiCharactersAreAcceptedWithVisibleCasePreserved" classname="lvluplife.account.AccountContractTest" time="0.086"/>
+  <testcase name="caseInsensitiveTakenNameRejectsOtherUidAndKeepsItsReceipt" classname="lvluplife.account.AccountContractTest" time="0.098"/>
+  <testcase name="ownerInjectionAndForbiddenProfileFieldsAreRejectedBeforeAnyMutation" classname="lvluplife.account.AccountContractTest" time="0.043"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+]]></system-err>
+</testsuite>

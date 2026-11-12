@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.progression.InactivityRulesTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:50:36.785Z" hostname="CERUS" time="0.004">
+  <properties/>
+  <testcase name="openDateDoesNotIncrementAnAlreadyLargeCounter" classname="lvluplife.progression.InactivityRulesTest" time="0.002"/>
+  <testcase name="inactiveCounterCannotWrapIntoNegativeDays" classname="lvluplife.progression.InactivityRulesTest" time="0.001"/>
+  <testcase name="positiveEffectiveXpOnOpenDateResetsWithoutCountingOrAddingXpAgain" classname="lvluplife.progression.InactivityRulesTest" time="0.0"/>
+  <testcase name="futureDateCannotCountOrResetInactivity" classname="lvluplife.progression.InactivityRulesTest" time="0.0"/>
+  <testcase name="negativeEffectiveXpIsInvalidEvenForTheOpenDate" classname="lvluplife.progression.InactivityRulesTest" time="0.001"/>
+  <testcase name="incompleteSleepStaysInactiveButCompletedHourAvoidsItsDatePenalty" classname="lvluplife.progression.InactivityRulesTest" time="0.0"/>
+  <testcase name="dateThatReachedLevelFiftyIsActiveDespiteFinalXpZero" classname="lvluplife.progression.InactivityRulesTest" time="0.0"/>
+  <testcase name="roundedDownSecondaryDoesNotReceivePrimaryActivityCredit" classname="lvluplife.progression.InactivityRulesTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

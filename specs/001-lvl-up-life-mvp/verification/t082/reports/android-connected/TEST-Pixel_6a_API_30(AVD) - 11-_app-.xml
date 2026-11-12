@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<testsuites tests="136" failures="0" errors="0" skipped="0" time="475.745" timestamp="2026-11-12T18:01:21" hostname="localhost">
+  <testsuite name="lvluplife.data.FirebaseSdkIdentityTest" tests="1" failures="0" errors="0" skipped="0" time="3.174" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="firebaseExchangesGoogleCredentialAndRefreshesTheSameUidInLocalEmulator" classname="lvluplife.data.FirebaseSdkIdentityTest" time="3.174" />
+  </testsuite>
+  <testsuite name="lvluplife.data.GoogleCredentialRequestsTest" tests="3" failures="0" errors="0" skipped="0" time="1.222" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="explicitGoogleButtonRequestContainsWebClientIdAndAttemptNonce" classname="lvluplife.data.GoogleCredentialRequestsTest" time="1.084" />
+    <testcase name="googleCredentialIsParsedWithoutExposingItsToken" classname="lvluplife.data.GoogleCredentialRequestsTest" time="0.108" />
+    <testcase name="wrongNonceAndNonGoogleCredentialsAreRejectedWithSafeTypedError" classname="lvluplife.data.GoogleCredentialRequestsTest" time="0.03" />
+  </testsuite>
+  <testsuite name="lvluplife.data.PendingStoreTest" tests="9" failures="0" errors="0" skipped="0" time="1.261" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="credentialsAndUnsafeErrorsAreRejectedBeforeWriting" classname="lvluplife.data.PendingStoreTest" time="0.234" />
+    <testcase name="definitiveStateCannotBeOverwrittenByOldRetryOrAbsentReceipt" classname="lvluplife.data.PendingStoreTest" time="0.131" />
+    <testcase name="onlyDefinitiveResultsAllowRemovalWithoutAffectingOtherAccount" classname="lvluplife.data.PendingStoreTest" time="0.107" />
+    <testcase name="concurrentStoresCannotReplaceTheSameOperation" classname="lvluplife.data.PendingStoreTest" time="0.131" />
+    <testcase name="retriesCannotReplaceEnvelopeForExistingIdentity" classname="lvluplife.data.PendingStoreTest" time="0.132" />
+    <testcase name="preparedEnvelopeIsDurableBeforeAnyTransportRuns" classname="lvluplife.data.PendingStoreTest" time="0.106" />
+    <testcase name="compositeIdentityAndDraftsAreScopedToOriginalUid" classname="lvluplife.data.PendingStoreTest" time="0.107" />
+    <testcase name="absentReceiptKeepsUnknownAndCannotRemovePending" classname="lvluplife.data.PendingStoreTest" time="0.21" />
+    <testcase name="safeSuspensionCodeSurvivesReopeningAndCannotBeReplacedWithSecrets" classname="lvluplife.data.PendingStoreTest" time="0.103" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.AccessFlowTest" tests="9" failures="0" errors="0" skipped="0" time="25.389" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="deniedAccessShowsSafeErrorAndDoesNotAutomaticallyRetryOrQuery" classname="lvluplife.ui.AccessFlowTest" time="5.335" />
+    <testcase name="doubleTapStartsOnlyOneProviderAttemptWhileAuthenticationIsPending" classname="lvluplife.ui.AccessFlowTest" time="2.667" />
+    <testcase name="newIdentityRequiresExplicitProfileCompletionAfterSuccessfulLookup" classname="lvluplife.ui.AccessFlowTest" time="3.118" />
+    <testcase name="failedProfileLookupIsAnErrorNotANewProfileAndRetryDoesNotSignInAgain" classname="lvluplife.ui.AccessFlowTest" time="2.652" />
+    <testcase name="expiredSessionDuringLookupReturnsToAccessUntilExplicitAuthentication" classname="lvluplife.ui.AccessFlowTest" time="2.489" />
+    <testcase name="switchingThroughAccessClearsPreviousCachePendingAndBackStack" classname="lvluplife.ui.AccessFlowTest" time="2.541" />
+    <testcase name="cancellationReturnsToAccessWithoutQueryingOrCreatingProfileAndAllowsRetry" classname="lvluplife.ui.AccessFlowTest" time="2.899" />
+    <testcase name="lateAccountAResponseCannotReplaceAccountBAfterLogout" classname="lvluplife.ui.AccessFlowTest" time="1.813" />
+    <testcase name="existingAccountReturnsToItsProfileWithoutOfferingAnotherRegistration" classname="lvluplife.ui.AccessFlowTest" time="1.875" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.AccessibilityTest" tests="15" failures="0" errors="0" skipped="0" time="73.836" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="savedMealUsesTwoGesturesFromPrincipal" classname="lvluplife.ui.AccessibilityTest" time="3.273" />
+    <testcase name="customSelectionDisabledControlsAndListStatesHaveContrastInBothPalettes" classname="lvluplife.ui.AccessibilityTest" time="5.434" />
+    <testcase name="uncertainQuickRecordDisablesNewSubmissionsUntilOriginalRetryResolves" classname="lvluplife.ui.AccessibilityTest" time="2.036" />
+    <testcase name="customLoadingAndPendingHaveReadableStatusAndDisableNewDefinitions" classname="lvluplife.ui.AccessibilityTest" time="2.441" />
+    <testcase name="classLocksAndLoadingErrorStaleStatesRemainExplicitInBothPalettes" classname="lvluplife.ui.AccessibilityTest" time="6.579" />
+    <testcase name="accessAndProfileStatesHaveContrastInBothPalettes" classname="lvluplife.ui.AccessibilityTest" time="6.994" />
+    <testcase name="sleepWithArbitraryDurationNeedsNoExtraFieldSelectionGesture" classname="lvluplife.ui.AccessibilityTest" time="4.005" />
+    <testcase name="quickDurationValidationRetainsInputAndNeverSubmitsInvalidOrCancelledValues" classname="lvluplife.ui.AccessibilityTest" time="4.434" />
+    <testcase name="savedSleepUsesThreeGesturesFromPrincipal" classname="lvluplife.ui.AccessibilityTest" time="4.103" />
+    <testcase name="trainingWithArbitraryDurationNeedsNoExtraFieldSelectionGesture" classname="lvluplife.ui.AccessibilityTest" time="3.412" />
+    <testcase name="historyCorrectionAndTheirPendingStatesHaveContrastInBothPalettes" classname="lvluplife.ui.AccessibilityTest" time="8.613" />
+    <testcase name="quickCancelAndOfflineNeverSaveOrSubmit" classname="lvluplife.ui.AccessibilityTest" time="3.109" />
+    <testcase name="homeAndRecordStatesHaveContrastAndExplicitStatusInBothPalettes" classname="lvluplife.ui.AccessibilityTest" time="9.233" />
+    <testcase name="resetAndDeletionDialogsKeepReadableTextAndExplicitActionsInBothPalettes" classname="lvluplife.ui.AccessibilityTest" time="6.087" />
+    <testcase name="savedTrainingUsesThreeGesturesFromPrincipal" classname="lvluplife.ui.AccessibilityTest" time="4.083" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.AppearanceContrastTest" tests="5" failures="0" errors="0" skipped="0" time="10.735" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="homeTextAndEnabledControlsMeet45UsingActualRenderedColors" classname="lvluplife.ui.AppearanceContrastTest" time="1.681" />
+    <testcase name="catalogueErrorAndStaleInformationRemainReadableAndRetryable" classname="lvluplife.ui.AppearanceContrastTest" time="2.026" />
+    <testcase name="catalogueLockedAndUnlockedLabelsHaveContrastAndExplicitState" classname="lvluplife.ui.AppearanceContrastTest" time="2.56" />
+    <testcase name="disabledRefreshAndLoadingStaleMessagesKeepReadableConfirmedAppearance" classname="lvluplife.ui.AppearanceContrastTest" time="2.776" />
+    <testcase name="finalHeaderKeepsLongConfirmedClassStageLevelAndAllAttributesVisible" classname="lvluplife.ui.AppearanceContrastTest" time="1.692" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.ClassCatalogFlowTest" tests="12" failures="0" errors="0" skipped="0" time="99.665" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="logoutWhileCatalogueIsLoadingDiscardsLateResponseAndPrivateNavigation" classname="lvluplife.ui.ClassCatalogFlowTest" time="1.438" />
+    <testcase name="catalogAt15UnlocksSecondStageForAll25ClassesAndKeepsNoviceOnlyOne" classname="lvluplife.ui.ClassCatalogFlowTest" time="15.966" />
+    <testcase name="catalogAt35UnlocksAllOrdinaryStagesWithoutInventingNoviceStages" classname="lvluplife.ui.ClassCatalogFlowTest" time="14.466" />
+    <testcase name="catalogAt34KeepsThirdStageLockedForAll25ClassesAndNoviceOnlyOne" classname="lvluplife.ui.ClassCatalogFlowTest" time="14.042" />
+    <testcase name="catalogAt14ShowsAll25OrdinaryClassesLockedLaterStagesAndNoviceOnlyOne" classname="lvluplife.ui.ClassCatalogFlowTest" time="14.43" />
+    <testcase name="catalogShowsAll26ClassesFromLevelOneWithOnlyFirstStagesUnlocked" classname="lvluplife.ui.ClassCatalogFlowTest" time="13.649" />
+    <testcase name="homeRendersAll26ConfirmedAppearancesAt14" classname="lvluplife.ui.ClassCatalogFlowTest" time="5.809" />
+    <testcase name="homeRendersAll26ConfirmedAppearancesAt15" classname="lvluplife.ui.ClassCatalogFlowTest" time="5.495" />
+    <testcase name="homeRendersAll26ConfirmedAppearancesAt34" classname="lvluplife.ui.ClassCatalogFlowTest" time="5.72" />
+    <testcase name="homeRendersAll26ConfirmedAppearancesAt35" classname="lvluplife.ui.ClassCatalogFlowTest" time="5.736" />
+    <testcase name="failedCatalogueCanRetryAndReturnHomeWithoutWritingAnyOperation" classname="lvluplife.ui.ClassCatalogFlowTest" time="1.826" />
+    <testcase name="unknownResourceFailsWholeCatalogueInsteadOfShowingPartialOrFallbackImages" classname="lvluplife.ui.ClassCatalogFlowTest" time="1.088" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.ClassVisualBatchOneTest" tests="3" failures="0" errors="0" skipped="0" time="17.249" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="captureEveryClassAtHomeAndCataloguePreviewSizesWithoutCropping" classname="lvluplife.ui.ClassVisualBatchOneTest" time="9.626" />
+    <testcase name="homeDisplaysEachOfThe37AuditedBindingsWithoutFallback" classname="lvluplife.ui.ClassVisualBatchOneTest" time="6.592" />
+    <testcase name="all37BindingsResolveToDistinctFullSizePngResources" classname="lvluplife.ui.ClassVisualBatchOneTest" time="1.031" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.ClassVisualBatchTwoTest" tests="3" failures="0" errors="0" skipped="0" time="18.222" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="captureEveryClassAtHomeAndCataloguePreviewSizesWithoutCropping" classname="lvluplife.ui.ClassVisualBatchTwoTest" time="10.062" />
+    <testcase name="homeDisplaysEachOfThe39AuditedBindingsWithoutFallback" classname="lvluplife.ui.ClassVisualBatchTwoTest" time="6.71" />
+    <testcase name="all76BindingsResolveAndBatchTwoCompletesCatalogueWithoutDuplicates" classname="lvluplife.ui.ClassVisualBatchTwoTest" time="1.45" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.CustomActivityFlowTest" tests="10" failures="0" errors="0" skipped="0" time="40.115" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="unknownRetryPreservesExactOriginalIntentAndInputs" classname="lvluplife.ui.CustomActivityFlowTest" time="5.649" />
+    <testcase name="acceptsDistinctOptionalSecondaryAndNeverOffersConstitution" classname="lvluplife.ui.CustomActivityFlowTest" time="4.01" />
+    <testcase name="definitiveRejectionPreservesInputsAndCorrectionCreatesAnotherUuid" classname="lvluplife.ui.CustomActivityFlowTest" time="4.897" />
+    <testcase name="offlineKeepsDraftAndDisablesNewCreation" classname="lvluplife.ui.CustomActivityFlowTest" time="3.266" />
+    <testcase name="createsWithoutSecondaryAndReusesSavedDefinitionForDuration" classname="lvluplife.ui.CustomActivityFlowTest" time="5.672" />
+    <testcase name="accountChangeHidesOriginalDraftAndNeverRecoversItsPendingForAnotherOwner" classname="lvluplife.ui.CustomActivityFlowTest" time="3.778" />
+    <testcase name="recreationRecoversPendingFromReopenedRoomWithoutAnotherSubmit" classname="lvluplife.ui.CustomActivityFlowTest" time="4.369" />
+    <testcase name="doubleTapUsesOneUuidWhileResultIsOutstanding" classname="lvluplife.ui.CustomActivityFlowTest" time="3.319" />
+    <testcase name="listErrorIsNotPresentedAsSuccessfulEmptyStateAndRetryRecovers" classname="lvluplife.ui.CustomActivityFlowTest" time="1.58" />
+    <testcase name="draftSurvivesRecreationAndDoesNotOverwriteOtherDraftNamespaces" classname="lvluplife.ui.CustomActivityFlowTest" time="3.575" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.HistoryFlowTest" tests="23" failures="0" errors="0" skipped="0" time="65.134" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="latePreviousAccountReadCannotPopulateNewAccountHistory" classname="lvluplife.ui.HistoryFlowTest" time="2.23" />
+    <testcase name="forbiddenSuspendsRetryWithoutClaimingDefinitiveFailure" classname="lvluplife.ui.HistoryFlowTest" time="3.072" />
+    <testcase name="deletedConflictShowsRemovalAndNeverRecreatesRecord" classname="lvluplife.ui.HistoryFlowTest" time="2.84" />
+    <testcase name="definitiveRejectionRetainsInputsAndCorrectionGetsANewUuid" classname="lvluplife.ui.HistoryFlowTest" time="4.074" />
+    <testcase name="recreationRecoversPendingCorrectionFromReopenedRoomWithoutNewSubmit" classname="lvluplife.ui.HistoryFlowTest" time="3.492" />
+    <testcase name="unknownDeleteKeepsVisibleRowUntilConfirmedAndNeverDeletesTwice" classname="lvluplife.ui.HistoryFlowTest" time="2.925" />
+    <testcase name="initialQueryErrorNeverBecomesEmptyAndRetryRecoversRows" classname="lvluplife.ui.HistoryFlowTest" time="1.703" />
+    <testcase name="previousCycleRowsRemainVisibleButDoNotOfferCorrections" classname="lvluplife.ui.HistoryFlowTest" time="1.757" />
+    <testcase name="editDraftSurvivesRecreationWithoutOverwritingOtherDraftNamespaces" classname="lvluplife.ui.HistoryFlowTest" time="4.063" />
+    <testcase name="refreshFailureRetainsOwnRowsMarkedStale" classname="lvluplife.ui.HistoryFlowTest" time="1.741" />
+    <testcase name="cancelDeleteDoesNotCreateAnOperationOrRemoveVisibleRow" classname="lvluplife.ui.HistoryFlowTest" time="2.594" />
+    <testcase name="offlineDisablesNewCorrectionAndPreservesEditedInputs" classname="lvluplife.ui.HistoryFlowTest" time="2.504" />
+    <testcase name="authRequiredSuspendsRetryWithoutDiscardingEnvelope" classname="lvluplife.ui.HistoryFlowTest" time="2.768" />
+    <testcase name="localPreparationFailureKeepsEditorAndRetriesSameIntentWithoutLosingInputs" classname="lvluplife.ui.HistoryFlowTest" time="3.228" />
+    <testcase name="loadingQueryDoesNotRenderEmptyBeforeSuccessfulReply" classname="lvluplife.ui.HistoryFlowTest" time="1.94" />
+    <testcase name="editingSendsOriginalIdentityVersionAndKeepsOneIntentDuringDoubleTap" classname="lvluplife.ui.HistoryFlowTest" time="2.734" />
+    <testcase name="mealDateCorrectionNeverAsksForDurationFields" classname="lvluplife.ui.HistoryFlowTest" time="3.334" />
+    <testcase name="successfulEmptyPeriodIsExplicitAndDifferentFromLoading" classname="lvluplife.ui.HistoryFlowTest" time="1.738" />
+    <testcase name="accountChangeHidesHistoryAndPendingWithoutReassigningThem" classname="lvluplife.ui.HistoryFlowTest" time="3.649" />
+    <testcase name="unknownEditDoesNotAnnounceSuccessOrDefinitiveFailureAndRetryKeepsUuid" classname="lvluplife.ui.HistoryFlowTest" time="3.088" />
+    <testcase name="periodAndDateSelectionArePassedToQueryInsteadOfLocallyFilteringPartialRows" classname="lvluplife.ui.HistoryFlowTest" time="2.768" />
+    <testcase name="versionConflictShowsFreshWinnerAndDoesNotAutomaticallyOverwriteIt" classname="lvluplife.ui.HistoryFlowTest" time="3.273" />
+    <testcase name="latePreviousPeriodResponseCannotReplaceNewSelection" classname="lvluplife.ui.HistoryFlowTest" time="3.619" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.ProfileFlowTest" tests="3" failures="0" errors="0" skipped="0" time="8.296" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="savingDisablesDoubleTapWhileTheRequestIsInFlight" classname="lvluplife.ui.ProfileFlowTest" time="2.873" />
+    <testcase name="takenNameRetainsInputAndCorrectionCreatesANewIntent" classname="lvluplife.ui.ProfileFlowTest" time="2.902" />
+    <testcase name="unknownResultKeepsInputAndRetriesOriginalOperationWithoutNewSubmission" classname="lvluplife.ui.ProfileFlowTest" time="2.521" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.RecordFlowTest" tests="20" failures="0" errors="0" skipped="0" time="57.74" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="resolvingAnOldReceiptReloadsCurrentProgressWithoutRegressingItsRevision" classname="lvluplife.ui.RecordFlowTest" time="1.599" />
+    <testcase name="functionalRejectionRetainsInputAndCorrectionCreatesANewIntent" classname="lvluplife.ui.RecordFlowTest" time="4.658" />
+    <testcase name="unauthorizedResultSuspendsRetryUntilAuthenticationWithoutDroppingEnvelope" classname="lvluplife.ui.RecordFlowTest" time="3.495" />
+    <testcase name="olderProgressCannotReplaceANewerConfirmedRevision" classname="lvluplife.ui.RecordFlowTest" time="1.892" />
+    <testcase name="doubleTapKeepsOneIntentAndDisablesSendingUntilDefinitiveReply" classname="lvluplife.ui.RecordFlowTest" time="3.921" />
+    <testcase name="lateProgressFromPreviousAccountCannotReplaceTheNewAccountsView" classname="lvluplife.ui.RecordFlowTest" time="1.334" />
+    <testcase name="returningFromBackgroundReloadsConfirmedProgressWithoutANewActivity" classname="lvluplife.ui.RecordFlowTest" time="2.263" />
+    <testcase name="initialQueryFailureOffersRetryWithoutInventingEmptyOrConfirmedProgress" classname="lvluplife.ui.RecordFlowTest" time="1.786" />
+    <testcase name="queryFailureKeepsVisibleConfirmedProgressMarkedStale" classname="lvluplife.ui.RecordFlowTest" time="1.326" />
+    <testcase name="unknownLookupKeepsDraftAndNeverDisplaysOptimisticXp" classname="lvluplife.ui.RecordFlowTest" time="3.549" />
+    <testcase name="activityRecreationRestoresDraftFromReopenedRoom" classname="lvluplife.ui.RecordFlowTest" time="3.891" />
+    <testcase name="homeShowsSixAttributesAndGeneralLevelWithoutGeneralXpBar" classname="lvluplife.ui.RecordFlowTest" time="1.442" />
+    <testcase name="pendingAfterRecreationResumesOriginalUuidRatherThanCreatingAnActivity" classname="lvluplife.ui.RecordFlowTest" time="4.262" />
+    <testcase name="forbiddenResultStopsAutomaticRetryAndPreservesPendingEnvelope" classname="lvluplife.ui.RecordFlowTest" time="4.102" />
+    <testcase name="mealDoesNotRequestDurationComponents" classname="lvluplife.ui.RecordFlowTest" time="2.63" />
+    <testcase name="loadingDoesNotPretendInitialZeroProgressIsConfirmed" classname="lvluplife.ui.RecordFlowTest" time="1.475" />
+    <testcase name="reconnectionChecksOriginalPendingWithoutCreatingAnotherIntent" classname="lvluplife.ui.RecordFlowTest" time="3.786" />
+    <testcase name="intentionalEqualActivityAfterConfirmationUsesAnotherUuid" classname="lvluplife.ui.RecordFlowTest" time="5.87" />
+    <testcase name="anotherAccountNeverSeesOrResumesTheOriginalAccountsPendingOperation" classname="lvluplife.ui.RecordFlowTest" time="1.55" />
+    <testcase name="offlineDraftIsRetainedWithoutSendingAnyNewActivity" classname="lvluplife.ui.RecordFlowTest" time="2.909" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.ResetFlowTest" tests="17" failures="0" errors="0" skipped="0" time="37.497" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="explicitConfirmationAndDoubleTapUseOneDurableUuidAndOnlyOneNewCycle" classname="lvluplife.ui.ResetFlowTest" time="2.043" />
+    <testcase name="unknownResetKeepsOldProgressUntilRetryConfirmsSameOperation" classname="lvluplife.ui.ResetFlowTest" time="2.347" />
+    <testcase name="activityRecreationDoesNotPrepareAnotherResetOrLoseItsOriginalIdentity" classname="lvluplife.ui.ResetFlowTest" time="2.778" />
+    <testcase name="openingConfirmationExplainsPreservedDataAndDoesNotPrepareAnOperation" classname="lvluplife.ui.ResetFlowTest" time="2.89" />
+    <testcase name="forbiddenSuspendsRetryWithoutAnnouncingDefinitiveFailure" classname="lvluplife.ui.ResetFlowTest" time="2.454" />
+    <testcase name="authRequiredSuspendsRetryAndRetainsOriginalPendingEnvelope" classname="lvluplife.ui.ResetFlowTest" time="2.78" />
+    <testcase name="reopenedRoomRecoversOriginalResetWithoutAnotherSubmitOrCycle" classname="lvluplife.ui.ResetFlowTest" time="2.417" />
+    <testcase name="rejectedResetRequiresAnotherExplicitConfirmationAndNewUuid" classname="lvluplife.ui.ResetFlowTest" time="2.683" />
+    <testcase name="cancelDoesNotChangeProgressCycleDefinitionsHistoryOrPendingRows" classname="lvluplife.ui.ResetFlowTest" time="2.029" />
+    <testcase name="confirmationNeverRefreshesOriginalCycleToSilentlyTargetAnotherCycle" classname="lvluplife.ui.ResetFlowTest" time="2.156" />
+    <testcase name="pendingOldCycleRejectionIsNotResubmittedAgainstNewlyObservedCycle" classname="lvluplife.ui.ResetFlowTest" time="1.626" />
+    <testcase name="accountChangeHidesOtherOwnersPendingAndNeverReassignsItsUuid" classname="lvluplife.ui.ResetFlowTest" time="2.141" />
+    <testcase name="failedStartupRecoveryBlocksNewResetUntilRetryResolvesTheJournal" classname="lvluplife.ui.ResetFlowTest" time="1.783" />
+    <testcase name="savedResetEnvelopeRetainsUuidCycleAndExplicitConfirmationAcrossRoomClose" classname="lvluplife.ui.ResetFlowTest" time="1.13" />
+    <testcase name="offlineDisablesNewResetWithoutPreparingAnything" classname="lvluplife.ui.ResetFlowTest" time="1.561" />
+    <testcase name="failedLocalPreparationRetriesSameConfirmedIntentAndOriginalCycle" classname="lvluplife.ui.ResetFlowTest" time="2.279" />
+    <testcase name="startupRecoversOnlyOwnResetWithoutConsumingCreateOrAnotherOwnersOperation" classname="lvluplife.ui.ResetFlowTest" time="2.4" />
+  </testsuite>
+  <testsuite name="lvluplife.ui.SessionNavigationTest" tests="3" failures="0" errors="0" skipped="0" time="5.643" timestamp="2026-11-12T18:01:21" hostname="localhost">
+    <properties>
+      <property name="device" value="Pixel_6a_API_30(AVD) - 11" />
+      <property name="flavor" value="" />
+      <property name="project" value=":app" />
+    </properties>
+    <testcase name="expirationClearsNavigationAndLateAccountDataIsNeverRendered" classname="lvluplife.ui.SessionNavigationTest" time="2.045" />
+    <testcase name="emptyErrorStaleAndPendingHaveDistinctVisibleMessages" classname="lvluplife.ui.SessionNavigationTest" time="1.544" />
+    <testcase name="logoutRemovesPrivateScreenAndBackCannotRestoreIt" classname="lvluplife.ui.SessionNavigationTest" time="2.054" />
+  </testsuite>
+</testsuites>

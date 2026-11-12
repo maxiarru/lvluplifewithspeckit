@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.model.ProgressionModelTest" tests="27" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:50:36.706Z" hostname="CERUS" time="0.034">
+  <properties/>
+  <testcase name="classIdentifierMustBeNonblankAndFreeOfControlCharacters" classname="lvluplife.model.ProgressionModelTest" time="0.008"/>
+  <testcase name="canonicalAttributeThresholdsMatchLiteralSpecValues" classname="lvluplife.model.ProgressionModelTest" time="0.0"/>
+  <testcase name="attributeLevelsOutsideOneThroughFiftyAreInvalid" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="inactivityDoesNotImposeAnUnspecifiedMaximumPeriod" classname="lvluplife.model.ProgressionModelTest" time="0.002"/>
+  <testcase name="exposedAttributeMapCannotBeModified" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="derivedNonInitialClassRetainsStageAndGeneralCounter" classname="lvluplife.model.ProgressionModelTest" time="0.0"/>
+  <testcase name="projectionRequiresAllSixAttributes" classname="lvluplife.model.ProgressionModelTest" time="0.004"/>
+  <testcase name="inactivityCounterCannotBeNegative" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="businessTimeHelperHasTheSameFixedBusinessDate" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="attributeXpMustBeNormalizedAndNonnegative" classname="lvluplife.model.ProgressionModelTest" time="0.0"/>
+  <testcase name="generalStateMustMatchTheAttributeLevelGainsBelowCap" classname="lvluplife.model.ProgressionModelTest" time="0.0"/>
+  <testcase name="callerCannotMutateSnapshotByChangingItsOriginalMap" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="initialSnapshotReusesCanonicalInitialCharacterAndCycleStart" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="separateCyclesKeepOwnerRevisionAndStartIndependent" classname="lvluplife.model.ProgressionModelTest" time="0.0"/>
+  <testcase name="maximumGeneralLevelRequiresEnoughAttributeLevelGains" classname="lvluplife.model.ProgressionModelTest" time="0.002"/>
+  <testcase name="closedCycleCannotBePublishedAsCurrentProgression" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="snapshotRetainsExplicitMetadataAndSixAttributes" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="snapshotCannotPredateItsCycleCreation" classname="lvluplife.model.ProgressionModelTest" time="0.0"/>
+  <testcase name="invalidLevelsCannotBeUsedForThresholdLookup" classname="lvluplife.model.ProgressionModelTest" time="0.0"/>
+  <testcase name="validAttributeXpExtremesRemainRepresentable" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="canonicalGeneralThresholdsMatchEveryBandBoundary" classname="lvluplife.model.ProgressionModelTest" time="0.0"/>
+  <testcase name="generalLevelAndCounterMustBeNormalized" classname="lvluplife.model.ProgressionModelTest" time="0.0"/>
+  <testcase name="revisionMustBePositiveForAPublishedProjection" classname="lvluplife.model.ProgressionModelTest" time="0.0"/>
+  <testcase name="maximumLevelProjectionKeepsAllXpAndGeneralRemainderAtZero" classname="lvluplife.model.ProgressionModelTest" time="0.003"/>
+  <testcase name="stagesMustExistAndNovatoOnlyAdmitsStageOne" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="businessDateUsesFixedUtcMinusThreeAtTheExactBoundary" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <testcase name="validGeneralCounterExtremesRemainRepresentable" classname="lvluplife.model.ProgressionModelTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

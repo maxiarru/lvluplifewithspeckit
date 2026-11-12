@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.data.ApiAccessAccountsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:51:11.664Z" hostname="CERUS" time="0.014">
+  <properties/>
+  <testcase name="draftIsOwnedByUidAndPreservedBeforeAttemptingRegistration" classname="lvluplife.data.ApiAccessAccountsTest" time="0.005"/>
+  <testcase name="failedOrMalformedLookupCannotBecomeARegistrationOrExposeAnotherUid" classname="lvluplife.data.ApiAccessAccountsTest" time="0.003"/>
+  <testcase name="successfulLookupDistinguishesRequiredFromOwnExistingProfileWithoutMutation" classname="lvluplife.data.ApiAccessAccountsTest" time="0.001"/>
+  <testcase name="profileSubmissionPersistsBeforeHttpAndDoubleTapUsesTheSameOperation" classname="lvluplife.data.ApiAccessAccountsTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

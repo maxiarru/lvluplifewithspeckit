@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.record.CreateRecoveryTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:52:39.523Z" hostname="CERUS" time="3.291">
+  <properties/>
+  <testcase name="sameUuidBelongsToVerifiedUidAndCannotExposeAnotherAccountsResult" classname="lvluplife.record.CreateRecoveryTest" time="0.123"/>
+  <testcase name="independentClientReadsSavedProgressWithoutImportingPendingIdentity" classname="lvluplife.record.CreateRecoveryTest" time="0.097"/>
+  <testcase name="concurrentRetriesAfterLostResponseAndDateExpiryDoNotReapply" classname="lvluplife.record.CreateRecoveryTest" time="0.1"/>
+  <testcase name="lostResponseAfterCommitReturnsExactReceiptWithoutAnotherWrite" classname="lvluplife.record.CreateRecoveryTest" time="0.083"/>
+  <testcase name="oldReceiptDoesNotReplaceNewerProgressAfterItsDateExpires" classname="lvluplife.record.CreateRecoveryTest" time="0.106"/>
+  <testcase name="simultaneousFirstAttemptsWithSameUuidProduceOneRecordAndOneReceipt" classname="lvluplife.record.CreateRecoveryTest" time="0.069"/>
+  <testcase name="failureBeforeCommitIsUnknownAndSameEnvelopeCanBeAppliedOnce" classname="lvluplife.record.CreateRecoveryTest" time="0.095"/>
+  <testcase name="concurrentUuidCollisionKeepsOnlyTheWinningPayload" classname="lvluplife.record.CreateRecoveryTest" time="2.618"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

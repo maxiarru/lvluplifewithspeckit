@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.persistence.RecordRevisionTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:51:57.430Z" hostname="CERUS" time="5.713">
+  <properties/>
+  <testcase name="finalCreationTimeReplaysOrdinalTieInTheAcceptedOrder" classname="lvluplife.persistence.RecordRevisionTest" time="0.028"/>
+  <testcase name="snapshotContainsOnlyOwnerCurrentCycleAndCannotBeMutated" classname="lvluplife.persistence.RecordRevisionTest" time="0.017"/>
+  <testcase name="midnightForcesFreshExternalCalculationAndDefinitiveDateRejection" classname="lvluplife.persistence.RecordRevisionTest" time="0.034"/>
+  <testcase name="concurrentAdmissionsCannotBothConsumeTheLastHour" classname="lvluplife.persistence.RecordRevisionTest" time="2.94"/>
+  <testcase name="failedPreparationHasNoReceiptRevisionOrPartialWrites" classname="lvluplife.persistence.RecordRevisionTest" time="0.019"/>
+  <testcase name="cycleChangeRejectsWithoutInvokingReplayOrMovingRecord" classname="lvluplife.persistence.RecordRevisionTest" time="0.03"/>
+  <testcase name="recoveredReceiptWinsBeforeClockSnapshotAndObsoletePreconditions" classname="lvluplife.persistence.RecordRevisionTest" time="0.026"/>
+  <testcase name="concurrentRecordsShareTheLastXpPointAndBothPersist" classname="lvluplife.persistence.RecordRevisionTest" time="2.595"/>
+  <testcase name="commitPublishesRecordProjectionRevisionAndReceiptTogether" classname="lvluplife.persistence.RecordRevisionTest" time="0.023"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

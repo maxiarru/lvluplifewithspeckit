@@ -1,0 +1,844 @@
+{
+  "schemaVersion" : 1,
+  "seed" : 81001,
+  "profile" : "smoke",
+  "volume" : 12,
+  "datasetDates" : 365,
+  "cycleScope" : "all seeded records in current cycle, including tombstones",
+  "environment" : {
+    "mode" : "local-emulators-loopback-http",
+    "project" : "demo-lvluplife",
+    "java" : "17.0.21",
+    "os" : "Windows 11",
+    "processors" : 12,
+    "revision" : "113b057",
+    "ktor" : "3.3.0",
+    "firestoreClient" : "3.47.0"
+  },
+  "warmupIterations" : 1,
+  "iterations" : 3,
+  "workers" : 2,
+  "coldJvmSamples" : 1,
+  "coldReadinessProbes" : 34,
+  "durationMs" : 16904.0724,
+  "seedDurationMs" : 2.4652,
+  "reads" : {
+    "httpRequestsByPhaseAndMethod" : {
+      "concurrent:GET" : 12,
+      "postcommit:POST" : 6,
+      "sequential:POST" : 9,
+      "concurrent:POST" : 18,
+      "setup:POST" : 1,
+      "cold:GET" : 34,
+      "warmup:POST" : 3,
+      "sequential:GET" : 6,
+      "verification:GET" : 2,
+      "warmup:GET" : 2,
+      "postcommit:GET" : 3,
+      "same-uuid:POST" : 4
+    },
+    "seededCycleRecords" : 12,
+    "fullCycleRecordsBeforeMeasuredWorkload" : 13,
+    "fullCycleRecordsAfter" : 24,
+    "firestoreDocumentReads" : null,
+    "internalTransactionRetries" : null
+  },
+  "explicitPostcommitReplays" : 3,
+  "checks" : {
+    "fullCycleReplayAndHistory" : true,
+    "sameUuidContention" : true
+  },
+  "authoritativeWarmClock" : "2026-11-12T18:00:00Z",
+  "failureClass" : null,
+  "summaries" : [ {
+    "phase" : "sequential",
+    "operation" : "progress",
+    "n" : 3,
+    "warmupIterations" : 1,
+    "p50Ms" : 20.6731,
+    "p95Ms" : 22.625,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 62.147400000000005
+  }, {
+    "phase" : "sequential",
+    "operation" : "history",
+    "n" : 3,
+    "warmupIterations" : 1,
+    "p50Ms" : 14.9954,
+    "p95Ms" : 15.6642,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 45.616699999999994
+  }, {
+    "phase" : "sequential",
+    "operation" : "CREATE",
+    "n" : 3,
+    "warmupIterations" : 1,
+    "p50Ms" : 25.1053,
+    "p95Ms" : 26.2249,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 74.0193
+  }, {
+    "phase" : "sequential",
+    "operation" : "EDIT",
+    "n" : 3,
+    "warmupIterations" : 1,
+    "p50Ms" : 25.3639,
+    "p95Ms" : 28.9033,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 77.2817
+  }, {
+    "phase" : "sequential",
+    "operation" : "DELETE",
+    "n" : 3,
+    "warmupIterations" : 1,
+    "p50Ms" : 24.9981,
+    "p95Ms" : 26.4761,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 74.40809999999999
+  }, {
+    "phase" : "concurrent",
+    "operation" : "progress",
+    "n" : 6,
+    "warmupIterations" : 1,
+    "p50Ms" : 2069.4874,
+    "p95Ms" : 2987.525,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 14462.742900000001
+  }, {
+    "phase" : "concurrent",
+    "operation" : "history",
+    "n" : 6,
+    "warmupIterations" : 1,
+    "p50Ms" : 12.3998,
+    "p95Ms" : 13.1063,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 75.3804
+  }, {
+    "phase" : "concurrent",
+    "operation" : "CREATE",
+    "n" : 6,
+    "warmupIterations" : 1,
+    "p50Ms" : 21.2895,
+    "p95Ms" : 24.7729,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 131.3031
+  }, {
+    "phase" : "concurrent",
+    "operation" : "EDIT",
+    "n" : 6,
+    "warmupIterations" : 1,
+    "p50Ms" : 20.3372,
+    "p95Ms" : 25.5096,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 130.1026
+  }, {
+    "phase" : "concurrent",
+    "operation" : "DELETE",
+    "n" : 6,
+    "warmupIterations" : 1,
+    "p50Ms" : 20.15,
+    "p95Ms" : 27.5417,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 133.2072
+  }, {
+    "phase" : "same-uuid",
+    "operation" : "CREATE",
+    "n" : 2,
+    "warmupIterations" : 1,
+    "p50Ms" : 2630.8297,
+    "p95Ms" : 2831.1995,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 5462.0292
+  }, {
+    "phase" : "same-uuid",
+    "operation" : "EDIT",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 19.421,
+    "p95Ms" : 19.421,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 19.421
+  }, {
+    "phase" : "same-uuid",
+    "operation" : "DELETE",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 22.0436,
+    "p95Ms" : 22.0436,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 22.0436
+  }, {
+    "phase" : "postcommit",
+    "operation" : "CREATE.lost",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 23.06,
+    "p95Ms" : 23.06,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 1,
+    "expectedFailures" : 1,
+    "durationMs" : 23.06
+  }, {
+    "phase" : "postcommit",
+    "operation" : "CREATE.receipt",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 7.3824,
+    "p95Ms" : 7.3824,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 7.3824
+  }, {
+    "phase" : "postcommit",
+    "operation" : "CREATE.retry",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 8.5099,
+    "p95Ms" : 8.5099,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 8.5099
+  }, {
+    "phase" : "postcommit",
+    "operation" : "EDIT.lost",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 22.2076,
+    "p95Ms" : 22.2076,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 1,
+    "expectedFailures" : 1,
+    "durationMs" : 22.2076
+  }, {
+    "phase" : "postcommit",
+    "operation" : "EDIT.receipt",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 7.1438,
+    "p95Ms" : 7.1438,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 7.1438
+  }, {
+    "phase" : "postcommit",
+    "operation" : "EDIT.retry",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 7.0737,
+    "p95Ms" : 7.0737,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 7.0737
+  }, {
+    "phase" : "postcommit",
+    "operation" : "DELETE.lost",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 23.799,
+    "p95Ms" : 23.799,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 1,
+    "expectedFailures" : 1,
+    "durationMs" : 23.799
+  }, {
+    "phase" : "postcommit",
+    "operation" : "DELETE.receipt",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 6.7611,
+    "p95Ms" : 6.7611,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 6.7611
+  }, {
+    "phase" : "postcommit",
+    "operation" : "DELETE.retry",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 7.0939,
+    "p95Ms" : 7.0939,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 7.0939
+  }, {
+    "phase" : "verification",
+    "operation" : "progress",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 19.213,
+    "p95Ms" : 19.213,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 19.213
+  }, {
+    "phase" : "verification",
+    "operation" : "history",
+    "n" : 1,
+    "warmupIterations" : 1,
+    "p50Ms" : 12.7586,
+    "p95Ms" : 12.7586,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 12.7586
+  }, {
+    "phase" : "cold-jvm",
+    "operation" : "first-progress",
+    "n" : 1,
+    "warmupIterations" : 0,
+    "p50Ms" : 3265.2814,
+    "p95Ms" : 3265.2814,
+    "errors" : 0,
+    "clientRetries" : 0,
+    "httpErrors" : 0,
+    "expectedFailures" : 0,
+    "durationMs" : 3265.2814
+  } ],
+  "samples" : [ {
+    "phase" : "sequential",
+    "operation" : "progress",
+    "millis" : 22.625,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 498
+  }, {
+    "phase" : "sequential",
+    "operation" : "history",
+    "millis" : 15.6642,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 554
+  }, {
+    "phase" : "sequential",
+    "operation" : "CREATE",
+    "millis" : 22.6891,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 796
+  }, {
+    "phase" : "sequential",
+    "operation" : "EDIT",
+    "millis" : 28.9033,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 797
+  }, {
+    "phase" : "sequential",
+    "operation" : "DELETE",
+    "millis" : 26.4761,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 796
+  }, {
+    "phase" : "sequential",
+    "operation" : "progress",
+    "millis" : 20.6731,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 499
+  }, {
+    "phase" : "sequential",
+    "operation" : "history",
+    "millis" : 14.9954,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 555
+  }, {
+    "phase" : "sequential",
+    "operation" : "CREATE",
+    "millis" : 26.2249,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "sequential",
+    "operation" : "EDIT",
+    "millis" : 25.3639,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "sequential",
+    "operation" : "DELETE",
+    "millis" : 24.9981,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "sequential",
+    "operation" : "progress",
+    "millis" : 18.8493,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 499
+  }, {
+    "phase" : "sequential",
+    "operation" : "history",
+    "millis" : 14.9571,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 555
+  }, {
+    "phase" : "sequential",
+    "operation" : "CREATE",
+    "millis" : 25.1053,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "sequential",
+    "operation" : "EDIT",
+    "millis" : 23.0145,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "sequential",
+    "operation" : "DELETE",
+    "millis" : 22.9339,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "progress",
+    "millis" : 2024.814,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 499
+  }, {
+    "phase" : "concurrent",
+    "operation" : "history",
+    "millis" : 12.5625,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 555
+  }, {
+    "phase" : "concurrent",
+    "operation" : "CREATE",
+    "millis" : 20.4403,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "EDIT",
+    "millis" : 22.314,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "concurrent",
+    "operation" : "DELETE",
+    "millis" : 21.513,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "progress",
+    "millis" : 2987.525,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 499
+  }, {
+    "phase" : "concurrent",
+    "operation" : "history",
+    "millis" : 13.1063,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 555
+  }, {
+    "phase" : "concurrent",
+    "operation" : "CREATE",
+    "millis" : 24.7729,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "EDIT",
+    "millis" : 25.5096,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "concurrent",
+    "operation" : "DELETE",
+    "millis" : 27.5417,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "progress",
+    "millis" : 2069.4874,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 499
+  }, {
+    "phase" : "concurrent",
+    "operation" : "history",
+    "millis" : 12.3477,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 555
+  }, {
+    "phase" : "concurrent",
+    "operation" : "CREATE",
+    "millis" : 22.4912,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "EDIT",
+    "millis" : 20.1505,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "concurrent",
+    "operation" : "DELETE",
+    "millis" : 24.1246,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "progress",
+    "millis" : 2793.5439,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 499
+  }, {
+    "phase" : "concurrent",
+    "operation" : "history",
+    "millis" : 12.9834,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 555
+  }, {
+    "phase" : "concurrent",
+    "operation" : "CREATE",
+    "millis" : 21.2895,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "EDIT",
+    "millis" : 22.0573,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "concurrent",
+    "operation" : "DELETE",
+    "millis" : 19.8386,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "progress",
+    "millis" : 2021.446,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 499
+  }, {
+    "phase" : "concurrent",
+    "operation" : "history",
+    "millis" : 11.9807,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 555
+  }, {
+    "phase" : "concurrent",
+    "operation" : "CREATE",
+    "millis" : 24.1048,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "EDIT",
+    "millis" : 19.734,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "concurrent",
+    "operation" : "DELETE",
+    "millis" : 20.15,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "progress",
+    "millis" : 2565.9266,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 499
+  }, {
+    "phase" : "concurrent",
+    "operation" : "history",
+    "millis" : 12.3998,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 555
+  }, {
+    "phase" : "concurrent",
+    "operation" : "CREATE",
+    "millis" : 18.2044,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "concurrent",
+    "operation" : "EDIT",
+    "millis" : 20.3372,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "concurrent",
+    "operation" : "DELETE",
+    "millis" : 20.0393,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "same-uuid",
+    "operation" : "CREATE",
+    "millis" : 2630.8297,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "same-uuid",
+    "operation" : "CREATE",
+    "millis" : 2831.1995,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "same-uuid",
+    "operation" : "EDIT",
+    "millis" : 19.421,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "same-uuid",
+    "operation" : "DELETE",
+    "millis" : 22.0436,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "postcommit",
+    "operation" : "CREATE.lost",
+    "millis" : 23.06,
+    "attempts" : 1,
+    "status" : 503,
+    "expectedStatus" : 503,
+    "responseBytes" : 112
+  }, {
+    "phase" : "postcommit",
+    "operation" : "CREATE.receipt",
+    "millis" : 7.3824,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "postcommit",
+    "operation" : "CREATE.retry",
+    "millis" : 8.5099,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "postcommit",
+    "operation" : "EDIT.lost",
+    "millis" : 22.2076,
+    "attempts" : 1,
+    "status" : 503,
+    "expectedStatus" : 503,
+    "responseBytes" : 112
+  }, {
+    "phase" : "postcommit",
+    "operation" : "EDIT.receipt",
+    "millis" : 7.1438,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "postcommit",
+    "operation" : "EDIT.retry",
+    "millis" : 7.0737,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 799
+  }, {
+    "phase" : "postcommit",
+    "operation" : "DELETE.lost",
+    "millis" : 23.799,
+    "attempts" : 1,
+    "status" : 503,
+    "expectedStatus" : 503,
+    "responseBytes" : 112
+  }, {
+    "phase" : "postcommit",
+    "operation" : "DELETE.receipt",
+    "millis" : 6.7611,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "postcommit",
+    "operation" : "DELETE.retry",
+    "millis" : 7.0939,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 798
+  }, {
+    "phase" : "verification",
+    "operation" : "progress",
+    "millis" : 19.213,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 499
+  }, {
+    "phase" : "verification",
+    "operation" : "history",
+    "millis" : 12.7586,
+    "attempts" : 1,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 555
+  }, {
+    "phase" : "cold-jvm",
+    "operation" : "first-progress",
+    "millis" : 3265.2814,
+    "attempts" : 34,
+    "status" : 200,
+    "expectedStatus" : 200,
+    "responseBytes" : 509
+  } ],
+  "limits" : [ "Frozen authoritative clock in warm workloads; real clock in child JVM", "Seeded directly in Firestore; seeding excluded from request percentiles", "HTTP counts and explicit client retries measured; Firestore RPC/billable reads and internal retries NOT instrumented", "Cold JVM is new; host OS, emulator, JVM parent and file caches remain warm", "No TLS, Android/network latency or production p95/availability/session compliance claim" ]
+}

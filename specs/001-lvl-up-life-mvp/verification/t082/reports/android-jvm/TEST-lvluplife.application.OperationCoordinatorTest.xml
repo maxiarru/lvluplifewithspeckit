@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.application.OperationCoordinatorTest" tests="22" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:51:11.500Z" hostname="CERUS" time="0.073">
+  <properties/>
+  <testcase name="restartedCoordinatorCannotBypassPersistedAuthenticationSuspension" classname="lvluplife.application.OperationCoordinatorTest" time="0.013"/>
+  <testcase name="anotherInstallationCannotDiscoverOrImportOperationsWithoutLocalEnvelope" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="sameIntentCannotChangeItsPersistedContents" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="failureBeforeSendingCommitPreventsAnyHttpRequest" classname="lvluplife.application.OperationCoordinatorTest" time="0.007"/>
+  <testcase name="unauthorizedSuspendsAllRecoveryUntilOriginalAccountReauthenticates" classname="lvluplife.application.OperationCoordinatorTest" time="0.006"/>
+  <testcase name="twoIntentionalIdenticalLoadsHaveDifferentUuids" classname="lvluplife.application.OperationCoordinatorTest" time="0.003"/>
+  <testcase name="lostResponseAfterRemoteCommitIsResolvedWithoutSecondPost" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="clearedSessionCannotBeRepopulatedByLateConfirmation" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="offlineOrWrongSessionCannotCreateNewPendingLoads" classname="lvluplife.application.OperationCoordinatorTest" time="0.001"/>
+  <testcase name="rejectionPreservesDraftAndCorrectionAllocatesNewUuid" classname="lvluplife.application.OperationCoordinatorTest" time="0.004"/>
+  <testcase name="persistAndSendingCommitPrecedeHttpAndDoubleTapReusesOneOperation" classname="lvluplife.application.OperationCoordinatorTest" time="0.003"/>
+  <testcase name="absentReceiptKeepsUnknownUntilExplicitRetryWithSameEnvelope" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="failureAfterLocalCommitIsRecoveredWithOriginalEnvelopeAndCycle" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="failedCleanupLeavesDefinitiveJournalThatCanBeRemovedWithoutResending" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="concurrentDoubleTapCannotAllocateOrSendTwoOperations" classname="lvluplife.application.OperationCoordinatorTest" time="0.005"/>
+  <testcase name="lookupInputErrorCannotRejectAnAlreadyCommittedMutation" classname="lvluplife.application.OperationCoordinatorTest" time="0.003"/>
+  <testcase name="lateUnauthorizedResponseCannotSuspendTheNewSession" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="forbiddenDoesNotAutomaticallyRetryAfterRestart" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="failureToJournalRemoteReceiptKeepsRecoveryEvidence" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="sendingAndResolvingAfterProcessDeathAreQueriedBeforeAnyResend" classname="lvluplife.application.OperationCoordinatorTest" time="0.002"/>
+  <testcase name="failedLocalPreparationRetainsTheIntentUuidAndNeverSends" classname="lvluplife.application.OperationCoordinatorTest" time="0.001"/>
+  <testcase name="cancellationAfterSendingLeavesUnknownWithOriginalUuid" classname="lvluplife.application.OperationCoordinatorTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

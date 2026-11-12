@@ -1,0 +1,208 @@
+!  emulators: You are not currently authenticated so some features may not work correctly. Please run firebase login to authenticate the CLI.
+i  emulators: Starting emulators: auth, firestore
+i  emulators: Detected demo project ID "demo-lvluplife", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  firestore: Firestore Emulator logging to firestore-debug.log
++  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: gradlew.bat assembleDebug :domain:test :server:test testDebugUnitTest :server:integrationTest connectedDebugAndroidTest --rerun-tasks --no-daemon
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.5.0/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:generateDebugBuildConfig
+> Task :app:generateDebugResources
+> Task :app:packageDebugResources
+> Task :app:processDebugNavigationResources
+> Task :app:parseDebugLocalResources
+> Task :app:mapDebugSourceSetPaths
+> Task :app:compileDebugNavigationResources
+> Task :app:generateDebugRFile
+> Task :app:checkDebugAarMetadata
+> Task :app:javaPreCompileDebug
+> Task :app:createDebugCompatibleScreenManifests
+> Task :app:extractDeepLinksDebug
+> Task :app:mergeDebugResources
+> Task :app:processDebugMainManifest
+> Task :app:processDebugManifest
+> Task :app:preDebugAndroidTestBuild SKIPPED
+> Task :app:mergeDebugAndroidTestManifest
+> Task :app:processDebugAndroidTestManifest
+> Task :app:generateDebugAndroidTestBuildConfig
+> Task :app:generateDebugAndroidTestResources
+> Task :app:packageDebugAndroidTestResources
+> Task :app:processDebugAndroidTestNavigationResources
+> Task :app:preDebugUnitTestBuild UP-TO-DATE
+> Task :app:javaPreCompileDebugAndroidTest
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:javaPreCompileDebugUnitTest
+> Task :app:parseDebugAndroidTestLocalResources
+> Task :app:mergeDebugAssets
+> Task :app:generateDebugAndroidTestRFile
+> Task :app:compressDebugAssets
+> Task :app:generateDebugGlobalSynthetics
+> Task :app:desugarDebugFileDependencies
+> Task :app:mergeDebugJniLibFolders
+> Task :app:validateSigningDebug
+> Task :app:writeDebugAppMetadata
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:mergeDebugNativeLibs
+> Task :domain:checkKotlinGradlePluginConfigurationErrors SKIPPED
+
+> Task :app:stripDebugDebugSymbols
+Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so, libdatastore_shared_counter.so. Run with --info option to learn more.
+
+> Task :app:checkDebugDuplicateClasses
+> Task :domain:processResources NO-SOURCE
+> Task :domain:processTestResources NO-SOURCE
+> Task :server:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :server:processResources NO-SOURCE
+> Task :server:processTestResources NO-SOURCE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:mergeLibDexDebug
+> Task :app:generateReleaseBuildConfig
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:createReleaseCompatibleScreenManifests
+> Task :app:extractDeepLinksRelease
+> Task :app:processReleaseMainManifest
+> Task :app:processReleaseManifest
+> Task :server:processIntegrationTestResources NO-SOURCE
+> Task :app:copyRoomSchemasToAndroidTestAssetsDebugAndroidTest
+> Task :app:generateDebugAndroidTestAssets UP-TO-DATE
+> Task :app:mergeDebugAndroidTestAssets
+> Task :app:compressDebugAndroidTestAssets
+> Task :app:generateDebugAndroidTestGlobalSynthetics
+> Task :app:processDebugManifestForPackage
+> Task :app:checkDebugAndroidTestDuplicateClasses
+> Task :app:desugarDebugAndroidTestFileDependencies
+> Task :app:mergeLibDexDebugAndroidTest
+> Task :app:checkDebugAndroidTestAarMetadata
+> Task :app:mapDebugAndroidTestSourceSetPaths
+> Task :app:compileDebugAndroidTestNavigationResources
+> Task :app:mergeExtDexDebugAndroidTest
+> Task :app:mergeDebugAndroidTestJniLibFolders
+> Task :app:mergeDebugAndroidTestNativeLibs NO-SOURCE
+> Task :app:stripDebugAndroidTestDebugSymbols NO-SOURCE
+> Task :app:validateSigningDebugAndroidTest
+> Task :app:writeDebugAndroidTestSigningConfigVersions
+> Task :app:kspDebugKotlin
+> Task :app:mergeDebugAndroidTestResources
+> Task :app:processDebugAndroidTestResources
+> Task :app:mergeExtDexDebug
+> Task :app:processDebugResources
+> Task :domain:compileKotlin
+> Task :domain:compileJava NO-SOURCE
+> Task :domain:classes UP-TO-DATE
+> Task :domain:jar
+
+> Task :server:compileKotlin
+w: file:///C:/Cerus/Curso/GitHub/lvluplifewithspeckit/server/src/main/kotlin/lvluplife/persistence/OperationStore.kt:113:19 Cast is redundant.
+
+> Task :domain:compileTestKotlin
+> Task :domain:compileTestJava NO-SOURCE
+> Task :domain:testClasses UP-TO-DATE
+> Task :domain:test
+> Task :server:compileJava NO-SOURCE
+> Task :server:classes UP-TO-DATE
+> Task :server:jar
+> Task :app:compileDebugKotlin
+w: file:///C:/Cerus/Curso/GitHub/lvluplifewithspeckit/app/src/main/kotlin/lvluplife/application/RecordFormController.kt:38:46 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///C:/Cerus/Curso/GitHub/lvluplifewithspeckit/app/src/main/kotlin/lvluplife/ui/ClassCatalogScreen.kt:41:33 Unnecessary non-null assertion (!!) on a non-null receiver of type 'List<ClassCatalogEntry>'.
+
+> Task :server:compileTestKotlin
+> Task :server:compileTestJava NO-SOURCE
+> Task :server:testClasses UP-TO-DATE
+> Task :server:test
+> Task :app:compileDebugJavaWithJavac
+> Task :app:processDebugJavaRes
+> Task :app:bundleDebugClassesToCompileJar
+> Task :app:kspDebugAndroidTestKotlin SKIPPED
+> Task :app:kspDebugUnitTestKotlin SKIPPED
+
+> Task :app:compileDebugUnitTestKotlin
+w: file:///C:/Cerus/Curso/GitHub/lvluplifewithspeckit/app/src/test/kotlin/lvluplife/application/AccessControllerTest.kt:72:40 The corresponding parameter in the supertype 'AccessAccounts' is named 'ref'. This may cause problems when calling this function with named arguments.
+
+> Task :app:dexBuilderDebug
+> Task :app:bundleDebugClassesToRuntimeJar
+> Task :app:mergeProjectDexDebug
+> Task :app:compileDebugUnitTestJavaWithJavac NO-SOURCE
+> Task :app:processDebugUnitTestJavaRes
+> Task :server:compileIntegrationTestKotlin
+> Task :app:compileDebugAndroidTestKotlin
+> Task :app:mergeDebugJavaResource
+> Task :app:testDebugUnitTest
+> Task :app:compileDebugAndroidTestJavaWithJavac
+> Task :app:copyRoomSchemas NO-SOURCE
+> Task :server:compileIntegrationTestJava NO-SOURCE
+> Task :server:integrationTestClasses UP-TO-DATE
+> Task :app:packageDebug
+> Task :server:integrationTest
+> Task :app:processDebugAndroidTestJavaRes
+> Task :app:mergeDebugAndroidTestJavaResource
+> Task :app:dexBuilderDebugAndroidTest
+> Task :app:mergeProjectDexDebugAndroidTest
+> Task :app:createDebugApkListingFileRedirect
+> Task :app:assembleDebug
+> Task :app:packageDebugAndroidTest
+> Task :app:createDebugAndroidTestApkListingFileRedirect
+> Task :app:connectedDebugAndroidTest
+
+Starting 136 tests on Pixel_6a_API_30(AVD) - 11
+Pixel_6a_API_30(AVD) - 11 Tests 13/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 17/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 21/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 23/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 26/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 28/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 30/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 32/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 34/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 35/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 39/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 43/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 44/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 45/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 46/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 47/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 49/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 51/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 54/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 55/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 57/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 58/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 61/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 64/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 66/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 69/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 72/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 75/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 79/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 83/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 87/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 90/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 93/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 97/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 100/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 105/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 108/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 111/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 114/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 118/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 122/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 126/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 132/136 completed. (0 skipped) (0 failed)
+Pixel_6a_API_30(AVD) - 11 Tests 136/136 completed. (0 skipped) (0 failed)
+Finished 136 tests on Pixel_6a_API_30(AVD) - 11
+
+[Incubating] Problems report is available at: file:///C:/Cerus/Curso/GitHub/lvluplifewithspeckit/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 11m 56s
+96 actionable tasks: 96 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.5.0/userguide/configuration_cache_enabling.html
++  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+!  Firestore Emulator has exited upon receiving signal: SIGINT
+i  auth: Stopping Authentication Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator

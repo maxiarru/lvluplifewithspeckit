@@ -1,0 +1,9 @@
+PASS unauthenticated client read denied
+[2026-11-12T17:50:21.793Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x8597d907 error. Code: 7 Message: 7 PERMISSION_DENIED:
+false for 'create' @ L5, false for 'update' @ L5
+PASS unauthenticated client write denied
+PASS Auth available on 9099; Firestore on 8080
+PASS authenticated client read denied
+[2026-11-12T17:50:21.945Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Write' stream 0x8597d909 error. Code: 7 Message: 7 PERMISSION_DENIED:
+false for 'create' @ L5, false for 'update' @ L5
+PASS authenticated client write denied

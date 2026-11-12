@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.progression.ProgressionTest" tests="40" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:50:36.818Z" hostname="CERUS" time="0.028">
+  <properties/>
+  <testcase name="effectiveXpOnThePenalizableDateAvoidsThatDatePenalty" classname="lvluplife.progression.ProgressionTest" time="0.006"/>
+  <testcase name="attributeSurplusIsPreservedBelowLevelFifty" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="simpleAwardChangesOnlyItsAttribute" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="levelFiftyKeepsZeroXpWhenPenalized" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="inactivityNeverMakesXpNegativeOrLowersAnAttributeLevel" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="generalSurplusSurvivesARequirementBandChange" classname="lvluplife.progression.ProgressionTest" time="0.001"/>
+  <testcase name="allFifteenPairsAreOrderIndependentAndMatchTheSpecification" classname="lvluplife.progression.ProgressionTest" time="0.002"/>
+  <testcase name="generalLevelFiftyDoesNotStartAnotherTransition" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="activeStageBoundariesAreOneTwoTwoThree" classname="lvluplife.progression.ProgressionTest" time="0.001"/>
+  <testcase name="novatoOnlyHasStageOneRegardlessOfGeneralLevel" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="threeFourFiveAndSixBalancedAttributesMatchTheirClasses" classname="lvluplife.progression.ProgressionTest" time="0.001"/>
+  <testcase name="seventhClosedInactiveDateLosesFiveXpWithoutLosingLevel" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="firstAttributeGainAdvancesGeneralLevelOne" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="fractionalEightyPercentThresholdIsNotRoundedDown" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="activityWithPositiveEffectiveXpResetsOnlyTheInactiveCounter" classname="lvluplife.progression.ProgressionTest" time="0.001"/>
+  <testcase name="levelFiftyNeverAdvancesAndKeepsZeroXp" classname="lvluplife.progression.ProgressionTest" time="0.003"/>
+  <testcase name="classChangeAtSameGeneralLevelKeepsTheStageAndUsesTheNewClass" classname="lvluplife.progression.ProgressionTest" time="0.001"/>
+  <testcase name="firstSixClosedInactiveDatesHaveNoPenalty" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="correctedGeneralLevelRecomputesAppearanceInsteadOfKeepingHighestPastStage" classname="lvluplife.progression.ProgressionTest" time="0.001"/>
+  <testcase name="activityThroughThirdDateLeavesTwelveXpUntilNinthCloseThenSevenTwoZero" classname="lvluplife.progression.ProgressionTest" time="0.005"/>
+  <testcase name="consecutivePenaltiesProduceLiteralSevenTwoZeroBalances" classname="lvluplife.progression.ProgressionTest" time="0.001"/>
+  <testcase name="twoAttributesCrossingThresholdsReportTwoGainsWithoutChangingOtherFour" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="literalGeneralThresholdBoundariesConsumeOnlyRequiredGains" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="theCurrentOpenDateIsNotCountedOrPenalized" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="allSixPureClassesMatchTheSpecification" classname="lvluplife.progression.ProgressionTest" time="0.001"/>
+  <testcase name="zeroXpDoesNotCreateAttributeLevelGains" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="generalCounterBelowThresholdDoesNotAdvance" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="tiedMaximumAttributesAreBothCounted" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="zeroEffectiveXpStillCountsAsInactiveAtSeventhClose" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="levelFiftyDiscardsSurplusWhenReached" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="exactEightyPercentIsIncludedButOneLevelBelowIsNot" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="catalogContainsExactlyTwentySixNamesAndSeventySixStageCombinations" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="twoAttributeGainsAtGeneralOnePreserveOneForNextTransition" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="dualFourAndTwoEffectiveXpInterruptBothAttributes" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="unlockedStageBoundariesMatchTheCurrentGeneralLevel" classname="lvluplife.progression.ProgressionTest" time="0.001"/>
+  <testcase name="allSixLevelOneAlwaysClassifyAsNovato" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="newCharacterHasSixGraceDatesThenFirstZeroXpPenalty" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="literalAttributeThresholdsAdvanceExactlyOneLevel" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="earlierXpAtDailyCapKeepsTheDateActiveDespiteLaterZeroXpRecords" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <testcase name="noAttributeGainsKeepGeneralLevelAndCounter" classname="lvluplife.progression.ProgressionTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

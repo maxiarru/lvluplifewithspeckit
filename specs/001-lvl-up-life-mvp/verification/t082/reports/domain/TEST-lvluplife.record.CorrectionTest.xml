@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.record.CorrectionTest" tests="28" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:50:37.052Z" hostname="CERUS" time="0.014">
+  <properties/>
+  <testcase name="movingMealRecalculatesFirstFourOccurrencesOnEachDate" classname="lvluplife.record.CorrectionTest" time="0.002"/>
+  <testcase name="durationCorrectionRebuildsLevelsGeneralAndClassFromSurvivingRecords" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="mealRejectsAnyDurationComponentsEvenZero" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="targetDateMustBeTodayYesterdayOrDayBeforeYesterdayAtValidationInstant" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="deletionAt299SecondsCreatesTombstoneWithoutChangingOriginalIdentity" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="clockBeforeCreationCannotAdmitEditOrDeletion" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="repeatedEditDoesNotRestartFiveMinuteWindowFromUpdatedAt" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="durationEditAt299SecondsPreservesIdentityCreationAndIncrementsVersion" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="durationRequiresBothWholeNonnegativeComponentsAndMinutesBelow60" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="backdatedCorrectionRestoresPenaltyAvoidedByThatDate" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="mealCorrectionOnlyMovesDateAndNeverAddsDuration" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="updatedAtCannotMoveBackwardsWithinOriginalWindow" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="recentPreviousCycleRecordCannotBeEditedOrDeleted" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="fullDayReplacementExcludesPriorDurationRatherThanAddingItTwice" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="deletionAtExactly300SecondsAndLaterIsRejected" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="tombstoneCannotBeEditedOrDeletedAgain" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="shorteningEarlierRecordRedistributesDailyXpToLaterRecord" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="closedCycleCannotAdmitCorrectionsEvenWhenIdMatches" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="durationCannotBecomeMealAndMealCannotBecomeDuration" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="movingDateFreesOriginAndConsumesOnlyDestinationBudget" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="deletionRebuildsCanonicalStateAndKeepsOtherCycleHistoryUntouched" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="businessMidnightRevalidatesTargetDateInUtcMinusThree" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="nanosecondBefore300SecondsIsStillInsideWindowForBothMutations" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="oldCyclesAndTombstonesDoNotConsumeCorrectionBudget" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="overdrawnDestinationRejectsEditAndPreservesSource" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="mealDefinitionCannotBeRenamedDuringCorrection" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <testcase name="deletingSleepReconstructsRemainderWithoutGrantingRemovedXp" classname="lvluplife.record.CorrectionTest" time="0.0"/>
+  <testcase name="editingAtExactly300SecondsIsRejectedWithoutChangingRecord" classname="lvluplife.record.CorrectionTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

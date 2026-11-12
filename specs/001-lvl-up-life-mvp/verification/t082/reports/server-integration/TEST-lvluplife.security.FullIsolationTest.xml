@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.security.FullIsolationTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:52:48.482Z" hostname="CERUS" time="1.178">
+  <properties/>
+  <testcase name="everyCommandAndQueryRejectsMissingAndInvalidAuthenticationBeforeAnyWrite" classname="lvluplife.security.FullIsolationTest" time="0.144"/>
+  <testcase name="guessedForeignRecordActivityAndCycleNeverMutateOrRevealTheirOwner" classname="lvluplife.security.FullIsolationTest" time="0.206"/>
+  <testcase name="allQueriesRejectOwnerSelectorsAndIgnoreSpoofedIdentityHeaders" classname="lvluplife.security.FullIsolationTest" time="0.148"/>
+  <testcase name="forgedOwnerFieldsAreRejectedForEveryCommandWithoutChangingEitherAccount" classname="lvluplife.security.FullIsolationTest" time="0.207"/>
+  <testcase name="handlerFailuresNeverExposeCredentialsPayloadsOrCausesInResponsesOrApplicationLogs" classname="lvluplife.security.FullIsolationTest" time="0.166"/>
+  <testcase name="authenticationProviderAndMalformedPayloadErrorsDoNotLogTokensOrRawInput" classname="lvluplife.security.FullIsolationTest" time="0.084"/>
+  <testcase name="foreignPathsAndEncodedStorageSelectorsCannotBypassOwnerResolution" classname="lvluplife.security.FullIsolationTest" time="0.121"/>
+  <testcase name="sharedOperationUuidIsScopedToAuthenticatedAccountAndNeverReturnsForeignReceipt" classname="lvluplife.security.FullIsolationTest" time="0.101"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

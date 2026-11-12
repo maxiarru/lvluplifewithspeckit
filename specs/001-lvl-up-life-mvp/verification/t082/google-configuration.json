@@ -1,0 +1,7 @@
+{
+  "checkedAt": "2026-11-12T17:55:04.955389+00:00",
+  "googleServicesFilePresent": false,
+  "sourceDefaultWebClientIdPresent": false,
+  "googleRealAttempted": false,
+  "reason": "No local Firebase Android configuration or OAuth client resource; no infrastructure created."
+}

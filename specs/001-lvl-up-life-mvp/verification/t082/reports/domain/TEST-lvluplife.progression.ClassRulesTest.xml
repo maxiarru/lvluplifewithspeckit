@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.progression.ClassRulesTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:50:36.744Z" hostname="CERUS" time="0.012">
+  <properties/>
+  <testcase name="canonicalIdentifiersMatchNamesAndLookupsWithoutGuessingFilenames" classname="lvluplife.progression.ClassRulesTest" time="0.004"/>
+  <testcase name="generalBoundsAreCheckedEvenForNovato" classname="lvluplife.progression.ClassRulesTest" time="0.002"/>
+  <testcase name="appearanceCarriesTheCanonicalClassIdForProjection" classname="lvluplife.progression.ClassRulesTest" time="0.0"/>
+  <testcase name="unknownIdentifiersAndNamesNeverFallBackToNovato" classname="lvluplife.progression.ClassRulesTest" time="0.0"/>
+  <testcase name="catalogAndNestedConditionsAndStageDataAreImmutable" classname="lvluplife.progression.ClassRulesTest" time="0.001"/>
+  <testcase name="classificationRequiresAllSixAttributes" classname="lvluplife.progression.ClassRulesTest" time="0.0"/>
+  <testcase name="unlockedStagesAndCatalogViewsCannotBeMutated" classname="lvluplife.progression.ClassRulesTest" time="0.001"/>
+  <testcase name="invalidLevelsAreRejectedBeforeMultiplyingTheThreshold" classname="lvluplife.progression.ClassRulesTest" time="0.0"/>
+  <testcase name="fractionalThresholdAndInputOrderCannotChangeTheSelectedPair" classname="lvluplife.progression.ClassRulesTest" time="0.001"/>
+  <testcase name="multipleBalanceClassesDependOnlyOnCountAcrossAllAttributeSubsets" classname="lvluplife.progression.ClassRulesTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

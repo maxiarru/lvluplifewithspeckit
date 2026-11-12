@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.VariantSecurityTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:51:11.313Z" hostname="CERUS" time="0.041">
+  <properties/>
+  <testcase name="releaseRejectsCleartextAndEmulatorOverrides" classname="lvluplife.VariantSecurityTest" time="0.014"/>
+  <testcase name="bothVariantsExcludeDatabaseAndSidecarsFromAllBackupModes" classname="lvluplife.VariantSecurityTest" time="0.019"/>
+  <testcase name="debugAllowsOnlyLocalCleartextExceptions" classname="lvluplife.VariantSecurityTest" time="0.008"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

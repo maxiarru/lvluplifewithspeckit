@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="lvluplife.persistence.OperationStoreSafetyTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-11-12T17:51:57.389Z" hostname="CERUS" time="0.038">
+  <properties/>
+  <testcase name="unavailableReadDoesNotLeakPrivatePathsOrBecomeAbsence" classname="lvluplife.persistence.OperationStoreSafetyTest" time="0.003"/>
+  <testcase name="corruptExistingReceiptIsUnavailableRatherThanAbsent" classname="lvluplife.persistence.OperationStoreSafetyTest" time="0.009"/>
+  <testcase name="credentialsCannotBeStoredInsideReceiptResult" classname="lvluplife.persistence.OperationStoreSafetyTest" time="0.009"/>
+  <testcase name="createCannotOverwriteEvenWhenCallerSkipsRead" classname="lvluplife.persistence.OperationStoreSafetyTest" time="0.017"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
