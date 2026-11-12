@@ -32,6 +32,7 @@ class HistoryFlowTest {
         val deletes = Collections.synchronizedList(mutableListOf<Triple<String,String,HistoryItem>>())
         val retries = Collections.synchronizedList(mutableListOf<OperationRef>())
         var failLoad = false
+        var failBeforePreparation = false
         var loadGate: CompletableDeferred<HistoryPage>? = null
         var mutationGate: CompletableDeferred<Unit>? = null
         var result = PendingState.CONFIRMED
@@ -62,6 +63,7 @@ class HistoryFlowTest {
         }
         override suspend fun edit(uid: String,intentId: String,draft: CorrectionDraft) = withContext(Dispatchers.IO) {
             check(online);UUID.fromString(intentId);edits += Triple(uid,intentId,draft)
+            if(failBeforePreparation) throw OperationBlocked(ApiFailureCode.TEMPORARILY_UNAVAILABLE)
             store.prepare(PendingOperation(uid,intentId,"EDIT_RECORD",encode(draft).toString(),"synthetic-hash",draft.cycleId,PendingState.PREPARED))
             mutationGate?.await()
             if(result==PendingState.CONFIRMED) rows[uid]=rows[uid].orEmpty().map { if(it.id==draft.recordId) it.copy(version=it.version+1,date=draft.date,
@@ -157,6 +159,9 @@ class HistoryFlowTest {
         f.rows["synthetic-a"]=listOf(f.current.copy(activityId="meal",name="Comida saludable",durationMinutes=null))
         mount(f);open();expect("Comida saludable");compose.onNodeWithTag("history-edit-record-one").performScrollTo().performClick()
         compose.onNodeWithText("Horas").assertDoesNotExist();compose.onNodeWithText("Minutos").assertDoesNotExist()
+        java.io.File(context.cacheDir,"t062-meal-edit.png").outputStream().use {
+            compose.onRoot().captureToImage().asAndroidBitmap().compress(android.graphics.Bitmap.CompressFormat.PNG,100,it)
+        }
         compose.onNodeWithText("Fecha").performTextReplacement("2026-11-10");send();expect("Cambios guardados")
         assertNull(f.edits.single().third.hours);assertNull(f.edits.single().third.minutes)
     }
@@ -259,5 +264,15 @@ class HistoryFlowTest {
         open();expect("No hay registros en este período")
         gate.complete(HistoryPage(10,"2026-11-11","2026-11-12",listOf(f.current)))
         compose.waitForIdle();compose.onNodeWithText("Entrenamiento de fuerza").assertDoesNotExist()
+    }
+    @Test fun localPreparationFailureKeepsEditorAndRetriesSameIntentWithoutLosingInputs() = scenario { f,_ ->
+        f.failBeforePreparation=true;mount(f);open();change();send();expect("Confirmación pendiente")
+        assertTrue(f.store.pendingFor("synthetic-a").isEmpty())
+        compose.onNodeWithText("Volver al historial").assertIsNotEnabled()
+        compose.onNodeWithText("Minutos").assertTextContains("45")
+        val intent=f.edits.single().second;f.failBeforePreparation=false
+        compose.onNodeWithText("Reintentar corrección").performScrollTo().performClick();expect("Cambios guardados")
+        assertEquals(2,f.edits.size);assertEquals(intent,f.edits.last().second)
+        assertEquals(f.edits.first().third,f.edits.last().third);assertEquals(1,f.store.pendingFor("synthetic-a").size)
     }
 }

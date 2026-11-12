@@ -30,7 +30,7 @@ class HistoryController(private val session: SessionController, private val hist
         val same = selection == mutable.value.selection
         val previous = mutable.value.page.takeIf { same }
         mutable.value = mutable.value.copy(selection = selection, page = previous, loading = true, error = null, stale = previous != null)
-        job = scope.launch {
+        job = scope.launch(Dispatchers.Main.immediate) {
             try {
                 try { LocalDate.parse(selection.date) } catch (_: Exception) { throw OperationBlocked(ApiFailureCode.INVALID_INPUT) }
                 val page = history.load(uid ?: return@launch, selection)

@@ -31,7 +31,7 @@ class CustomActivityController(private val session: SessionController, private v
     private fun valid() = !disposed && sessionValid()
     fun start() {
         mutable.value = mutable.value.copy(busy = true)
-        scope.launch {
+        scope.launch(Dispatchers.Main.immediate) {
             try {
                 if (!valid()) return@launch
                 if (!draftLoaded) {
@@ -47,7 +47,7 @@ class CustomActivityController(private val session: SessionController, private v
             if (valid()) { mutable.value = mutable.value.copy(busy = false); loadList() }
         }
     }
-    fun refreshList() { scope.launch { loadList() } }
+    fun refreshList() { scope.launch(Dispatchers.Main.immediate) { loadList() } }
     private suspend fun loadList() {
         if (!valid()) return
         val request = ++listRequest
@@ -65,7 +65,9 @@ class CustomActivityController(private val session: SessionController, private v
         saveJob = draftScope.launch {
             try { saves.withLock { if (valid()) activities.saveDraft(uid!!, mutable.value.draft) } }
             catch (cancelled: CancellationException) { throw cancelled }
-            catch (blocked: OperationBlocked) { if (valid()) mutable.value = mutable.value.copy(message = message(blocked.code)) }
+            catch (blocked: OperationBlocked) { withContext(Dispatchers.Main.immediate) {
+                if (valid()) mutable.value = mutable.value.copy(message = message(blocked.code))
+            } }
         }
     }
     fun dispose() {
@@ -85,7 +87,7 @@ class CustomActivityController(private val session: SessionController, private v
         val id = intent ?: UUID.randomUUID().toString().also { intent = it }
         mutable.value = mutable.value.copy(busy = true, message = null)
         saveJob?.cancel()
-        scope.launch {
+        scope.launch(Dispatchers.Main.immediate) {
             try {
                 saves.withLock { if (valid()) activities.saveDraft(uid!!, draft) }
                 if (valid()) receive(activities.submit(uid!!, id, draft))
@@ -100,7 +102,7 @@ class CustomActivityController(private val session: SessionController, private v
         val pending = view.pending
         if (pending == null) { if (view.unresolved) submit(); return }
         mutable.value = view.copy(busy = true)
-        scope.launch {
+        scope.launch(Dispatchers.Main.immediate) {
             try { receive(activities.retry(pending.ref)) }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (blocked: OperationBlocked) { if (valid()) mutable.value = mutable.value.copy(busy = false, message = message(blocked.code)) }

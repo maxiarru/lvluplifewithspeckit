@@ -25,7 +25,7 @@ class RecordFormController(private val session: SessionController, private val r
     private var draftLoaded = false
     private val saves = Mutex()
     private fun valid() = uid != null && session.current()?.uid == uid && session.state.value.sessionId == epoch
-    fun start() { mutable.value = mutable.value.copy(busy = true); scope.launch {
+    fun start() { mutable.value = mutable.value.copy(busy = true); scope.launch(Dispatchers.Main.immediate) {
         var recovered: OperationSnapshot? = null
         try {
             if (!valid()) return@launch
@@ -46,7 +46,7 @@ class RecordFormController(private val session: SessionController, private val r
     fun open() { if (!mutable.value.busy && mutable.value.pending == null && !mutable.value.unresolved)
         mutable.value = mutable.value.copy(open = true, message = null) }
     fun close() { if (!mutable.value.busy) mutable.value = mutable.value.copy(open = false) }
-    fun refreshCatalog() { scope.launch {
+    fun refreshCatalog() { scope.launch(Dispatchers.Main.immediate) {
         try { val options = records.catalog(uid ?: return@launch)
             if (valid()) mutable.value = mutable.value.copy(options = options)
         } catch (cancelled: CancellationException) { throw cancelled }
@@ -56,7 +56,7 @@ class RecordFormController(private val session: SessionController, private val r
         if (!valid() || mutable.value.busy || mutable.value.pending != null || mutable.value.unresolved) return
         intent = null; mutable.value = mutable.value.copy(draft = draft, message = null)
         saveJob?.cancel()
-        saveJob = scope.launch {
+        saveJob = scope.launch(Dispatchers.Main.immediate) {
             try { delay(100); saves.withLock { if (valid()) records.saveDraft(uid!!, mutable.value.draft) } }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (blocked: OperationBlocked) { if (valid()) mutable.value = mutable.value.copy(message = message(blocked.code)) }
@@ -68,7 +68,7 @@ class RecordFormController(private val session: SessionController, private val r
         val id = intent ?: UUID.randomUUID().toString().also { intent = it }
         mutable.value = mutable.value.copy(busy = true, message = null)
         saveJob?.cancel()
-        scope.launch {
+        scope.launch(Dispatchers.Main.immediate) {
             try {
                 saves.withLock { if (valid()) records.saveDraft(uid!!, draft) }
                 if (valid()) receive(records.submit(uid!!, id, draft))
@@ -83,7 +83,7 @@ class RecordFormController(private val session: SessionController, private val r
         val pending = view.pending
         if (pending == null) { if (view.unresolved) submit(); return }
         mutable.value = view.copy(busy = true)
-        scope.launch {
+        scope.launch(Dispatchers.Main.immediate) {
             try { receive(records.retry(pending.ref)) }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (blocked: OperationBlocked) { if (valid()) mutable.value = mutable.value.copy(busy = false, message = message(blocked.code)) }

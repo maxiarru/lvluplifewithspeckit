@@ -83,3 +83,11 @@ Fuente: [Emulator Suite](https://firebase.google.com/docs/emulator-suite).
 ## Cierre de fase 0
 
 Resueltos los interrogantes de arquitectura, autoridad, idempotencia, concurrencia, tiempo y recuperación. No se requieren decisiones funcionales adicionales. La selección arquitectónica es una decisión de este plan, no una capacidad garantizada por Firebase. Las versiones y compatibilidades documentadas requieren validación de build al implementar.
+
+## Ajuste de parche Compose — 2026-11-11, T062
+
+La repetición posterior reveló además CalledFromWrongThreadException al recrear la Activity. Los controladores de formularios, progreso, historial y corrección publican ahora desde Dispatchers.Main.immediate; las operaciones Room/red conservan IO y la conectividad del grafo publica mediante Handler principal. La regresión completa posterior pasó; esto no demuestra por separado qué cambio elimina el fallo interno de SlotWriter.
+
+La regresión Android volvió a reproducir una ArrayIndexOutOfBoundsException interna de SlotWriter al disponer una composición de actividades propias, con runtime1.9.3/BOM2025.10.00. El endurecimiento del ciclo de vida de T052 no había eliminado por completo esa reproducción. Se selecciona BOM2025.11.01: su POM oficial fija runtime/UI/foundation/animation1.9.5 y conserva Material3 en1.4.0. Kotlin2.4.20, AGP9.3.1, Activity1.11.0 y mínimoAPI29 se mantienen.
+
+[Notas oficiales de runtime1.9.5](https://developer.android.com/jetpack/androidx/releases/compose-runtime#1.9.5) documentan una corrección de invalidaciones al mover contenido fuera del slot table (b/451651649). Es una corrección relacionada y una hipótesis fundada para el crash observado, no una atribución exacta demostrada del defecto. [POM oficial del BOM](https://dl.google.com/dl/android/maven2/androidx/compose/compose-bom/2025.11.01/compose-bom-2025.11.01.pom) consultado localmente antes de cambiar el pin. Las verificaciones, repeticiones y locks de debug/release se registran en validation.md; no se usa una versión dinámica ni una implementación experimental del slot table.

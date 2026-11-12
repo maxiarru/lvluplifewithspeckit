@@ -151,7 +151,7 @@ Objetivo: historial completo por período y correcciones recientes consistentes.
 - [X] T060 [US4] Implementar rutas de corrección en `server/src/main/kotlin/lvluplife/api/CorrectionRoutes.kt`: EDIT_RECORD/DELETE_RECORD integrados con transacción común, recibo original antes de reevaluar tiempos, recálculo atómico y conflictos seguros; hacer verdes contratos HTTP de correcciones.
 
 - [X] T061 [US4] Implementar historial/períodos en `app/src/main/kotlin/lvluplife/ui/HistoryScreen.kt` y `app/src/main/kotlin/lvluplife/data/HistoryRepository.kt`: día/semana/mes, todos los ciclos, Empty solo tras éxito y error/Stale/reintento; hacer verdes casos de consulta de HistoryFlowTest.
-- [ ] T062 [US4] Implementar edición/eliminación en `app/src/main/kotlin/lvluplife/ui/EditRecordScreen.kt` y `app/src/main/kotlin/lvluplife/data/CorrectionRepository.kt`: ventana orientativa, conflictos muestran estado vigente, nuevo UUID al corregir, recuperación solo instalación original; hacer verdes casos de corrección/pendientes de HistoryFlowTest.
+- [X] T062 [US4] Implementar edición/eliminación en `app/src/main/kotlin/lvluplife/ui/EditRecordScreen.kt` y `app/src/main/kotlin/lvluplife/data/CorrectionRepository.kt`: ventana orientativa, conflictos muestran estado vigente, nuevo UUID al corregir, recuperación solo instalación original; hacer verdes casos de corrección/pendientes de HistoryFlowTest.
 
 - [ ] T063 [US4] Ejecutar carreras editar/editar, editar/eliminar, temporalidad 299/300 s y medianoche con fallo antes/después de commit en `server/src/integrationTest/kotlin/lvluplife/history/CorrectionRecoveryTest.kt`; hacer verdes suites y registrar evidencia en `specs/001-lvl-up-life-mvp/validation.md`.
 

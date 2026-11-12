@@ -17,6 +17,9 @@ fun interface HistoryFlowHistory {
 }
 interface HistoryFlowCorrections {
     val online: Boolean
+    suspend fun options(uid: String): List<RecordOption> = emptyList()
+    suspend fun clearDraft(uid: String) = Unit
+    fun wasDeletion(ref: OperationRef): Boolean = false
     suspend fun draft(uid: String): CorrectionDraft?
     suspend fun saveDraft(uid: String, draft: CorrectionDraft)
     suspend fun pending(uid: String): List<OperationSnapshot>

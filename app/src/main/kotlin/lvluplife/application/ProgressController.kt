@@ -22,7 +22,7 @@ class ProgressController(private val session: SessionController, private val pro
         val id = ++request
         job?.cancel()
         mutable.value = mutable.value.copy(loading = true, stale = mutable.value.value != null, error = null)
-        job = scope.launch {
+        job = scope.launch(Dispatchers.Main.immediate) {
             try {
                 val next = progress.load(uid ?: return@launch)
                 if (!valid(id)) return@launch
