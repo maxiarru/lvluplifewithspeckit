@@ -140,7 +140,7 @@ Objetivo: historial completo por período y correcciones recientes consistentes.
 
 - [X] T054 [P] [US4] Escribir y ejecutar contratos GET /history, EDIT_RECORD y DELETE_RECORD en `server/src/integrationTest/kotlin/lvluplife/history/HistoryContractTest.kt`: períodos UTC−3, páginas bajo revisión estable, expectedVersion, tombstone y AC-110–111, 116–117, 123–125.
 
-- [ ] T055 [P] [US4] Escribir y ejecutar pruebas UI de historial vacío/error/Stale, conflictos y recuperación tras cierre en `app/src/androidTest/kotlin/lvluplife/ui/HistoryFlowTest.kt`; no informar éxito ni fallo definitivo con resultado desconocido.
+- [X] T055 [P] [US4] Escribir y ejecutar pruebas UI de historial vacío/error/Stale, conflictos y recuperación tras cierre en `app/src/androidTest/kotlin/lvluplife/ui/HistoryFlowTest.kt`; no informar éxito ni fallo definitivo con resultado desconocido.
 
 - [ ] T056 [US4] Implementar reglas de corrección en `domain/src/main/kotlin/lvluplife/record/CorrectionRules.kt`: «corrección solo ciclo actual y tiempo transcurrido <300 s», excluir valor previo al validar fecha/duración destino, no convertir modalidades ni cambiar createdAt; hacer verdes pruebas antes de conectar persistencia.
 
