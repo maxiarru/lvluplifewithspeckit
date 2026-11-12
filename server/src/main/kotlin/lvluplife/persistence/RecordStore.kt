@@ -14,10 +14,11 @@ class RecordStore(firestore: Firestore) {
         documents.read(uid, listOf("records", id.value))?.let { record(id.value, it) }
     private val activities = ActivityResolver(CustomActivityStore(firestore))
     fun definition(uid: Uid, id: ActivityId): ActivityDefinition? = activities.resolve(uid, id)
-    fun cycle(uid: Uid, snapshot: RecordSnapshot): Cycle = decode {
-        val fields = requireNotNull(snapshot.cycle)
-        Cycle(uid, snapshot.cycleId, Instant.parse(fields["startedAt"] as String), RulesVersion(Math.toIntExact(fields["rulesVersion"] as Long)),
-            (fields["closedAt"] as String?)?.let(Instant::parse))
+    fun cycle(uid: Uid, snapshot: RecordSnapshot): Cycle = cycle(uid,snapshot.cycleId,snapshot.cycle)
+    fun cycle(uid: Uid, id: CycleId, fields: Map<String,Any?>?): Cycle = decode {
+        val value = requireNotNull(fields)
+        Cycle(uid, id, Instant.parse(value["startedAt"] as String), RulesVersion(Math.toIntExact(value["rulesVersion"] as Long)),
+            (value["closedAt"] as String?)?.let(Instant::parse))
     }
     fun record(id: String, fields: Map<String, Any?>): ActivityRecord = decode {
         val definition = fields["activityDefinition"] as Map<*, *>

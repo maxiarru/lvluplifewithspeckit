@@ -14,6 +14,7 @@ import lvluplife.persistence.CustomActivityStore
 import lvluplife.application.ReadProgress
 import lvluplife.application.ReadHistory
 import lvluplife.application.CorrectRecord
+import lvluplife.application.ResetProgression
 import lvluplife.persistence.HistoryStore
 import lvluplife.persistence.RecordStore
 import lvluplife.persistence.AccountStore
@@ -34,6 +35,7 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
     val store = RecordStore(firestore)
     val create = CreateRecord(store, records, transactions)
     val correct = CorrectRecord(store, records, transactions)
+    val reset = ResetProgression(accounts, store, operations, transactions)
     val progress = ReadProgress(store, transactions)
     val history = ReadHistory(HistoryStore(firestore))
     return ApiHandlers(command = { uid, command ->
@@ -41,6 +43,7 @@ fun accountHandlers(firestore: Firestore, clock: AuthoritativeClock): ApiHandler
             if (command.type == CommandType.CREATE_RECORD) return@withContext createRecordResponse(create, uid, command)
             if (command.type in setOf(CommandType.EDIT_RECORD, CommandType.DELETE_RECORD))
                 return@withContext correctionResponse(correct, uid, command)
+            if (command.type == CommandType.RESET_PROGRESSION) return@withContext resetResponse(reset, uid, command)
             val receipt = when {
                 command.type == CommandType.COMPLETE_PROFILE -> complete.execute(uid, command)
                 command.type == CommandType.CREATE_CUSTOM_ACTIVITY -> createCustom.execute(uid, command)
