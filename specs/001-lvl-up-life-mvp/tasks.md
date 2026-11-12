@@ -183,7 +183,7 @@ Objetivo: reinicio confirmado y recuperable, con datos conservados. Prueba indep
 
 - [X] T073 [P] [US6] Escribir y ejecutar pruebas de confirmación/cancelación, Pending y cierre/reapertura en `app/src/androidTest/kotlin/lvluplife/ui/ResetFlowTest.kt`; mismo pendiente no produce otro ciclo.
 
-- [ ] T074 [US6] Implementar transición en `domain/src/main/kotlin/lvluplife/progression/ResetRules.kt`: ciclo anterior cerrado, inicial Novato nivel 1/0 XP y sin penalización anterior al inicio; hacer verdes pruebas antes de implementar servicio.
+- [X] T074 [US6] Implementar transición en `domain/src/main/kotlin/lvluplife/progression/ResetRules.kt`: ciclo anterior cerrado, inicial Novato nivel 1/0 XP y sin penalización anterior al inicio; hacer verdes pruebas antes de implementar servicio.
 
 - [ ] T075 [US6] Implementar `server/src/main/kotlin/lvluplife/application/ResetProgression.kt` y `server/src/main/kotlin/lvluplife/api/ResetRoutes.kt`: commit cierra ciclo/crea nuevo/cambia puntero/proyección/recibo; conservar colecciones, versión y reglas aprobadas, UUID repetido devuelve recibo y otro UUID con ciclo cerrado se rechaza.
 

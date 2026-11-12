@@ -5,8 +5,8 @@ Fuente: [spec.md](spec.md). Diseño lógico y persistente; no son migraciones im
 ### Contrato puro de reinicio — T071
 
 `ResetRules.reset(account, currentCycle, newCycleId, now, confirmed)` declara una
-transición sin IO, reloj interno ni generación de IDs. Su implementación corresponde
-a T074. Devuelve `ResetTransition` con cuenta conservada salvo puntero/revisión,
+transición sin IO, reloj interno ni generación de IDs, implementada en T074.
+Devuelve `ResetTransition` con cuenta conservada salvo puntero/revisión,
 ciclo anterior cerrado en el instante aceptado, ciclo nuevo abierto y proyección
 inicial con revisión siguiente. Exige confirmación explícita, propietario/puntero
 coherentes, ciclo abierto, ID nuevo distinto, instante válido y reglas soportadas;
@@ -16,6 +16,12 @@ Historial y actividades propias no son entradas ni escrituras de esta transició
 Las pruebas puras verifican sus valores y aislamiento de replay por ciclo; la
 conservación de colecciones Firestore, recibos, doble reinicio y carreras se verifica
 en T072/T075 y no se acredita desde este contrato de dominio.
+
+La proyección nueva reutiliza `Progression.initial`, sin copiar fórmulas de XP,
+clase o niveles. Los consumos/remainders/comidas/inactividad se aíslan mediante
+el nuevo ciclo y el replay canónico; ningún registro histórico se reescribe o
+se pasa como entrada al reinicio. Un overflow de revisión se rechaza antes de
+construir la transición. T075 debe confirmar conjuntamente los valores devueltos.
 
 ## Documentos Firestore
 
