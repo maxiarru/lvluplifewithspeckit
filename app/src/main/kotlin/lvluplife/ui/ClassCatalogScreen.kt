@@ -16,6 +16,15 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
 import androidx.compose.ui.unit.dp
 import lvluplife.application.ClassCatalogView
+import lvluplife.application.ClassCondition
+
+/** Presents the server-published condition as text; no classification is computed on Android. */
+internal fun conditionText(condition: ClassCondition): String = when (condition) {
+    ClassCondition.InitialLevels -> "Condición: los seis atributos en nivel 1"
+    is ClassCondition.BalancedAttributes ->
+        (if (condition.attributes.size == 1) "Atributo equilibrado: " else "Atributos equilibrados: ") + condition.attributes.joinToString(" + ")
+    is ClassCondition.BalancedCount -> "Condición: ${condition.count} atributos equilibrados"
+}
 
 @Composable
 fun ClassCatalogScreen(view: ClassCatalogView, generalLevel: Int, staleLevel: Boolean,
@@ -38,6 +47,8 @@ fun ClassCatalogScreen(view: ClassCatalogView, generalLevel: Int, staleLevel: Bo
                 ActionButton(onClick=refresh,enabled=!view.loading) { Text("Reintentar clases") }
             }
             if(readable) {
+                Text("Un atributo está equilibrado si su nivel es al menos el 80 % del mayor nivel de los seis.",
+                    style=MaterialTheme.typography.bodySmall)
                 val rows=entries!!.flatMap { entry -> entry.images.map { entry to it } }
                 LazyColumn(Modifier.fillMaxWidth().weight(1f).testTag("class-catalog"),verticalArrangement=Arrangement.spacedBy(8.dp)) {
                     items(rows,key={ (entry,image) -> "${entry.id}-${image.stage}" }) { (entry,image) ->
@@ -51,6 +62,7 @@ fun ClassCatalogScreen(view: ClassCatalogView, generalLevel: Int, staleLevel: Bo
                                     "${entry.name} · Etapa $roman",Modifier.size(160.dp).testTag("$tag-image"),contentScale=ContentScale.Fit)
                                 Column(Modifier.weight(1f),verticalArrangement=Arrangement.spacedBy(8.dp)) {
                                     Text(entry.name,style=MaterialTheme.typography.titleMedium)
+                                    Text(conditionText(entry.condition),Modifier.testTag("$tag-condition"))
                                     Text("Etapa $roman")
                                     Text(status,Modifier.testTag("$tag-status"))
                                     if(!unlocked) Text("Desde nivel ${image.minimumLevel}",Modifier.testTag("$tag-minimum"),style=MaterialTheme.typography.bodySmall)

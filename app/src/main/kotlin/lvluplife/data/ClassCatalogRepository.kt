@@ -42,11 +42,34 @@ class ClassCatalogRepository(private val api: ApiClient, private val sessions: S
                     ClassStageImage(stage,resource,minimum.intValue())
                 }
                 require(values.first().minimumLevel==1 && values.zipWithNext().all { (a,b) -> a.minimumLevel<b.minimumLevel })
-                ClassCatalogEntry(id,name,Collections.unmodifiableList(values))
+                ClassCatalogEntry(id,name,Collections.unmodifiableList(values),condition(id,entry))
             }
             require(entries.map { it.id }.toSet().size==26 && entries.count { it.id=="novato" }==1 && refs.size==76)
+            require(entries.map { it.condition }.toSet().size==26)
             owner(); Collections.unmodifiableList(entries)
         } catch (blocked: OperationBlocked) { throw blocked }
         catch (_: Exception) { throw OperationBlocked(ApiFailureCode.UNREADABLE_RESPONSE) }
     }
+
+    /** Reads, without deriving, the condition published by the server; shape errors make the catalogue unreadable. */
+    private fun condition(id: String, entry: com.fasterxml.jackson.databind.JsonNode): ClassCondition {
+        val initial = entry.path("initialOnly"); val count = entry.path("balancedCount"); val attributes = entry.path("attributes")
+        require(initial.isBoolean && attributes.isArray && attributes.all { it.isTextual })
+        val names = attributes.map { it.textValue() }
+        require(names.all { it in order } && names.toSet().size==names.size)
+        if (initial.booleanValue()) {
+            require(id=="novato" && count.isNull && names.isEmpty())
+            return ClassCondition.InitialLevels
+        }
+        require(id!="novato" && count.isIntegralNumber && count.canConvertToInt() && count.intValue() in 1..6)
+        return when {
+            count.intValue() <= 2 -> {
+                require(names.size==count.intValue())
+                ClassCondition.BalancedAttributes(Collections.unmodifiableList(order.filter { it in names }))
+            }
+            else -> { require(names.isEmpty()); ClassCondition.BalancedCount(count.intValue()) }
+        }
+    }
+
+    private companion object { val order = listOf("STR", "DEX", "CON", "INT", "WIT", "MEN") }
 }

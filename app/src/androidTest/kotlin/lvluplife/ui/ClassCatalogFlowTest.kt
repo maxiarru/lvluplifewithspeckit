@@ -33,7 +33,7 @@ class ClassCatalogFlowTest {
         ClassCatalogEntry(id, name, (if (id == "novato") listOf(1) else listOf(1, 2, 3)).map { stage ->
             ClassStageImage(stage, id.replace('-', '_') + if (stage == 1) "" else "_${roman.getValue(stage).lowercase()}",
                 mapOf(1 to 1, 2 to 15, 3 to 35).getValue(stage))
-        })
+        }, ClassConditionFixtures.of(id))
     }
     private fun progress(level: Int, id: String = "novato", name: String = "Novato", stage: Int = 1) =
         RecordProgressView(10, "synthetic-catalog-cycle", "2026-11-11", level, id, stage,
@@ -102,6 +102,29 @@ class ClassCatalogFlowTest {
     @Test fun catalogAt15UnlocksSecondStageForAll25ClassesAndKeepsNoviceOnlyOne() = checkCatalog(15, setOf(1, 2))
     @Test fun catalogAt34KeepsThirdStageLockedForAll25ClassesAndNoviceOnlyOne() = checkCatalog(34, setOf(1, 2))
     @Test fun catalogAt35UnlocksAllOrdinaryStagesWithoutInventingNoviceStages() = checkCatalog(35, setOf(1, 2, 3))
+
+    // AC-61: every class shows the attributes or balance condition published by the server, as text.
+    private fun conditionText(condition: ClassCondition) = when (condition) {
+        ClassCondition.InitialLevels -> "Condición: los seis atributos en nivel 1"
+        is ClassCondition.BalancedAttributes ->
+            (if (condition.attributes.size == 1) "Atributo equilibrado: " else "Atributos equilibrados: ") + condition.attributes.joinToString(" + ")
+        is ClassCondition.BalancedCount -> "Condición: ${condition.count} atributos equilibrados"
+    }
+    @Test fun catalogShowsEveryClassAttributesOrBalanceConditionAsText() {
+        mountCatalog(1)
+        compose.onAllNodesWithText("Un atributo está equilibrado si su nivel es al menos el 80 % del mayor nivel de los seis.")
+            .assertCountEquals(1)
+        val list = compose.onNodeWithTag("class-catalog")
+        var index = 0
+        for (entry in catalog) {
+            list.performScrollToIndex(index)
+            compose.onNodeWithTag("class-${entry.id}-stage-1-condition").assertIsDisplayed()
+                .assertTextEquals(conditionText(entry.condition))
+            index += entry.images.size
+        }
+        assertEquals("Atributos equilibrados: CON + INT", conditionText(catalog.first { it.id == "guardian-de-la-sabiduria" }.condition))
+        capture("t088-catalog-conditions.png")
+    }
 
     @Test fun failedCatalogueCanRetryAndReturnHomeWithoutWritingAnyOperation() {
         val records=Records().apply { fail=true }

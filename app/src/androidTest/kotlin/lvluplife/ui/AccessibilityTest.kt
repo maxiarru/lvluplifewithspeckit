@@ -229,7 +229,7 @@ class AccessibilityTest {
     }
     @Test fun classLocksAndLoadingErrorStaleStatesRemainExplicitInBothPalettes() {
         val entries=ClassAppearance.all.groupBy { it.classId }.map { (id,images) -> ClassCatalogEntry(id,id,images.map {
-            ClassStageImage(it.stage,it.resourceId,mapOf(1 to 1,2 to 15,3 to 35).getValue(it.stage)) }) }
+            ClassStageImage(it.stage,it.resourceId,mapOf(1 to 1,2 to 15,3 to 35).getValue(it.stage)) },ClassConditionFixtures.of(id)) }
         for(dark in listOf(false,true)) {
             mount(dark) { ClassCatalogScreen(ClassCatalogView(entries,loading=false),14,false,{},{}) }
             compose.onNodeWithTag("class-catalog").performScrollToIndex(0)

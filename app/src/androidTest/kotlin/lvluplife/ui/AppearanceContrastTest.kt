@@ -48,7 +48,7 @@ class AppearanceContrastTest {
     private fun entries()=ClassAppearance.all.groupBy { it.classId }.map { (id,images) ->
         ClassCatalogEntry(id,id.replace('-',' ').replaceFirstChar { it.uppercase() },images.map {
             ClassStageImage(it.stage,it.resourceId,mapOf(1 to 1,2 to 15,3 to 35).getValue(it.stage))
-        })
+        },ClassConditionFixtures.of(id))
     }
     private fun luminance(color: Int): Double {
         fun channel(shift: Int): Double {
