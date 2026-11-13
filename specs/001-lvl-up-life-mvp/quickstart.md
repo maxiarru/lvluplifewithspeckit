@@ -140,6 +140,13 @@ administrativos de siembra abiertos en el servicio.
 
 ## 3. Instalar y abrir Android
 
+La elección posterior del proyecto real `liveluplife`, sus límites y la
+preparación pendiente están en [Firebase real](firebase-real.md). No se debe
+ejecutar este arnés de emuladores contra esa base ni copiar el JSON de la app
+anterior. La configuración para pruebas locales ya está aplicada y el ingreso
+Google llegó al alta de nombre; faltan comandos funcionales reales desde Android. El documento enlazado
+detalla el modo local sin costo y sus límites de transporte.
+
 Comprobar el dispositivo y luego instalar:
 
 ```powershell

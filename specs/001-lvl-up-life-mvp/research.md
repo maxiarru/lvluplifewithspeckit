@@ -80,6 +80,15 @@ Fuente: [Room](https://developer.android.com/training/data-storage/room).
 
 Fuente: [Emulator Suite](https://firebase.google.com/docs/emulator-suite).
 
+## Entorno Firebase real acordado — 2026-11-12
+
+Reutilizar `liveluplife` para la versión actual; la app anterior puede dejar de
+funcionar, conservando sus datos. Registrar `lvluplife.android` por separado y
+preparar acceso del servidor mediante ADC e IAM mínimo. La decisión, observaciones
+remotas, riesgos de colisión y pasos aún no ejecutados están en
+[Firebase real](firebase-real.md). Esta evaluación previa a T084 no acredita
+login, escritura ni lectura reales ni autoriza borrar o migrar datos heredados.
+
 ## Cierre de fase 0
 
 Resueltos los interrogantes de arquitectura, autoridad, idempotencia, concurrencia, tiempo y recuperación. No se requieren decisiones funcionales adicionales. La selección arquitectónica es una decisión de este plan, no una capacidad garantizada por Firebase. Las versiones y compatibilidades documentadas requieren validación de build al implementar.

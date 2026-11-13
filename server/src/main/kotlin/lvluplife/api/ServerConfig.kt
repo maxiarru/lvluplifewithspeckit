@@ -21,6 +21,7 @@ class ServerConfig private constructor(
     val port: Int,
     val firestoreEmulatorHost: String?,
     val authEmulatorHost: String?,
+    val bindHost: String,
 ) {
     companion object {
         fun fromEnvironment(env: Map<String, String> = System.getenv()): ServerConfig {
@@ -44,7 +45,9 @@ class ServerConfig private constructor(
                 if (env.containsKey("FIREBASE_AUTH_EMULATOR_HOST")) invalid("FIREBASE_AUTH_EMULATOR_HOST")
                 if (project.startsWith("demo-")) invalid("GOOGLE_CLOUD_PROJECT")
             }
-            return ServerConfig(project, mode, port, firestore, auth)
+            val bindHost = env["LVLUP_BIND_HOST"] ?: "0.0.0.0"
+            if (bindHost !in setOf("127.0.0.1", "0.0.0.0")) invalid("LVLUP_BIND_HOST")
+            return ServerConfig(project, mode, port, firestore, auth, bindHost)
         }
 
         private fun invalid(key: String): Nothing = throw ServerConfigurationException(key)

@@ -1,0 +1,6 @@
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+LEGACY_INSPECTION roots=1 incompatible=0 missingRoots=1
+ADC_FIRESTORE create/read/update OK
+DIAGNOSTIC_DOCUMENT integrationChecks/560de0df-2764-4fa7-8e37-daa451fa4e6b

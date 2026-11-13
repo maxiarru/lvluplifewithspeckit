@@ -69,6 +69,14 @@ IAM, TLS de producción ni un despliegue remoto.
 
 ## Producción y ADC
 
+Para el ensayo autorizado con `liveluplife`, usar
+[`scripts/run-firebase-real.ps1`](../scripts/run-firebase-real.ps1). Exige ADC con
+impersonación de la cuenta dedicada y limita el listener a localhost mediante
+`LVLUP_BIND_HOST=127.0.0.1`. Sin esta variable se conserva bind a `0.0.0.0`;
+solo esos dos valores son válidos. Proyecto, evidencia, condición de costo cero
+y validación funcional pendiente en
+[Firebase real](../specs/001-lvl-up-life-mvp/firebase-real.md).
+
 LVLUP_ENV ausente o `production` selecciona producción. GOOGLE_CLOUD_PROJECT es
 obligatorio; GCLOUD_PROJECT, si existe, debe coincidir. Se rechazan proyectos
 demo y la presencia de cualquiera de las variables de emulación, incluso vacías.

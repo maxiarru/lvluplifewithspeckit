@@ -84,7 +84,7 @@ fun Application.serverModule(handlers: ApiHandlers, verifyToken: (String) -> Str
 fun main() {
     val config = ServerConfig.fromEnvironment()
     ServerResources.open(config).use { resources ->
-        val engine = embeddedServer(Netty, port = config.port) {
+        val engine = embeddedServer(Netty, host = config.bindHost, port = config.port) {
             serverModule(resources)
         }
         Runtime.getRuntime().addShutdownHook(Thread {

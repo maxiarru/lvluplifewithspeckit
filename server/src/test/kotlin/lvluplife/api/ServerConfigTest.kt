@@ -3,6 +3,20 @@ package lvluplife.api
 import kotlin.test.*
 
 class ServerConfigTest {
+    @Test fun localRealBackendCanBindOnlyLoopbackWithoutSelectingEmulators() {
+        val env = mapOf("GOOGLE_CLOUD_PROJECT" to "synthetic-project", "LVLUP_BIND_HOST" to "127.0.0.1")
+        val config = ServerConfig.fromEnvironment(env)
+        assertEquals("127.0.0.1", config.bindHost)
+        assertEquals(BackendMode.PRODUCTION, config.mode)
+        assertEquals("0.0.0.0", ServerConfig.fromEnvironment(env - "LVLUP_BIND_HOST").bindHost)
+        for (host in listOf("", "private-host", "http://127.0.0.1", "192.168.1.10")) {
+            val failure = assertFailsWith<ServerConfigurationException> {
+                ServerConfig.fromEnvironment(env + ("LVLUP_BIND_HOST" to host))
+            }
+            assertEquals("Invalid server configuration: LVLUP_BIND_HOST", failure.message)
+        }
+    }
+
     private val emulator = mapOf("LVLUP_ENV" to "emulator", "GOOGLE_CLOUD_PROJECT" to "demo-lvluplife",
         "FIRESTORE_EMULATOR_HOST" to "127.0.0.1:8080", "FIREBASE_AUTH_EMULATOR_HOST" to "127.0.0.1:9099")
 

@@ -1,0 +1,10 @@
+title: Lvl Up Life server runtime
+description: Acceso funcional del servidor a Firestore y verificacion de revocacion Auth; sin administracion de recursos ni borrado fisico.
+stage: GA
+includedPermissions:
+  - datastore.entities.get
+  - datastore.entities.list
+  - datastore.entities.create
+  - datastore.entities.update
+  - datastore.databases.get
+  - firebaseauth.users.get
