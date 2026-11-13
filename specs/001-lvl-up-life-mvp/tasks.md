@@ -209,6 +209,17 @@ Objetivo: cerrar evidencia y calidad del MVP completo; las pruebas críticas ya 
 - [X] T083 Actualizar y comprobar comandos reales de `specs/001-lvl-up-life-mvp/quickstart.md` desde un checkout/configuración de prueba: prerrequisitos, puertos, arranque y comandos de tests/build reproducibles; enlazar resultados y señalar pasos externos no disponibles sin presentarlos como ejecutados.
 - [X] T084 Completar matriz RF-01–57, RNF-01–13 y AC-01–131 en `specs/001-lvl-up-life-mvp/validation.md`: cada fila enlaza prueba/evidencia, resultado y limitaciones; distinguir TDD observado, ejecutado y estudios orientativos pendientes, sin telemetría ni encuestas añadidas.
 
+## Phase 10: Cierre de brechas de cobertura de la matriz T084
+
+Objetivo: resolver los AC en PARCIAL de la matriz T084 que no dependen de Google/Firebase reales ni de muerte real del proceso. Cada tarea observa su ROJO antes de implementar, mantiene verdes las suites existentes y actualiza su fila en la matriz de `specs/001-lvl-up-life-mvp/validation.md`. AC-01–03, AC-118 y AC-130 quedan fuera: requieren Google real o etapas ProcessStage.
+
+- [ ] T088 Mostrar atributos y condiciones de equilibrio en el catálogo de clases (AC-61, RF-39): llevar `attributes`, `balancedCount` e `initialOnly` de la respuesta existente de `server/src/main/kotlin/lvluplife/api/CatalogRoutes.kt` al modelo de `app/src/main/kotlin/lvluplife/application/ClassCatalogFlowPorts.kt` mediante `app/src/main/kotlin/lvluplife/data/ClassCatalogRepository.kt`, y mostrarlos en `app/src/main/kotlin/lvluplife/ui/ClassCatalogScreen.kt` para las 26 clases sin calcular fórmulas en la UI. Escribir primero en ROJO pruebas en `app/src/test/kotlin/lvluplife/data/ClassCatalogRepositoryTest.kt` (lectura y rechazo de datos inválidos) y `app/src/androidTest/kotlin/lvluplife/ui/ClassCatalogFlowTest.kt` (texto visible y accesible por clase: puras, pares, condiciones globales y Novato).
+- [ ] T089 Mostrar modalidad, categoría y atributos de la actividad básica seleccionada (AC-06, RF-06) en `app/src/main/kotlin/lvluplife/ui/RecordScreen.kt`/`ActivityPicker.kt`, con datos del catálogo existente y sin controles para modificarlos. Pruebas en ROJO en `app/src/test/kotlin/lvluplife/data/ActivityRepositoryTest.kt` y `app/src/androidTest/kotlin/lvluplife/ui/RecordFlowTest.kt`.
+- [ ] T090 [P] Probar fallo del tiempo autoritativo (AC-129, RF-49, RF-56) en `server/src/integrationTest/kotlin/lvluplife/record/CreateRecoveryTest.kt`: si `AuthoritativeClock` falla antes del commit no hay escritura, recibo ni XP y la respuesta es 503 sin detalles internos; el reintento con el mismo UUID aplica una sola vez.
+- [ ] T091 [P] Probar por HTTP sueño con MEN en su tope diario (AC-13) y carrera de 3 h registrada a las 23:00 del servidor UTC−3 (AC-98) en `server/src/integrationTest/kotlin/lvluplife/record/CreateRecordContractTest.kt`, con reloj fijo y registros persistidos.
+- [ ] T092 [P] Probar replay con un registro real de 4 minutos en la séptima fecha inactiva (AC-84) en `domain/src/test/kotlin/lvluplife/progression/ReplayTest.kt`, y aseverar saldo temporal y progresión intactos tras rechazar conversiones comida/duración (AC-108) en `server/src/integrationTest/kotlin/lvluplife/history/HistoryContractTest.kt`.
+- [ ] T093 Probar que la app muestra el ciclo nuevo tras un registro rechazado por ciclo cerrado, sin trasladar la operación (AC-115), en `app/src/androidTest/kotlin/lvluplife/ui/RecordFlowTest.kt`.
+
 
 ## Dependencias y orden de ejecución
 
