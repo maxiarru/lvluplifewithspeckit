@@ -13,7 +13,7 @@ class ProgressRepositoryTest {
         val sessions = SessionTokenProvider { token }
         var afterRead: (() -> Unit)? = null
         val requests = mutableListOf<TransportRequest>()
-        var data = json.readTree("""{"revision":12,"cycleId":"synthetic-cycle","businessDate":"2026-11-11","computedAt":"2026-11-11T15:00:00Z","generalLevel":1,"generalRemainder":0,"classId":"novato","stage":1,"attributes":{"STR":{"level":1,"xp":6},"DEX":{"level":1,"xp":0},"INT":{"level":1,"xp":0},"WIT":{"level":1,"xp":0},"MEN":{"level":1,"xp":0},"CON":{"level":1,"xp":0}}}""")
+        var data = json.readTree("""{"revision":12,"cycleId":"synthetic-cycle","businessDate":"2026-11-11","computedAt":"2026-11-11T15:00:00Z","generalLevel":1,"generalRemainder":0,"classId":"novato","stage":1,"attributes":{"STR":{"level":1,"xp":6,"xpRequired":30},"DEX":{"level":1,"xp":0,"xpRequired":30},"INT":{"level":1,"xp":0,"xpRequired":30},"WIT":{"level":1,"xp":0,"xpRequired":30},"MEN":{"level":1,"xp":0,"xpRequired":30},"CON":{"level":1,"xp":0,"xpRequired":30}}}""")
         var catalog = """{"classes":[{"id":"novato","name":"Novato","stages":[1],"images":[{"stage":1,"resourceId":"novato"}]}]}"""
         val api = ApiClient(ApiEndpoint.from("https://api.example.test", false), sessions, HttpTransport { request ->
             requests += request
@@ -32,7 +32,7 @@ class ProgressRepositoryTest {
         assertTrue(f.requests.all { it.method == "GET" })
     }
     @Test fun missingNegativeFractionalAndTerminalXpCannotBecomeConfirmedProgress() = runBlocking {
-        val values = listOf("""{"level":1,"xp":-1}""", """{"level":1,"xp":1.5}""", """{"level":50,"xp":1}""", """{"level":51,"xp":0}""")
+        val values = listOf("""{"level":1,"xp":-1,"xpRequired":30}""", """{"level":1,"xp":1.5,"xpRequired":30}""", """{"level":50,"xp":1,"xpRequired":null}""", """{"level":51,"xp":0,"xpRequired":null}""")
         for (value in values) {
             val f = Fixture(); (f.data.path("attributes") as com.fasterxml.jackson.databind.node.ObjectNode).set<com.fasterxml.jackson.databind.JsonNode>("STR", f.json.readTree(value))
             try { f.repository.load("owner-a"); fail("Malformed progress accepted") }
@@ -56,6 +56,30 @@ class ProgressRepositoryTest {
             val f = Fixture(); val node = f.data as com.fasterxml.jackson.databind.node.ObjectNode
             if (field == "classId") node.put(field, "synthetic-unknown") else node.put(field, 2)
             try { f.repository.load("owner-a"); fail() } catch (blocked: OperationBlocked) { assertEquals(ApiFailureCode.UNREADABLE_RESPONSE, blocked.code) }
+        }
+    }
+    // Feature 002 (FR-010): the server-published next-level requirement is shown as data, never recomputed here.
+    private fun withStr(value: String) = Fixture().also {
+        (it.data.path("attributes") as com.fasterxml.jackson.databind.node.ObjectNode).set<com.fasterxml.jackson.databind.JsonNode>("STR", it.json.readTree(value))
+    }
+    @Test fun readsTheServerPublishedXpRequiredForEachAttribute() = runBlocking {
+        val p = withStr("""{"level":6,"xp":95,"xpRequired":180}""").repository.load("owner-a")
+        assertEquals(180, p.attributes.getValue("STR").xpRequired); assertEquals(95, p.attributes.getValue("STR").xp)
+        assertEquals(30, p.attributes.getValue("DEX").xpRequired)
+    }
+    @Test fun maximumLevelCarriesNoRequirement() = runBlocking {
+        val p = withStr("""{"level":50,"xp":0,"xpRequired":null}""").repository.load("owner-a")
+        assertEquals(50, p.attributes.getValue("STR").level); assertNull(p.attributes.getValue("STR").xpRequired)
+    }
+    @Test fun missingOrIncoherentXpRequiredIsUnreadable() = runBlocking {
+        val values = listOf("""{"level":1,"xp":6}""", """{"level":1,"xp":6,"xpRequired":null}""",
+            """{"level":1,"xp":6,"xpRequired":6}""", """{"level":1,"xp":6,"xpRequired":5}""",
+            """{"level":1,"xp":0,"xpRequired":0}""", """{"level":1,"xp":0,"xpRequired":-30}""",
+            """{"level":1,"xp":6,"xpRequired":30.5}""", """{"level":1,"xp":6,"xpRequired":"30"}""",
+            """{"level":50,"xp":0,"xpRequired":1500}""", """{"level":50,"xp":0}""")
+        for (value in values) {
+            try { withStr(value).repository.load("owner-a"); fail("Accepted $value") }
+            catch (blocked: OperationBlocked) { assertEquals(value, ApiFailureCode.UNREADABLE_RESPONSE, blocked.code) }
         }
     }
     @Test fun returnedAttributesCannotBeMutated() = runBlocking {

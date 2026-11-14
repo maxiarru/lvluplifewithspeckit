@@ -105,7 +105,7 @@ class AccessibilityTest {
         } } };compose.waitForIdle()
     }
     private fun progress()=RecordProgressView(10,"confirmed-cycle","2026-11-12",2,"guerrero",1,
-        listOf("STR","DEX","CON","INT","WIT","MEN").associateWith { RecordAttributeView(1,6) },"Guerrero")
+        listOf("STR","DEX","CON","INT","WIT","MEN").associateWith { RecordAttributeView(1,6,30) },"Guerrero")
     private fun pending(error:ApiFailureCode?=null)=OperationSnapshot(OperationRef("synthetic-a",UUID.randomUUID().toString()),PendingState.UNKNOWN,error)
     private fun luminance(color:Int):Double {
         fun channel(shift:Int):Double { val c=((color ushr shift) and 255)/255.0;return if(c<=0.04045)c/12.92 else ((c+0.055)/1.055).pow(2.4) }

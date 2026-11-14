@@ -28,7 +28,7 @@ class ResetFlowTest {
         val cycles=java.util.concurrent.ConcurrentHashMap<String,Int>().apply { put("synthetic-a",1);put("synthetic-b",1) }
         val values=java.util.concurrent.ConcurrentHashMap<String,RecordProgressView>().apply {
             put("synthetic-a",RecordProgressView(10,"cycle-a","2026-11-12",2,"guerrero",1,
-                listOf("STR","DEX","CON","INT","WIT","MEN").associateWith { RecordAttributeView(if(it=="STR") 2 else 1,if(it=="STR") 18 else 0) },"Guerrero"))
+                listOf("STR","DEX","CON","INT","WIT","MEN").associateWith { RecordAttributeView(if(it=="STR") 2 else 1,if(it=="STR") 18 else 0,if(it=="STR") 60 else 30) },"Guerrero"))
             put("synthetic-b",initial("cycle-b",10))
         }
         val username="Cuenta_original"
@@ -40,7 +40,7 @@ class ResetFlowTest {
         } }
         companion object {
             fun initial(cycle: String,revision: Long)=RecordProgressView(revision,cycle,"2026-11-12",1,"novato",1,
-                listOf("STR","DEX","CON","INT","WIT","MEN").associateWith { RecordAttributeView(1,0) },"Novato")
+                listOf("STR","DEX","CON","INT","WIT","MEN").associateWith { RecordAttributeView(1,0,30) },"Novato")
         }
     }
     private class Fixture(val store: PendingStore,val remote: Remote=Remote()) : ResetFlowOperations {

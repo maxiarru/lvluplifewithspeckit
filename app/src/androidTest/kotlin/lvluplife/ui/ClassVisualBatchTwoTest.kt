@@ -33,7 +33,7 @@ class ClassVisualBatchTwoTest {
         "heroe-ascendente" to "Héroe Ascendente", "heroe-integral" to "Héroe Integral")
     private fun label(visual: ClassVisual) = "${names.getValue(visual.classId)} · Etapa ${listOf("I", "II", "III")[visual.stage-1]}"
     private fun progress(visual: ClassVisual) = RecordProgressView(10, "synthetic-visual-cycle", "2026-11-11", 35,
-        visual.classId, visual.stage, listOf("STR", "DEX", "CON", "INT", "WIT", "MEN").associateWith { RecordAttributeView(1, 0) },
+        visual.classId, visual.stage, listOf("STR", "DEX", "CON", "INT", "WIT", "MEN").associateWith { RecordAttributeView(1, 0, 30) },
         names.getValue(visual.classId))
 
     @Test fun all76BindingsResolveAndBatchTwoCompletesCatalogueWithoutDuplicates() {

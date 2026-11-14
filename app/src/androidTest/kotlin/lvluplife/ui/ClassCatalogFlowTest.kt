@@ -37,7 +37,7 @@ class ClassCatalogFlowTest {
     }
     private fun progress(level: Int, id: String = "novato", name: String = "Novato", stage: Int = 1) =
         RecordProgressView(10, "synthetic-catalog-cycle", "2026-11-11", level, id, stage,
-            listOf("STR", "DEX", "CON", "INT", "WIT", "MEN").associateWith { RecordAttributeView(1, 0) }, name)
+            listOf("STR", "DEX", "CON", "INT", "WIT", "MEN").associateWith { RecordAttributeView(1, 0, 30) }, name)
 
     private inner class Records : RecordFlowRecords {
         var fail=false

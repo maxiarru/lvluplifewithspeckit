@@ -38,3 +38,23 @@ Pixel 6a API 30 y los emuladores locales de Firebase (proyecto `demo-lvluplife`)
   - `:server:integrationTest`: 235 pruebas, 0 fallas.
 - Contrato documentado en `specs/001-lvl-up-life-mvp/contracts/api.md`.
 - No ejecutado en esta tarea: pruebas de la app. Android todavía no lee el campo; eso es T003.
+
+## T003 — Lectura de `xpRequired` en la app (2026-11-14)
+
+- RED 1: `ProgressRepositoryTest` no compila porque `RecordAttributeView` no tiene `xpRequired`.
+- RED 2: con el campo agregado y el repositorio devolviendo siempre `null`, fallan 2 pruebas:
+  `readsTheServerPublishedXpRequiredForEachAttribute` y `missingOrIncoherentXpRequiredIsUnreadable`.
+- Implementación:
+  - `RecordAttributeView.xpRequired: Int?` en `RecordFlowPorts.kt`.
+  - `ProgressRepository` exige el campo presente: entero mayor que `xp` en niveles 1 a 49 y `null`
+    en nivel 50. Si falta, es `null` fuera de nivel 50, es menor o igual que `xp`, negativo,
+    fraccionario o texto, o tiene valor en nivel 50, rechaza con `UNREADABLE_RESPONSE`.
+  - La app no verifica `30 × nivel`: esa regla vive solo en el dominio.
+- Se actualizaron los 9 constructores sintéticos de las pruebas Android con valores fijos de
+  fixture; no cambia lo que verifican.
+- Resultados:
+  - `assembleDebug`: correcto.
+  - `testDebugUnitTest`: 148 pruebas, 0 fallas (antes 145; 3 nuevas).
+  - `connectedDebugAndroidTest`: 137 pruebas. En una corrida sin emuladores de Firebase falló
+    solo `FirebaseSdkIdentityTest`, que los requiere. Repetida con `firebase emulators:exec`,
+    pasa. Las 136 restantes pasaron en la primera corrida.

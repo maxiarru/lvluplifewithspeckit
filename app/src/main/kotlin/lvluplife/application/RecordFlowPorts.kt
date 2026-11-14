@@ -3,7 +3,8 @@ package lvluplife.application
 /** Compile-only UI contracts for T041; adapters/controllers are supplied by T042–T043. */
 data class RecordOption(val id: String, val name: String, val duration: Boolean)
 data class RecordDraft(val activityId: String, val date: String, val hours: String, val minutes: String)
-data class RecordAttributeView(val level: Int, val xp: Int)
+/** xpRequired is the server-published XP for the next level (null at level 50); Android never derives it. */
+data class RecordAttributeView(val level: Int, val xp: Int, val xpRequired: Int?)
 data class RecordProgressView(val revision: Long, val cycleId: String, val businessDate: String,
     val generalLevel: Int, val classId: String, val stage: Int, val attributes: Map<String, RecordAttributeView>,
     val className: String? = null, val computedAt: java.time.Instant? = null)

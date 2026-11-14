@@ -29,7 +29,7 @@ class RecordFlowTest {
     private val context get() = InstrumentationRegistry.getInstrumentation().targetContext
     private val session = SessionController()
     private fun progress(revision: Long = 10, xp: Int = 0) = RecordProgressView(revision, "synthetic-cycle", "2026-11-11", 1,
-        "novato", 1, listOf("STR", "DEX", "INT", "WIT", "MEN", "CON").associateWith { RecordAttributeView(1, if (it == "STR") xp else 0) })
+        "novato", 1, listOf("STR", "DEX", "INT", "WIT", "MEN", "CON").associateWith { RecordAttributeView(1, if (it == "STR") xp else 0, 30) })
     private class Records(val store: PendingStore) : RecordFlowRecords, java.io.Closeable {
         private var closed = false
         override fun close() { if (!closed) { closed = true; store.close() } }

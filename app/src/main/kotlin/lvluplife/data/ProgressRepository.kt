@@ -40,7 +40,12 @@ class ProgressRepository(private val api: ApiClient, private val sessions: Sessi
                 val level = Math.toIntExact(integer(attributes.path(id).path("level")))
                 val xp = Math.toIntExact(integer(attributes.path(id).path("xp")))
                 require(level in 1..50 && xp >= 0 && (level != 50 || xp == 0))
-                RecordAttributeView(level, xp)
+                // Coherence only: the requirement itself comes from the server's canonical thresholds.
+                val requiredNode = attributes.path(id).path("xpRequired")
+                require(!requiredNode.isMissingNode)
+                val required = if (requiredNode.isNull) null else Math.toIntExact(integer(requiredNode))
+                require(if (level == 50) required == null else required != null && required > xp)
+                RecordAttributeView(level, xp, required)
             }
             val classId = body.path("classId").textValue(); require(!classId.isNullOrBlank())
             val stage = Math.toIntExact(integer(body.path("stage"))); require(stage in 1..3)

@@ -32,7 +32,7 @@ se verifica en el emulador.
     `ProgressionThresholds.attribute`.
   - Cubrir el endpoint real en `:server:integrationTest`.
   - Documentar el campo en `specs/001-lvl-up-life-mvp/contracts/api.md`.
-- [ ] T003 [US5] Leer y validar `xpRequired` en la app. En TDD:
+- [X] T003 [US5] Leer y validar `xpRequired` en la app. En TDD:
   - RED: `ProgressRepositoryTest` (`app/src/test`) espera `RecordAttributeView.xpRequired` y el
     rechazo `UNREADABLE_RESPONSE` cuando falta, cuando es menor o igual que `xp`, cuando es
     negativo, o cuando no es `null` en nivel 50.

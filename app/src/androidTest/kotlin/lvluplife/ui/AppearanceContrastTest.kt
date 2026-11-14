@@ -44,7 +44,7 @@ class AppearanceContrastTest {
         compose.waitForIdle()
     }
     private fun progress()=RecordProgressView(12,"synthetic-final-cycle","2026-11-12",35,"guardian-de-la-sabiduria",3,
-        listOf("STR","DEX","CON","INT","WIT","MEN").associateWith { RecordAttributeView(15,7) },"Guardián de la Sabiduría")
+        listOf("STR","DEX","CON","INT","WIT","MEN").associateWith { RecordAttributeView(15,7,450) },"Guardián de la Sabiduría")
     private fun entries()=ClassAppearance.all.groupBy { it.classId }.map { (id,images) ->
         ClassCatalogEntry(id,id.replace('-',' ').replaceFirstChar { it.uppercase() },images.map {
             ClassStageImage(it.stage,it.resourceId,mapOf(1 to 1,2 to 15,3 to 35).getValue(it.stage))

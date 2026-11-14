@@ -102,7 +102,7 @@ class CustomActivityFlowTest {
             override suspend fun retry(ref: OperationRef) = error("No record retry expected")
         }
         val progress = RecordFlowProgress { RecordProgressView(10, "synthetic-cycle", "2026-11-11", 1, "novato", 1,
-            listOf("STR", "DEX", "INT", "WIT", "MEN", "CON").associateWith { RecordAttributeView(1, 0) }) }
+            listOf("STR", "DEX", "INT", "WIT", "MEN", "CON").associateWith { RecordAttributeView(1, 0, 30) }) }
         compose.runOnIdle { compose.activity.setContent { MaterialTheme { RecordFlow(session, records, progress, a) } } }
     }
     private val recordSubmissions = Collections.synchronizedList(mutableListOf<RecordDraft>())
