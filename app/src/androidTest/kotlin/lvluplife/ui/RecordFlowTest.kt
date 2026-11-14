@@ -88,7 +88,7 @@ class RecordFlowTest {
     private fun form() { expect("Registrar actividad"); compose.onNodeWithText("Registrar actividad").performClick() }
     private fun fill() {
         form(); compose.onNodeWithText("Entrenamiento de fuerza").performClick()
-        compose.onNodeWithText("Fecha").performTextReplacement("2026-11-11")
+        compose.onNodeWithTag("record-date-0").performScrollTo().performClick()
         compose.onNodeWithText("Horas").performTextReplacement("0")
         compose.onNodeWithText("Minutos").performTextReplacement("30")
     }

@@ -197,8 +197,9 @@ class DeviceMatrixStages {
         val retained=history().items.single();assertEquals(training.id,retained.id);assertEquals(45,retained.durationMinutes);assertEquals(2L,retained.version)
         assertFalse(retained.canCorrect)
         assertEquals(1,runBlocking { requireNotNull(graph.activities).list(uid()).size })
-        tap("Registrar actividad");input("Fecha","fecha-inválida");tap("Guardar actividad");expect("Revisá los datos ingresados.")
-        input("Fecha",today);input("Horas","0");input("Minutos","25");tap("Volver")
+        // The date is now chosen among Hoy/Ayer/Anteayer, so the invalid input is a duration component.
+        tap("Registrar actividad");tapTag("record-date-0");input("Horas","x");tap("Guardar actividad");expect("Revisá los datos ingresados.")
+        input("Horas","0");input("Minutos","25");tap("Volver")
         compose.waitUntil(10_000) { draft()?.let { JSONObject(it).optJSONObject("recordDraft")?.optString("minutes")=="25" }==true }
         val state=stable(reset)
         assertTrue(preferences.edit().putInt("pid",Process.myPid()).putString("state",state).putString("record",retained.id)

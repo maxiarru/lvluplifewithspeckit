@@ -21,7 +21,8 @@ class RecordRepositoryTest {
         override fun draftFor(uid: String) = drafts[uid]
         override fun close() = Unit
     }
-    private class Fixture {
+    private class Fixture(val custom: CustomActivityFlowActivities? = null) {
+        var catalogBody = """{"activities":[{"id":"strength","name":"Fuerza","mode":"DURATION"},{"id":"meal","name":"Comida","mode":"OCCURRENCE"}]}"""
         val json = ObjectMapper(); val store = Store(); var token: SessionToken? = SessionToken("owner-a", "synthetic-token")
         var online = true; var cycle = "cycle-original"; var unknown = false
         val requests = mutableListOf<TransportRequest>()
@@ -40,14 +41,41 @@ class RecordRepositoryTest {
                     val id = request.url.pathSegments.last()
                     TransportResponse(200, """{"operationId":"$id","outcome":"UNKNOWN"}""")
                 }
-                request.url.pathSegments.contains("catalog") -> TransportResponse(200,
-                    """{"activities":[{"id":"strength","name":"Fuerza","mode":"DURATION"},{"id":"meal","name":"Comida","mode":"OCCURRENCE"}]}""")
+                request.url.pathSegments.contains("catalog") -> TransportResponse(200, catalogBody)
                 else -> TransportResponse(200, """{"cycleId":"$cycle","businessDate":"2026-11-11"}""")
             }
         })
         val coordinator = OperationCoordinator(store, api, sessions, { online })
-        val repository = RecordRepository(api, coordinator, store, sessions, { online })
+        val repository = RecordRepository(api, coordinator, store, sessions, { online }, custom)
         val draft = RecordDraft("strength", "2026-11-11", "0", "30")
+    }
+    // AC-06: the record form shows category, mode and preassigned attributes from the catalog, read only.
+    @Test fun catalogExposesCategoryModeAndAttributesOfEachActivity() = runBlocking {
+        val f = Fixture(); f.catalogBody = """{"activities":[
+            {"id":"strength","name":"Fuerza","category":"Ejercicio","mode":"DURATION","primary":"STR","secondary":"CON"},
+            {"id":"meal","name":"Comida","category":"Alimentación","mode":"OCCURRENCE","primary":"CON","secondary":null}]}"""
+        assertEquals(listOf(RecordOption("strength", "Fuerza", true, "Ejercicio", "STR", "CON"),
+            RecordOption("meal", "Comida", false, "Alimentación", "CON", null)), f.repository.catalog("owner-a"))
+    }
+    @Test fun unknownOrRepeatedCatalogAttributesAreUnreadable() = runBlocking {
+        for (attributes in listOf(""""primary":"XYZ"""", """"primary":"STR","secondary":"STR"""", """"primary":"STR","secondary":"LUCK"""")) {
+            val f = Fixture(); f.catalogBody = """{"activities":[{"id":"strength","name":"Fuerza","category":"Ejercicio","mode":"DURATION",$attributes}]}"""
+            val failure = runCatching { f.repository.catalog("owner-a") }.exceptionOrNull()
+            assertEquals(attributes, ApiFailureCode.UNREADABLE_RESPONSE, (failure as? OperationBlocked)?.code)
+        }
+    }
+    @Test fun customActivitiesKeepTheirCategoryAndAttributes() = runBlocking {
+        val custom = object : CustomActivityFlowActivities {
+            override val online = true
+            override suspend fun list(uid: String) = listOf(CustomActivityOption("custom-1", "Ajedrez", "Juegos", "INT", "WIT"))
+            override suspend fun draft(uid: String): CustomActivityDraft? = null
+            override suspend fun saveDraft(uid: String, draft: CustomActivityDraft) = Unit
+            override suspend fun pending(uid: String) = emptyList<OperationSnapshot>()
+            override suspend fun submit(uid: String, intentId: String, draft: CustomActivityDraft): OperationSnapshot = error("unused")
+            override suspend fun retry(ref: OperationRef): OperationSnapshot = error("unused")
+        }
+        val options = Fixture(custom).repository.catalog("owner-a")
+        assertEquals(RecordOption("custom-1", "Ajedrez", true, "Juegos", "INT", "WIT"), options.last())
     }
     @Test fun durableEnvelopePrecedesTransportAndKeepsObservedCycle() = runBlocking {
         val f = Fixture(); f.repository.catalog("owner-a"); f.cycle = "cycle-new"

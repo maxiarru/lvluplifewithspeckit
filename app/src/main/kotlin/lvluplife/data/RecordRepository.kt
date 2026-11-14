@@ -7,6 +7,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
+private val ATTRIBUTE_CODES = setOf("STR", "DEX", "CON", "INT", "WIT", "MEN")
+
 class RecordRepository(private val api: ApiClient, private val operations: OperationCoordinator,
     private val store: PendingStore, private val sessions: SessionTokenProvider,
     private val connected: () -> Boolean, private val custom: CustomActivityFlowActivities? = null) : RecordFlowRecords {
@@ -45,12 +47,18 @@ class RecordRepository(private val api: ApiClient, private val operations: Opera
             val options = body.path("activities").map {
                 val id = it.path("id").textValue(); val name = it.path("name").textValue(); val mode = it.path("mode").textValue()
                 require(!id.isNullOrBlank() && !name.isNullOrBlank() && mode in setOf("DURATION", "OCCURRENCE"))
-                RecordOption(id, name, mode == "DURATION")
+                // Display-only data for AC-06: a present value must be well formed; the server still assigns XP.
+                fun optional(field: String) = it.path(field).takeUnless { node -> node.isMissingNode || node.isNull }
+                val category = optional("category")?.textValue().also { text -> require(optional("category") == null || !text.isNullOrBlank()) }
+                val primary = optional("primary")?.textValue().also { code -> require(optional("primary") == null || code in ATTRIBUTE_CODES) }
+                val secondary = optional("secondary")?.textValue().also { code ->
+                    require(optional("secondary") == null || (primary != null && code in ATTRIBUTE_CODES && code != primary)) }
+                RecordOption(id, name, mode == "DURATION", category, primary, secondary)
             }
             require(options.isNotEmpty() && options.map { it.id }.toSet().size == options.size)
             Context(cycle, options)
         } catch (_: Exception) { throw OperationBlocked(ApiFailureCode.UNREADABLE_RESPONSE) }
-        val combined = context.copy(options = context.options + custom?.list(uid).orEmpty().map { RecordOption(it.id, it.name, true) })
+        val combined = context.copy(options = context.options + custom?.list(uid).orEmpty().map { RecordOption(it.id, it.name, true, it.category, it.primary, it.secondary) })
         if (combined.options.map { it.id }.toSet().size != combined.options.size) throw OperationBlocked(ApiFailureCode.UNREADABLE_RESPONSE)
         owner(uid); contexts[uid] = combined; combined.options
     }

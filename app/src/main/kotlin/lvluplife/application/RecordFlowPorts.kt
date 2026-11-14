@@ -1,7 +1,9 @@
 package lvluplife.application
 
 /** Compile-only UI contracts for T041; adapters/controllers are supplied by T042–T043. */
-data class RecordOption(val id: String, val name: String, val duration: Boolean)
+/** category, primary and secondary come from the catalog (AC-06) and are display-only: the server assigns XP. */
+data class RecordOption(val id: String, val name: String, val duration: Boolean,
+    val category: String? = null, val primary: String? = null, val secondary: String? = null)
 data class RecordDraft(val activityId: String, val date: String, val hours: String, val minutes: String)
 /** xpRequired is the server-published XP for the next level (null at level 50); Android never derives it. */
 data class RecordAttributeView(val level: Int, val xp: Int, val xpRequired: Int?)

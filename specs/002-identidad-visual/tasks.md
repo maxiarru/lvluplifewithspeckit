@@ -75,7 +75,7 @@ se verifica en el emulador.
 
 ## Phase 5: US4 — Registrar y crear personalizadas (P2)
 
-- [ ] T009 [US4] Abrir Registrar como pantalla secundaria desde PJ con el estilo nuevo
+- [X] T009 [US4] Abrir Registrar como pantalla secundaria desde PJ con el estilo nuevo
   (`RecordScreen.kt`, `ActivityPicker.kt`, `QuickRecordActions.kt`):
   - fechas Hoy, Ayer y Anteayer;
   - atributo de cada actividad;
