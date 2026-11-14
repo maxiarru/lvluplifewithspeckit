@@ -217,3 +217,96 @@ funcional de la app. T070 integra el mismo mapeo en la cabecera final de Home y
 verifica17 pares lógicos de contraste en Home/catálogo: mínimo6,44:1 en la paleta
 clara configurada. Evidencia en visual/t070-contrast.md y t070-contrast.jsonl de
 la funcionalidad. La revisión transversal de todos los flujos sigue en T079.
+
+## Recorte sin fondo — feature 002 (identidad visual)
+
+Fecha: 2026-11-14. A pedido del titular, los 76 PNG se reemplazaron por versiones con fondo
+transparente que conservan solo la figura principal del personaje. Se quitaron el fondo de
+pergamino, los títulos, los textos, las vistas extra y los accesorios sueltos de cada lámina.
+Los píxeles de la figura no se repintaron: solo se recortó y se volvió transparente el resto,
+con un borde suavizado de un píxel. Se mantienen el nombre del archivo, el ID de recurso y el
+binding de ClassAppearance. Los originales completos quedan en el historial de git (commit
+7c2fc30) y sus hashes en las tablas anteriores. Con este cambio, los títulos dentro del PNG
+que mencionan las secciones anteriores ya no existen: el nombre y la etapa se muestran solo
+como texto de la app.
+
+### Integridad SHA-256 de los recortes
+
+| Recurso | SHA-256 |
+|---|---|
+| agil_guardian | 9773086767116fbc573d0f5796573d2d3b93619999ce48afc13f5fdbdcd69283 |
+| agil_guardian_ii | b2665e7ed7c5bb5ae6274425ad31eef1d58f2c348c7507da5463bff1bbc9132c |
+| agil_guardian_iii | a825af0cce815777e9187e719aa69cab04eefd7791f132c333f710baeee89422 |
+| artifice | c4ce6c67f28a442e4909237eec47d2e07b8c441a023b67d756b3824b1a5d81cf |
+| artifice_ii | 1b694b3786b5d202353cd74880bb5e2e16bba200793dca4f50320e856c5e64fe |
+| artifice_iii | 03db7879c5e5c98db5a062a2dfc45fb3f3ad70b1471ca9f209c39f363bb107f8 |
+| aventurero_versatil | 7692a17c581f744d6e7fd8b444678f2e8964b3cd6cae9ce1937dc84d0fb97922 |
+| aventurero_versatil_ii | d801db860a42fd6f7ffe1f4a4f00d88d2e40508788bb00a37212e16e4f4ad261 |
+| aventurero_versatil_iii | 07185260057544a056ce46570e503ed0955e63f3377de8e4cf1ee88db825793c |
+| druida | e6af849257610c568ce0d91efe23b33d02aa08ef49a1e8e0988a361b16735741 |
+| druida_ii | 6c89048110cc9abe9904f20640c54ae6f31043ce9c4a49aa281743221dac59d5 |
+| druida_iii | 64a939fff7ab206707f64d80a41dac48a94e2b9bfed0935027f80c6d627e98b6 |
+| explorador | 27e77f5b74d73329641fdbe59f09fbeb106cff602309f8f8e9390a8e54247155 |
+| explorador_de_suenos | b0ef5abf3d89b33efbb2a60691814854ad84fec642c48f73d6f30eefc7def0d5 |
+| explorador_de_suenos_ii | 499318e9289b10afff1ca6874e94f26c2f0cd264df0819179d82fc7a158c0e86 |
+| explorador_de_suenos_iii | d985504072473a9f65349d08e24dcfdebbcc2f082b0338061a81182f2a3980c0 |
+| explorador_ii | 76bad5097b01431ef9f9df0b682c3586bb17e2ec4c88ba3e6e4bb9b5451fbe85 |
+| explorador_iii | 48bd4829fa6f31588f1eb40d90485e597578bd122436c61493ab00b15ce13281 |
+| guardian | 33892f18db87410246683ee622f42f2c7f41fa8fd62ea658bcd2a333ba22a979 |
+| guardian_de_la_sabiduria | 788842a129b0b420cea3736528284b20f79063eca2b2259b76a2713132222176 |
+| guardian_de_la_sabiduria_ii | 0a31ecc774430719974d0e9c09cdd6de317d666de29d30a39240bda99e375be3 |
+| guardian_de_la_sabiduria_iii | 6231b84f58d4746618d14c74a649d92b18eda2e484a01805460c9439f75ffd1a |
+| guardian_ii | 2b2e608706129bc20de343a05c1a2d7b76447ccbf7187390dbc4bf2886caec49 |
+| guardian_iii | 84cde4fdcd06ab22233410fc1788438e84ab99c1995fd137d9b292adb8b2cf88 |
+| guerrero | bdbbdab8e45b1b7cab0c8778efb66f07e6f26ca45888d178b9bcc1efdbb700b1 |
+| guerrero_arcano | ea0b90090e3961b3bc4d7f0f190b011efd288b9e518cfba5cbb1dd7a66fda92b |
+| guerrero_arcano_ii | e9a42414be9fc23866109149bbc377858a14acefe8cfd4ce8234979bda48743e |
+| guerrero_arcano_iii | 39b5908c42c709537937277d0674bb77376b134f211b0aca44045e0f2a78fd2a |
+| guerrero_ii | 1a8664d1efdc2443f7c0970760e2bb2dd7d83c14859cc708384767da6aedafd0 |
+| guerrero_iii | d2d6b71510e5f1d0a7d187f068c6d84f5e6b9f0ae18e1a9ecde81144cf5983d7 |
+| guerrero_mistico | 48c3c39e0b5653943704da096222eebc2d9054c12ea6de00f900073a5bd8a971 |
+| guerrero_mistico_ii | 5feae21c0a8d1fa6fd73fa024548c3067bf445f7ceebffa98f3fd7ef878d7a12 |
+| guerrero_mistico_iii | 58ac3ef7bd6e93a1ea7be03b912d3d063394387700609ae7864761cbafcc6444 |
+| heroe_ascendente | 3ce70d7d53fbc0b9f59b28e7daaf0e0b764d74b86cbe67f8d706cc28ad0b8535 |
+| heroe_ascendente_ii | 1dbafc612d606f9d431b6bfcd5302a3555d97939e99944ccec873caabec77035 |
+| heroe_ascendente_iii | 3f895caa3dd21e8ecc5f33cae299e7f8e552fe8569d5f072c09a2624997dd8ec |
+| heroe_integral | ce24c4128511b849297f04f1df211bd95489007b593c6d913d6a2979a34f9cae |
+| heroe_integral_ii | de0a194aaedbd0fb3914457da4c7e750b6eae49e6d0f680e728603ef26fc9a75 |
+| heroe_integral_iii | 8b97d332b7f5c2f628442874517608427dfd7d6c73bd2e1c79ba39ba5b378262 |
+| ilusionista | e9f2b9552679a7d6042509330d33fd5b383207bda20233eff11686b2dbde85af |
+| ilusionista_ii | 3214b8df085da5a989f2029d107416c48c928e912719ea28f177a7a2cc5f679c |
+| ilusionista_iii | 5206d0014869b6eb73b1579284dad7610cf9622e0cc7488e0e2f41bec97c4cb2 |
+| luchador_monje | cca985a5939b0bb927ce7505ecf73d47e2caec151b852a965313602c201d5e8d |
+| luchador_monje_ii | c72a132c5e72062c65f8f814adfa51fa0342cde0994a43e74eb9e3953c6fd338 |
+| luchador_monje_iii | 157ed2c6a50fd4fac5bbdaf1b0585f1a141464f0cad9e1c89064376dde1d3f28 |
+| maestro_de_armas | 77e5ca81c8889e208843b0044127b69944882e0b499aaa2cbfe9e29543f0d88c |
+| maestro_de_armas_ii | 930db25f0bb8863d0022f8acee38fab206abc5ecf6787804f6eab5fe287f8280 |
+| maestro_de_armas_iii | 98ed4e2092b79eeb1928f9c9e630b9b6796b2620c78e517e709141d20dc48918 |
+| maestro_del_equilibrio | 1505af2074d6fbf9f2a59d6b646497654ddce0ca03fb2dc548ea1d7ce0e6ff78 |
+| maestro_del_equilibrio_ii | f10895af77562f9ad388d525a8a9d421fd928d26591c4bdc16c67d92d4d1f3ed |
+| maestro_del_equilibrio_iii | ce666dd1e59a4b1458641e5ac630fb43b9fdfe1b76d193a70bb0eb66cb0bafdc |
+| mistico | 73ba84605e4ec1dd8022a6031174dd8c00b7bb1f7e359061468f9e0c40b4299a |
+| mistico_ii | b08869d19b8d760a0a302a18c4de15728060342cd24cacd9c8670c749d85bdaf |
+| mistico_iii | 984f1d798e593fdcc88295cbd1119a8bcbc23229582a9051bcf5d378070820fe |
+| monje | 2bf93006bc87d7193ec70d1cc6d39ed280b2c8e3827db44dc20cec42cef0b174 |
+| monje_espiritual | d7beaa08e1692637c2b16107ec62ad2605e72e1849bef98441ce5ce4d7c2f6e7 |
+| monje_espiritual_ii | 625038a668c59f4d1d843d53d0cb1991d8831e51fd38e394fd7ca5e7b8a6b1c4 |
+| monje_espiritual_iii | d0c6b06ca0dbe2402a583277fe51cb482fc76836e63e9c2ff0c0de416332fb2b |
+| monje_guardian | 3f4e55dfbd555747197c2e4eef5f1ae1fe63160d47baf52cbbff0de3d9d180c3 |
+| monje_guardian_ii | 2e82b2114f16fb49a5550d84ca9369321b1af2b98a45d406bc15c13d9071d19c |
+| monje_guardian_iii | f5c6fe2af16522b8fbbadc43ca45b09af770f9dcae120de5fa96e050275831e9 |
+| monje_ii | a5a91e1c68e99c0b99ff5e7b295c18159644c0ab8170a3ea47fb2774771c06c3 |
+| monje_iii | 733c905bbbca831e0f0fbb7021f6b563145897d4d43ce8e4962a80c735abaf8b |
+| ninja | 54a0e8b8096a699860ef9d091307509daf394a87bbcfdb1407919c4134d35d66 |
+| ninja_ii | d2247843d0882690ba59c8e6e504a5e759fb5862d8341c514dc4c1535eee63bd |
+| ninja_iii | b6b7e3e24eab239b5ee6e8af94c88a0ca8875b808761bfa7605eacd691f320c6 |
+| novato | ea9f1adca00d7c84f3d70a12cb40ccaf4c22db6d2d510ce821c409b8be17e404 |
+| oraculo | 89efa9459c95160dcff4bc3089be9ee45deae3d7b1912128857e4141bc8e2bd6 |
+| oraculo_ii | 0768bdd739e90433cfb373ecd09220dd152ec1bcd93ac73daa4d967e384e7b81 |
+| oraculo_iii | 5172b12c184ee9ebbc65bd3f9008468485fa579d61209df1c17fe633e5bbdf24 |
+| paladin | 7af4d015de29813f020b72e964426bad538efed6cf84d475cc98b6897c9b9f8f |
+| paladin_ii | 766667ac23882d1f620e22a0237bf6f59e4d37141178f6d1496175b3a6151aba |
+| paladin_iii | 961272c2df4791e086e9b9406ba3e768e0c9cdf9aeab2d2f9b8fff9cc033847d |
+| sabio | d351b4dbd9fe8b18c558d7045fa060d9ca63a6cae66de70481ffb4e43628af51 |
+| sabio_ii | 17971461cb68eb5592d49d0a805baa27c7900c9d442937d99bd04c2cc07fae6f |
+| sabio_iii | fcaca09c4482eba3f181ee88426dd3b85a06b2a10135186fa87b47b67234d1c9 |

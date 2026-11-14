@@ -1,7 +1,6 @@
 package lvluplife.ui
 
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -47,10 +46,7 @@ class ClassVisualBatchOneTest {
             assertEquals(entry.resourceId, context.resources.getResourceEntryName(entry.drawable))
             assertEquals("drawable", context.resources.getResourceTypeName(entry.drawable))
             assertEquals(entry.drawable, CurrentAppearance.image(entry.classId,entry.stage))
-            val bounds = BitmapFactory.Options().apply { inJustDecodeBounds=true }
-            context.resources.openRawResource(entry.drawable).use { BitmapFactory.decodeStream(it,null,bounds) }
-            assertEquals(1122,bounds.outWidth); assertEquals(1402,bounds.outHeight)
-            assertEquals("image/png",bounds.outMimeType)
+            ClassCutoutAssertions.assertTransparentCutout(context,entry.drawable,entry.resourceId)
         }
         assertNull(ClassAppearance.binding("novato",2)); assertNull(ClassAppearance.binding("novato",3))
         assertNull(ClassAppearance.binding("guerrero",0)); assertNull(ClassAppearance.binding("guerrero",4))
