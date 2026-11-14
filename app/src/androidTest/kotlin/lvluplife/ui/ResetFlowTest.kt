@@ -107,18 +107,28 @@ class ResetFlowTest {
     private fun unmount() { compose.runOnIdle { compose.activity.setContent {} };compose.waitForIdle() }
     private fun mount(f: Fixture) {
         if(session.current()==null)session.authenticate(SessionToken("synthetic-a","synthetic-reset-token"))
+        // A remount keeps the session's tab: start from PJ like an app launch.
+        compose.runOnIdle { session.selectTab(SessionRoute.HOME) }
         compose.runOnIdle { compose.activity.setContent { MaterialTheme {
-            SessionHost(session) { RecordFlow(session,f.records,RecordFlowProgress { uid -> f.remote.values.getValue(uid) },reset=f) }
+            SessionHost(session) { MainTabs(session,"",session::logout,f.records,RecordFlowProgress { uid -> f.remote.values.getValue(uid) },reset=f) }
         } } }
         compose.waitUntil(3_000) { compose.onAllNodesWithTag("character-class").fetchSemanticsNodes().isNotEmpty() }
+        info()
     }
+    /** The reset lives in Info (FR-011); PJ shows the resulting progress. */
+    private fun info() { compose.onNode(isTab(SessionRoute.INFO)).performClick();compose.waitForIdle() }
+    private fun pj() { compose.onNode(isTab(SessionRoute.HOME)).performClick();compose.waitForIdle() }
     private fun expect(text: String) {
         compose.waitUntil(3_000) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
-        compose.onNodeWithText(text).assertIsDisplayed()
+        // Inside Info the reset card is below the rules; dialogs are not scrollable and are already on screen.
+        val node=compose.onNodeWithText(text)
+        try { node.performScrollTo() } catch (_: AssertionError) { }
+        node.assertIsDisplayed()
     }
-    private fun open()=compose.onNodeWithTag("reset-open").assertExists().performClick()
+    // Info scrolls: bring the reset controls into view before tapping them.
+    private fun open()=compose.onNodeWithTag("reset-open").assertExists().performScrollTo().performClick()
     private fun confirm()=compose.onNodeWithTag("reset-confirm").assertExists().performClick()
-    private fun retry()=compose.onNodeWithTag("reset-retry").assertExists().performClick()
+    private fun retry()=compose.onNodeWithTag("reset-retry").assertExists().performScrollTo().performClick()
     private fun capture(name: String, dialog: Boolean=false) {
         val root=if(dialog) compose.onNode(isDialog()) else compose.onRoot()
         java.io.File(context.cacheDir,name).outputStream().use {
@@ -155,16 +165,18 @@ class ResetFlowTest {
         compose.onNodeWithTag("reset-open").assertIsNotEnabled()
         val row=f.store.pendingFor("synthetic-a").single();val payload=JSONObject(row.envelope)
         assertTrue(payload.getJSONObject("payload").getBoolean("confirmed"));assertEquals("cycle-a",row.cycleId)
-        compose.onNodeWithTag("reset-open").performClick();assertEquals(1,f.submissions.size)
+        compose.onNodeWithTag("reset-open").performScrollTo().performClick();assertEquals(1,f.submissions.size)
         compose.runOnIdle { f.gate!!.complete(Unit) };expect("Reinicio confirmado")
         assertEquals(2,f.remote.cycles.getValue("synthetic-a"));assertEquals(1,f.submissions.size)
-        compose.onNodeWithTag("character-class").assertTextEquals("Novato")
+        pj();compose.onNodeWithTag("character-class").assertTextEquals("Novato")
     }
     @Test fun unknownResetKeepsOldProgressUntilRetryConfirmsSameOperation() = scenario { f,_ ->
         f.result=PendingState.UNKNOWN;mount(f);open();confirm();expect("Confirmación pendiente")
         compose.onNodeWithText("Reinicio confirmado").assertDoesNotExist();assertEquals(1,f.remote.cycles.getValue("synthetic-a"))
-        compose.onNodeWithTag("attribute-STR-xp").assertTextEquals("18 XP")
-        capture("t076-pending.png")
+        // PJ keeps the old progress and explains that recording waits for the reset.
+        pj();compose.onNodeWithTag("attribute-STR-xp").assertTextEquals("18 XP")
+        compose.onNodeWithTag("pj-reset-pending").assertIsDisplayed();compose.onNodeWithTag("pj-record").assertDoesNotExist()
+        info();capture("t076-pending.png")
         val row=f.store.pendingFor("synthetic-a").single();f.result=PendingState.CONFIRMED;retry();expect("Reinicio confirmado")
         assertEquals(listOf(OperationRef("synthetic-a",row.operationId)),f.retries);assertEquals(1,f.submissions.size)
         assertEquals(row.envelope,f.store.pendingFor("synthetic-a").single().envelope);assertEquals(2,f.remote.cycles.getValue("synthetic-a"))
@@ -218,7 +230,7 @@ class ResetFlowTest {
         val old=f.store.pendingFor("synthetic-a").single();val before=f.lookups.size
         compose.runOnIdle { session.authenticate(SessionToken("synthetic-b","synthetic-b-reset-token")) }
         compose.waitUntil(3_000) { compose.onAllNodes(hasTestTag("character-class") and hasText("Novato")).fetchSemanticsNodes().isNotEmpty() }
-        compose.onNodeWithTag("reset-retry").assertDoesNotExist();compose.onNodeWithText("Confirmación pendiente").assertDoesNotExist()
+        info();compose.onNodeWithTag("reset-open").assertExists();compose.onNodeWithTag("reset-retry").assertDoesNotExist();compose.onNodeWithText("Confirmación pendiente").assertDoesNotExist()
         assertEquals(old,f.store.pendingFor("synthetic-a").single());assertTrue(f.store.pendingFor("synthetic-b").isEmpty())
         assertTrue(f.lookups.drop(before).all { it.uid=="synthetic-b" })
     }

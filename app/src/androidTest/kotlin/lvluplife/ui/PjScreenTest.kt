@@ -37,7 +37,7 @@ class PjScreenTest {
 
     @Test fun confirmedProgressShowsGreetingCutoutClassStageLevelSixAttributesAndActions() {
         val records = AtomicInteger(); val refreshes = AtomicInteger()
-        mount { HomeScreen(ProgressView(progress(), loading = false), { refreshes.incrementAndGet() }, {}, "Ana",
+        mount { HomeScreen(ProgressView(progress(), loading = false), { refreshes.incrementAndGet() }, "Ana",
             onRecord = { records.incrementAndGet() }) }
         compose.onNodeWithTag("pj-username").assertTextEquals("Ana").assertIsDisplayed()
         compose.onNodeWithText("Hola,", substring = true).assertIsDisplayed()
@@ -58,7 +58,7 @@ class PjScreenTest {
     }
 
     @Test fun novatoShowsStageOneCutout() {
-        mount { HomeScreen(ProgressView(progress("novato", null, 1, 1), loading = false), {}, null, "Ana", onRecord = {}) }
+        mount { HomeScreen(ProgressView(progress("novato", null, 1, 1), loading = false), {}, "Ana", onRecord = {}) }
         compose.onNodeWithTag("character-class").assertTextEquals("Novato")
         compose.onNodeWithTag("character-stage").assertTextEquals("Etapa I")
         compose.onNodeWithTag("character-appearance").assertContentDescriptionEquals("Novato · Etapa I").assertIsDisplayed()
@@ -66,7 +66,7 @@ class PjScreenTest {
 
     @Test fun longUsernameIsCutOnOneLineWithoutMovingTheCutout() {
         fun layout(name: String): Pair<Float, Float> {
-            mount { HomeScreen(ProgressView(progress(), loading = false), {}, null, name, onRecord = {}) }
+            mount { HomeScreen(ProgressView(progress(), loading = false), {}, name, onRecord = {}) }
             val greeting = compose.onNodeWithTag("pj-greeting").fetchSemanticsNode().boundsInRoot
             val image = compose.onNodeWithTag("character-appearance").fetchSemanticsNode().boundsInRoot
             return greeting.height to image.top
@@ -82,10 +82,10 @@ class PjScreenTest {
     }
 
     @Test fun staleAndErrorKeepFeature001NoticesAndRefreshAction() {
-        mount { HomeScreen(ProgressView(progress(), loading = false, stale = true, error = ApiFailureCode.NETWORK_ERROR), {}, null, "Ana", onRecord = {}) }
+        mount { HomeScreen(ProgressView(progress(), loading = false, stale = true, error = ApiFailureCode.NETWORK_ERROR), {}, "Ana", onRecord = {}) }
         compose.onNodeWithText("Mostrando el último progreso confirmado").performScrollTo().assertIsDisplayed()
         compose.onNodeWithText("Reintentar consulta").performScrollTo().assertIsDisplayed()
-        mount { HomeScreen(ProgressView(loading = false, error = ApiFailureCode.NETWORK_ERROR), {}, null, "Ana", onRecord = {}) }
+        mount { HomeScreen(ProgressView(loading = false, error = ApiFailureCode.NETWORK_ERROR), {}, "Ana", onRecord = {}) }
         compose.onNodeWithText("No se pudo obtener el progreso").assertIsDisplayed()
         compose.onNodeWithText("Reintentar consulta").assertIsDisplayed()
         compose.onNodeWithTag("pj-record").assertIsDisplayed()

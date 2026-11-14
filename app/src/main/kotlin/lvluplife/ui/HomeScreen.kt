@@ -30,7 +30,7 @@ private val pjAttributes = listOf("STR", "DEX", "INT", "WIT", "MEN", "CON")
  * server values: no progression is computed here.
  */
 @Composable
-fun HomeScreen(view: ProgressView, refresh: () -> Unit, openClasses: (() -> Unit)? = null,
+fun HomeScreen(view: ProgressView, refresh: () -> Unit,
     username: String? = null, onRecord: (() -> Unit)? = null, recordEnabled: Boolean = true) {
     Surface(color=MaterialTheme.colorScheme.surface,contentColor=MaterialTheme.colorScheme.onSurface) {
         Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -69,10 +69,7 @@ fun HomeScreen(view: ProgressView, refresh: () -> Unit, openClasses: (() -> Unit
                 if (view.stale) Text("Mostrando el último progreso confirmado")
                 if (view.loading) Text("Actualizando progreso…")
                 record()
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    ActionButton(onClick = refresh, enabled = !view.loading, modifier = Modifier.weight(1f)) { Text("Actualizar progreso") }
-                    if (openClasses != null) ActionButton(onClick = openClasses) { Text("Clases") }
-                }
+                ActionButton(onClick = refresh, enabled = !view.loading, modifier = Modifier.fillMaxWidth()) { Text("Actualizar progreso") }
             }
             if (view.error != null) ActionButton(onClick = refresh) { Text("Reintentar consulta") }
         }

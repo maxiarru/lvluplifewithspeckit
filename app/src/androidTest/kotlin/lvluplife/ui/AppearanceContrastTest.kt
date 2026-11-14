@@ -157,7 +157,7 @@ class AppearanceContrastTest {
         mount(night=true) {
             val dark=isSystemInDarkTheme();val color=MaterialTheme.colorScheme.surface.toArgb()
             SideEffect { systemDark=dark;surface=color }
-            HomeScreen(ProgressView(progress(),loading=false),{},{})
+            HomeScreen(ProgressView(progress(),loading=false),{})
         }
         compose.runOnIdle { assertTrue("El sistema simulado debe estar en modo oscuro",systemDark) }
         assertEquals(Spec.background,surface)
@@ -166,31 +166,29 @@ class AppearanceContrastTest {
         capture("t004-dark-system-home.png")
     }
     @Test fun finalHeaderKeepsLongConfirmedClassStageLevelAndAllAttributesVisible() {
-        mount { HomeScreen(ProgressView(progress(),loading=false),{},{}) }
+        mount { HomeScreen(ProgressView(progress(),loading=false),{}) }
         compose.onNodeWithTag("character-appearance").assertHeightIsEqualTo(220.dp)
             .assertContentDescriptionEquals("Guardián de la Sabiduría · Etapa III").assertIsDisplayed()
         compose.onNodeWithTag("character-class").assertTextEquals("Guardián de la Sabiduría").assertIsDisplayed()
         compose.onNodeWithTag("character-stage").assertTextEquals("Etapa III").assertIsDisplayed()
         compose.onNodeWithTag("character-level").assertTextEquals("Nivel general 35").assertIsDisplayed()
         for(id in ids) compose.onNodeWithTag("attribute-$id-xp").assertIsDisplayed()
-        compose.onNodeWithText("Clases").assertIsDisplayed()
         val image=compose.onNodeWithTag("character-appearance").fetchSemanticsNode().boundsInRoot
         val title=compose.onNodeWithTag("character-class").fetchSemanticsNode().boundsInRoot
         assertTrue("La imagen no debe solapar el título",title.top>=image.bottom)
         capture("t004-home.png")
     }
     @Test fun homeTextAndEnabledControlsMeet45UsingActualRenderedColors() {
-        mount { HomeScreen(ProgressView(progress(),loading=false),{},{}) }
+        mount { HomeScreen(ProgressView(progress(),loading=false),{}) }
         measure(compose.onNodeWithTag("character-class"),Spec.text,Spec.background,"home-class")
         measure(compose.onNodeWithTag("character-stage"),Spec.text,Spec.background,"home-stage")
         measure(compose.onNodeWithTag("character-level"),Spec.text,Spec.background,"home-level")
         measure(compose.onNodeWithTag("attribute-STR-xp"),Spec.text,Spec.card,"home-xp")
         measure(compose.onNodeWithTag("attribute-STR-level"),Spec.text,Spec.card,"home-attribute-level")
-        measure(compose.onNodeWithText("Clases"),Spec.onPrimary,Spec.primary,"home-classes-button")
         measure(compose.onNodeWithText("Actualizar progreso"),Spec.onPrimary,Spec.primary,"home-refresh-button")
     }
     @Test fun disabledRefreshAndLoadingStaleMessagesKeepReadableConfirmedAppearance() {
-        mount { HomeScreen(ProgressView(progress(),loading=true,stale=true),{},{}) }
+        mount { HomeScreen(ProgressView(progress(),loading=true,stale=true),{}) }
         compose.onNodeWithText("Actualizar progreso").assertIsNotEnabled()
         measure(compose.onNodeWithText("Actualizar progreso"),Spec.text,Spec.card,"home-disabled-refresh")
         measure(compose.onNodeWithText("Actualizando progreso…"),Spec.text,Spec.background,"home-loading")
@@ -207,7 +205,7 @@ class AppearanceContrastTest {
         compose.onNodeWithTag("class-catalog").performScrollToIndex(0)
         compose.onNodeWithTag("class-novato-stage-1-status").assertTextEquals("Desbloqueada")
         measure(compose.onNodeWithTag("class-novato-stage-1-status"),Spec.text,Spec.card,"catalogue-unlocked")
-        measure(compose.onNodeWithText("Volver a principal"),Spec.onPrimary,Spec.primary,"catalogue-back-button")
+        measure(compose.onNodeWithText("Volver a Info"),Spec.onPrimary,Spec.primary,"catalogue-back-button")
         capture("t004-catalogue.png")
     }
     @Test fun catalogueErrorAndStaleInformationRemainReadableAndRetryable() {

@@ -33,7 +33,7 @@ fun ClassCatalogScreen(view: ClassCatalogView, generalLevel: Int, staleLevel: Bo
         Column(Modifier.fillMaxWidth(),verticalArrangement=Arrangement.spacedBy(6.dp)) {
             Text("Clases y etapas",style=MaterialTheme.typography.titleLarge)
             Text("Nivel general $generalLevel")
-            ActionButton(onClick=close) { Text("Volver a principal") }
+            ActionButton(onClick=close) { Text("Volver a Info") }
             if(staleLevel) Text("Usando el último nivel confirmado")
             val entries=view.entries
             val readable=entries!=null && entries.size==26 && entries.map { it.id }.toSet()==ClassAppearance.all.map { it.classId }.toSet() &&

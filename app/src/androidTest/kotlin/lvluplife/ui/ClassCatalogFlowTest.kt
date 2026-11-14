@@ -60,10 +60,12 @@ class ClassCatalogFlowTest {
         val session = SessionController()
         session.authenticate(SessionToken("synthetic-catalog-owner", "synthetic-catalog-token"))
         compose.runOnIdle { compose.activity.setContent { MaterialTheme {
-            SessionHost(session) { RecordFlow(session, records, RecordFlowProgress { progress(level) }) }
+            SessionHost(session) { MainTabs(session, "", session::logout, records, RecordFlowProgress { progress(level) }) }
         } } }
         compose.waitUntil(5_000) { compose.onAllNodesWithText("Nivel general $level").fetchSemanticsNodes().isNotEmpty() }
-        compose.onNodeWithText("Clases").assertExists().performClick()
+        // The catalogue is opened from Info (FR-011).
+        compose.onNode(isTab(SessionRoute.INFO)).performClick()
+        compose.onNodeWithTag("info-open-classes").performScrollTo().assertIsEnabled().performClick()
         if(expectList) compose.onNodeWithTag("class-catalog").assertIsDisplayed()
         return session
     }
@@ -134,8 +136,10 @@ class ClassCatalogFlowTest {
         compose.runOnIdle { records.fail=false }
         compose.onNodeWithText("Reintentar clases").performClick()
         compose.onNodeWithTag("class-catalog").assertIsDisplayed()
-        compose.onNodeWithText("Volver a principal").performClick()
-        compose.onNodeWithTag("character-class").assertTextEquals("Novato")
+        compose.onNodeWithText("Volver a Info").performClick()
+        // The catalogue comes back to Info.
+        compose.onNodeWithTag("info-classes").assertExists()
+        compose.onNode(isTab(SessionRoute.INFO)).assertIsSelected()
         compose.onNodeWithText("Clases y etapas").assertDoesNotExist()
     }
     @Test fun logoutWhileCatalogueIsLoadingDiscardsLateResponseAndPrivateNavigation() {

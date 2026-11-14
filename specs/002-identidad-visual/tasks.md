@@ -95,7 +95,7 @@ se verifica en el emulador.
 
 ## Phase 7: US6 — Info (P3)
 
-- [ ] T012 [US6] Crear `InfoScreen.kt` con:
+- [X] T012 [US6] Crear `InfoScreen.kt` con:
   - tarjetas de reglas de XP y niveles, con textos verificados contra el PRD (FR-012);
   - acceso al catálogo de clases con el estilo nuevo, que vuelve a Info;
   - reinicio de la progresión con confirmación (RF-43);

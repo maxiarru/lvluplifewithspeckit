@@ -45,7 +45,7 @@ class SessionNavigationTest {
         compose.runOnIdle { assertEquals(listOf(SessionRoute.HOME), controller.state.value.routes) }
         compose.onNode(isTab(SessionRoute.HISTORY)).performClick()
         compose.onNode(isTab(SessionRoute.INFO)).performClick()
-        compose.onNodeWithText("Cerrar sesión").performClick()
+        compose.onNodeWithText("Cerrar sesión").performScrollTo().performClick()
         compose.onNodeWithText("Iniciá sesión para continuar").assertIsDisplayed()
         compose.onNodeWithText("private-a", substring = true).assertDoesNotExist()
         compose.runOnIdle { assertFalse(controller.back()) }

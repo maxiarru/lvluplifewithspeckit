@@ -186,10 +186,10 @@ class DeviceMatrixStages {
         // FR-008: custom activities are created from Registrar, which comes back with the new one selected.
         tap("Registrar actividad");tapTag("record-create-custom");input("Nombre","Actividad matriz");input("Categoría","Rutina")
         tap("Guardar definición");expect("Actividad personalizada guardada");tap("Volver")
-        tap("Clases");expect("Clases y etapas")
+        tapTab(SessionRoute.INFO);tap("Ver todas las clases");expect("Clases y etapas")
         awaitTag("class-catalog").performScrollToIndex(2)
         visible(compose.onNodeWithTag("class-guerrero-stage-2-status")).assertTextEquals("Bloqueada");capture("classes")
-        tap("Volver a principal")
+        tap("Volver a Info")
         val old=progress().cycleId
         tapTag("reset-open");expect("¿Reiniciar tu personaje?");capture("reset",dialog=true)
         tapTag("reset-confirm");expect("Reinicio confirmado")
@@ -199,7 +199,7 @@ class DeviceMatrixStages {
         assertFalse(retained.canCorrect)
         assertEquals(1,runBlocking { requireNotNull(graph.activities).list(uid()).size })
         // The date is now chosen among Hoy/Ayer/Anteayer, so the invalid input is a duration component.
-        tap("Registrar actividad");tapTag("record-date-0");input("Horas","x");tap("Guardar actividad");expect("Revisá los datos ingresados.")
+        tapTab(SessionRoute.HOME);tap("Registrar actividad");tapTag("record-date-0");input("Horas","x");tap("Guardar actividad");expect("Revisá los datos ingresados.")
         input("Horas","0");input("Minutos","25");tap("Volver")
         compose.waitUntil(10_000) { draft()?.let { JSONObject(it).optJSONObject("recordDraft")?.optString("minutes")=="25" }==true }
         val state=stable(reset)

@@ -81,7 +81,7 @@ class MainTabsTest {
         compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }
         assertOnlySelected(SessionRoute.HOME)
         compose.onNode(tab(SessionRoute.INFO)).performClick()
-        compose.onNodeWithText("Cerrar sesión").performClick()
+        compose.onNodeWithText("Cerrar sesión").performScrollTo().performClick()
         compose.onNodeWithText("Iniciá sesión para continuar").assertIsDisplayed()
         compose.onAllNodes(SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.Tab)).assertCountEquals(0)
     }

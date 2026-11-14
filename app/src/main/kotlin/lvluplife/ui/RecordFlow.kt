@@ -100,11 +100,10 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
     }
 }
 
-/** PJ content (home, record form, custom activities, reset and class catalog) over shared controllers. */
+/** PJ content (home, record form and custom activities) over shared controllers. Classes and reset live in Info. */
 @Composable
 fun RecordFlowContent(session: SessionController, shared: SessionControllers, username: String? = null) {
     val sessionView by session.state.collectAsState()
-    val scope = rememberCoroutineScope()
     val records = shared.records
     val controller = shared.form
     val home = shared.progress
@@ -120,8 +119,6 @@ fun RecordFlowContent(session: SessionController, shared: SessionControllers, us
         val state by custom.state.collectAsState()
         state
     } else null
-    var catalogOpen by remember { mutableStateOf(false) }
-    BackHandler(enabled=catalogOpen) { catalogOpen=false }
     val online = records.online
     // FR-008: a definition created from Registrar comes back selected, by the id the server confirmed, keeping the date.
     var returnToRecord by remember { mutableStateOf(false) }
@@ -135,24 +132,19 @@ fun RecordFlowContent(session: SessionController, shared: SessionControllers, us
             returnToRecord = false
         }
     }
-    val confirmedLevel=homeView.value?.generalLevel
     val resetLocked=resetView?.let { it.busy || it.pending != null || it.unresolved } == true
     if (sessionView.uid != null && resetView?.ready == false) {
         androidx.compose.material3.Text("Cargando reinicios…")
-    } else if (sessionView.uid != null && catalogOpen && confirmedLevel!=null) {
-        val catalog=remember(session,records) { ClassCatalogController(session,records,scope) }
-        val catalogView by catalog.state.collectAsState()
-        DisposableEffect(catalog) { onDispose { catalog.dispose() } }
-        LaunchedEffect(catalog,online) { catalog.refresh() }
-        ClassCatalogScreen(catalogView,confirmedLevel,homeView.stale,
-            catalog::refresh,{ catalogOpen=false })
     } else if (sessionView.uid != null) Column(if(!view.open && customView?.open != true) Modifier.verticalScroll(rememberScrollState()) else Modifier) {
         if (customView?.open != true) {
             if (!view.open) {
                 if(!resetLocked) QuickRecordActions(view,controller,online && homeView.value != null)
                 val locked = view.busy || view.pending != null || view.unresolved
-                HomeScreen(homeView, home::refresh,{ catalogOpen=true }, username,
+                HomeScreen(homeView, home::refresh, username,
                     onRecord = if (!resetLocked && view.options.isNotEmpty()) controller::open else null, recordEnabled = !locked)
+                // The reset lives in Info (FR-011); while one is unresolved, recording stays locked and PJ says why.
+                if (resetLocked) androidx.compose.material3.Text("Hay un reinicio en curso. Revisalo en Info.",
+                    Modifier.testTag("pj-reset-pending"))
             }
             if (!resetLocked) RecordScreen(view, controller, online, showOpenButton = false,
                 onCreateCustom = custom?.let { c -> { returnToRecord = true; c.open() } }, createCustomEnabled = customView?.busy == false)
@@ -162,7 +154,5 @@ fun RecordFlowContent(session: SessionController, shared: SessionControllers, us
         // Custom activities are created from Registrar (FR-008); the screen shows while open or with an unresolved definition.
         if (!resetLocked && custom != null && customView != null && (customView.open || customView.pending != null || customView.unresolved))
             CustomActivityScreen(customView, custom, shared.customActivities?.online ?: online)
-        if (!view.open && customView?.open != true && resetController != null && resetView != null)
-            ResetScreen(resetView,resetController,homeView.value?.cycleId,shared.resetOperations?.online ?: online)
     }
 }

@@ -55,10 +55,7 @@ fun MainTabs(session: SessionController, username: String, onLogout: () -> Unit,
                         val progressView by shared.progress.state.collectAsState()
                         AttributesScreen(progressView, shared.progress::refresh)
                     } else TabTitle(tabLabel(SessionRoute.ATTRIBUTES))
-                    SessionRoute.INFO -> Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        TabTitle(tabLabel(SessionRoute.INFO))
-                        ActionButton(onClick = onLogout) { Text("Cerrar sesión") }
-                    }
+                    SessionRoute.INFO -> InfoScreen(session, shared, onLogout)
                     SessionRoute.HISTORY -> history?.let { HistoryFlow(session, it, corrections) }
                     else -> Unit
                 }

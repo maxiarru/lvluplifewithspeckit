@@ -61,7 +61,7 @@ class AccessFlowTest {
     /** Logout lives in the Info tab once the profile is loaded. */
     private fun logoutFromInfo() {
         compose.onNode(isTab(SessionRoute.INFO)).performClick()
-        compose.onNodeWithText("Cerrar sesión").performClick()
+        compose.onNodeWithText("Cerrar sesión").performScrollTo().performClick()
     }
     private fun waitForAccount(uid: String) = compose.waitUntil(5_000) { controller.state.value.uid == uid }
 

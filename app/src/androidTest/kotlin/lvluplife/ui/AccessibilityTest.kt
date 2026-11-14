@@ -155,7 +155,7 @@ class AccessibilityTest {
         for(dark in listOf(false,true)) {
             for(view in listOf(ProgressView(loading=true),ProgressView(error=ApiFailureCode.NETWORK_ERROR,loading=false),
                 ProgressView(progress(),loading=false),ProgressView(progress(),loading=true,stale=true))) {
-                mount(dark) { HomeScreen(view,{},{}) }
+                mount(dark) { HomeScreen(view,{}) }
                 val label=if(view.value==null) if(view.loading) "Cargando progreso…" else "No se pudo obtener el progreso" else "Guerrero"
                 measure(label,p.text,p.surface,"home-$label")
                 if(view.stale) { measure("Mostrando el último progreso confirmado",p.text,p.surface,"home-stale");measure("Actualizar progreso",p.text,p.disabled,"home-disabled") }
