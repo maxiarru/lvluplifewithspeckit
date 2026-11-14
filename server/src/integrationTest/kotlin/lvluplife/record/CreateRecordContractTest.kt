@@ -414,6 +414,39 @@ class CreateRecordContractTest {
         confirmed(client.create(f, payload("sleep"))); assertEquals(3, progress(client, f).path("attributes").path("MEN").path("xp").intValue())
         assertEquals(2, f.records().size)
     }
+    // AC-13 (RF-10, RF-45): ten hours of sleep reach the MEN daily cap (30 XP); later sleeps are still stored, with no XP.
+    @Test fun sleepAfterMentalDailyCapIsStoredWithoutRejectionOrExtraXp() = scenario { f ->
+        val capped = confirmed(client.create(f, payload("sleep", 600))).path("result").path("progression").path("attributes").path("MEN")
+        val atCap = progress(client, f).path("attributes").path("MEN")
+        assertEquals(capped.path("level"), atCap.path("level")); assertEquals(capped.path("xp"), atCap.path("xp"))
+        assertTrue(atCap.path("level").intValue() > 1 || atCap.path("xp").intValue() > 0, "10 h deben otorgar XP de MEN")
+        for (minutes in listOf(60, 90)) {
+            val id = OperationId.create(); val reply = confirmed(client.create(f, payload("sleep", minutes), id))
+            assertEquals(ReceiptOutcome.CONFIRMED, f.receipt(id)?.outcome)
+            val men = reply.path("result").path("progression").path("attributes").path("MEN")
+            assertEquals(atCap.path("level"), men.path("level"), "$minutes min"); assertEquals(atCap.path("xp"), men.path("xp"), "$minutes min")
+        }
+        val after = progress(client, f).path("attributes").path("MEN")
+        assertEquals(atCap.path("level"), after.path("level")); assertEquals(atCap.path("xp"), after.path("xp"))
+        assertEquals(listOf(600L, 60L, 90L).sorted(), f.records().map { it.getLong("durationMinutes")!! }.sorted())
+        assertTrue(f.records().all { it.getString("activityId") == "sleep" && it.getString("activityDate") == "2026-11-11" })
+    }
+    // AC-98 (RF-10, RF-47): at 23:00 UTC−3 a finished three-hour run is stored on that date, not split until midnight.
+    @Test fun threeHourRunRecordedAtElevenPmIsStoredWholeOnThatDate() =
+        scenario(Instant.parse("2026-11-12T02:00:00Z")) { f ->
+            val id = OperationId.create()
+            val reply = confirmed(client.create(f, payload("aerobic", 180, "2026-11-11"), id))
+            val record = f.records().single()
+            assertEquals(record.id, reply.path("result").path("recordId").textValue())
+            assertEquals("aerobic", record.getString("activityId")); assertEquals("2026-11-11", record.getString("activityDate"))
+            assertEquals(180L, record.getLong("durationMinutes")); assertEquals(f.now, Instant.parse(record.getString("createdAt")!!))
+            assertEquals(f.now, f.receipt(id)?.validatedAt)
+            val p = progress(client, f)
+            assertEquals("2026-11-11", p.path("businessDate").textValue())
+            val replied = reply.path("result").path("progression").path("attributes").path("DEX"); val dex = p.path("attributes").path("DEX")
+            assertEquals(replied.path("level"), dex.path("level")); assertEquals(replied.path("xp"), dex.path("xp"))
+            assertTrue(dex.path("level").intValue() > 1 || dex.path("xp").intValue() > 0, "la corrida debe otorgar XP de DEX")
+        }
     @Test fun fifthMealIsStoredWithNoAdditionalConstitutionXpOrDuration() = scenario { f ->
         repeat(5) { confirmed(client.create(f, mapOf("activityId" to "meal", "activityDate" to "2026-11-11"))) }
         assertEquals(5, f.records().size); f.records().forEach { assertNull(it.get("durationMinutes")) }
