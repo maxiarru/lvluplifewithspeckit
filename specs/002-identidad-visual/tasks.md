@@ -18,7 +18,7 @@ se verifica en el emulador.
 
 ## Phase 1: Setup
 
-- [ ] T001 Incorporar las fuentes Fredoka y Nunito en `app/src/main/res/font/`, junto con el
+- [X] T001 Incorporar las fuentes Fredoka y Nunito en `app/src/main/res/font/`, junto con el
   texto de la licencia SIL OFL, descargados del repositorio oficial de Google Fonts con
   autorización previa del titular. Verificar con `assembleDebug` que los recursos compilan.
 
