@@ -26,6 +26,8 @@ import lvluplife.fixtures.InjectedFault
 import lvluplife.model.*
 import lvluplife.persistence.*
 
+private const val CLOCK_SECRET = "synthetic-clock-detail"
+
 /** Recovery HTTP contracts with actual local Auth verification and Firestore commits. No production fault switches. */
 class CreateRecoveryTest {
     private val json = ObjectMapper()
@@ -42,6 +44,13 @@ class CreateRecoveryTest {
     private class Fixture(val resources: ServerResources, val a: Identity, val b: Identity) {
         @Volatile var now: Instant = Instant.parse("2026-11-11T15:00:00Z")
         val failBefore = AtomicBoolean(); val loseAfter = AtomicBoolean()
+        /** Fails exactly the n-th clock read after arming (0 = never); the message must never reach the client. */
+        val clockReads = AtomicInteger(); @Volatile var failClockRead = 0
+        fun clock(): Instant {
+            if (clockReads.incrementAndGet() == failClockRead) { failClockRead = 0; throw IllegalStateException(CLOCK_SECRET) }
+            return now
+        }
+        fun failClockOnRead(n: Int) { clockReads.set(0); failClockRead = n }
         @Volatile var gate: CompletableDeferred<Unit>? = null
         val arrivals = AtomicInteger()
         fun root(identity: Identity = a) = resources.documents.read(identity.uid, emptyList())!!
@@ -59,7 +68,7 @@ class CreateRecoveryTest {
             val f = Fixture(resources, identity(), identity())
             testApplication {
                 application {
-                    val base = accountHandlers(resources.firestore, AuthoritativeClock { f.now })
+                    val base = accountHandlers(resources.firestore, AuthoritativeClock { f.clock() })
                     serverModule(base.copy(command = { uid, command ->
                         if (command.type == CommandType.CREATE_RECORD) {
                             f.gate?.let { gate ->
@@ -111,6 +120,30 @@ class CreateRecoveryTest {
         val receipt = confirmed(client.create(f, id))
         assertEquals(receipt, confirmed(client.create(f, id))); assertEquals(1, f.records().size)
         assertEquals(6, client.progress(f.a).path("attributes").path("STR").path("xp").intValue())
+    }
+    // AC-129 (RF-49, RF-56): read 1 prepares the plan outside the transaction, read 2 validates inside it; both precede the commit.
+    @Test fun authoritativeClockFailureBeforeCommitWritesNothingAndSameUuidAppliesOnce() {
+        for (read in listOf(1, 2)) scenario { f ->
+            // GET /v1/progress publishes a projection and advances the revision, so the root is captured after it.
+            val id = OperationId.create(); val progressBefore = client.progress(f.a); val before = f.root()
+            f.failClockOnRead(read)
+            val failed = client.create(f, id)
+            assertEquals(HttpStatusCode.ServiceUnavailable, failed.status, "lectura $read")
+            assertEquals(0, f.failClockRead, "lectura $read: el reloj debe haber fallado")
+            val text = failed.bodyAsText(); val error = json.readTree(text).path("error")
+            assertEquals("TEMPORARILY_UNAVAILABLE", error.path("code").textValue())
+            assertEquals(ApiError.TEMPORARILY_UNAVAILABLE.safeMessage, error.path("message").textValue())
+            assertEquals(setOf("error"), json.readTree(text).fieldNames().asSequence().toSet())
+            assertFalse(text.contains(CLOCK_SECRET) || text.contains("Exception") || text.contains("lvluplife."), "lectura $read: $text")
+            assertNull(f.receipt(id)); assertTrue(f.records().isEmpty()); assertEquals(before, f.root())
+            assertEquals("UNKNOWN", body(client.lookup(f.a, id)).path("outcome").textValue())
+            val unchanged = client.progress(f.a)
+            assertEquals(progressBefore.path("attributes"), unchanged.path("attributes"), "lectura $read: sin XP")
+            assertEquals(progressBefore.path("generalLevel"), unchanged.path("generalLevel"))
+            val receipt = confirmed(client.create(f, id))
+            assertEquals(receipt, confirmed(client.create(f, id))); assertEquals(1, f.records().size)
+            assertEquals(6, client.progress(f.a).path("attributes").path("STR").path("xp").intValue())
+        }
     }
     @Test fun lostResponseAfterCommitReturnsExactReceiptWithoutAnotherWrite() = scenario { f ->
         val id = OperationId.create(); f.loseAfter.set(true)
