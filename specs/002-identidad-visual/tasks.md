@@ -118,7 +118,7 @@ se verifica en el emulador.
 
 - [X] T013 Aplicar el estilo nuevo a `HistoryScreen.kt` y `HistoryFlow.kt` sin cambiar su
   comportamiento (FR-013), y verificar con las pruebas existentes de historial.
-- [ ] T014 Validación final:
+- [X] T014 Validación final:
   - correr la suite completa con emuladores de Firebase: `assembleDebug`, `:domain:test`,
     `:server:test`, `testDebugUnitTest`, `:server:integrationTest` y
     `connectedDebugAndroidTest`;
