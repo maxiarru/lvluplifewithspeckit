@@ -94,7 +94,7 @@ class HistoryFlowTest {
     private fun mount(f:Fixture) {
         if(session.current()==null)session.authenticate(SessionToken("synthetic-a","synthetic-history-token"))
         compose.runOnIdle { compose.activity.setContent { MaterialTheme {
-            SessionHost(session) { view -> if(view.routes.lastOrNull()==SessionRoute.HISTORY) HistoryFlow(session,f,f) }
+            SessionHost(session) { MainTabs(session,"",session::logout,history=f,corrections=f) }
         } } }
     }
     private fun expect(text:String) {
@@ -102,7 +102,8 @@ class HistoryFlowTest {
         compose.onNodeWithText(text).assertIsDisplayed()
     }
     private fun open() {
-        expect("Historial");compose.onNodeWithText("Historial").performClick()
+        compose.waitUntil(3_000) { compose.onAllNodes(isTab(SessionRoute.HISTORY)).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNode(isTab(SessionRoute.HISTORY)).performClick()
         expect("Día")
     }
     private fun edit() { expect("Entrenamiento de fuerza");compose.onNodeWithTag("history-edit-record-one").performScrollTo().performClick() }

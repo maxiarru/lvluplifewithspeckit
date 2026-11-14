@@ -60,7 +60,7 @@ se verifica en el emulador.
   - conectar en `AppNavigation`.
   Prueba Android: cada pestaña se abre con un toque, la activa se anuncia como seleccionada y
   tiene un rasgo no cromático, y cambiar de pestaña no vuelve a pedir el progreso.
-- [ ] T007 [US2] Migrar los selectores de las pruebas Android existentes a la navegación nueva,
+- [X] T007 [US2] Migrar los selectores de las pruebas Android existentes a la navegación nueva,
   sin cambiar lo que verifican (SC-004). Correr `connectedDebugAndroidTest` completo.
 
 ## Phase 4: US3 — PJ (P1)

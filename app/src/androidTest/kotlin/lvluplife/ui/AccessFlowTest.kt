@@ -58,6 +58,11 @@ class AccessFlowTest {
         compose.waitUntil(5_000) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithText(text).assertIsDisplayed()
     }
+    /** Logout lives in the Info tab once the profile is loaded. */
+    private fun logoutFromInfo() {
+        compose.onNode(isTab(SessionRoute.INFO)).performClick()
+        compose.onNodeWithText("Cerrar sesión").performClick()
+    }
     private fun waitForAccount(uid: String) = compose.waitUntil(5_000) { controller.state.value.uid == uid }
 
     @Test fun newIdentityRequiresExplicitProfileCompletionAfterSuccessfulLookup() {
@@ -102,7 +107,7 @@ class AccessFlowTest {
         mount(provider, accounts); enter()
         expect("Cuenta_A")
         compose.onNodeWithText("Elegí tu nombre de usuario").assertDoesNotExist()
-        compose.onNodeWithText("Cerrar sesión").performClick()
+        logoutFromInfo()
         expect("Continuar con Google")
         compose.onNodeWithText("Cuenta_A").assertDoesNotExist()
         compose.waitUntil(5_000) { provider.signOuts.get() == 1 }
@@ -121,7 +126,7 @@ class AccessFlowTest {
             controller.pending(controller.beginLoad("private-a"), OperationRef("owner-a", "123e4567-e89b-42d3-a456-426614174000"))
             controller.navigate(SessionRoute.HISTORY)
         }
-        compose.onNodeWithText("Cerrar sesión").performClick()
+        logoutFromInfo()
         compose.onNodeWithText("Cuenta_A").assertDoesNotExist()
         expect("Continuar con Google")
         enter(); expect("Cuenta_B")

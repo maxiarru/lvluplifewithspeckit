@@ -31,16 +31,20 @@ class SessionNavigationTest {
                 MaterialTheme {
                     SessionHost(controller) { view ->
                         val privateText = remember { (view.loads["progress"] as? LoadState.Confirmed)?.value as? String }
-                        privateText?.let { Text(it) }
+                        androidx.compose.foundation.layout.Column {
+                            privateText?.let { Text(it) }
+                            MainTabs(controller, "owner-a", controller::logout)
+                        }
                     }
                 }
             }
         }
         compose.onNodeWithText("private-a").assertIsDisplayed()
-        compose.onNodeWithText("Historial").performClick()
+        compose.onNode(isTab(SessionRoute.HISTORY)).performClick()
         compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }
         compose.runOnIdle { assertEquals(listOf(SessionRoute.HOME), controller.state.value.routes) }
-        compose.onNodeWithText("Historial").performClick()
+        compose.onNode(isTab(SessionRoute.HISTORY)).performClick()
+        compose.onNode(isTab(SessionRoute.INFO)).performClick()
         compose.onNodeWithText("Cerrar sesión").performClick()
         compose.onNodeWithText("Iniciá sesión para continuar").assertIsDisplayed()
         compose.onNodeWithText("private-a", substring = true).assertDoesNotExist()

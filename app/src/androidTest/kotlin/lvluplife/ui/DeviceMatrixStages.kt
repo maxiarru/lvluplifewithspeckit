@@ -124,6 +124,10 @@ class DeviceMatrixStages {
         return node.assertIsEnabled()
     }
     private fun tap(text:String) { enabled(visible(awaitText(text))).performTouchInput { click() };compose.waitForIdle() }
+    private fun tapTab(route:SessionRoute) {
+        compose.waitUntil(30_000) { compose.onAllNodes(isTab(route)).fetchSemanticsNodes().isNotEmpty() }
+        enabled(visible(compose.onNode(isTab(route)))).performTouchInput { click() };compose.waitForIdle()
+    }
     private fun awaitTag(tag:String):SemanticsNodeInteraction {
         compose.waitUntil(30_000) { compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty() }
         return compose.onNodeWithTag(tag)
@@ -172,13 +176,13 @@ class DeviceMatrixStages {
         tapTag("quick-save");expect("Actividad guardada")
         val initial=history();assertEquals(2,initial.items.size)
         val training=initial.items.single { it.activityId=="strength" };val meal=initial.items.single { it.activityId=="meal" }
-        tap("Historial");expect("Entrenamiento de fuerza")
+        tapTab(SessionRoute.HISTORY);expect("Entrenamiento de fuerza")
         tapTag("history-edit-${training.id}");input("Minutos","45");tap("Guardar cambios");expect("Cambios guardados")
         tapTag("history-delete-${meal.id}");expect("Eliminar registro");capture("delete",dialog=true)
         tap("Confirmar eliminación");expect("Registro eliminado")
         input("Fecha del período","fecha-inválida");tap("Consultar período");expect("Revisá la fecha del período");capture("history-error")
         input("Fecha del período",today);tap("Consultar período");expect("Entrenamiento de fuerza")
-        tap("Volver");expect(name)
+        tapTab(SessionRoute.HOME);expect(name)
         tap("Crear actividad personalizada");input("Nombre","Actividad matriz");input("Categoría","Rutina")
         tap("Guardar definición");expect("Actividad personalizada guardada")
         tap("Clases");expect("Clases y etapas")
@@ -207,11 +211,11 @@ class DeviceMatrixStages {
         assertEquals(preferences.getString("state",null),stable(progress()))
         assertEquals(preferences.getString("draft",null),fingerprint(requireNotNull(draft())))
         tap("Registrar actividad");expect("Minutos");compose.onNodeWithText("Minutos").assertTextContains("25");capture("draft-reopened")
-        tap("Volver");tap("Historial");expect("Entrenamiento de fuerza")
+        tap("Volver");tapTab(SessionRoute.HISTORY);expect("Entrenamiento de fuerza")
         val item=history().items.single();assertEquals(preferences.getString("record",null),item.id);assertEquals(45,item.durationMinutes);assertFalse(item.canCorrect)
         compose.onNodeWithTag("history-edit-${item.id}").assertDoesNotExist();capture("history-reopened")
         assertEquals(1,runBlocking { requireNotNull(graph.activities).list(uid()).size })
-        tap("Cerrar sesión");expect("Continuar con Google");compose.onNodeWithText(name).assertDoesNotExist()
+        tapTab(SessionRoute.INFO);tap("Cerrar sesión");expect("Continuar con Google");compose.onNodeWithText(name).assertDoesNotExist()
         tap("Continuar con Google");expect(name);expect("Novato")
         assertEquals(preferences.getString("state",null),stable(progress()));capture("reopened")
         checkpoint("reopened",requireNotNull(preferences.getString("state",null)))

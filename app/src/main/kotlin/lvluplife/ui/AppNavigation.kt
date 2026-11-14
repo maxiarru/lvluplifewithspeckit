@@ -39,10 +39,9 @@ fun AppNavigation(session: SessionController, google: GoogleSignIn, accounts: Ac
                     records, progress, customActivities, history, corrections, reset)
                 null -> Column(Modifier.padding(horizontal = 24.dp)) {
                     Text(access.error ?: "Cargando…")
-                    if (access.error != null) {
-                        ActionButton(onClick = controller::retryLookup, enabled = !access.busy) { Text("Reintentar") }
-                        ActionButton(onClick = controller::logout) { Text("Cerrar sesión") }
-                    }
+                    if (access.error != null) ActionButton(onClick = controller::retryLookup, enabled = !access.busy) { Text("Reintentar") }
+                    // Without a profile there are no tabs yet, so logout stays reachable here (feature 001 behavior).
+                    ActionButton(onClick = controller::logout) { Text("Cerrar sesión") }
                 }
                 else -> Unit
             }
