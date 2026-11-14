@@ -73,9 +73,7 @@ class CorrectionRepository(private val api: ApiClient, private val operations: O
         if(draft.activityId == "meal") {
             if(draft.hours != null || draft.minutes != null) throw OperationBlocked(ApiFailureCode.INVALID_INPUT)
         } else {
-            val hours=draft.hours?.toLongOrNull();val minutes=draft.minutes?.toLongOrNull()
-            if(hours == null || minutes == null || hours !in 0..24 || minutes !in 0..59 || hours == 0L && minutes == 0L || hours == 24L && minutes != 0L)
-                throw OperationBlocked(ApiFailureCode.INVALID_INPUT)
+            val (hours, minutes) = durationInput(draft.hours, draft.minutes)
             payload["activityId"]=draft.activityId;payload["hours"]=hours;payload["minutes"]=minutes
         }
         val ref=operations.prepare(uid,intentId,ApiCommandType.EDIT_RECORD,payload,draft.cycleId)

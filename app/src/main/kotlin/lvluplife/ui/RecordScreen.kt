@@ -85,6 +85,7 @@ fun RecordScreen(view: RecordFormView, controller: RecordFormController, online:
                 InputField(value = view.draft.minutes, onValueChange = { controller.change(view.draft.copy(minutes = it)) },
                     label = { Text("Minutos") }, singleLine = true, enabled = !locked, modifier = Modifier.weight(1f))
             }
+            view.message?.let { Text(it) }
             PrimaryActionButton(onClick = { keyboard?.hide(); controller.submit() }, enabled = !locked && online,
                 modifier = Modifier.testTag("record-save")) { Text("Guardar actividad") }
         } else if (view.options.isNotEmpty()) {
@@ -93,7 +94,7 @@ fun RecordScreen(view: RecordFormView, controller: RecordFormController, online:
         }
         else if (view.busy) Text("Cargando actividades…")
         else ActionTextButton(onClick = controller::start) { Text("Reintentar actividades") }
-        view.message?.let { Text(it) }
+        if (!view.open) view.message?.let { Text(it) }
         if(view.busy && view.options.isNotEmpty()) Text("Procesando actividad…")
         if (view.pending != null || view.unresolved) {
             Text("Confirmación pendiente")

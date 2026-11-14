@@ -123,7 +123,10 @@ class RecordFormController(private val session: SessionController, private val r
     private fun message(code: ApiFailureCode?): String = when (code) {
         ApiFailureCode.AUTH_REQUIRED -> "Volvé a iniciar sesión para resolver la operación"
         ApiFailureCode.FORBIDDEN -> "Acceso denegado. La operación sigue pendiente."
-        ApiFailureCode.INVALID_INPUT, ApiFailureCode.INVALID_REQUEST -> "Revisá los datos ingresados."
+        ApiFailureCode.INVALID_INPUT -> if (mutable.value.options.firstOrNull { it.id == mutable.value.draft.activityId }?.duration == true)
+            "Revisá la fecha y la duración: mayor que cero, hasta 24 horas y minutos entre 0 y 59."
+            else "Revisá los datos ingresados."
+        ApiFailureCode.INVALID_REQUEST -> "Revisá los datos ingresados."
         ApiFailureCode.DATE_NOT_ALLOWED -> "La fecha ya no está permitida. Revisá el día de la actividad."
         ApiFailureCode.DAILY_DURATION_EXCEEDED -> "No queda duración disponible para esa fecha."
         ApiFailureCode.CYCLE_CLOSED -> "El ciclo cambió. Actualizá antes de volver a cargar."

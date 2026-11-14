@@ -243,6 +243,26 @@ escritura de ensayo; primer login release en teléfono pendiente de prueba perso
 Detalles y límites en `delivery.md`. Revisión aprobada y commit individual
 autorizado por el titular el 2026-11-14.
 
+### Ajuste tras prueba en teléfono — 2026-11-14
+
+- [X] T096 Eliminar el aviso global redundante de carga y el texto permanente
+  «Datos confirmados», conservando el feedback de carga de cada pantalla y los
+  avisos de error, datos desactualizados y operaciones pendientes. No reservar
+  espacio para avisos ausentes. Incorporar el segundo hallazgo del titular:
+  permitir horas o minutos vacíos como cero al registrar y editar, manteniendo
+  los límites de duración y mostrando el error encima de Guardar. Verificar
+  navegación/sesión y registro; generar el APK 0.1.2 firmado con la misma clave
+  fuera del repo para actualizar la entrega.
+  Registrar resultados en `ui-feedback.md` y esperar revisión y decisión de commit.
+
+Estado T096: avisos verificados y APK 0.1.1 entregado; antes de su aprobación de
+commit el titular informó el problema de duración y se amplió la misma tarea.
+Ambos ajustes implementados: 161 tests unitarios y 25 pruebas Android de registro
+aprobados, además de las 6 pruebas iniciales de avisos/navegación. APK 0.1.2 firmado
+externo verificado como actualización sin desinstalar. Revisión aprobada y commit
+individual autorizado por el titular el 2026-11-14; evidencia y límites en
+`ui-feedback.md`.
+
 ## Dependencias y orden de ejecución
 
 ```text

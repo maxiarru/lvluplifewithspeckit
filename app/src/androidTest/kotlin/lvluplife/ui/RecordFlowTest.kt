@@ -162,7 +162,7 @@ class RecordFlowTest {
     }
     @Test fun functionalRejectionRetainsInputAndCorrectionCreatesANewIntent() = scenario { r, _ ->
         r.response = PendingState.REJECTED; r.error = ApiFailureCode.INVALID_INPUT
-        mount(r); fill(); send(); expect("Revisá los datos ingresados.")
+        mount(r); fill(); send(); expect("Revisá la fecha y la duración: mayor que cero, hasta 24 horas y minutos entre 0 y 59.")
         compose.onNodeWithText("Minutos").assertTextContains("30")
         val old = r.store.pendingFor("synthetic-a").single()
         r.response = PendingState.CONFIRMED; r.error = null

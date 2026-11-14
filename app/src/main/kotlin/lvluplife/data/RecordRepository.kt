@@ -101,9 +101,7 @@ class RecordRepository(private val api: ApiClient, private val operations: Opera
         try { LocalDate.parse(draft.date) } catch (_: Exception) { throw OperationBlocked(ApiFailureCode.INVALID_INPUT) }
         val payload = linkedMapOf<String, Any?>("activityId" to option.id, "activityDate" to draft.date)
         if (option.duration) {
-            val hours = draft.hours.toLongOrNull(); val minutes = draft.minutes.toLongOrNull()
-            if (hours == null || minutes == null || hours !in 0..24 || minutes !in 0..59 ||
-                (hours == 0L && minutes == 0L) || (hours == 24L && minutes != 0L)) throw OperationBlocked(ApiFailureCode.INVALID_INPUT)
+            val (hours, minutes) = durationInput(draft.hours, draft.minutes)
             payload["hours"] = hours; payload["minutes"] = minutes
         }
         operations.submit(operations.prepare(uid, intentId, ApiCommandType.CREATE_RECORD, payload, context.cycle))

@@ -60,6 +60,18 @@ class CorrectionRepositoryTest {
         assertEquals(3,post.path("payload").path("expectedVersion").intValue());assertEquals("record-original",post.path("payload").path("recordId").textValue())
         assertFalse(post.path("payload").has("createdAt"));assertFalse(post.path("payload").has("xp"));assertTrue(f.requests.all { it.method=="POST" })
     }
+    @Test fun editingDurationAlsoAllowsOneEmptyComponent()=runBlocking {
+        for ((hours,minutes,expected) in listOf(Triple("1","",60L),Triple("","45",45L))) {
+            val f=Fixture();f.repository.edit("owner-a","duration",f.draft.copy(hours=hours,minutes=minutes))
+            val payload=f.json.readTree(f.requests.single().body).path("payload")
+            assertEquals(expected,payload.path("hours").longValue()*60+payload.path("minutes").longValue())
+            assertEquals(3,payload.path("expectedVersion").intValue())
+        }
+        val f=Fixture()
+        blocked(ApiFailureCode.INVALID_INPUT) { f.repository.edit("owner-a","empty",f.draft.copy(hours="",minutes="")) }
+        blocked(ApiFailureCode.INVALID_INPUT) { f.repository.edit("owner-a","missing",f.draft.copy(hours=null,minutes="45")) }
+        assertTrue(f.store.rows.isEmpty());assertTrue(f.requests.isEmpty())
+    }
     @Test fun mealEditOnlySendsDateWhileDeleteOnlySendsIdentityAndExpectedVersion()=runBlocking {
         val f=Fixture();f.repository.edit("owner-a","meal",f.draft.copy(activityId="meal",hours=null,minutes=null))
         val meal=f.json.readTree(f.requests.last().body).path("payload")

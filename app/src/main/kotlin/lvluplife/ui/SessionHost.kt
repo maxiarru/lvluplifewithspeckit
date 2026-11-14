@@ -15,7 +15,7 @@ import lvluplife.application.SessionView
 
 /**
  * No saved private back stack: a session change disposes all account-owned composition state.
- * Navigation lives in [MainTabs]; this host only keeps the load and pending notices.
+ * Screens own their loading feedback; this host keeps exceptional and pending notices.
  */
 @Composable
 fun SessionHost(controller: SessionController, content: @Composable (SessionView) -> Unit = {}) {
@@ -32,10 +32,16 @@ fun SessionHost(controller: SessionController, content: @Composable (SessionView
                 Text("Iniciá sesión para continuar")
             }
         } else Column(Modifier.fillMaxSize()) {
-            Column(Modifier.padding(horizontal = padding).padding(top = 8.dp)) {
-                view.loads.values.filterNot { compact && it is LoadState.Confirmed }.forEach { LoadStateMessage(it) }
-                if (view.pending.any { it.state in setOf(lvluplife.data.PendingState.UNKNOWN, lvluplife.data.PendingState.SENDING, lvluplife.data.PendingState.RESOLVING) }) {
-                    Text("Confirmación pendiente")
+            val notices = view.loads.values.filterNot {
+                it is LoadState.Loading || it is LoadState.Confirmed
+            }.distinctBy { it::class }
+            val pending = view.pending.any {
+                it.state in setOf(lvluplife.data.PendingState.UNKNOWN, lvluplife.data.PendingState.SENDING, lvluplife.data.PendingState.RESOLVING)
+            } && notices.none { it is LoadState.Pending }
+            if (notices.isNotEmpty() || pending) {
+                Column(Modifier.padding(horizontal = padding).padding(top = 8.dp)) {
+                    notices.forEach { LoadStateMessage(it) }
+                    if (pending) Text("Confirmación pendiente")
                 }
             }
             Box(Modifier.weight(1f).fillMaxWidth()) { content(view) }
@@ -46,12 +52,12 @@ fun SessionHost(controller: SessionController, content: @Composable (SessionView
 
 @Composable
 fun LoadStateMessage(state: LoadState<*>) {
-    Text(when (state) {
-        LoadState.Loading -> "Cargando…"
-        is LoadState.Confirmed -> "Datos confirmados"
+    val message = when (state) {
+        LoadState.Loading, is LoadState.Confirmed -> return
         is LoadState.Stale -> "Datos desactualizados. Volvé a intentar."
         LoadState.Empty -> "Sin resultados"
         is LoadState.Error -> "No pudimos cargar los datos. Intentá de nuevo."
         is LoadState.Pending -> "Confirmación pendiente"
-    })
+    }
+    Text(message)
 }

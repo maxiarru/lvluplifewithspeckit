@@ -85,6 +85,24 @@ class RecordRepositoryTest {
         assertEquals("CREATE_RECORD", post.path("type").textValue()); assertFalse(post.path("payload").has("xp"))
         assertEquals(30, post.path("payload").path("minutes").intValue())
     }
+    @Test fun emptyDurationPartIsZeroInTheDurableCommand() = runBlocking {
+        for ((hours, minutes, expected) in listOf(Triple("1", "", 60L), Triple("", "30", 30L), Triple("24", "", 1440L))) {
+            val f = Fixture(); f.repository.catalog("owner-a")
+            val result = f.repository.submit("owner-a", "duration", f.draft.copy(hours = hours, minutes = minutes))
+            assertEquals(PendingState.CONFIRMED, result.state)
+            val payload = f.json.readTree(f.requests.single { it.method == "POST" }.body).path("payload")
+            assertEquals(expected, payload.path("hours").longValue() * 60 + payload.path("minutes").longValue())
+            assertTrue(payload.path("hours").isIntegralNumber); assertTrue(payload.path("minutes").isIntegralNumber)
+        }
+    }
+    @Test fun emptyOrInvalidTotalNeverAllocatesOrSendsAnOperation() = runBlocking {
+        for ((hours, minutes) in listOf("" to "", "0" to "", "" to "0", "1" to "60", "24" to "1", "-1" to "", "" to "1.5", "999999999999999999999" to "")) {
+            val f = Fixture(); f.repository.catalog("owner-a")
+            val failure = runCatching { f.repository.submit("owner-a", "invalid", f.draft.copy(hours = hours, minutes = minutes)) }.exceptionOrNull()
+            assertEquals(ApiFailureCode.INVALID_INPUT, (failure as? OperationBlocked)?.code)
+            assertTrue(f.store.rows.isEmpty()); assertFalse(f.requests.any { it.method == "POST" })
+        }
+    }
     @Test fun repeatedIntentDoesNotAllocateAnotherOperationAndNewIntentDoes() = runBlocking {
         val f = Fixture(); f.repository.catalog("owner-a")
         val first = f.repository.submit("owner-a", "one", f.draft)
