@@ -138,10 +138,10 @@ fun RecordFlowContent(session: SessionController, shared: SessionControllers, us
     } else if (sessionView.uid != null) Column(if(!view.open && customView?.open != true) Modifier.verticalScroll(rememberScrollState()) else Modifier) {
         if (customView?.open != true) {
             if (!view.open) {
-                if(!resetLocked) QuickRecordActions(view,controller,online && homeView.value != null)
                 val locked = view.busy || view.pending != null || view.unresolved
                 HomeScreen(homeView, home::refresh, username,
-                    onRecord = if (!resetLocked && view.options.isNotEmpty()) controller::open else null, recordEnabled = !locked)
+                    onRecord = if (!resetLocked && view.options.isNotEmpty()) controller::open else null, recordEnabled = !locked,
+                    quickRecord = if (!resetLocked) ({ QuickRecordActions(view, controller, online && homeView.value != null) }) else null)
                 // The reset lives in Info (FR-011); while one is unresolved, recording stays locked and PJ says why.
                 if (resetLocked) androidx.compose.material3.Text("Hay un reinicio en curso. Revisalo en Info.",
                     Modifier.testTag("pj-reset-pending"))

@@ -170,10 +170,10 @@ class DeviceMatrixStages {
         tap("Continuar con Google")
         expect("Nombre de usuario");input("Nombre de usuario",name);tap("Crear personaje")
         expect("Novato");expect(name);capture("profile")
-        tapTag("quick-meal");tapTag("quick-save");expect("Actividad guardada")
-        tapTag("quick-strength")
-        compose.onNodeWithTag("quick-duration-input").assertIsFocused().performTextReplacement("0:30");hideKeyboard()
-        tapTag("quick-save");expect("Actividad guardada")
+        // FR-015: quick record is one tap; training has no quick button and goes through Registrar.
+        tapTag("quick-meal");expect("Actividad guardada")
+        tap("Registrar actividad");tapTag("activity-strength");input("Minutos","30");hideKeyboard()
+        tap("Guardar actividad");expect("Actividad guardada")
         val initial=history();assertEquals(2,initial.items.size)
         val training=initial.items.single { it.activityId=="strength" };val meal=initial.items.single { it.activityId=="meal" }
         tapTab(SessionRoute.HISTORY);expect("Entrenamiento de fuerza")

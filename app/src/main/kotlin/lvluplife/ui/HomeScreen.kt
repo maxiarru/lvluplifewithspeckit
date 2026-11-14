@@ -31,7 +31,8 @@ private val pjAttributes = listOf("STR", "DEX", "INT", "WIT", "MEN", "CON")
  */
 @Composable
 fun HomeScreen(view: ProgressView, refresh: () -> Unit,
-    username: String? = null, onRecord: (() -> Unit)? = null, recordEnabled: Boolean = true) {
+    username: String? = null, onRecord: (() -> Unit)? = null, recordEnabled: Boolean = true,
+    quickRecord: (@Composable () -> Unit)? = null) {
     Surface(color=MaterialTheme.colorScheme.surface,contentColor=MaterialTheme.colorScheme.onSurface) {
         Column(Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             username?.let { Greeting(it) }
@@ -69,6 +70,8 @@ fun HomeScreen(view: ProgressView, refresh: () -> Unit,
                 if (view.stale) Text("Mostrando el último progreso confirmado")
                 if (view.loading) Text("Actualizando progreso…")
                 record()
+                // FR-007/FR-015: quick record below the attribute summary, after the main action.
+                quickRecord?.invoke()
                 ActionButton(onClick = refresh, enabled = !view.loading, modifier = Modifier.fillMaxWidth()) { Text("Actualizar progreso") }
             }
             if (view.error != null) ActionButton(onClick = refresh) { Text("Reintentar consulta") }

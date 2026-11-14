@@ -31,6 +31,12 @@ internal object InfoRules {
         "Topes por día: 48 XP para STR, DEX, INT y WIT; 30 XP para MEN; 28 XP para CON.",
         "Los topes se cuentan por la fecha de la actividad. Podés registrar hoy, ayer o anteayer.",
     )
+    /** FR-015: what the PJ quick buttons send. */
+    val quick = listOf(
+        "«Comida» registra una comida saludable para hoy con un toque.",
+        "«Dormir» registra 7 horas de sueño para hoy con un toque.",
+        "Si dormiste otra cantidad, o fue otro día, usá «+ Registrar actividad».",
+    )
     val levels = listOf(
         "Un atributo en nivel N sube al juntar 30 × N XP. El nivel máximo es 50.",
         "Tu nivel general sube con las subidas de tus atributos, hasta el nivel 50.",
@@ -63,6 +69,7 @@ fun InfoScreen(session: SessionController, shared: SessionControllers?, onLogout
         Text("Info", Modifier.semantics { heading() }, style = MaterialTheme.typography.headlineSmall)
         Text("Reglas del juego, clases y tu personaje.", color = ArcadeColors.muted)
         InfoCard("Cómo ganás XP", "info-xp") { InfoRules.xp.forEach { Text(it, color = ArcadeColors.text) } }
+        InfoCard("Registro rápido", "info-quick") { InfoRules.quick.forEach { Text(it, color = ArcadeColors.text) } }
         InfoCard("Niveles y constancia", "info-levels") { InfoRules.levels.forEach { Text(it, color = ArcadeColors.text) } }
         InfoCard("Clases", "info-classes") {
             Text("26 clases, cada una con sus etapas desbloqueadas o bloqueadas según tu nivel general.", color = ArcadeColors.text)

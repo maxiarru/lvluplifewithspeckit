@@ -102,6 +102,18 @@ se verifica en el emulador.
   - cierre de sesión.
   Prueba Android de cada acceso.
 
+## Phase 7b: Registro rápido (agregada durante T014)
+
+- [X] T015 [US3] Registro rápido de «Comida» y «Dormir» (FR-007, FR-015, FR-016), decidido por el
+  titular durante la revisión de T014:
+  - quitar «Entrenar» y mover los botones debajo del mosaico de PJ, con el estilo nuevo;
+  - cada botón registra con un toque, para hoy: comida saludable o 7 horas de sueño;
+  - el registro rápido no pisa el borrador de «+ Registrar actividad»;
+  - en Info, aclarar la duración de «Dormir» y cómo cargar otra;
+  - RNF-04 del PRD queda acotado a comida y sueño.
+  Pruebas Android: un toque por botón, sin cambiar el borrador, sin conexión y con resultado
+  incierto. Se ejecuta antes de cerrar T014, que rehace capturas y validación.
+
 ## Phase 8: Historial y cierre
 
 - [X] T013 Aplicar el estilo nuevo a `HistoryScreen.kt` y `HistoryFlow.kt` sin cambiar su

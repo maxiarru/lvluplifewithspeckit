@@ -64,32 +64,43 @@ class RecordFormController(private val session: SessionController, private val r
     }
     fun submit() {
         if (!valid() || mutable.value.busy || !records.online || mutable.value.pending != null) return
-        val draft = mutable.value.draft
         val id = intent ?: UUID.randomUUID().toString().also { intent = it }
-        mutable.value = mutable.value.copy(busy = true, message = null)
         saveJob?.cancel()
-        scope.launch(Dispatchers.Main.immediate) {
-            try {
-                saves.withLock { if (valid()) records.saveDraft(uid!!, draft) }
-                if (valid()) receive(records.submit(uid!!, id, draft))
-            } catch (cancelled: CancellationException) { throw cancelled }
-            catch (blocked: OperationBlocked) { if (valid()) mutable.value = mutable.value.copy(busy = false,
-                unresolved = blocked.code == ApiFailureCode.TEMPORARILY_UNAVAILABLE, message = message(blocked.code)) }
-        }
+        send(Send(id, mutable.value.draft, persistDraft = true))
     }
+    /** Quick record (FR-015/FR-016): its own intent and values; the form draft is left untouched. */
     fun quick(activityId: String, minutes: Int?, date: String) {
         val view=mutable.value
         if(!valid() || view.busy || view.pending != null || view.unresolved || !records.online) return
         val option=view.options.firstOrNull { it.id==activityId } ?: return
         if(option.duration && (minutes == null || minutes !in 1..1440) || !option.duration && minutes != null) return
-        change(RecordDraft(activityId,date,minutes?.let { (it/60).toString() } ?: "0",minutes?.let { (it%60).toString() } ?: ""))
-        submit()
+        send(Send(UUID.randomUUID().toString(),
+            RecordDraft(activityId,date,minutes?.let { (it/60).toString() } ?: "0",minutes?.let { (it%60).toString() } ?: ""),
+            persistDraft = false))
+    }
+    /** One submission: intent, values and whether they are the form draft that must be saved first. */
+    private data class Send(val intent: String, val draft: RecordDraft, val persistDraft: Boolean)
+    /** Kept while the result is unknown so a retry resends exactly the same intent and values. */
+    private var unresolvedSend: Send? = null
+    private fun send(item: Send) {
+        mutable.value = mutable.value.copy(busy = true, message = null)
+        scope.launch(Dispatchers.Main.immediate) {
+            try {
+                if (item.persistDraft) saves.withLock { if (valid()) records.saveDraft(uid!!, item.draft) }
+                if (valid()) receive(records.submit(uid!!, item.intent, item.draft))
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (blocked: OperationBlocked) { if (valid()) {
+                val unresolved = blocked.code == ApiFailureCode.TEMPORARILY_UNAVAILABLE
+                unresolvedSend = item.takeIf { unresolved }
+                mutable.value = mutable.value.copy(busy = false, unresolved = unresolved, message = message(blocked.code))
+            } }
+        }
     }
     fun retry() {
         val view = mutable.value
         if (!valid() || view.busy || !records.online || view.pending?.error in setOf(ApiFailureCode.AUTH_REQUIRED, ApiFailureCode.FORBIDDEN)) return
         val pending = view.pending
-        if (pending == null) { if (view.unresolved) submit(); return }
+        if (pending == null) { if (view.unresolved) unresolvedSend?.let(::send) ?: submit(); return }
         mutable.value = view.copy(busy = true)
         scope.launch(Dispatchers.Main.immediate) {
             try { receive(records.retry(pending.ref)) }
@@ -99,6 +110,7 @@ class RecordFormController(private val session: SessionController, private val r
     }
     private fun receive(snapshot: OperationSnapshot) {
         if (!valid() || snapshot.ref.uid != uid) return
+        unresolvedSend = null
         mutable.value = when (snapshot.state) {
             PendingState.CONFIRMED -> { intent = null; mutable.value.copy(busy = false, open = false, pending = null, unresolved = false,
                 message = "Actividad guardada", settlement = mutable.value.settlement + 1) }

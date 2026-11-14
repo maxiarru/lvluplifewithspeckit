@@ -55,6 +55,9 @@ class InfoScreenTest {
         mountInfo()
         compose.onNodeWithText("Cómo ganás XP").assertIsDisplayed()
         InfoRules.xp.forEach { compose.onNode(hasText(it) and hasAnyAncestor(hasTestTag("info-xp"))).performScrollTo().assertIsDisplayed() }
+        // FR-015: Info explains what the quick buttons record and how to load another duration.
+        InfoRules.quick.forEach { compose.onNode(hasText(it) and hasAnyAncestor(hasTestTag("info-quick"))).performScrollTo().assertIsDisplayed() }
+        assertTrue(InfoRules.quick.any { "7 horas" in it } && InfoRules.quick.any { "+ Registrar actividad" in it })
         compose.onNodeWithText("Niveles y constancia").performScrollTo().assertIsDisplayed()
         InfoRules.levels.forEach { compose.onNode(hasText(it) and hasAnyAncestor(hasTestTag("info-levels"))).performScrollTo().assertIsDisplayed() }
         // Values that FR-012 ties to the current PRD (RF-20, RF-23, RF-37 and the XP rules section).

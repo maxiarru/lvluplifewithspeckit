@@ -100,6 +100,9 @@ la imagen de la clase y etapa vigentes, el nivel general, los seis atributos y e
 3. **Given** un progreso desactualizado o un error de carga, **When** se abre PJ, **Then** se
    muestran los mismos avisos y la acción para actualizar que exige el contrato UI de la
    feature 001.
+4. **Given** PJ abierta, **When** el usuario toca «Comida» o «Dormir» en el registro rápido,
+   **Then** se registra para hoy una comida saludable o 7 horas de sueño con ese único toque
+   (RNF-04), y se confirma con un mensaje visible.
 
 ---
 
@@ -215,6 +218,7 @@ confirmarlo.
   - la clase, la etapa y el nivel general;
   - un resumen de los seis atributos;
   - la acción «+ Registrar actividad»;
+  - el registro rápido con dos botones, «Comida» y «Dormir», debajo del resumen de atributos;
   - la acción para actualizar el progreso.
 - **FR-008**: El flujo de registro DEBE ofrecer, al final de la lista de actividades, «+ Crear
   actividad personalizada». Al guardar una actividad válida, DEBE volver al registro con ella
@@ -233,6 +237,12 @@ confirmarlo.
   dentro de la ventana permitida) con el nuevo estilo.
 - **FR-014**: Esta feature NO DEBE cambiar reglas de XP, niveles, clases, topes, recálculo,
   inactividad, reinicio ni autorización.
+- **FR-015**: El registro rápido DEBE registrar con un solo toque, para hoy, una comida saludable
+  («Comida») o 7 horas de sueño («Dormir»). La app solo envía la actividad y la duración; la XP la
+  asigna el servidor. Info DEBE aclarar que «Dormir» registra 7 horas y que otra duración u otra
+  fecha se cargan desde «+ Registrar actividad». No hay botón rápido de entrenamiento.
+- **FR-016**: El registro rápido NO DEBE modificar el borrador de «+ Registrar actividad», que
+  conserva la última actividad, fecha y duración elegidas por el usuario.
 
 ### Key Entities
 

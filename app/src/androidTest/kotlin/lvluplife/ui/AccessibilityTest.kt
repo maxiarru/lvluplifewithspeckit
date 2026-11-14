@@ -52,6 +52,8 @@ class AccessibilityTest {
         val submissions=mutableListOf<Triple<String,String,RecordDraft>>()
         val saved=mutableListOf<RecordDraft>()
         var retries=0
+        /** Thrown once by the next submit, after recording it, to simulate an unknown network outcome. */
+        var failOnce: ApiFailureCode?=null
         val records=object:RecordFlowRecords {
             override val online get()=this@Harness.online
             override suspend fun catalog(uid:String)=listOf(RecordOption("strength","Entrenamiento de fuerza",true),RecordOption("meal","Comida saludable",false),RecordOption("sleep","Dormir",true))
@@ -59,7 +61,9 @@ class AccessibilityTest {
             override suspend fun saveDraft(uid:String,draft:RecordDraft) { saved+=draft }
             override suspend fun pending(uid:String)=emptyList<OperationSnapshot>()
             override suspend fun submit(uid:String,intentId:String,draft:RecordDraft):OperationSnapshot {
-                submissions+=Triple(uid,intentId,draft);gate?.await();return OperationSnapshot(OperationRef(uid,intentId),outcome)
+                submissions+=Triple(uid,intentId,draft);gate?.await()
+                failOnce?.let { failOnce=null;throw OperationBlocked(it) }
+                return OperationSnapshot(OperationRef(uid,intentId),outcome)
             }
             override suspend fun retry(ref:OperationRef):OperationSnapshot { retries++;return OperationSnapshot(ref,PendingState.CONFIRMED) }
         }
@@ -266,60 +270,72 @@ class AccessibilityTest {
             measure("Confirmar eliminación",p.text,p.disabled,"delete-disabled");measure("Cancelar",p.button,p.dialog,"delete-cancel");capture("delete-dialog",dialog=true)
         }
     }
-    private fun frequent(id:String,minutes:Int?,typed:String?=null) {
+    // FR-015 (feature 002): quick record is one tap for a healthy meal or 7 hours of sleep, for today.
+    private fun mountPrincipal() {
         mount { fixture -> SessionHost(fixture.session) { _ -> RecordFlow(fixture.session,fixture.records,RecordFlowProgress { progress() }) } }
+        compose.waitUntil(5_000) { compose.onAllNodesWithTag("quick-meal").filter(isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+    }
+    private fun quick(id:String,minutes:Int?) {
+        mountPrincipal()
         val gestures=mutableListOf<String>()
-        fun tap(tag:String) { compose.onNodeWithTag(tag).assertIsDisplayed().performClick();gestures+=tag }
         if(id=="meal")capture("principal-quick")
-        measure(when(id) { "meal"->"Comida";"sleep"->"Dormir";else->"Entrenar" },p.buttonText,p.button,"quick-$id-button")
-        tap("quick-$id")
-        if(minutes!=null) { compose.onNodeWithTag("quick-save").assertIsNotEnabled();measure("Guardar",p.text,p.disabled,"quick-$id-disabled-save") }
-        if(typed!=null) {
-            compose.onNodeWithTag("quick-duration-input").assertIsFocused().performTextInput(typed);gestures+="type-duration-continuously"
-        } else if(minutes!=null) { tap("quick-duration-$minutes");compose.onNodeWithTag("quick-duration-$minutes").assertIsSelected() }
-        if(minutes!=null)measure(typed ?: "${minutes/60}:${(minutes%60).toString().padStart(2,'0')}",p.text,p.dialog,"quick-$id-duration")
-        capture("quick-$id-${if(typed==null) "preset" else "typed"}",dialog=true);tap("quick-save")
+        measure(if(id=="meal") "Comida" else "Dormir",p.buttonText,p.button,"quick-$id-button",scroll=true)
+        compose.onNodeWithTag("quick-$id").performScrollTo().assertIsDisplayed().performClick();gestures+="quick-$id"
         compose.waitUntil(3_000) { compose.onAllNodesWithText("Actividad guardada").fetchSemanticsNodes().isNotEmpty() }
-        assertTrue(gestures.size<=3);assertEquals(1,h.submissions.size)
+        assertEquals(1,gestures.size);assertEquals(1,h.submissions.size)
         val (uid,intent,draft)=h.submissions.single();assertEquals("synthetic-a",uid);UUID.fromString(intent)
         assertEquals(id,draft.activityId);assertEquals(LocalDate.now(ZoneOffset.ofHours(-3)).toString(),draft.date)
         if(minutes!=null)assertEquals(minutes,draft.hours.toInt()*60+draft.minutes.toInt()) else assertEquals("",draft.minutes)
+        // FR-016: the quick record never writes the Registrar draft.
+        assertTrue(h.saved.isEmpty())
         File(context.cacheDir,"t079-gestures.jsonl").appendText(JSONObject().put("activityId",id).put("count",gestures.size).put("gestures",JSONArray(gestures))
-            .put("mode",if(typed==null) "preset" else "typed").put("date",draft.date).put("hours",draft.hours).put("minutes",draft.minutes).put("submissions",h.submissions.size).toString()+"\n")
+            .put("mode","quick").put("date",draft.date).put("hours",draft.hours).put("minutes",draft.minutes).put("submissions",h.submissions.size).toString()+"\n")
     }
-    @Test fun savedMealUsesTwoGesturesFromPrincipal()=frequent("meal",null)
-    @Test fun savedTrainingUsesThreeGesturesFromPrincipal()=frequent("strength",30)
-    @Test fun savedSleepUsesThreeGesturesFromPrincipal()=frequent("sleep",420)
-    @Test fun trainingWithArbitraryDurationNeedsNoExtraFieldSelectionGesture()=frequent("strength",75,"1:15")
-    @Test fun sleepWithArbitraryDurationNeedsNoExtraFieldSelectionGesture()=frequent("sleep",455,"7:35")
-    @Test fun quickDurationValidationRetainsInputAndNeverSubmitsInvalidOrCancelledValues() {
-        mount { fixture -> SessionHost(fixture.session) { _ -> RecordFlow(fixture.session,fixture.records,RecordFlowProgress { progress() }) } }
-        compose.onNodeWithTag("quick-sleep").performClick()
-        for(value in listOf("0:00","24:01","-1:00","1:60","1.5")) {
-            compose.onNodeWithTag("quick-duration-input").performTextReplacement(value)
-            compose.onNodeWithTag("quick-save").assertIsNotEnabled()
-            compose.onNodeWithTag("quick-duration-input").assertTextContains(value)
-        }
-        capture("quick-invalid-duration",dialog=true)
-        measure("Ingresá una duración de 0:01 a 24:00",p.muted,p.dialog,"quick-invalid-duration")
-        compose.onNodeWithTag("quick-duration-input").performTextReplacement("24:00")
-        compose.onNodeWithTag("quick-save").assertIsEnabled()
-        compose.onNodeWithText("Cancelar").performClick();assertTrue(h.submissions.isEmpty());assertTrue(h.saved.isEmpty())
+    @Test fun savedMealUsesOneTapFromPrincipal()=quick("meal",null)
+    @Test fun sleepRecordsSevenHoursWithOneTapFromPrincipal()=quick("sleep",420)
+    @Test fun trainingHasNoQuickButton() {
+        mountPrincipal()
+        compose.onNodeWithTag("quick-strength").assertDoesNotExist();compose.onNodeWithText("Entrenar").assertDoesNotExist()
+        compose.onNodeWithTag("quick-meal").assertExists();compose.onNodeWithTag("quick-sleep").assertExists()
     }
-    @Test fun quickCancelAndOfflineNeverSaveOrSubmit() {
-        mount { fixture -> SessionHost(fixture.session) { _ -> RecordFlow(fixture.session,fixture.records,RecordFlowProgress { progress() }) } }
-        compose.onNodeWithTag("quick-sleep").performClick();compose.onNodeWithText("Cancelar").performClick()
-        assertTrue(h.saved.isEmpty());assertTrue(h.submissions.isEmpty())
-        compose.runOnIdle { h.online=false };compose.onNodeWithTag("quick-meal").assertIsNotEnabled().performClick()
+    @Test fun quickRecordLeavesTheRegistrarDraftUntouched() {
+        mountPrincipal()
+        compose.onNodeWithTag("pj-record").performScrollTo().performClick()
+        compose.onNodeWithTag("activity-strength").performScrollTo().performClick()
+        compose.onNodeWithText("Minutos").performTextReplacement("40")
+        compose.waitUntil(3_000) { h.saved.lastOrNull()?.minutes=="40" }
+        val formDraft=h.saved.last()
+        compose.onNodeWithText("Volver").performClick()
+        compose.onNodeWithTag("quick-meal").performScrollTo().performClick()
+        compose.waitUntil(3_000) { compose.onAllNodesWithText("Actividad guardada").fetchSemanticsNodes().isNotEmpty() }
+        assertEquals("meal",h.submissions.single().third.activityId);assertEquals(formDraft,h.saved.last())
+        compose.onNodeWithTag("pj-record").performScrollTo().performClick()
+        compose.onNodeWithTag("activity-strength").assertIsSelected();compose.onNodeWithText("Minutos").assertTextContains("40")
+    }
+    @Test fun quickOfflineNeverSavesOrSubmits() {
+        mountPrincipal()
+        compose.runOnIdle { h.online=false }
+        for(id in listOf("meal","sleep")) compose.onNodeWithTag("quick-$id").performScrollTo().assertIsNotEnabled().performClick()
         assertTrue(h.saved.isEmpty());assertTrue(h.submissions.isEmpty())
     }
     @Test fun uncertainQuickRecordDisablesNewSubmissionsUntilOriginalRetryResolves() {
-        mount { fixture -> SessionHost(fixture.session) { _ -> RecordFlow(fixture.session,fixture.records,RecordFlowProgress { progress() }) } }
+        mountPrincipal()
         compose.runOnIdle { h.outcome=PendingState.UNKNOWN }
-        compose.onNodeWithTag("quick-meal").performClick();compose.onNodeWithTag("quick-save").performClick()
-        compose.onNodeWithText("Confirmación pendiente").assertIsDisplayed()
-        for(id in listOf("meal","strength","sleep"))compose.onNodeWithTag("quick-$id").assertIsNotEnabled()
-        compose.onNodeWithText("Reintentar operación").performClick()
-        compose.onNodeWithText("Actividad guardada").assertIsDisplayed();assertEquals(1,h.submissions.size);assertEquals(1,h.retries)
+        compose.onNodeWithTag("quick-meal").performScrollTo().performClick()
+        compose.onNodeWithText("Confirmación pendiente").performScrollTo().assertIsDisplayed()
+        for(id in listOf("meal","sleep"))compose.onNodeWithTag("quick-$id").performScrollTo().assertIsNotEnabled()
+        compose.onNodeWithText("Reintentar operación").performScrollTo().performClick()
+        compose.onNodeWithText("Actividad guardada").performScrollTo().assertIsDisplayed();assertEquals(1,h.submissions.size);assertEquals(1,h.retries)
+    }
+    @Test fun unavailableQuickRecordRetriesTheSameIntentAndValues() {
+        mountPrincipal()
+        compose.runOnIdle { h.failOnce=ApiFailureCode.TEMPORARILY_UNAVAILABLE }
+        compose.onNodeWithTag("quick-sleep").performScrollTo().performClick()
+        compose.waitUntil(3_000) { compose.onAllNodesWithText("Reintentar operación").fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText("Reintentar operación").performScrollTo().performClick()
+        compose.waitUntil(3_000) { compose.onAllNodesWithText("Actividad guardada").fetchSemanticsNodes().isNotEmpty() }
+        assertEquals(2,h.submissions.size);assertEquals(h.submissions[0].second,h.submissions[1].second)
+        assertEquals(h.submissions[0].third,h.submissions[1].third);assertEquals("sleep",h.submissions[1].third.activityId)
+        assertTrue(h.saved.isEmpty())
     }
 }
