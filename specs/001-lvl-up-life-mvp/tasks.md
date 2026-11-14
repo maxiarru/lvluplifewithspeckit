@@ -263,6 +263,20 @@ externo verificado como actualización sin desinstalar. Revisión aprobada y com
 individual autorizado por el titular el 2026-11-14; evidencia y límites en
 `ui-feedback.md`.
 
+### Documentación de presentación y uso — 2026-11-14
+
+- [X] T097 Reemplazar el README raíz mínimo por una presentación de la app,
+  guía de instalación/uso, arquitectura y proceso de desarrollo con Spec Kit,
+  instrucciones de compilación, pruebas y APK externo, con enlaces a la evidencia
+  existente. Verificar rutas, comandos contra el código y ausencia de datos
+  privados; presentar para revisión y decisión de commit individual.
+
+Estado T097: README preparado con captura sintética existente y guía de uso,
+arquitectura y desarrollo. Doce enlaces locales verificados, sin destinos faltantes;
+`git diff --check` aprobado. Comandos contrastados con Gradle, scripts y quickstart;
+sin nuevas compilaciones ni pruebas de ejecución por tratarse solo de documentación.
+Revisión aprobada y commit individual autorizado por el titular el 2026-11-14.
+
 ## Dependencias y orden de ejecución
 
 ```text
