@@ -214,6 +214,17 @@ class ReplayTest {
         val backdated = duration("backdated", 30, LocalDate.parse("2026-11-08"), Instant.parse("2026-11-09T14:00:00Z"))
         assertEquals(balance(18, 0), replay(listOf(first, backdated), queryAt).attributes.getValue(STR))
     }
+    // AC-84 (RF-35): Nov 2–7 are six inactive dates; a real four-minute record on Nov 8 gives 0 XP and does not stop the penalty.
+    @Test fun fourMinuteRecordOnSeventhInactiveDateDoesNotPreventItsPenalty() {
+        val first = duration("initial", 60, LocalDate.parse("2026-11-01"), Instant.parse("2026-11-01T15:00:00Z"))
+        val fourMinutes = duration("four-minutes", 4, LocalDate.parse("2026-11-08"), Instant.parse("2026-11-08T15:00:00Z"))
+        val open = replay(listOf(first, fourMinutes), Instant.parse("2026-11-08T21:00:00Z"))
+        assertEquals(balance(12, 6), open.attributes.getValue(STR))
+        assertEquals(0, open.recordXp[fourMinutes.id.value].orEmpty().values.sum())
+        val closed = replay(listOf(first, fourMinutes), Instant.parse("2026-11-09T15:00:00Z"))
+        assertEquals(balance(7, 7), closed.attributes.getValue(STR))
+        assertEquals(replay(listOf(first), Instant.parse("2026-11-09T15:00:00Z")).attributes, closed.attributes)
+    }
     @Test fun businessDateAndFirstPenaltyChangeAtUtcThreeMidnight() {
         val current = cycle("2026-11-03T15:00:00Z")
         val record = duration("initial", 60, LocalDate.parse("2026-11-03"), Instant.parse("2026-11-03T15:00:00Z"))

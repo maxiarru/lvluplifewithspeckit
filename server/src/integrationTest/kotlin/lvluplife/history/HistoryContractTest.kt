@@ -254,10 +254,21 @@ class HistoryContractTest {
     }
     @Test fun modalityConversionsAndMealDurationAreFunctionalRejections() = scenario { f ->
         val duration=client.create(f);val meal=client.create(f,"meal")
+        val durationBefore=f.stored(duration);val mealBefore=f.stored(meal);val progressionBefore=f.projection()!!["attributes"]
         rejected(client.command(f,"EDIT_RECORD",editData(duration,activity="meal")),"INVALID_INPUT")
+        // AC-108: duration → meal without duration fields is not even expressible; the schema rejects it before any receipt.
+        val noDuration=client.command(f,"EDIT_RECORD",mapOf("recordId" to duration,"expectedVersion" to 1L,"activityDate" to "2026-11-11","activityId" to "meal"))
+        assertEquals(HttpStatusCode.BadRequest,noDuration.status);assertEquals("INVALID_REQUEST",body(noDuration).path("error").path("code").textValue())
         rejected(client.command(f,"EDIT_RECORD",editData(meal)),"INVALID_INPUT")
         rejected(client.command(f,"EDIT_RECORD",editData(meal,activity="meal",minutes=0)),"INVALID_INPUT")
         assertEquals(1L,f.stored(duration)["version"]);assertEquals(1L,f.stored(meal)["version"])
+        // AC-108: records, progression and the date's duration balance are preserved.
+        assertEquals(durationBefore,f.stored(duration));assertEquals(mealBefore,f.stored(meal))
+        assertEquals(progressionBefore,f.projection()!!["attributes"])
+        // 30 min remain consumed: exactly the other 1410 fit, and one more minute does not.
+        client.create(f,minutes=1410)
+        rejected(client.command(f,"CREATE_RECORD",mapOf("activityId" to "strength","activityDate" to "2026-11-11","hours" to 0,"minutes" to 1)),"DAILY_DURATION_EXCEEDED")
+        assertEquals(3,f.records().size)
     }
     @Test fun durationDestinationBudgetAndDateAreValidatedWithoutChangingOriginal() = scenario { f ->
         val id=client.create(f,minutes=180);client.create(f,minutes=1260);val before=f.stored(id)
