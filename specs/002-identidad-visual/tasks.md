@@ -104,7 +104,7 @@ se verifica en el emulador.
 
 ## Phase 8: Historial y cierre
 
-- [ ] T013 Aplicar el estilo nuevo a `HistoryScreen.kt` y `HistoryFlow.kt` sin cambiar su
+- [X] T013 Aplicar el estilo nuevo a `HistoryScreen.kt` y `HistoryFlow.kt` sin cambiar su
   comportamiento (FR-013), y verificar con las pruebas existentes de historial.
 - [ ] T014 Validación final:
   - correr la suite completa con emuladores de Firebase: `assembleDebug`, `:domain:test`,
