@@ -183,8 +183,9 @@ class DeviceMatrixStages {
         input("Fecha del período","fecha-inválida");tap("Consultar período");expect("Revisá la fecha del período");capture("history-error")
         input("Fecha del período",today);tap("Consultar período");expect("Entrenamiento de fuerza")
         tapTab(SessionRoute.HOME);expect(name)
-        tap("Crear actividad personalizada");input("Nombre","Actividad matriz");input("Categoría","Rutina")
-        tap("Guardar definición");expect("Actividad personalizada guardada")
+        // FR-008: custom activities are created from Registrar, which comes back with the new one selected.
+        tap("Registrar actividad");tapTag("record-create-custom");input("Nombre","Actividad matriz");input("Categoría","Rutina")
+        tap("Guardar definición");expect("Actividad personalizada guardada");tap("Volver")
         tap("Clases");expect("Clases y etapas")
         awaitTag("class-catalog").performScrollToIndex(2)
         visible(compose.onNodeWithTag("class-guerrero-stage-2-status")).assertTextEquals("Bloqueada");capture("classes")

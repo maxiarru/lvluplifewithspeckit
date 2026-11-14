@@ -81,7 +81,7 @@ se verifica en el emulador.
   - atributo de cada actividad;
   - categoría, modalidad y atributos de la elegida (AC-06).
   Prueba Android de RNF-04: una actividad guardada se registra en tres interacciones o menos.
-- [ ] T010 [US4] Agregar «+ Crear actividad personalizada» al final de la lista y, al guardarla,
+- [X] T010 [US4] Agregar «+ Crear actividad personalizada» al final de la lista y, al guardarla,
   volver al registro con esa actividad seleccionada por el id confirmado y la fecha conservada
   (FR-008). Prueba Android del flujo y de un rechazo (CON, AC-69).
 

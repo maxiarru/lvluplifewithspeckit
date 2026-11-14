@@ -11,7 +11,9 @@ import lvluplife.data.*
 data class CustomActivityView(val draft: CustomActivityDraft = CustomActivityDraft("", "", "STR"),
     val open: Boolean = false, val busy: Boolean = true, val items: List<CustomActivityOption> = emptyList(),
     val listLoaded: Boolean = false, val listError: Boolean = false, val pending: OperationSnapshot? = null,
-    val unresolved: Boolean = false, val message: String? = null, val settlement: Long = 0)
+    val unresolved: Boolean = false, val message: String? = null, val settlement: Long = 0,
+    /** Id of the last definition confirmed by the server receipt; the record form selects it (FR-008). */
+    val createdActivityId: String? = null)
 
 class CustomActivityController(private val session: SessionController, private val activities: CustomActivityFlowActivities,
     private val scope: CoroutineScope) {
@@ -57,7 +59,9 @@ class CustomActivityController(private val session: SessionController, private v
         } catch (cancelled: CancellationException) { throw cancelled }
         catch (_: OperationBlocked) { if (valid() && request == listRequest) mutable.value = mutable.value.copy(listError = true) }
     }
-    fun open() { if (!mutable.value.busy) mutable.value = mutable.value.copy(open = true, message = null) }
+    fun open() { if (!mutable.value.busy) mutable.value = mutable.value.copy(open = true, message = null, createdActivityId = null) }
+    /** The record form took the created id; a later creation reports its own. */
+    fun consumeCreated() { mutable.value = mutable.value.copy(createdActivityId = null) }
     fun close() { if (!mutable.value.busy) mutable.value = mutable.value.copy(open = false) }
     fun change(draft: CustomActivityDraft) {
         if (!valid() || mutable.value.busy || mutable.value.pending != null || mutable.value.unresolved) return
@@ -112,7 +116,9 @@ class CustomActivityController(private val session: SessionController, private v
         if (!valid() || result.ref.uid != uid) return
         mutable.value = when (result.state) {
             PendingState.CONFIRMED -> { intent = null; mutable.value.copy(open = false, busy = false, pending = null, unresolved = false,
-                message = "Actividad personalizada guardada", settlement = mutable.value.settlement + 1) }
+                message = "Actividad personalizada guardada", settlement = mutable.value.settlement + 1,
+                // Only the id confirmed by the receipt is used; the app never guesses it from the name.
+                createdActivityId = result.receipt?.result?.path("activityId")?.textValue()?.takeIf { it.isNotBlank() }) }
             PendingState.REJECTED -> { intent = null; mutable.value.copy(open = true, busy = false, pending = null, unresolved = false, message = message(result.error)) }
             else -> mutable.value.copy(open = true, busy = false, pending = result, message = result.error?.let(::message))
         }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.activity.compose.BackHandler
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -122,6 +123,18 @@ fun RecordFlowContent(session: SessionController, shared: SessionControllers, us
     var catalogOpen by remember { mutableStateOf(false) }
     BackHandler(enabled=catalogOpen) { catalogOpen=false }
     val online = records.online
+    // FR-008: a definition created from Registrar comes back selected, by the id the server confirmed, keeping the date.
+    var returnToRecord by remember { mutableStateOf(false) }
+    LaunchedEffect(returnToRecord, customView?.open, customView?.createdActivityId, view.options, view.busy) {
+        if (!returnToRecord || customView == null || customView.open) return@LaunchedEffect
+        val created = customView.createdActivityId
+        if (created == null) { if (customView.pending == null && !customView.unresolved) returnToRecord = false }
+        else if (!view.busy && view.options.any { it.id == created }) {
+            controller.change(view.draft.copy(activityId = created))
+            custom?.consumeCreated()
+            returnToRecord = false
+        }
+    }
     val confirmedLevel=homeView.value?.generalLevel
     val resetLocked=resetView?.let { it.busy || it.pending != null || it.unresolved } == true
     if (sessionView.uid != null && resetView?.ready == false) {
@@ -141,9 +154,13 @@ fun RecordFlowContent(session: SessionController, shared: SessionControllers, us
                 HomeScreen(homeView, home::refresh,{ catalogOpen=true }, username,
                     onRecord = if (!resetLocked && view.options.isNotEmpty()) controller::open else null, recordEnabled = !locked)
             }
-            if (!resetLocked) RecordScreen(view, controller, online, showOpenButton = false)
+            if (!resetLocked) RecordScreen(view, controller, online, showOpenButton = false,
+                onCreateCustom = custom?.let { c -> { returnToRecord = true; c.open() } }, createCustomEnabled = customView?.busy == false)
         }
-        if (!resetLocked && !view.open && custom != null && customView != null)
+        // Outcome of the last definition (also a recovered one) once its screen is closed, in Registrar or in PJ.
+        if (customView?.open != true) customView?.message?.let { androidx.compose.material3.Text(it, Modifier.testTag("custom-outcome")) }
+        // Custom activities are created from Registrar (FR-008); the screen shows while open or with an unresolved definition.
+        if (!resetLocked && custom != null && customView != null && (customView.open || customView.pending != null || customView.unresolved))
             CustomActivityScreen(customView, custom, shared.customActivities?.online ?: online)
         if (!view.open && customView?.open != true && resetController != null && resetView != null)
             ResetScreen(resetView,resetController,homeView.value?.cycleId,shared.resetOperations?.online ?: online)

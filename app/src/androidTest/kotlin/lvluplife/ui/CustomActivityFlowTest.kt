@@ -110,7 +110,14 @@ class CustomActivityFlowTest {
         compose.waitUntil(3_000) { compose.onAllNodesWithText(text).fetchSemanticsNodes().isNotEmpty() }
         compose.onNodeWithText(text).assertIsDisplayed()
     }
-    private fun open() { expect("Crear actividad personalizada"); compose.onNodeWithText("Crear actividad personalizada").performClick() }
+    /** Custom activities are created from Registrar (FR-008): open it from PJ first when needed. */
+    private fun open() {
+        fun present(tag: String) = compose.onAllNodesWithTag(tag).fetchSemanticsNodes().isNotEmpty()
+        compose.waitUntil(3_000) { present("pj-record") || present("record-create-custom") }
+        if (!present("record-create-custom")) compose.onNodeWithTag("pj-record").performScrollTo().performClick()
+        compose.waitUntil(3_000) { compose.onAllNodesWithTag("record-create-custom").filter(isEnabled()).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("record-create-custom").performScrollTo().performClick()
+    }
     private fun fill() {
         open()
         compose.onNodeWithText("Nombre").performTextReplacement("Práctica propia")

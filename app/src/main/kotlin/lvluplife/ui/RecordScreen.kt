@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -46,7 +47,8 @@ private fun ActivityDetails(option: RecordOption) {
 }
 
 @Composable
-fun RecordScreen(view: RecordFormView, controller: RecordFormController, online: Boolean, showOpenButton: Boolean = true) {
+fun RecordScreen(view: RecordFormView, controller: RecordFormController, online: Boolean, showOpenButton: Boolean = true,
+    onCreateCustom: (() -> Unit)? = null, createCustomEnabled: Boolean = true) {
     val keyboard = LocalSoftwareKeyboardController.current
     val locked = view.busy || view.pending != null || view.unresolved
     BackHandler(enabled = view.open && !view.busy) { controller.close() }
@@ -70,6 +72,12 @@ fun RecordScreen(view: RecordFormView, controller: RecordFormController, online:
             if (dates.none { it.second == view.draft.date }) Text("Fecha del borrador: ${view.draft.date}. Elegí Hoy, Ayer o Anteayer.")
             Text("Actividad", style = MaterialTheme.typography.labelLarge)
             ActivityPicker(view.options, view.draft.activityId, !locked) { controller.change(view.draft.copy(activityId = it)) }
+            // FR-008: at the end of the list; on save the form comes back with the new activity selected.
+            if (onCreateCustom != null) ActionOutlinedButton(onClick = onCreateCustom, enabled = !locked && createCustomEnabled,
+                modifier = Modifier.fillMaxWidth().testTag("record-create-custom")) {
+                Text("+ ", Modifier.clearAndSetSemantics {})
+                Text("Crear actividad personalizada")
+            }
             view.options.firstOrNull { it.id == view.draft.activityId }?.let { ActivityDetails(it) }
             if (view.options.firstOrNull { it.id == view.draft.activityId }?.duration == true) Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 InputField(value = view.draft.hours, onValueChange = { controller.change(view.draft.copy(hours = it)) },
