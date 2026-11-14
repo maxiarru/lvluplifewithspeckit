@@ -68,6 +68,10 @@ class RecordScreenTest {
         compose.onNodeWithTag("record-detail-mode").assertTextEquals("Modalidad: por duración")
         compose.onNodeWithText("STR (principal)", useUnmergedTree = true).assertIsDisplayed()
         compose.onNodeWithText("· CON (secundario)", useUnmergedTree = true).assertIsDisplayed()
+        // AC-06: neither attributes nor score can be edited; the only editable fields are the duration.
+        compose.onAllNodes(hasSetTextAction()).assertCountEquals(2)
+        compose.onNode(hasSetTextAction() and hasText("Horas")).assertExists()
+        compose.onNode(hasSetTextAction() and hasText("Minutos")).assertExists()
         // Each activity also shows its attribute codes as text, not only as color.
         compose.onNodeWithTag("activity-strength").assert(hasText("STR · CON"))
         compose.onNodeWithTag("activity-meal").performScrollTo().performClick()
@@ -75,6 +79,7 @@ class RecordScreenTest {
         compose.onNodeWithTag("record-detail-mode").assertTextEquals("Modalidad: por ocurrencia")
         compose.onNodeWithText("CON (principal)", useUnmergedTree = true).assertIsDisplayed()
         compose.onAllNodesWithText("(secundario)", substring = true, useUnmergedTree = true).assertCountEquals(0)
+        compose.onAllNodes(hasSetTextAction()).assertCountEquals(0)
         // Read only: the details offer no control to change attributes.
         compose.onNodeWithTag("record-details").onChildren().filter(hasClickAction()).assertCountEquals(0)
     }
