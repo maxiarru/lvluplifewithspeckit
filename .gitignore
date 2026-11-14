@@ -33,3 +33,6 @@ Thumbs.db
 .tooling/
 node_modules/
 .firebase/
+
+# Visual references (third-party images; local only)
+design/referencias/
