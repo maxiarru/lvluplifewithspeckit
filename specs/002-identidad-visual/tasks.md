@@ -54,7 +54,7 @@ se verifica en el emulador.
   (reemplaza la pestaña raíz; `back()` cierra lo secundario y después vuelve a PJ). Pruebas
   unitarias en `app/src/test` de selección, vuelta atrás y limpieza al cerrar sesión o cambiar
   de cuenta.
-- [ ] T006 [US2] Crear `MainTabs.kt` con la barra inferior y los controladores compartidos por
+- [X] T006 [US2] Crear `MainTabs.kt` con la barra inferior y los controladores compartidos por
   sesión (que hoy crea `RecordFlow`). Además:
   - quitar la cabecera, «Historial» y «Cerrar sesión» de `SessionHost`;
   - conectar en `AppNavigation`.

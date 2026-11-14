@@ -2,10 +2,13 @@ package lvluplife.ui
 
 import lvluplife.ui.theme.*
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.*
-import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import lvluplife.application.AccessController
 import lvluplife.application.ProfileLookup
 import lvluplife.application.AccessAccounts
@@ -30,17 +33,18 @@ fun AppNavigation(session: SessionController, google: GoogleSignIn, accounts: Ac
     when {
         view.uid == null -> AccessScreen(access.busy, access.error, controller::signIn)
         access.profile == ProfileLookup.Required -> ProfileScreen(access, controller)
-        else -> SessionHost(session, onLogout = controller::logout) {
-            (access.profile as? ProfileLookup.Existing)?.let {
-                Text(it.username)
-                if (records != null && progress != null && view.routes.lastOrNull() == lvluplife.application.SessionRoute.HOME)
-                    RecordFlow(session, records, progress, customActivities, reset)
-                if (history != null && view.routes.lastOrNull() == lvluplife.application.SessionRoute.HISTORY)
-                    HistoryFlow(session, history, corrections)
-            }
-            if (access.profile == null) {
-                Text(access.error ?: "Cargando…")
-                if (access.error != null) ActionButton(onClick = controller::retryLookup, enabled = !access.busy) { Text("Reintentar") }
+        else -> SessionHost(session) {
+            when (val profile = access.profile) {
+                is ProfileLookup.Existing -> MainTabs(session, profile.username, controller::logout,
+                    records, progress, customActivities, history, corrections, reset)
+                null -> Column(Modifier.padding(horizontal = 24.dp)) {
+                    Text(access.error ?: "Cargando…")
+                    if (access.error != null) {
+                        ActionButton(onClick = controller::retryLookup, enabled = !access.busy) { Text("Reintentar") }
+                        ActionButton(onClick = controller::logout) { Text("Cerrar sesión") }
+                    }
+                }
+                else -> Unit
             }
         }
     }
