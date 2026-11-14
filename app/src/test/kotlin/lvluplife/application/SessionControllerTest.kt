@@ -156,6 +156,61 @@ class SessionControllerTest {
         } finally { release.countDown(); pool.shutdownNow() }
     }
 
+    // Feature 002 (T005): bottom tabs replace the root route instead of stacking it.
+    @Test fun tabsAreTheFourMainScreensInBarOrder() {
+        assertEquals(listOf(SessionRoute.HOME, SessionRoute.ATTRIBUTES, SessionRoute.INFO, SessionRoute.HISTORY), SessionRoute.tabs)
+    }
+
+    @Test fun selectingATabReplacesTheRootInsteadOfStacking() {
+        val c = SessionController(); c.authenticate(a)
+        for (tab in listOf(SessionRoute.ATTRIBUTES, SessionRoute.INFO, SessionRoute.HISTORY, SessionRoute.ATTRIBUTES, SessionRoute.HOME)) {
+            c.selectTab(tab); assertEquals(listOf(tab), c.state.value.routes)
+        }
+    }
+
+    @Test fun selectingATabClosesSecondaryScreens() {
+        val c = SessionController(); c.authenticate(a)
+        c.selectTab(SessionRoute.INFO); c.navigate(SessionRoute.HISTORY)
+        assertEquals(listOf(SessionRoute.INFO, SessionRoute.HISTORY), c.state.value.routes)
+        c.selectTab(SessionRoute.INFO)
+        assertEquals(listOf(SessionRoute.INFO), c.state.value.routes)
+    }
+
+    @Test fun backClosesSecondaryFirstThenReturnsToPjAndStopsThere() {
+        val c = SessionController(); c.authenticate(a)
+        c.selectTab(SessionRoute.INFO); c.navigate(SessionRoute.HISTORY)
+        assertTrue(c.back()); assertEquals(listOf(SessionRoute.INFO), c.state.value.routes)
+        assertTrue(c.back()); assertEquals(listOf(SessionRoute.HOME), c.state.value.routes)
+        assertFalse(c.back()); assertEquals(listOf(SessionRoute.HOME), c.state.value.routes)
+    }
+
+    @Test fun changingTabsKeepsConfirmedDataSoProgressIsNotRequestedAgain() {
+        val c = SessionController(); c.authenticate(a)
+        c.confirm(c.beginLoad("progress"), "revision-1")
+        c.selectTab(SessionRoute.ATTRIBUTES); c.selectTab(SessionRoute.HOME)
+        assertEquals(LoadState.Confirmed("revision-1"), c.state.value.loads["progress"])
+    }
+
+    @Test fun onlyTabsCanBeSelectedAndNeverWithoutSessionOrBeforeTheProfileExists() {
+        val c = SessionController()
+        c.selectTab(SessionRoute.INFO); assertEquals(SessionView(), c.state.value)
+        c.authenticate(a)
+        for (route in listOf(SessionRoute.SIGN_IN, SessionRoute.PROFILE))
+            assertThrows(IllegalArgumentException::class.java) { c.selectTab(route) }
+        c.navigate(SessionRoute.PROFILE)
+        c.selectTab(SessionRoute.INFO)
+        assertEquals(listOf(SessionRoute.HOME, SessionRoute.PROFILE), c.state.value.routes)
+    }
+
+    @Test fun logoutAndAccountSwitchForgetTheSelectedTab() {
+        val c = SessionController(); c.authenticate(a)
+        c.selectTab(SessionRoute.ATTRIBUTES); c.logout()
+        assertEquals(SessionView(), c.state.value); assertFalse(c.back())
+        c.authenticate(a); assertEquals(listOf(SessionRoute.HOME), c.state.value.routes)
+        c.selectTab(SessionRoute.INFO); c.authenticate(b)
+        assertEquals("owner-b", c.state.value.uid); assertEquals(listOf(SessionRoute.HOME), c.state.value.routes)
+    }
+
     @Test fun newestQueryWinsAndOldReceiptDoesNotReplaceProgress() {
         val c = SessionController(); c.authenticate(a)
         val older = c.beginLoad("progress"); val latest = c.beginLoad("progress")

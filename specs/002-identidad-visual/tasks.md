@@ -50,7 +50,7 @@ se verifica en el emulador.
 
 ## Phase 3: US2 — Navegación por pestañas (P1)
 
-- [ ] T005 [US2] Agregar `SessionRoute.ATTRIBUTES` e `INFO` y `SessionController.selectTab`
+- [X] T005 [US2] Agregar `SessionRoute.ATTRIBUTES` e `INFO` y `SessionController.selectTab`
   (reemplaza la pestaña raíz; `back()` cierra lo secundario y después vuelve a PJ). Pruebas
   unitarias en `app/src/test` de selección, vuelta atrás y limpieza al cerrar sesión o cambiar
   de cuenta.

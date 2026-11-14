@@ -6,7 +6,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import lvluplife.data.*
 import lvluplife.ui.LoadState
 
-enum class SessionRoute { SIGN_IN, HOME, PROFILE, HISTORY }
+/** HOME is the PJ tab. Tabs are roots; other routes stack on top of them. */
+enum class SessionRoute { SIGN_IN, HOME, PROFILE, HISTORY, ATTRIBUTES, INFO;
+    companion object { val tabs = listOf(HOME, ATTRIBUTES, INFO, HISTORY) }
+}
 data class SessionView(val uid: String? = null, val routes: List<SessionRoute> = listOf(SessionRoute.SIGN_IN),
     val loads: Map<String, LoadState<Any>> = emptyMap(), val pending: List<OperationSnapshot> = emptyList(), val sessionId: Long = 0)
 class ReadTicket internal constructor(val uid: String, internal val generation: Long, val key: String, internal val request: Long)
@@ -63,10 +66,25 @@ class SessionController(private val operations: SessionOperations? = null) : Ses
         if (view.routes.last() != route) mutableState.value = view.copy(routes = view.routes + route)
     }
 
+    /** Replaces the root with [route] and closes secondary screens. Loaded data is kept. */
+    fun selectTab(route: SessionRoute) = synchronized(lock) {
+        require(route in SessionRoute.tabs) { "Not a tab: $route" }
+        val view = mutableState.value
+        // Without a session, or while the username is still required, the tabs are not reachable.
+        if (token == null || SessionRoute.PROFILE in view.routes) return@synchronized
+        mutableState.value = view.copy(routes = listOf(route))
+    }
+
+    /** Closes the top secondary screen; on another tab's root, returns to PJ; on PJ, there is nothing to close. */
     fun back(): Boolean = synchronized(lock) {
         val view = mutableState.value
-        if (view.routes.size <= 1) false
-        else { mutableState.value = view.copy(routes = view.routes.dropLast(1)); true }
+        when {
+            view.routes.size > 1 -> { mutableState.value = view.copy(routes = view.routes.dropLast(1)); true }
+            token != null && view.routes.single() != SessionRoute.HOME && view.routes.single() in SessionRoute.tabs -> {
+                mutableState.value = view.copy(routes = listOf(SessionRoute.HOME)); true
+            }
+            else -> false
+        }
     }
 
     fun beginLoad(key: String): ReadTicket = synchronized(lock) {

@@ -89,3 +89,24 @@ Pixel 6a API 30 y los emuladores locales de Firebase (proyecto `demo-lvluplife`)
   - `assembleDebug`: correcto.
   - `testDebugUnitTest`: 148 pruebas, 0 fallas.
   - `connectedDebugAndroidTest`: 141 pruebas, 0 fallas (antes 137; 4 nuevas).
+- Commit: fd4685d.
+
+## T005 — Rutas de pestañas y `selectTab` (2026-11-14)
+
+- Pruebas nuevas en `SessionControllerTest` (`app/src/test`):
+  - orden de las pestañas: PJ, Atributos, Info, Historial;
+  - elegir una pestaña reemplaza la raíz y cierra lo secundario;
+  - `back()` cierra lo secundario, después vuelve a PJ y en PJ no hace nada;
+  - cambiar de pestaña conserva los datos confirmados, así no se vuelve a pedir el progreso;
+  - solo se eligen pestañas, nunca sin sesión ni mientras falta el nombre de usuario;
+  - cerrar sesión o cambiar de cuenta olvida la pestaña elegida.
+- RED 1: no compila porque faltan `ATTRIBUTES`, `INFO`, `tabs` y `selectTab`.
+- RED 2: con `selectTab` apilando como `navigate`, fallan 4 de las 7.
+- Implementación en `SessionController.kt`: `SessionRoute.ATTRIBUTES`, `INFO` y `tabs`;
+  `selectTab` exige una pestaña y no actúa sin sesión ni con `PROFILE` abierto; `back()` vuelve
+  a PJ desde la raíz de otra pestaña.
+- Resultados:
+  - `assembleDebug` y compilación de pruebas Android: correctos.
+  - `testDebugUnitTest`: 155 pruebas, 0 fallas (antes 148; 7 nuevas).
+  - Android, clases que usan la navegación (`SessionNavigationTest`, `AccessFlowTest`,
+    `HistoryFlowTest`): 35 pruebas, 0 fallas. La suite completa se corre en T007.
