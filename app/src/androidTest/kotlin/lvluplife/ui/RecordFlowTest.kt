@@ -170,6 +170,27 @@ class RecordFlowTest {
         assertNotEquals(r.submissions[0].first, r.submissions[1].first)
         assertEquals(old, r.store.pendingFor("synthetic-a").single { it.operationId == old.operationId })
     }
+    // AC-115 (RF-50): another device reset first; the record is rejected, the new cycle is shown and nothing is resent to it.
+    @Test fun cycleClosedRejectionShowsTheNewCycleWithoutTransferringTheOperation() = scenario { r, _ ->
+        val newCycle = AtomicInteger()
+        val calls = AtomicInteger()
+        mount(r, RecordFlowProgress { calls.incrementAndGet()
+            if (newCycle.get() == 0) progress(10, 12) else progress(11, 0).copy(cycleId = "synthetic-new-cycle") })
+        compose.waitUntil(5_000) { compose.onAllNodesWithTag("attribute-STR-xp").fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithTag("attribute-STR-xp").assertTextEquals("12 XP")
+        r.response = PendingState.REJECTED; r.error = ApiFailureCode.CYCLE_CLOSED; newCycle.set(1)
+        fill(); send(); expect("El ciclo cambió. Actualizá antes de volver a cargar.")
+        compose.waitUntil(5_000) { calls.get() >= 2 }
+        compose.waitUntil(5_000) { compose.onAllNodes(hasTestTag("attribute-STR-xp") and hasText("0 XP")).fetchSemanticsNodes().isNotEmpty() }
+        compose.onNodeWithText("Guardar actividad").assertDoesNotExist()
+        // A delayed automatic resend would not be awaited by waitForIdle; wait a bounded real interval for it instead.
+        val resent = runCatching { compose.waitUntil(2_000) { r.submissions.size > 1 || r.retries.isNotEmpty() } }.isSuccess
+        assertFalse("la operación no debe trasladarse al ciclo nuevo", resent)
+        assertEquals(1, r.submissions.size); assertTrue(r.retries.isEmpty())
+        val original = r.store.pendingFor("synthetic-a").single()
+        assertEquals(r.submissions.single().first, original.operationId)
+        assertEquals(PendingState.REJECTED, original.state); assertEquals("synthetic-cycle", original.cycleId)
+    }
     @Test fun mealDoesNotRequestDurationComponents() = scenario { r, _ ->
         mount(r); form(); compose.onNodeWithText("Comida saludable").performClick()
         compose.onNodeWithText("Horas").assertDoesNotExist(); compose.onNodeWithText("Minutos").assertDoesNotExist()
