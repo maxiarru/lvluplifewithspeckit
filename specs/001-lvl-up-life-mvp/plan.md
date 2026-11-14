@@ -149,3 +149,12 @@ inactividad. La rotación tiene cobertura unitaria; no se acreditó una renovaci
 prolongada con instancia caliente ni comandos reales de escritura. La entrega
 pública y su APK requieren la siguiente tarea y revisión. El registro es
 retrospectivo y no convierte la prueba en un diseño de producción aprobado.
+
+## Entrega instalable autorizada — 2026-11-14
+
+Tras el cierre de T094, el titular autorizó terminar la entrega. [T095](delivery.md)
+planifica la API estable en production del mismo proyecto, la federación limitada
+a ese entorno, validación funcional y un APK release firmado fuera del repositorio.
+Se conserva el login Google y la autorización del servidor por UID, sin cambios
+en las reglas de progresión. Las claves privadas de distribución quedan fuera del
+repo; al APK solo se incorporan la configuración pública Firebase y la URL HTTPS.

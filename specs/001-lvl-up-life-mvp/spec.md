@@ -689,3 +689,7 @@ Este seguimiento no agrega requisitos funcionales ni declara un despliegue
 definitivo aprobado. T094 acredita una lectura de perfil desde Android a través
 de Vercel y Firebase reales. Las limitaciones históricas de otras comprobaciones
 Google/Firebase conservan su alcance; esa lectura no las reemplaza.
+
+El titular autorizó después completar la entrega instalable. [T095](delivery.md)
+registra el paso a producción y los criterios del APK, manteniendo los requisitos
+funcionales existentes y la conservación de datos de cada cuenta.

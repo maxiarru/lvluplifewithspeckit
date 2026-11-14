@@ -229,6 +229,20 @@ la creación de confianza IAM fue autorizada explícitamente por el titular y ap
 
 - [X] T094 Probar el servidor existente en Vercel Hobby: paquete JVM sin Android ni credenciales locales; build de contenedor; HTTPS y rechazos sin sesión; adaptador OIDC con firma, equipo/proyecto/entorno exactos y sesión de usuario independiente; regresión del servidor. Tras aprobación específica, configurar la federación mínima con Firebase y verificar acceso real, renovación y arranque tras inactividad. Registrar evidencia y limitaciones en `vercel-trial.md` y `deployment/vercel/verification.md`; no cambiar planes ni habilitar facturación. Estado: build, pruebas, IAM autorizado, intercambio STS/impersonación y lectura Android con Google/Firebase reales aprobados; lectura repetida tras inactividad correcta. Rotación/expiración probadas localmente; no se observó renovación prolongada de una instancia caliente ni comandos reales de escritura. Revisión aprobada y commit autorizado por el titular el 2026-11-14. La entrega pública y su APK corresponden a la siguiente tarea.
 
+### Entrega posterior a T094 — 2026-11-14
+
+- [X] T095 Publicar la API estable en production del proyecto Vercel existente, ampliar la federación únicamente a su subject production y mantener previews protegidas; comprobar acceso Google/Firebase y operaciones reales preservando datos heredados. Preparar firma de distribución fuera del repo, configurar sus huellas en la app Firebase correcta y generar/verificar el APK release con HTTPS estable. Entregar APK, hash e instrucciones fuera del repo y registrar evidencia y límites en `delivery.md`. Conservar Hobby/Spark, no habilitar facturación ni hacer push. Cerrar revisión y esperar decisión de commit individual.
+
+Plan y criterios: [delivery.md](delivery.md). Solicitud del titular: terminar API,
+validación y APK tras el commit de T094.
+
+Estado T095: API production READY y lectura autenticada real aprobada; APK release
+firmado, instalado y abierto en emulador separado; 158 tests Android aprobados.
+Se conservó el perfil existente y su operación pendiente. Sin nuevos comandos de
+escritura de ensayo; primer login release en teléfono pendiente de prueba personal.
+Detalles y límites en `delivery.md`. Revisión aprobada y commit individual
+autorizado por el titular el 2026-11-14.
+
 ## Dependencias y orden de ejecución
 
 ```text
