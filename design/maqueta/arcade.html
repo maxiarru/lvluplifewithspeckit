@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maqueta Arcade vivo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EAF1FC;--card:#FFFFFF;--text:#14213D;--muted:#5A6785;--primary:#2F5BD3;--on-primary:#FFFFFF;
+  --accent:#FFC531;--track:#D6E0F3;--nav:#D9E4F8;--danger:#C62A2F;
+  --str:#E5484D;--dex:#12A594;--con:#E38B0B;--int:#7C5CE0;--wit:#2F7DE1;--men:#D6409F;
+  --str-t:#C62A2F;--dex-t:#0B7F72;--con-t:#A85E00;--int-t:#6346C8;--wit-t:#1F63BE;--men-t:#B02A80;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#F4F6FA;color:var(--text);font-family:Nunito,system-ui,sans-serif;padding:24px 16px}
+h1{font-family:Fredoka,sans-serif;font-weight:600;margin:0 0 4px}
+.lead{color:var(--muted);margin:0 0 20px;max-width:780px}
+.swatches{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.sw{display:flex;align-items:center;gap:6px;font-size:12px;background:#fff;border-radius:8px;padding:4px 8px}
+.sw i{width:16px;height:16px;border-radius:4px;display:inline-block;border:1px solid #0001}
+.screens{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+figure{margin:0}
+figcaption{font-weight:700;margin-bottom:8px}
+.phone{width:340px;max-width:100%;height:720px;background:var(--bg);border-radius:28px;border:8px solid #1b2233;display:flex;flex-direction:column;overflow:hidden}
+.body{flex:1;overflow:auto;padding:16px}
+.h{font-family:Fredoka,sans-serif;font-weight:600}
+.row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.chip{background:var(--accent);border-radius:10px;padding:3px 10px;font-family:Fredoka,sans-serif;font-weight:600}
+.card{background:var(--card);border-radius:16px;padding:12px 14px}
+.bar{height:8px;border-radius:4px;background:var(--track);overflow:hidden}
+.bar>b{display:block;height:100%;border-radius:4px}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:13px;font:600 16px Fredoka,sans-serif;background:var(--primary);color:var(--on-primary);text-align:center}
+.btn.ghost{background:var(--card);color:var(--primary);border:2px solid var(--primary)}
+.btn.danger{background:var(--card);color:var(--danger);border:2px solid var(--danger)}
+.nav{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:8px 10px 12px;background:var(--bg)}
+.nav span{background:var(--nav);border-radius:12px;padding:10px 0;text-align:center;font:600 13px Fredoka,sans-serif}
+.nav span.on{background:var(--accent)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tile{background:var(--card);border-radius:12px;padding:6px 8px}
+.tag{border-radius:8px;padding:2px 8px;font-size:12px;font-weight:700;background:#EEF2FA}
+.list>div{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--card);border-radius:12px;margin-bottom:6px}
+.list>div.sel{outline:3px solid var(--primary)}
+.dash{border:2px dashed var(--primary);color:var(--primary);background:transparent!important;font-weight:700;justify-content:center!important}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.seg span{background:var(--card);border-radius:10px;padding:8px 0;text-align:center;font-weight:700}
+.seg span.on{background:var(--primary);color:#fff}
+.thumbs{display:flex;gap:6px}
+.thumbs img{width:64px;height:64px;object-fit:contain;background:var(--bg);border-radius:10px}
+</style>
+</head>
+<body>
+<h1>Lvl Up Life · Maqueta «Arcade vivo»</h1>
+<p class="lead">Propuesta de la feature 002 en modo claro. Muestra estructura, colores y tipografía (Fredoka para títulos, Nunito para texto). Los datos son de ejemplo: un Guardián en nivel general 12. Historial mantiene su contenido actual con este estilo.</p>
+
+<div class="swatches">
+  <span class="sw"><i style="background:var(--bg)"></i>Fondo #EAF1FC</span>
+  <span class="sw"><i style="background:var(--card)"></i>Tarjeta #FFFFFF</span>
+  <span class="sw"><i style="background:var(--text)"></i>Texto #14213D</span>
+  <span class="sw"><i style="background:var(--primary)"></i>Primario #2F5BD3</span>
+  <span class="sw"><i style="background:var(--accent)"></i>Acento #FFC531</span>
+  <span class="sw"><i style="background:var(--str)"></i>STR</span>
+  <span class="sw"><i style="background:var(--dex)"></i>DEX</span>
+  <span class="sw"><i style="background:var(--con)"></i>CON</span>
+  <span class="sw"><i style="background:var(--int)"></i>INT</span>
+  <span class="sw"><i style="background:var(--wit)"></i>WIT</span>
+  <span class="sw"><i style="background:var(--men)"></i>MEN</span>
+</div>
+
+<div class="screens">
+
+<figure><figcaption>1 · PJ (principal)</figcaption>
+<div class="phone"><div class="body">
+  <div class="row"><span class="h" style="font-size:20px">Hola, maxi</span><span class="chip">Nv 12</span></div>
+  <img src="../../app/src/main/res/drawable/guardian.png" alt="Guardián · Etapa I" style="display:block;width:100%;height:270px;object-fit:contain;margin:6px 0">
+  <div class="row"><span class="h" style="font-size:22px">Guardián</span><span class="muted small">Etapa I · II desde nivel 15</span></div>
+  <div class="small muted" style="margin:6px 0 4px">Nivel 13: 3 de 4 subidas de atributo</div>
+  <div class="bar" style="height:10px"><b style="width:75%;background:var(--accent)"></b></div>
+  <div class="tiles" style="margin:12px 0">
+    <div class="tile"><div class="row"><b style="color:var(--str-t)">STR</b><b>6</b></div><div class="bar"><b style="width:53%;background:var(--str)"></b></div></div>
+    <div class="tile"><div class="row"><b style="color:var(--dex-t)">DEX</b><b>5</b></div><div class="bar"><b style="width:40%;background:var(--dex)"></b></div></div>
+    <div class="tile"><div class="row"><b style="color:var(--con-t)">CON</b><b>9</b></div><div class="bar"><b style="width:74%;background:var(--con)"></b></div></div>
+    <div class="tile"><div class="row"><b style="color:var(--int-t)">INT</b><b>4</b></div><div class="bar"><b style="width:25%;background:var(--int)"></b></div></div>
+    <div class="tile"><div class="row"><b style="color:var(--wit-t)">WIT</b><b>5</b></div><div class="bar"><b style="width:73%;background:var(--wit)"></b></div></div>
+    <div class="tile"><div class="row"><b style="color:var(--men-t)">MEN</b><b>7</b></div><div class="bar"><b style="width:71%;background:var(--men)"></b></div></div>
+  </div>
+  <span class="btn">+ Registrar actividad</span>
+</div>
+<div class="nav"><span class="on">PJ</span><span>Atributos</span><span>Info</span><span>Historial</span></div></div>
+</figure>
+
+<figure><figcaption>2 · Atributos</figcaption>
+<div class="phone"><div class="body">
+  <div class="h" style="font-size:22px">Tus atributos</div>
+  <p class="muted small" style="margin:2px 0 12px">Cada nivel N pide 30 × N XP. La barra chica muestra lo ganado hoy contra el tope diario.</p>
+  <div class="card" style="margin-bottom:8px"><div class="row"><span class="h" style="color:var(--str-t);font-size:17px">STR · Fuerza</span><span class="h" style="font-size:18px">LVL 6</span></div>
+    <div class="bar" style="margin:8px 0 4px"><b style="width:53%;background:var(--str)"></b></div>
+    <div class="row small muted"><span>95 / 180 XP al nivel 7</span><span>Hoy 24 / 48</span></div></div>
+  <div class="card" style="margin-bottom:8px"><div class="row"><span class="h" style="color:var(--dex-t);font-size:17px">DEX · Destreza</span><span class="h" style="font-size:18px">LVL 5</span></div>
+    <div class="bar" style="margin:8px 0 4px"><b style="width:40%;background:var(--dex)"></b></div>
+    <div class="row small muted"><span>60 / 150 XP al nivel 6</span><span>Hoy 0 / 48</span></div></div>
+  <div class="card" style="margin-bottom:8px"><div class="row"><span class="h" style="color:var(--con-t);font-size:17px">CON · Constitución</span><span class="h" style="font-size:18px">LVL 9</span></div>
+    <div class="bar" style="margin:8px 0 4px"><b style="width:74%;background:var(--con)"></b></div>
+    <div class="row small muted"><span>200 / 270 XP al nivel 10</span><span style="color:var(--con-t);font-weight:700">Tope de hoy ✓</span></div></div>
+  <div class="card" style="margin-bottom:8px"><div class="row"><span class="h" style="color:var(--int-t);font-size:17px">INT · Intelecto</span><span class="h" style="font-size:18px">LVL 4</span></div>
+    <div class="bar" style="margin:8px 0 4px"><b style="width:25%;background:var(--int)"></b></div>
+    <div class="row small muted"><span>30 / 120 XP al nivel 5</span><span>Hoy 6 / 48</span></div></div>
+  <div class="card"><div class="row"><span class="h" style="color:var(--wit-t);font-size:17px">WIT · Ingenio</span><span class="h" style="font-size:18px">LVL 5</span></div>
+    <div class="bar" style="margin:8px 0 4px"><b style="width:73%;background:var(--wit)"></b></div>
+    <div class="row small muted"><span>110 / 150 XP al nivel 6</span><span>Hoy 12 / 48</span></div></div>
+  <div class="card" style="margin-top:8px"><div class="row"><span class="h" style="color:var(--men-t);font-size:17px">MEN · Descanso</span><span class="h" style="font-size:18px">LVL 7</span></div>
+    <div class="bar" style="margin:8px 0 4px"><b style="width:71%;background:var(--men)"></b></div>
+    <div class="row small muted"><span>150 / 210 XP al nivel 8</span><span>Hoy 21 / 30</span></div></div>
+</div>
+<div class="nav"><span>PJ</span><span class="on">Atributos</span><span>Info</span><span>Historial</span></div></div>
+</figure>
+
+<figure><figcaption>3 · Info</figcaption>
+<div class="phone"><div class="body">
+  <div class="h" style="font-size:22px">Info</div>
+  <p class="muted small" style="margin:2px 0 12px">Reglas del juego, clases y tu personaje.</p>
+  <div class="card" style="margin-bottom:8px">
+    <div class="h" style="font-size:17px;margin-bottom:6px">Cómo ganás XP</div>
+    <div style="line-height:1.7"><b style="color:var(--str-t)">STR</b> <b style="color:var(--dex-t)">DEX</b> <b style="color:var(--int-t)">INT</b> <b style="color:var(--wit-t)">WIT</b> · 1 XP cada 5 min · tope 48/día<br>
+    <b style="color:var(--con-t)">CON</b> · 7 XP por comida saludable · tope 28/día<br>
+    <b style="color:var(--men-t)">MEN</b> · 3 XP por hora de sueño · tope 30/día</div>
+    <div class="small muted" style="margin-top:6px">Con dos atributos, 2/3 van al principal y 1/3 al secundario.</div>
+  </div>
+  <div class="card" style="margin-bottom:8px">
+    <div class="h" style="font-size:17px;margin-bottom:6px">Niveles y constancia</div>
+    <div class="small">Cada atributo sube al juntar 30 × su nivel en XP. Tu nivel general sube con las subidas de tus atributos.</div>
+  </div>
+  <div class="card" style="margin-bottom:8px">
+    <div class="row"><span class="h" style="font-size:17px">Clases</span><span class="small muted">26 clases</span></div>
+    <div class="thumbs" style="margin:8px 0">
+      <img src="../../app/src/main/res/drawable/guerrero.png" alt="Guerrero">
+      <img src="../../app/src/main/res/drawable/sabio.png" alt="Sabio">
+      <img src="../../app/src/main/res/drawable/mistico.png" alt="Místico">
+      <img src="../../app/src/main/res/drawable/druida.png" alt="Druida">
+    </div>
+    <span class="btn ghost" style="padding:9px">Ver todas las clases</span>
+  </div>
+  <div class="card">
+    <div class="h" style="font-size:17px;margin-bottom:6px">Tu personaje</div>
+    <div class="small muted" style="margin-bottom:8px">Vuelve a nivel 1. Se conservan tu cuenta, tus actividades y tu historial.</div>
+    <span class="btn danger" style="padding:9px">Reiniciar progresión</span>
+  </div>
+</div>
+<div class="nav"><span>PJ</span><span>Atributos</span><span class="on">Info</span><span>Historial</span></div></div>
+</figure>
+
+<figure><figcaption>4 · Registrar actividad</figcaption>
+<div class="phone"><div class="body">
+  <div class="row" style="margin-bottom:10px"><span class="h" style="font-size:22px">← Registrar</span></div>
+  <div class="small muted" style="margin-bottom:4px">Fecha</div>
+  <div class="seg" style="margin-bottom:12px"><span class="on">Hoy</span><span>Ayer</span><span>Anteayer</span></div>
+  <div class="small muted" style="margin-bottom:4px">Actividad</div>
+  <div class="list">
+    <div><span>Entrenamiento de fuerza</span><span class="tag" style="color:var(--str-t)">STR</span></div>
+    <div class="sel"><span>Leer / estudiar</span><span class="tag" style="color:var(--int-t)">INT</span></div>
+    <div><span>Comida saludable</span><span class="tag" style="color:var(--con-t)">CON</span></div>
+    <div><span>Dormir</span><span class="tag" style="color:var(--men-t)">MEN</span></div>
+    <div><span>Guitarra <span class="small muted">· tuya</span></span><span class="tag" style="color:var(--wit-t)">WIT</span></div>
+    <div class="dash">+ Crear actividad personalizada</div>
+  </div>
+  <div class="card small" style="margin:6px 0 10px">Aprendizaje · Por duración · <b style="color:var(--int-t)">INT</b></div>
+  <div class="small muted" style="margin-bottom:4px">Duración</div>
+  <div class="seg" style="grid-template-columns:1fr 1fr;margin-bottom:12px"><span>0 h</span><span>45 min</span></div>
+  <span class="btn">Registrar</span>
+</div>
+<div class="nav"><span class="on">PJ</span><span>Atributos</span><span>Info</span><span>Historial</span></div></div>
+</figure>
+
+</div>
+</body>
+</html>
