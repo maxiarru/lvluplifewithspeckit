@@ -38,7 +38,7 @@ se verifica en el emulador.
     negativo, o cuando no es `null` en nivel 50.
   - Implementar en `RecordFlowPorts.kt` y `ProgressRepository.kt`, y actualizar los
     constructores sintéticos de las pruebas existentes.
-- [ ] T004 [US1] Tema «Arcade vivo» en `app/src/main/kotlin/lvluplife/ui/theme/Theme.kt` y el
+- [X] T004 [US1] Tema «Arcade vivo» en `app/src/main/kotlin/lvluplife/ui/theme/Theme.kt` y el
   nuevo `AttributeColors.kt`:
   - paleta de FR-001 y tipografías de FR-002;
   - formas redondeadas;

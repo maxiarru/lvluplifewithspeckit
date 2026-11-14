@@ -94,7 +94,8 @@ class AccessibilityTest {
     }
     private fun mount(dark:Boolean=false,content:@Composable (Harness)->Unit) {
         mode=if(dark) "dark" else "light"
-        compose.runOnIdle { compose.activity.setContent { LvlUpTheme(dark) {
+        // Feature 002 (FR-004): "dark" is the system setting; the app keeps its single light palette.
+        val themed:@Composable ()->Unit={ LvlUpTheme {
             val scope=rememberCoroutineScope();val harness=remember { Harness(scope) }
             val colors=MaterialTheme.colorScheme
             val palette=Palette(colors.onSurface.toArgb(),colors.onSurfaceVariant.toArgb(),colors.surface.toArgb(),
@@ -102,7 +103,8 @@ class AccessibilityTest {
                 AlertDialogDefaults.containerColor.toArgb(),colors.secondaryContainer.toArgb(),colors.onSecondaryContainer.toArgb(),colors.onSurfaceVariant.toArgb())
             SideEffect { h=harness;p=palette }
             content(harness)
-        } } };compose.waitForIdle()
+        } }
+        compose.runOnIdle { compose.activity.setContent { if(dark) NightSystem(themed) else themed() } };compose.waitForIdle()
     }
     private fun progress()=RecordProgressView(10,"confirmed-cycle","2026-11-12",2,"guerrero",1,
         listOf("STR","DEX","CON","INT","WIT","MEN").associateWith { RecordAttributeView(1,6,30) },"Guerrero")

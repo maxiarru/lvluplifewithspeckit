@@ -58,3 +58,34 @@ Pixel 6a API 30 y los emuladores locales de Firebase (proyecto `demo-lvluplife`)
   - `connectedDebugAndroidTest`: 137 pruebas. En una corrida sin emuladores de Firebase falló
     solo `FirebaseSdkIdentityTest`, que los requiere. Repetida con `firebase emulators:exec`,
     pasa. Las 136 restantes pasaron en la primera corrida.
+- Commit: de66893.
+
+## T004 — Tema «Arcade vivo» (2026-11-14)
+
+- Pruebas: `AppearanceContrastTest` compara contra los valores fijos de FR-001, no contra el tema.
+  Mide los píxeles reales de texto y fondo. Nuevas:
+  - `themeExposesTheArcadePaletteFontsAndRoundedShapes`: esquema de colores, colores por atributo,
+    Fredoka en títulos y botones, Nunito en el texto, y formas de 14 y 16 dp;
+  - `everyPaletteTextAndControlPairMeets45`: todos los pares de la paleta, incluidos los 6 colores
+    de texto por atributo sobre tarjeta blanca;
+  - `attributeTextColorsRenderReadablyOnCardsAndKeepTheirWrittenCode`;
+  - `systemDarkModeStillShowsTheLightArcadeScheme`: simula el modo oscuro del sistema con
+    `NightSystem` (`androidTest/SystemNightMode.kt`) y verifica primero que el sistema quedó oscuro.
+- RED 1: no compila porque faltan `AttributeColors`, `LvlUpFonts` y `LvlUpTheme` sin parámetro.
+- RED 2: con esas piezas y la paleta Material por defecto, fallan 7 de 9. En modo oscuro el tema
+  devolvía `#141218`.
+- Implementación:
+  - `Theme.kt`: `ArcadeColors`, esquema claro único (la superficie es el fondo #EAF1FC y los
+    contenedores son blancos), tipografías variables con peso por `FontVariation` y formas
+    redondeadas. `LvlUpTheme` ya no recibe `dark` (FR-004).
+  - `AttributeColors.kt`: relleno y texto por sigla.
+  - `AccessibilityTest` conserva sus dos pasadas, ahora con el sistema en modo claro y en modo
+    oscuro.
+- Contraste medido (mínimo 4,5:1): el par más bajo es DEX sobre tarjeta, 4,89; texto secundario
+  sobre fondo, 4,98; botón principal, 5,90; texto sobre fondo, 14,06. Los colores de texto por
+  atributo solo alcanzan 4,5:1 sobre blanco, así que se usan sobre tarjetas.
+- No hizo falta ajustar ningún valor de la paleta.
+- Resultados, con emuladores de Firebase:
+  - `assembleDebug`: correcto.
+  - `testDebugUnitTest`: 148 pruebas, 0 fallas.
+  - `connectedDebugAndroidTest`: 141 pruebas, 0 fallas (antes 137; 4 nuevas).
