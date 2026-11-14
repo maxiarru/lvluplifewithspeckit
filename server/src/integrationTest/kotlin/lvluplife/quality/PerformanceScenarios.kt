@@ -24,7 +24,6 @@ import kotlin.test.*
 import kotlinx.coroutines.*
 import lvluplife.api.*
 import lvluplife.application.AuthoritativeClock
-import lvluplife.application.RecordOperations
 import lvluplife.fixtures.FaultPoint
 import lvluplife.fixtures.InjectedFault
 import lvluplife.model.*
@@ -204,7 +203,7 @@ class PerformanceScenarios {
             val root=resources.documents.read(uid,emptyList())!!
             val cycleValue=store.cycle(uid,CycleId(cycle),resources.documents.read(uid,listOf("cycles",cycle)))
             val replay=ReplayEngine.rebuild(cycleValue,rows.map { store.record(it.id,it.data) },now)
-            val expected=RecordOperations.progressionResult(Progression.derived(cycleValue,Revision((root["revision"] as Long)+1),now,
+            val expected=lvluplife.api.progressPayload(Progression.derived(cycleValue,Revision((root["revision"] as Long)+1),now,
                 replay.attributes,replay.general,replay.appearance.classId,replay.appearance.stage))
             val actual=measured("verification","progress","GET","/v1/progress")
             assertEquals(json.readTree(json.writeValueAsString(expected)),actual,"Published projection must equal full-cycle replay")

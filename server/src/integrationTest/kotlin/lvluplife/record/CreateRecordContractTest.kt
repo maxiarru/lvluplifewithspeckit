@@ -46,6 +46,18 @@ class CreateRecordContractTest {
         assertEquals(f.root()["revision"], f.projection()["revision"])
         assertEquals(receipts, f.resources.firestore.collection("users/${f.a.value}/operations").get().get(10, TimeUnit.SECONDS).size())
     }
+    // Feature 002 (FR-010): the real endpoint publishes the next-level requirement; receipts and projections do not.
+    @Test fun progressPublishesXpRequiredButReceiptAndStoredProjectionDoNot() = scenario { f ->
+        val receipt = confirmed(client.create(f))
+        val p = progress(client, f)
+        for (id in listOf("STR", "DEX", "CON", "INT", "WIT", "MEN")) {
+            assertEquals(1, p.path("attributes").path(id).path("level").intValue())
+            assertEquals(30, p.path("attributes").path(id).path("xpRequired").intValue())
+        }
+        assertEquals(6, p.path("attributes").path("STR").path("xp").intValue())
+        assertFalse(receipt.toString().contains("xpRequired"))
+        assertFalse(f.projection().toString().contains("xpRequired"))
+    }
     @Test fun progressCrossingMidnightPublishesOnlyTheFinalBusinessDate() = scenario { f ->
         confirmed(client.create(f)); val beforeRevision = (f.root()["revision"] as Number).toLong()
         val before = Instant.parse("2026-11-12T02:59:59.999Z"); val after = Instant.parse("2026-11-12T03:00:00Z")

@@ -24,7 +24,7 @@ se verifica en el emulador.
 
 ## Phase 2: Foundational (bloquea las historias)
 
-- [ ] T002 [US5] Publicar `xpRequired` por atributo en `GET /progress` (FR-010). En TDD:
+- [X] T002 [US5] Publicar `xpRequired` por atributo en `GET /progress` (FR-010). En TDD:
   - RED: una prueba de `:server:test` sobre `progressResponse` espera `xpRequired = 30 × nivel`
     en niveles 1, 6 y 49, y `null` en nivel 50. Otra prueba verifica que
     `RecordOperations.progressionResult` (recibos y proyección) no incluye el campo.

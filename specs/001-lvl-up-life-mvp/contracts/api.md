@@ -151,7 +151,11 @@ calcula progresión o clasificación. Novato solo publica etapa I con mínimo1.
 `GET /progress` devuelve `cycleId`, `revision`, `computedAt`, `businessDate`,
 `generalLevel`, `generalRemainder`, `classId`, `stage`, `unlockedStages` y
 `attributes`. attributes es un objeto con exactamente STR/DEX/CON/INT/WIT/MEN;
-cada entrada tiene `level`, `xp` e `inactiveDates`. Las fechas/instantes son
+cada entrada tiene `level`, `xp`, `inactiveDates` y `xpRequired`. Feature 002
+(FR-010): `xpRequired` es la XP necesaria para el siguiente nivel de ese atributo,
+obtenida de `ProgressionThresholds.attribute` canónico (30 × nivel), y es `null` en
+nivel 50. Solo se publica en `GET /progress`; los recibos y la proyección
+persistida no lo incluyen. Android lo muestra sin recalcularlo. Las fechas/instantes son
 ISO/RFC3339. La respuesta es una proyección vigente, no el resultado de un
 comando antiguo. Los recibos mantienen el formato definitivo descrito arriba;
 ausencia: `{"operationId":"UUID","outcome":"UNKNOWN"}`, HTTP200 y sin error.
