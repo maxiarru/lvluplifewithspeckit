@@ -101,7 +101,7 @@ fun RecordFlow(session: SessionController, records: RecordFlowRecords, progress:
 
 /** PJ content (home, record form, custom activities, reset and class catalog) over shared controllers. */
 @Composable
-fun RecordFlowContent(session: SessionController, shared: SessionControllers) {
+fun RecordFlowContent(session: SessionController, shared: SessionControllers, username: String? = null) {
     val sessionView by session.state.collectAsState()
     val scope = rememberCoroutineScope()
     val records = shared.records
@@ -137,9 +137,11 @@ fun RecordFlowContent(session: SessionController, shared: SessionControllers) {
         if (customView?.open != true) {
             if (!view.open) {
                 if(!resetLocked) QuickRecordActions(view,controller,online && homeView.value != null)
-                HomeScreen(homeView, home::refresh,{ catalogOpen=true })
+                val locked = view.busy || view.pending != null || view.unresolved
+                HomeScreen(homeView, home::refresh,{ catalogOpen=true }, username,
+                    onRecord = if (!resetLocked && view.options.isNotEmpty()) controller::open else null, recordEnabled = !locked)
             }
-            if (!resetLocked) RecordScreen(view, controller, online)
+            if (!resetLocked) RecordScreen(view, controller, online, showOpenButton = false)
         }
         if (!resetLocked && !view.open && custom != null && customView != null)
             CustomActivityScreen(customView, custom, shared.customActivities?.online ?: online)

@@ -15,7 +15,7 @@ import lvluplife.application.*
 import lvluplife.data.ApiFailureCode
 
 @Composable
-fun RecordScreen(view: RecordFormView, controller: RecordFormController, online: Boolean) {
+fun RecordScreen(view: RecordFormView, controller: RecordFormController, online: Boolean, showOpenButton: Boolean = true) {
     val keyboard = LocalSoftwareKeyboardController.current
     val locked = view.busy || view.pending != null || view.unresolved
     BackHandler(enabled = view.open && !view.busy) { controller.close() }
@@ -34,7 +34,10 @@ fun RecordScreen(view: RecordFormView, controller: RecordFormController, online:
             }
             ActionButton(onClick = { keyboard?.hide(); controller.submit() }, enabled = !locked && online) { Text("Guardar actividad") }
             ActionTextButton(onClick = controller::close, enabled = !view.busy) { Text("Volver") }
-        } else if (view.options.isNotEmpty()) ActionButton(onClick = controller::open, enabled = !locked) { Text("Registrar actividad") }
+        } else if (view.options.isNotEmpty()) {
+            // Inside PJ the «+ Registrar actividad» button belongs to HomeScreen.
+            if (showOpenButton) ActionButton(onClick = controller::open, enabled = !locked) { Text("Registrar actividad") }
+        }
         else if (view.busy) Text("Cargando actividades…")
         else ActionTextButton(onClick = controller::start) { Text("Reintentar actividades") }
         view.message?.let { Text(it) }

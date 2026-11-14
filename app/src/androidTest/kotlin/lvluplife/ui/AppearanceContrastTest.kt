@@ -167,7 +167,7 @@ class AppearanceContrastTest {
     }
     @Test fun finalHeaderKeepsLongConfirmedClassStageLevelAndAllAttributesVisible() {
         mount { HomeScreen(ProgressView(progress(),loading=false),{},{}) }
-        compose.onNodeWithTag("character-appearance").assertWidthIsEqualTo(88.dp).assertHeightIsEqualTo(88.dp)
+        compose.onNodeWithTag("character-appearance").assertHeightIsEqualTo(220.dp)
             .assertContentDescriptionEquals("Guardián de la Sabiduría · Etapa III").assertIsDisplayed()
         compose.onNodeWithTag("character-class").assertTextEquals("Guardián de la Sabiduría").assertIsDisplayed()
         compose.onNodeWithTag("character-stage").assertTextEquals("Etapa III").assertIsDisplayed()
@@ -176,7 +176,7 @@ class AppearanceContrastTest {
         compose.onNodeWithText("Clases").assertIsDisplayed()
         val image=compose.onNodeWithTag("character-appearance").fetchSemanticsNode().boundsInRoot
         val title=compose.onNodeWithTag("character-class").fetchSemanticsNode().boundsInRoot
-        assertTrue("La imagen no debe solapar el título",title.left>=image.right)
+        assertTrue("La imagen no debe solapar el título",title.top>=image.bottom)
         capture("t004-home.png")
     }
     @Test fun homeTextAndEnabledControlsMeet45UsingActualRenderedColors() {
@@ -184,7 +184,8 @@ class AppearanceContrastTest {
         measure(compose.onNodeWithTag("character-class"),Spec.text,Spec.background,"home-class")
         measure(compose.onNodeWithTag("character-stage"),Spec.text,Spec.background,"home-stage")
         measure(compose.onNodeWithTag("character-level"),Spec.text,Spec.background,"home-level")
-        measure(compose.onNodeWithTag("attribute-STR-xp"),Spec.text,Spec.background,"home-xp")
+        measure(compose.onNodeWithTag("attribute-STR-xp"),Spec.text,Spec.card,"home-xp")
+        measure(compose.onNodeWithTag("attribute-STR-level"),Spec.text,Spec.card,"home-attribute-level")
         measure(compose.onNodeWithText("Clases"),Spec.onPrimary,Spec.primary,"home-classes-button")
         measure(compose.onNodeWithText("Actualizar progreso"),Spec.onPrimary,Spec.primary,"home-refresh-button")
     }

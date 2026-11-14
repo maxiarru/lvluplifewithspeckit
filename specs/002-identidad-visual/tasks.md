@@ -65,7 +65,7 @@ se verifica en el emulador.
 
 ## Phase 4: US3 — PJ (P1)
 
-- [ ] T008 [US3] Rediseñar `HomeScreen.kt` como PJ:
+- [X] T008 [US3] Rediseñar `HomeScreen.kt` como PJ:
   - saludo con el nombre de usuario e imagen grande recortada;
   - clase, etapa y nivel general;
   - mosaico de 6 atributos con barra chica;

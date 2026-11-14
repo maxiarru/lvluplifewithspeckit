@@ -48,10 +48,8 @@ fun MainTabs(session: SessionController, username: String, onLogout: () -> Unit,
         Column(Modifier.fillMaxSize()) {
             Box(Modifier.weight(1f).fillMaxWidth().padding(horizontal = 16.dp)) {
                 when (tab) {
-                    SessionRoute.HOME -> Column {
-                        Text(username)
-                        shared?.let { RecordFlowContent(session, it) }
-                    }
+                    SessionRoute.HOME -> if (shared != null) RecordFlowContent(session, shared, username)
+                        else Text(username, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
                     SessionRoute.ATTRIBUTES -> TabTitle(tabLabel(SessionRoute.ATTRIBUTES))
                     SessionRoute.INFO -> Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         TabTitle(tabLabel(SessionRoute.INFO))

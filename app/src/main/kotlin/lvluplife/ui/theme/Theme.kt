@@ -127,3 +127,9 @@ fun InputField(value: String, onValueChange: (String) -> Unit, modifier: Modifie
             disabledPlaceholderColor=color.onSurface,disabledBorderColor=color.onSurface,disabledLeadingIconColor=color.onSurface,
             disabledTrailingIconColor=color.onSurface,disabledSupportingTextColor=color.onSurface))
 }
+/** Main call to action of a screen («+ Registrar actividad»): full width and taller than [ActionButton]. */
+@Composable
+fun PrimaryActionButton(onClick: () -> Unit, modifier: Modifier = Modifier, enabled: Boolean = true, content: @Composable RowScope.() -> Unit) {
+    Button(onClick,modifier.fillMaxWidth().heightIn(min=56.dp),enabled,shape=buttonShape,colors=ButtonDefaults.buttonColors(
+        disabledContainerColor=MaterialTheme.colorScheme.surfaceContainerHighest,disabledContentColor=MaterialTheme.colorScheme.onSurface),content=content)
+}
