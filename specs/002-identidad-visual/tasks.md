@@ -87,7 +87,7 @@ se verifica en el emulador.
 
 ## Phase 6: US5 — Atributos (P2)
 
-- [ ] T011 [US5] Crear `AttributesScreen.kt`:
+- [X] T011 [US5] Crear `AttributesScreen.kt`:
   - una tarjeta por atributo con sigla, nombre y nivel;
   - barra con «X / Y XP al siguiente nivel», usando `xpRequired`;
   - en nivel 50, «Nivel máximo» sin barra.

@@ -50,7 +50,11 @@ fun MainTabs(session: SessionController, username: String, onLogout: () -> Unit,
                 when (tab) {
                     SessionRoute.HOME -> if (shared != null) RecordFlowContent(session, shared, username)
                         else Text(username, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
-                    SessionRoute.ATTRIBUTES -> TabTitle(tabLabel(SessionRoute.ATTRIBUTES))
+                    // Same confirmed progress as PJ: opening the tab does not ask the server again.
+                    SessionRoute.ATTRIBUTES -> if (shared != null) {
+                        val progressView by shared.progress.state.collectAsState()
+                        AttributesScreen(progressView, shared.progress::refresh)
+                    } else TabTitle(tabLabel(SessionRoute.ATTRIBUTES))
                     SessionRoute.INFO -> Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         TabTitle(tabLabel(SessionRoute.INFO))
                         ActionButton(onClick = onLogout) { Text("Cerrar sesión") }
