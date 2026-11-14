@@ -57,6 +57,7 @@ class ServerConfig private constructor(
 class ServerResources private constructor(
     val firestore: Firestore,
     private val firebaseApp: FirebaseApp,
+    internal val workloadIdentity: VercelWorkloadIdentity?,
 ) : AutoCloseable {
     val documents = FirestoreAccess(firestore)
     val identityVerifier: IdentityVerifier = FirebaseIdentityVerifier(FirebaseAuth.getInstance(firebaseApp))
@@ -82,8 +83,11 @@ class ServerResources private constructor(
             try {
                 val emulator = config.mode == BackendMode.EMULATOR
                 // Empty credentials have no token and cannot refresh against Google. Only the explicit
-                // local emulator mode may use them; production always obtains ADC.
-                val credentials = if (emulator) GoogleCredentials.newBuilder().build() else GoogleCredentials.getApplicationDefault()
+                // local emulator mode may use them. Vercel uses verified workload
+                // tokens; other production environments retain their existing ADC.
+                val workload = VercelWorkloadIdentity.fromEnvironment()
+                val credentials = if (emulator) GoogleCredentials.newBuilder().build()
+                    else workload?.credentials ?: GoogleCredentials.getApplicationDefault()
                 val options = FirestoreOptions.newBuilder().setProjectId(config.projectId).setDatabaseId("(default)")
                 if (emulator) {
                     // Pin both endpoints. NoCredentials activates a legacy SDK path that ignores
@@ -95,7 +99,7 @@ class ServerResources private constructor(
                 val firebaseOptions = FirebaseOptions.builder().setProjectId(config.projectId).setCredentials(credentials)
                     .setConnectTimeout(5000).setReadTimeout(5000).build()
                 app = FirebaseApp.initializeApp(firebaseOptions, "lvluplife-${UUID.randomUUID()}")
-                return ServerResources(firestore, app)
+                return ServerResources(firestore, app, workload)
             } catch (failure: Exception) {
                 if (failure is InterruptedException) Thread.currentThread().interrupt()
                 try { firestore?.close() } catch (_: Exception) { /* No private SDK diagnostics in logs. */ }

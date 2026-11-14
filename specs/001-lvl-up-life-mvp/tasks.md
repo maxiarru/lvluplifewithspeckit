@@ -3,7 +3,7 @@
 **Input**: [plan](plan.md), [spec](spec.md), [research](research.md), [modelo](data-model.md), [API](contracts/api.md), [UI](contracts/ui.md), [quickstart](quickstart.md) y constitución v1.0.0.
 **Organización**: seis historias; las prioridades ordenan entrega, no reducen el MVP.
 **Pruebas**: obligatorias por constitución IV, VI y VII y por el spec. Cada tarea de prueba crítica debe ejecutarse y fallar por comportamiento ausente antes de implementar su regla; registrar rojo/verde en `specs/001-lvl-up-life-mvp/validation.md`. No basta con escribir pruebas antes y ejecutarlas después.
-**Formato**: IDs únicos y estables; el orden de ejecución es el listado por fase, no el orden numérico (T085–T087 se incorporan en Foundational); [P] indica trabajo en archivos distintos que comparte los prerrequisitos indicados. Rutas relativas a la raíz; paquetes Kotlin de dominio y servidor bajo `lvluplife`. No implementar funcionalidades excluidas, desplegar ni crear recursos remotos.
+**Formato**: IDs únicos y estables; el orden de ejecución es el listado por fase, no el orden numérico (T085–T087 se incorporan en Foundational); [P] indica trabajo en archivos distintos que comparte los prerrequisitos indicados. Rutas relativas a la raíz; paquetes Kotlin de dominio y servidor bajo `lvluplife`. No implementar funcionalidades excluidas. Las tareas originales T001–T093 no autorizan despliegues ni creación de recursos remotos; la prueba posterior T094 tiene la autorización limitada documentada en `vercel-trial.md`.
 
 
 ## Phase 1: Setup
@@ -220,6 +220,14 @@ Objetivo: resolver los AC en PARCIAL de la matriz T084 que no dependen de Google
 - [X] T092 [P] Probar replay con un registro real de 4 minutos en la séptima fecha inactiva (AC-84) en `domain/src/test/kotlin/lvluplife/progression/ReplayTest.kt`, y aseverar saldo temporal y progresión intactos tras rechazar conversiones comida/duración (AC-108) en `server/src/integrationTest/kotlin/lvluplife/history/HistoryContractTest.kt`.
 - [X] T093 Probar que la app muestra el ciclo nuevo tras un registro rechazado por ciclo cerrado, sin trasladar la operación (AC-115), en `app/src/androidTest/kotlin/lvluplife/ui/RecordFlowTest.kt`.
 
+
+## Prueba de alojamiento posterior al MVP — 2026-11-14
+
+Autorizada por el titular después del cierre funcional. Registro retrospectivo:
+[decisión y estado](vercel-trial.md). El alcance es una prueba en Vercel Hobby;
+la creación de confianza IAM fue autorizada explícitamente por el titular y aplicada.
+
+- [X] T094 Probar el servidor existente en Vercel Hobby: paquete JVM sin Android ni credenciales locales; build de contenedor; HTTPS y rechazos sin sesión; adaptador OIDC con firma, equipo/proyecto/entorno exactos y sesión de usuario independiente; regresión del servidor. Tras aprobación específica, configurar la federación mínima con Firebase y verificar acceso real, renovación y arranque tras inactividad. Registrar evidencia y limitaciones en `vercel-trial.md` y `deployment/vercel/verification.md`; no cambiar planes ni habilitar facturación. Estado: build, pruebas, IAM autorizado, intercambio STS/impersonación y lectura Android con Google/Firebase reales aprobados; lectura repetida tras inactividad correcta. Rotación/expiración probadas localmente; no se observó renovación prolongada de una instancia caliente ni comandos reales de escritura. Revisión aprobada y commit autorizado por el titular el 2026-11-14. La entrega pública y su APK corresponden a la siguiente tarea.
 
 ## Dependencias y orden de ejecución
 

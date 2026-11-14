@@ -1,0 +1,15 @@
+# Deploy only the prepared upload directory, never the repository root.
+**/build
+**/.gradle
+**/.kotlin
+.git
+.vercel
+.tooling
+**/.env*
+**/google-services.json
+**/*credentials*.json
+**/*service-account*.json
+**/*.jks
+**/*.keystore
+**/*.pem
+**/*.key

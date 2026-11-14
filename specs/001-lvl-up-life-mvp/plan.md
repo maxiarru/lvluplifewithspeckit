@@ -133,3 +133,19 @@ La evaluación constitucional previa y posterior mantiene los ocho principios co
 ## Complexity Tracking
 
 Sin excepciones a la constitución. El servicio es necesario para autorización y cálculo autoritativo; Room es necesario para pendientes que sobreviven al proceso. Una revisión monotónica por cuenta evita transacciones crecientes y locks distribuidos adicionales. Si el replay no cumple objetivos con volúmenes representativos, documentar mediciones y evolución equivalente antes de introducir checkpoints.
+
+## Prueba de alojamiento posterior al MVP — 2026-11-14
+
+[T094](vercel-trial.md) registra la prueba autorizada de Vercel Hobby. Se conserva
+el servidor JVM y se prepara un build independiente de Android, un contenedor
+Java 17 y credenciales federadas por petición, con firma e identidad de workload
+verificadas. ADC permanece como mecanismo de otros entornos; la autenticación
+Firebase del usuario y su UID no se sustituyen por la identidad de Vercel.
+
+La condición de costo cero sigue vigente: no se habilita facturación ni un plan
+pago. El build, HTTPS, IAM limitado y lectura de perfil con sesión Google desde
+Android a través de Firebase real están verificados, incluida una repetición tras
+inactividad. La rotación tiene cobertura unitaria; no se acreditó una renovación
+prolongada con instancia caliente ni comandos reales de escritura. La entrega
+pública y su APK requieren la siguiente tarea y revisión. El registro es
+retrospectivo y no convierte la prueba en un diseño de producción aprobado.

@@ -679,3 +679,13 @@ esta especificación no decide su implementación.
 - Captura de horarios de inicio y fin o reparto automático de actividades entre fechas.
 
 Estas funcionalidades podrán evaluarse para versiones posteriores.
+
+## Seguimiento operativo posterior al MVP — 2026-11-14
+
+El titular autorizó una prueba de alojamiento del servidor existente en Vercel
+Hobby para evaluar el uso desde un teléfono sin depender de la PC. La prueba y
+sus permisos pendientes se siguen en [T094](vercel-trial.md) y `tasks.md`.
+Este seguimiento no agrega requisitos funcionales ni declara un despliegue
+definitivo aprobado. T094 acredita una lectura de perfil desde Android a través
+de Vercel y Firebase reales. Las limitaciones históricas de otras comprobaciones
+Google/Firebase conservan su alcance; esa lectura no las reemplaza.

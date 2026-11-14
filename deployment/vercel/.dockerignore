@@ -1,0 +1,16 @@
+# The preparation script already uses an explicit file allowlist.
+# Keep generated files and local credentials out of subsequent builds too.
+**/build
+**/.gradle
+**/.kotlin
+.git
+.vercel
+.tooling
+**/.env*
+**/google-services.json
+**/*credentials*.json
+**/*service-account*.json
+**/*.jks
+**/*.keystore
+**/*.pem
+**/*.key

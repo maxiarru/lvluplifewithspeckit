@@ -44,9 +44,11 @@ fun Application.serverModule(verifyToken: (String) -> String? = ::verifyFirebase
     serverModule(ApiHandlers(), verifyToken)
 
 /** Shared with the actual main entry point; all identities are verified by Firebase. */
-fun Application.serverModule(resources: ServerResources) =
+fun Application.serverModule(resources: ServerResources) {
+    resources.workloadIdentity?.let { installVercelWorkloadIdentity(it) }
     serverModule(accountHandlers(resources.firestore, AuthoritativeClock { Instant.now() }),
         verifyToken = { resources.identityVerifier.verify(it)?.value })
+}
 
 fun Application.serverModule(handlers: ApiHandlers, verifyToken: (String) -> String? = ::verifyFirebaseToken) {
     installApiErrors()
